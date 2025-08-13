@@ -9,8 +9,8 @@ interface NavProps {
     menu: boolean;
     setMenu: React.Dispatch<React.SetStateAction<boolean>>;
     searchModal: boolean;
-    openSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
-    closeSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
+    openSearchModal: () => void;
+    closeSearchModal: () => void;
     setSearchInput: React.Dispatch<React.SetStateAction<string>>;
     clearSearchInput: () => void;
     searchInput: string,
