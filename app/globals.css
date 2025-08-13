@@ -2,7 +2,9 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #222533;
+  --pastel-pink: #E4A0B7;
+  --dark-pink: hsl(327, 81%, 60%);
 }
 
 @theme inline {

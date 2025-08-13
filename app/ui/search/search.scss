@@ -1,0 +1,105 @@
+// Credit to https://uiverse.io/DipeshPun91/light-mayfly-18
+
+.search {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	max-width: 600px;
+	background-color: #1a1b23;
+	border-radius: 10px;
+	padding: 0.1rem 0.8rem;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+	transition: all 0.3s ease;
+	border: 1px solid #2a2b33;
+
+	&:focus-within {
+		background-color: #222533;
+		border-color: var(--dark-pink);
+		//box-shadow: 0 4px 15px var(--dark-pink);
+	}
+
+	&:hover {
+		background-color: #222533;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+
+		& .search__icon {
+			fill: var(--dark-pink);
+		}
+	}
+
+	&__input-container {
+		display: flex;
+		align-items: center;
+		flex-grow: 1;
+		gap: 0.75rem;
+	}
+
+	&__input {
+		flex: 1;
+		border: none;
+		outline: none;
+		font-size: 1rem;
+		background: none;
+		color: #f0f0f0;
+		padding: 0.5rem 0;
+		font-family: inherit;
+
+		&::placeholder {
+			color: #8a8a8a;
+			opacity: 1;
+			transition: opacity 0.2s ease;
+		}
+
+		&:focus::placeholder {
+			opacity: 0.5;
+		}
+	}
+
+	&__icon {
+		fill: #8a8a8a;
+		transition: fill 0.2s ease;
+	}
+
+	&__closeIcon {
+		fill: var(--dark-pink);
+	}
+
+	&:focus-within &__icon {
+		fill: var(--dark-pink);
+	}
+
+	&__border {
+		width: 1px;
+		height: 24px;
+		background-color: #3a3b43;
+		margin: 0 0.75rem;
+	}
+
+	&__micButton {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		border-radius: 50%;
+		background: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+
+		&:hover {
+			background-color: #2a2b33;
+		}
+	}
+
+	&__micIcon {
+		width: 20px;
+		height: 20px;
+		fill: #8a8a8a;
+		transition: fill 0.2s ease;
+	}
+
+	&__micButton:hover &__micIcon {
+		fill: var(--dark-pink);
+	}
+}
