@@ -11,7 +11,7 @@ interface NavProps {
     searchModal: boolean;
     openSearchModal: () => void;
     closeSearchModal: () => void;
-    setSearchInput: React.Dispatch<React,SetStateAction<string>>;
+    setSearchInput: React.Dispatch<React.SetStateAction<string>>;
     clearSearchInput: () => void;
     searchInput: string,
 }
