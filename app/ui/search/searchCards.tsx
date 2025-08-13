@@ -14,6 +14,13 @@ type CardWrapperProps = {
     searchResults: Quote[];
 };
 
+type CardProps = {
+    quote: string;
+    speaker: string;
+    season: number;
+    episode: number;
+};
+
 export default function CardWrapper({ searchResults }: CardWrapperProps) {
     return (
         <div className="cards-wrapper w-full h-full pt-2">
@@ -39,7 +46,7 @@ function Card({
     season,
     episode,
     speaker,
-}: CardWrapperProps
+}: CardProps
 ) {
     return (
         <div className="speech-bubble">
