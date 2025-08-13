@@ -7,16 +7,17 @@ import MenuIcons from "./menuIcon/menuIcons";
 
 interface NavProps {
     menu: boolean;
-    setMenu: React.Dispatch<ReactCompilerOptions.SetStateAction<boolean>>;
+    setMenu: React.Dispatch<React.SetStateAction<boolean>>;
     searchModal: boolean;
     openSearchModal: () => void;
     closeSearchModal: () => void;
     setSearchInput: React.Dispatch<React,SetStateAction<string>>;
     clearSearchInput: () => void;
-    searchInput: string | null,
+    searchInput: string,
 }
 
-const Nav = forwardRef<HTMLDivElement, NavProps>(function Nav({
+
+function Nav({
     menu,
     setMenu,
     searchModal,
@@ -25,7 +26,7 @@ const Nav = forwardRef<HTMLDivElement, NavProps>(function Nav({
     setSearchInput,
     clearSearchInput,
     searchInput,
-}, ref) {
+}: NavProps) {
 
     // Close SearchModal if the menu is opened
     useEffect(() => {

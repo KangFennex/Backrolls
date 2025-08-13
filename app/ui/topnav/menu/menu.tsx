@@ -15,7 +15,7 @@ interface MenuProps {
 
 const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
     { menu, setMenu },
-    menuRef
+    ref
 ) {
     // Close menu when clicking outside
     useEffect(() => {
@@ -23,10 +23,11 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
 
         function handleClickOutside(event: MouseEvent) {
             const target = event.target as HTMLElement;
+            const currentRef = ref as React.RefObject<HTMLDivElement>;
 
             if (
-                menuRef.current &&
-                !menuRef.current.contains(event.target as Node) &&
+                currentRef.current &&
+                !currentRef.current.contains(event.target as Node) &&
                 !target.closest('.menu-icon-container')
             ) {
                 setMenu(false);
@@ -36,7 +37,7 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [menu, menuRef, setMenu]);
+    }, [menu, ref, setMenu]);
 
     return (
         <aside
@@ -56,4 +57,5 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
     );
 });
 
+Menu.displayName = 'Menu';
 export default Menu;
