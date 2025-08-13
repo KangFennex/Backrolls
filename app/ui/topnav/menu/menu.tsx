@@ -45,7 +45,7 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
                 "menu absolute flex flex-col mt-14 w-full h-full items-center shadow-md pt-3 gap-5 bg-[#222533]",
                 menu && "openMenu" 
             )}
-            ref={menuRef}
+            ref={ref}
         >
             <span className="w-full flex justify-center">
                 <GrLounge className="text-pink-500 text-5xl block md:hidden" />
