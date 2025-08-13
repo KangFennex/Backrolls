@@ -7,11 +7,11 @@ import MenuIcons from "./menuIcon/menuIcons";
 
 interface NavProps {
     menu: boolean;
-    setMenu: () => void;
+    setMenu: React.Dispatch<ReactCompilerOptions.SetStateAction<boolean>>;
     searchModal: boolean;
     openSearchModal: () => void;
     closeSearchModal: () => void;
-    setSearchInput: (input: string) => void;
+    setSearchInput: React,Dispatch<React,SetStateAction<string>>;
     clearSearchInput: () => void;
     searchInput: string | null,
 }
