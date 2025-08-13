@@ -23,7 +23,7 @@ export const MenuIcon = ({ menu, setMenu }: MenuIconProps) => {
 
 const MenuIcons = ({ menu, setMenu }: MenuIconProps) => {
     return (
-        <nav className="flex flex-row items-center">
+        <nav className="flex flex-row items-center justify center">
             <GrLounge className="hidden md:block text-pink-500 text-4xl md:text-5xl" />
             <MenuIcon
                 menu={menu}

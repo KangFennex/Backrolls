@@ -1,5 +1,5 @@
 .menu-icon {
-    --s: 2rem;
+    --s: 1.7rem;
     --c: var(--dark-pink);
     height: var(--s);
     aspect-ratio: 1;
@@ -59,4 +59,10 @@
     border: none;
     outline: 2px solid var(--c);
     outline-offset: 5px;
+}
+
+@media (min-width: 640px) {
+	.menu-icon {
+    --s: 2rem;
+    }
 }

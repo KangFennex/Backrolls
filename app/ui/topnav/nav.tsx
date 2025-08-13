@@ -36,13 +36,13 @@ function Nav({
         <div
             className="fixed top-0 w-full shadow-md h-14 bg-[#222533]"
         >
-            <nav className="relative h-full mx-auto px-1 flex items-center justify-between">
+            <nav className="relative h-full mx-auto px-3 flex items-center justify-between">
                 
-                <div className="flex-shrink 0 ml-2 mt-1">
+                <div className="flex-shrink-0 w-10 md:w-12 md:ml-20">
                     <Logo />
                 </div>
 
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-sm md:max-w-xl px-4">
+                <div className="flex-1 min-w-0 max-w-[300px] ml-2 md:min-w-[500px] md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
                     <Search
                         searchModal={searchModal}
                         openSearchModal={openSearchModal}
@@ -52,7 +52,7 @@ function Nav({
                     />
                 </div>
 
-                <div className="flex-shrink-0 ml-auto mt-2">
+                <div className="flex-shrink-0 w-10 md:w-12 mt-2">
                     <MenuIcons
                         menu={menu}
                         setMenu={setMenu}
