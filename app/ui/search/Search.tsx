@@ -5,19 +5,23 @@ import { FaSearch, FaMicrophone } from "react-icons/fa";
 import { RiCloseLargeFill } from "react-icons/ri";
 import usePlaceholderLogic from "./placeholderLogic";
 
+interface SearchProps {
+  searchModal: boolean;
+  openSearchModal: () => void;
+  setSearchInput: (input: string) => void;
+  clearSearchInput: () => void;
+  searchInput: string | null;
+}
+
+
+
 export default function Search({ 
   searchModal,
   openSearchModal,
   setSearchInput,
   clearSearchInput,
   searchInput,
-}: {
-  searchModal: boolean,
-  openSearchModal: () => void,
-  setSearchInput: (input: string) => void,
-  clearSearchInput: () => void,
-  searchInput: string | null,
-}) {
+}: SearchProps ) {
   const placeholder = usePlaceholderLogic();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

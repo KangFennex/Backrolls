@@ -9,8 +9,12 @@ import { quotes } from "../lib/placeholder-data";
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
 
     const [searchModal, setSearchModal] = useState(false);
-    const [searchInput, setSearchInput] = useState<string>("")
+    const [searchInput, setSearchInputState] = useState<string>("")
     const [searchResults, setSearchResults] = useState<typeof quotes>([])
+
+    const setSearchInput = (input: string) => {
+        setSearchInputState(input);
+    };
 
     const openSearchModal = () => setSearchModal(true);
     const closeSearchModal = () => setSearchModal(false);
@@ -56,7 +60,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 setMenu={setMenu}
                 searchModal={searchModal}
                 openSearchModal={openSearchModal}
-                closeSearchModal={closeSearchModal}
                 setSearchInput={setSearchInput}
                 clearSearchInput={clearSearchInput}
                 searchInput={searchInput}

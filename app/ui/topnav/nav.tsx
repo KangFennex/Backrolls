@@ -10,8 +10,7 @@ interface NavProps {
     setMenu: React.Dispatch<React.SetStateAction<boolean>>;
     searchModal: boolean;
     openSearchModal: () => void;
-    closeSearchModal: () => void;
-    setSearchInput: React.Dispatch<React.SetStateAction<string>>;
+    setSearchInput: (input: string) => void; 
     clearSearchInput: () => void;
     searchInput: string,
 }
@@ -21,7 +20,6 @@ function Nav({
     setMenu,
     searchModal,
     openSearchModal,
-    closeSearchModal,
     setSearchInput,
     clearSearchInput,
     searchInput,
@@ -48,7 +46,6 @@ function Nav({
                     <Search
                         searchModal={searchModal}
                         openSearchModal={openSearchModal}
-                        closeSearchModal={closeSearchModal}
                         setSearchInput={setSearchInput}
                         clearSearchInput={clearSearchInput}
                         searchInput={searchInput}
