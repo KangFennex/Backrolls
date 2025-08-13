@@ -16,7 +16,6 @@ interface NavProps {
     searchInput: string,
 }
 
-
 function Nav({
     menu,
     setMenu,
@@ -67,7 +66,7 @@ function Nav({
 
         </div>
     );
-});
+};
 
 Nav.displayName = 'Nav';
 export default Nav;
