@@ -25,7 +25,7 @@ export default function CardWrapper({ searchResults }: CardWrapperProps) {
     return (
         <div className="cards-wrapper w-full h-full pt-2">
             {searchResults.length > 0 && (
-                <div className="search-results flex flex-col gap-8">
+                <div className="search-results flex flex-col pt-4 gap-3 items-center">
                     {searchResults.map((quote) => (
                         <Card
                             key={quote.id}
@@ -49,7 +49,7 @@ function Card({
 }: CardProps
 ) {
     return (
-        <div className="speech-bubble">
+        <div className="speech-bubble w-[80%]">
             <p>{quote}</p>
             <span className="username">{speaker}, S{season}E{episode}</span>
         </div>

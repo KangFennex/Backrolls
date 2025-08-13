@@ -5,6 +5,7 @@
   --foreground: #222533;
   --pastel-pink: #E4A0B7;
   --dark-pink: hsl(327, 81%, 60%);
+  --light-pink: hsl(327, 67%, 74%);
 }
 
 @theme inline {

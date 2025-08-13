@@ -13,8 +13,6 @@ interface SearchProps {
   searchInput: string | null;
 }
 
-
-
 export default function Search({ 
   searchModal,
   openSearchModal,

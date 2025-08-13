@@ -14,12 +14,11 @@ $highlight4 : #01AD9B;
     background-color: $color2;
     color: $text;
     min-height: 80px;
-    font-size: 1.2em;
-    line-height: 1.75;
-    padding: 20px 34px;
-    cursor: default;
+    font-size: 1em;
+    line-height: 1.25;
+    padding: 30px 20px 20px 20px;
     border-radius: 10px;
-
+    cursor: default;
 
     //  Border and arrow left
     &:nth-child(2n) {
