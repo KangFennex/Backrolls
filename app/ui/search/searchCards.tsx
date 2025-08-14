@@ -1,6 +1,10 @@
 'use client';
 
 import "./searchCards.scss";
+import { FaShare } from "react-icons/fa";
+import { IoMdShareAlt } from "react-icons/io";
+import { AiFillLike } from "react-icons/ai";
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 
 export type Quote = {
     id: string | number;
@@ -49,9 +53,19 @@ function Card({
 }: CardProps
 ) {
     return (
-        <div className="speech-bubble w-[80%]">
-            <p>{quote}</p>
-            <span className="username">{speaker}, S{season}E{episode}</span>
+        <div className="speech-bubble relative w-[80%] active:scale-95 transition-transform duration-75 grid grid-cols-[90%_10%]">
+
+            <div className="speech-bubble--content">
+                <p>{quote}</p>
+                <span className="username">{speaker}, S{season}E{episode}</span>
+            </div>
+
+            <div className="speech-bubble--icons flex flex-col gap-4 text-[#e6e9ef] justify-end items-center">
+                <FaShare size={20} className="speech-bubble--icon" />
+                <AiFillLike size={20} className="speech-bubble--icon" />
+                <MdFavoriteBorder size={20} className="speech-bubble--icon" />
+            </div>
+
         </div>
     );
 }
