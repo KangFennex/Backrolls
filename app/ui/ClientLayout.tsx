@@ -4,13 +4,16 @@ import { useState, useEffect, useRef } from "react";
 import Nav from "./topnav/nav";
 import Menu from "./topnav/menu/menu"
 import SearchModal from "./search/SearchModal";
-import { quotes } from "../lib/placeholder-data";
+import { searchQuotes } from '../lib/data';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Portal from '@mui/material/Portal';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
 
     const [searchModal, setSearchModal] = useState(false);
     const [searchInput, setSearchInputState] = useState<string>("")
     const [searchResults, setSearchResults] = useState<typeof quotes>([])
+    const [loading, setLoading] = useState(false);
 
     const setSearchInput = (input: string) => {
         setSearchInputState(input);
@@ -29,25 +32,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         setSearchResults([]);
     };
 
-    // Search function
-    const searchQuotes = (input: string) => {
-
+    // Implement search function
+    const searchQuotesHandler = async (input: string) => {
         if (!input.trim()) {
             setSearchResults([]);
+            setLoading(false);
             return;
         }
-
-        const results = quotes.filter((quote) =>
-            quote.quote_text.toLowerCase().includes(input.toLowerCase())
-        );
-
+        setLoading(true);
+        const results = await searchQuotes(input);
         setSearchResults(results);
-    };
+        setLoading(false);
+    }
 
-    // Add useEffect to trigger search when input changes
+    // useEffect to trigger search when input changes after 0.3s
     useEffect(() => {
         const timer = setTimeout(() => {
-            searchQuotes(searchInput);
+            searchQuotesHandler(searchInput);
         }, 300);
 
         return () => clearTimeout(timer);
@@ -70,12 +71,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <Menu menu={menu} setMenu={setMenu} ref={menuRef} />
                 </div>
 
-                {searchModal && <SearchModal
-                    closeSearchModal={closeSearchModal}
-                    searchResults={searchResults}
-                />}
-
-                <div className="flex-grow">
+                <ClickAwayListener onClickAway={closeSearchModal}>
+                    <Portal>
+                        {searchModal && <SearchModal
+                            searchResults={searchResults}
+                            loading={loading}
+                            clearSearchInput={clearSearchInput}
+                        />}
+                    </Portal>
+                </ClickAwayListener>
+                <div className="pt-14 min-h-screen">
                     {children}
                 </div>
             </div>

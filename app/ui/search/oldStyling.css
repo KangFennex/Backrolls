@@ -1,0 +1,10 @@
+
+    &--icon {
+        cursor: pointer;
+        transition: all 75ms ease;
+
+        &:hover {
+            color: hsl(327, 81%, 60%);
+            transform: scale(1.1);
+        }
+    }

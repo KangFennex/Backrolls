@@ -45,6 +45,23 @@
 		padding: 0.3rem 0;
 		font-family: inherit;
 
+		&:-webkit-autofill,
+		&:-webkit-autofill:hover,
+		&:-webkit-autofill:focus,
+		&:-webkit-autofill:active {
+			-webkit-box-shadow: 0 0 0 1000px #222533 inset !important;
+			/* Change 'white' to your desired background color */
+			-webkit-text-fill-color: #f0f0f0 !important;
+			/* Change '#333' to your desired text color */
+			box-shadow: 0 0 0 1000px #222533 inset !important;
+			-webkit-text-fill-color: #f0f0f0 !important;
+		}
+
+		&:-moz-autofill,
+		&:-moz-autofill-preview {
+			filter: none !important;
+		}
+
 		&::placeholder {
 			color: #8a8a8a;
 			opacity: 1;
@@ -105,54 +122,8 @@
 	}
 }
 
-.search-modal__content {
-	&::-webkit-scrollbar {
-		width: 8px;
-		height: 8px;
-		background-color: transparent;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background-color: hsl(196, 79%, 65%);
-		border-radius: 4px;
-		opacity: 0.5;
-		transition: opacity 0.2s;
-
-		&:hover {
-			opacity: 0.8;
-		}
-	}
-
-	&::-webkit-scrollbar-track {
-		background-color: rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
-	}
-}
-
-.shimmer-effect {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	height: 5px;
-	width: 50%;
-	background: linear-gradient(to right, transparent, rgb(62, 170, 221));
-	opacity: 0.3;
-	animation: shimmer 3s linear infinite;
-}
-
-@keyframes shimmer {
-	0% {
-		transform: translateX(-100%);
-	}
-
-	100% {
-		transform: translateX(200%);
-	}
-}
-
 @media (min-width: 640px) {
 	.search__input {
 		font-size: 1rem;
 	}
-
 }

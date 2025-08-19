@@ -34,7 +34,7 @@ function Nav({
 
     return (
         <div
-            className="fixed top-0 w-full shadow-md h-14 bg-[#222533]"
+            className="fixed top-0 w-full shadow-md h-14 bg-[#222533] z-50"
         >
             <nav className="relative h-full mx-auto px-3 flex items-center justify-between">
                 

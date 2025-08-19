@@ -12,7 +12,9 @@ const quotes = [
                 "user_id": "admin01",
                 "image_url": "/images/rupaul-s6e1.jpg",
                 "is_approved": true,
+                "isFavorite": true,
                 "vote_count": 2845,
+                "share_count": 0,
                 "tags": ["love", "inspirational"]
             },
             {

@@ -10,59 +10,82 @@ $highlight4 : #01AD9B;
 //$color2 : #26272b;
 //$text : #9fa2a7;
 
+// Styling for the search modal
+
+.search-modal {
+    position: absolute;
+    height: 100%;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-top: 4rem;
+    background-color: var(--dark-foreground);
+    padding-bottom: 3rem;
+    overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+		background-color: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: hsl(196, 79%, 65%);
+		border-radius: 4px;
+		opacity: 0.5;
+		transition: opacity 0.2s;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+	}
+}
+
+.shimmer-effect {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    width: 50%;
+    background: linear-gradient(to right, transparent, rgb(62, 170, 221));
+    opacity: 0.3;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(200%);
+    }
+}
+
 .speech-bubble {
     background-color: $color2;
     color: $text;
-    min-height: 80px;
-    font-size: 1em;
+    min-height: 60px;
+    font-size: 0.9em;
     line-height: 1.25;
-    padding: 30px 5px 20px 20px;
-    border-radius: 10px;
-    cursor: default;
+    padding: 15px 5px 10px 10px;
+    border-radius: 7px;
 
     //  Border and arrow left
     &:nth-child(2n) {
         border-left: 5px solid;
     }
 
-    /*
-&:nth-child(2n):after {
-        content: '';
-        margin-top: -30px;
-        padding-top: 0px;
-        position: relative;
-        bottom: 55px;
-        left: 220px;
-        border-width: 30px 0 0 30px;
-        border-style: solid;
-        border-color: $color2 transparent;
-        display: block;
-        width: 0;
-    }
-    */
-
-    //  Border and arrow right
     &:nth-child(2n+1) {
         border-left: 5px solid;
     }
 
-    /*
-    &:nth-child(2n+1):after {
-        content: '';
-        margin-top: -30px;
-        padding-top: 0px;
-        position: relative;
-        bottom: -55px;
-        left: 40px;
-        border-width: 30px 30px 0 0;
-        border-style: solid;
-        border-color: $color2 transparent;
-        display: block;
-        width: 0;
-    }
-*/
-
-    // Randomize every 4th bubble's border color
     &:nth-child(4n+1) {
         border-color: hsla(random(365), random(365), 50%, 1);
         // border-color: $highlight1;
@@ -80,11 +103,19 @@ $highlight4 : #01AD9B;
         border-color: $highlight3;
     }
 
+    p {
+        padding-left: 12px;
+        text-indent: -10px;
+    }
+
     // Quotation symbols
     p:before {
         content: "“";
         font-family: Georgia;
-        font-size: 40px;
+        font-size: 30px;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
         line-height: 0;
         display: inline-block;
         display: -webkit-inline-box;
@@ -108,5 +139,18 @@ $highlight4 : #01AD9B;
             color: hsl(327, 81%, 60%);
             transform: scale(1.1);
         }
+    }
+}
+
+@media (min-width: 640px) {
+    .search-modal {
+        height: fit-content;
+        max-height: 28rem;
+        width: 45rem;
+        left: 50%;
+        transform: translateX(-50%);
+        border-bottom: 7px solid rgb(38, 110, 144);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
     }
 }

@@ -4,6 +4,7 @@ import "./search.scss";
 import { FaSearch, FaMicrophone } from "react-icons/fa";
 import { RiCloseLargeFill } from "react-icons/ri";
 import usePlaceholderLogic from "./placeholderLogic";
+import { useState, useEffect } from 'react';
 
 interface SearchProps {
   searchModal: boolean;
