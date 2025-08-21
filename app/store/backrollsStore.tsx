@@ -5,6 +5,8 @@ type BackrollsState = {
     setBackrollId: (id: string) => void;
     searchHistory: string[];
     addToSearchHistory: (query: string) => void;
+    viewHistory: string[];
+    addToViewHistory: (id: string) => void;
 }
 
 export const useBackrollsStore = create<BackrollsState>((set) => ({
