@@ -5,7 +5,6 @@ export type Quote = {
     season: number;
     episode: number;
     timestamp: string;
-    speaker: string;
     context: string;
     user_id: string;
    is_approved: boolean;
