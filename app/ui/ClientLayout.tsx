@@ -7,12 +7,13 @@ import SearchModal from "./search/SearchModal";
 import { searchQuotes } from '../lib/data';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Portal from '@mui/material/Portal';
-
+import { Quote } from '../lib/definitions';
+ 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
 
     const [searchModal, setSearchModal] = useState(false);
     const [searchInput, setSearchInputState] = useState<string>("")
-    const [searchResults, setSearchResults] = useState<typeof quotes>([])
+    const [searchResults, setSearchResults] = useState<Quote[]>([]);
     const [loading, setLoading] = useState(false);
 
     const setSearchInput = (input: string) => {
