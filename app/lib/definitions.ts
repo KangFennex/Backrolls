@@ -4,7 +4,15 @@ export type Quote = {
     speaker: string;
     season: number;
     episode: number;
+    timestamp: string;
+    speaker: string;
+    context: string;
+    user_id: string;
+   is_approved: boolean;
+   vote_count: number;
+  share_count: number;
 };
+
 
 export type CardWrapperProps = {
     searchResults: Quote[];
