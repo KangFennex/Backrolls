@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { getQuoteById } from '../../lib/data';
+import { Quote } from '../../lib/definitions';
 import { styled } from '@mui/material/styles';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
@@ -47,7 +48,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function BackrollCard() {
     const backrollId = useBackrollsStore((state) => state.backrollId);
-    const [quote, setQuote] = useState([]);
+    const [quote, setQuote] = useState<Quote | null>(null);
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
