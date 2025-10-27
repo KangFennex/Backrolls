@@ -1,29 +1,140 @@
 @import "tailwindcss";
-
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 :root {
   --background: #ffffff;
+  --grey-background: #282828;
   --dark-foreground: #222533;
+  --darker-foreground: #060306;
   --pastel-pink: #E4A0B7;
   --dark-pink: hsl(327, 81%, 60%);
-  --light-pink: hsl(327, 67%, 74%);
-  --google-white: #F8F9FA;
-  --default-css: #FAFAFA;
-  --warm-ivory: #FFFFF0;
-  --whitesmoke: #F5F5F5;
-  --aliceBlue: #F0F8FF;
-  --social-media: #F0F2F5;
-  --soft-mint-green: hsl(160, 70%, 85%);
+  /* #EE5BAC */
+  --light-pink: hsl(328, 70%, 74%);
+  /* #e990c1 */
+  --google-white: hsl(210, 8%, 98%, 70%);
+  /* #F8F9FA */
+  --default-css: hsl(0, 0%, 98%);
+  /* #FAFAFA */
+  --warm-ivory: hsl(60, 100%, 97%);
+  /* #FFFFF0 */
+  --whitesmoke: hsl(0, 0%, 96%);
+  /* #F5F5F5 */
+  --aliceBlue: hsl(208, 100%, 97%);
+  /* #F0F8FF */
+  --social-media: hsl(220, 14%, 95%);
+  /* #F0F2F5 */
+  --soft-mint-green: hsl(156, 58%, 82%);
+  /* #C2EDDF */
   --soft-peach: hsl(21, 100%, 90%);
-  --soft-lavender: hsl(267, 60%, 85%);
+  --soft-lavender: hsl(267, 60%, 85%, 80%);
+  /* #E6D9F7 */
   --warm-light-grey: hsl(30, 20%, 92%);
   --soft-butter-yellow: hsl(50, 90%, 85%);
-  --pastel-blue: hsl(210, 100%, 90%);
+  --pastel-blue: hsl(210, 100%, 90%, 90%);
+  /* #CCE6FF */
+  --soft-mint: hsl(125, 45%, 83%, 90%);
+  /* #D1EED3 */
+  --warm-beige: hsl(48, 70%, 82%);
+  /* #F1E4AC */
+  --pale-lilac: hsl(280, 40%, 82%);
+  /* #D8C3E0 */
+  --soft-peach: hsl(21, 75%, 87%);
+  /* #F6D7C5 */
+  --blush-pink: hsl(352, 80%, 82%);
+  /* #F7A8B2 */
+  --pale-cyan: hsl(175, 40%, 78%);
+  /* #BCE5E2 */
+
+  /* Fonts Colors */
+  --rich-charcoal: #2C2C2C;
+  --dark-gray: #333333;
+  --deep-brown: #3A2F2A; 
 }
 
 body {
-  background: var(--pastel-blue);
+  background: var(--grey-background);
   height: 100vh;
   width: 100vw;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.pageContainer {
+  background: none;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.loginForm {
+  border: 3px solid pink
+}
+
+.scrollbar-hide {
+    /* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+        display: none;
+        width: 0 !important;
+        height: 0 !important;
+    }
+    
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
+    
+    /* Hide scrollbar for IE and older Edge */
+    -ms-overflow-style: none;
+}
+
+/* More specific selector if needed */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none !important;
+}
+/* Fonts Styling */
+
+.roboto-condensed {
+  font-family: "Roboto Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.noto-sans {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.lato-thin {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.lato-light {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.lato-regular {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lato-bold {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.lato-black {
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  font-style: normal;
 }

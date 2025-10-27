@@ -1,44 +1,32 @@
 'use client';
 
-import { useEffect, forwardRef } from "react";
-import Logo from "./logo/logo";
-import Search from "../search/Search";
-import MenuIcons from "./menuIcon/menuIcons";
-
-interface NavProps {
-    menu: boolean;
-    setMenu: React.Dispatch<React.SetStateAction<boolean>>;
-    searchModal: boolean;
-    openSearchModal: () => void;
-    setSearchInput: (input: string) => void; 
-    clearSearchInput: () => void;
-    searchInput: string,
-}
+import Logo from './logo/logo';
+import Search from '../search/Search';
+import { GrLounge } from 'react-icons/gr';
+import { BsCupHot, BsCupHotFill } from "react-icons/bs";
+import { RiSofaLine, RiSofaFill } from "react-icons/ri";
+import { FaPlus } from 'react-icons/fa';
+import Link from 'next/link';
+import { NavProps } from '../../lib/definitions';
+import { useAuth } from "../../lib/hooks"
 
 function Nav({
-    menu,
-    setMenu,
     searchModal,
     openSearchModal,
-    setSearchInput,
+    handleInputChange,
     clearSearchInput,
     searchInput,
+    handleSearchSubmit,
 }: NavProps) {
-
-    // Close SearchModal if the menu is opened
-    useEffect(() => {
-        if (menu) {
-            clearSearchInput();
-        }
-    }, [menu]);
+    const { isAuthenticated } = useAuth();
 
     return (
         <div
-            className="fixed top-0 w-full shadow-md h-14 bg-[#222533] z-50"
+            className="top-0 w-full h-14 z-50 px-3"
         >
-            <nav className="relative h-full mx-auto px-3 flex items-center justify-between">
-                
-                <div className="flex-shrink-0 w-10 md:w-12 md:ml-20 md:mt-2">
+            <nav className="relative h-full w-full mx-auto px-3 flex items-center justify-between">
+
+                <div className="flex-shrink-0 w-10 md:w-12 md:ml-14 md:mt-2">
                     <Logo />
                 </div>
 
@@ -46,21 +34,31 @@ function Nav({
                     <Search
                         searchModal={searchModal}
                         openSearchModal={openSearchModal}
-                        setSearchInput={setSearchInput}
+                        handleInputChange={handleInputChange}
                         clearSearchInput={clearSearchInput}
                         searchInput={searchInput}
+                        handleSearchSubmit={handleSearchSubmit}
                     />
                 </div>
 
-                <div className="flex-shrink-0 w-10 md:w-28 mt-2">
-                    <MenuIcons
-                        menu={menu}
-                        setMenu={setMenu}
-                    />
+                <div className="flex-shrink-0 mt-2">
+                    <nav className="flex flex-row gap-3 items-center justify center">
+                        <Link href="/submit" aria-label="Submit a quote">
+                            <FaPlus size={45} className="text-pink-500 text-3xl md:text-4xl mb-1" />
+                        </Link>
+                        <Link href="/coffee" aria-label="Buy me a coffee">
+                            {isAuthenticated ?
+                                <BsCupHotFill size={40} className="text-pink-500 text-4xl mb-1" /> :
+                                <BsCupHot size={40} className="text-pink-500 text-4xl mb-1" />}
+                        </Link>
+                        <Link href="/lounge" aria-label="Access the lounge">
+                            {isAuthenticated ?
+                                <RiSofaFill className="text-pink-500 text-5xl mb-1" /> :
+                                <RiSofaLine className="text-pink-500 text-5xl mb-1" />}
+                        </Link>
+                    </nav>
                 </div>
             </nav>
-
-
         </div>
     );
 };

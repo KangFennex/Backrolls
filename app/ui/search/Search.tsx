@@ -3,63 +3,89 @@
 import "./search.scss";
 import { FaSearch, FaMicrophone } from "react-icons/fa";
 import { RiCloseLargeFill } from "react-icons/ri";
-import usePlaceholderLogic from "./placeholderLogic";
-import { useState, useEffect } from 'react';
+import usePlaceholderLogic from "../../lib/utils";
+import { SearchProps } from '../../lib/definitions';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useState } from 'react';
 
-interface SearchProps {
-  searchModal: boolean;
-  openSearchModal: () => void;
-  setSearchInput: (input: string) => void;
-  clearSearchInput: () => void;
-  searchInput: string | null;
-}
-
-export default function Search({ 
+export default function Search({
   searchModal,
-  openSearchModal,
-  setSearchInput,
   clearSearchInput,
   searchInput,
-}: SearchProps ) {
+  handleInputChange,
+  handleSearchSubmit,
+}: SearchProps) {
   const placeholder = usePlaceholderLogic();
+  const { transcript, resetTranscript, listening } = useSpeechRecognition();
+  const [isListening, setIsListening] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+/*   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    console.log("Browser doesn't support speech recognition");
+  }
+
+    useEffect(() => {
+    // Update transcript to input when listening stops
+    if (!listening && isListening) {
+      handleInputChange(transcript);
+      setIsListening(false);
+    }
+  }, [listening, transcript, isListening, handleInputChange]);
+*/
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchInput(value)
+    handleInputChange(value)
 
-    if (value) {
-      if (!searchInput) {
-        openSearchModal()
-      }
-    } else {
+    if (!value) {
       clearSearchInput();
     }
   };
 
-    return (
+    const toggleListening = () => {
+    if (listening) {
+      SpeechRecognition.stopListening();
+      setIsListening(false);
+    } else {
+      resetTranscript();
+      SpeechRecognition.startListening({
+        continuous: true,
+        language: 'en-US'
+      });
+      setIsListening(true);
+    }
+  };
+
+return (
     <div className="search">
-    <div className="search__input-container">
-      {searchModal ? 
-      <RiCloseLargeFill 
-      onClick={clearSearchInput} 
-      size={20} className="search__closeIcon" 
-      /> : 
-      <FaSearch size={20} className="search__icon" />}
-      <input
-        className="search__input"
-        id="search-input"
-        placeholder={placeholder}
-        type="text"
-        value={searchInput || ''}
-        onChange={handleInputChange}
-        aria-label="Search"
-      />
+      <div className="search__input-container">
+        {searchModal ?
+          <RiCloseLargeFill
+            onClick={clearSearchInput}
+            size={20} className="search__closeIcon"
+          /> :
+          <FaSearch size={20} className="search__icon" />}
+        <input
+          className="search__input"
+          id="search-input"
+          placeholder={placeholder}
+          type="text"
+          value={searchInput || ''}
+          onChange={handleInput}
+          onKeyDown={handleSearchSubmit}
+          aria-label="Search"
+        />
+      </div>
+      <div className="search__border"></div>
+      <button 
+        aria-label="Voice search" 
+        className={`search__micButton ${listening ? 'listening' : ''}`}
+        onClick={toggleListening}
+      >
+        <FaMicrophone 
+          size={20} 
+          className="search__micIcon"
+        />
+      </button>
     </div>
-    <div className="search__border"></div>
-    <button aria-label="Voice search" className="search__micButton">
-      <FaMicrophone size={20} className="search__micIcon"
-      />
-    </button>
-  </div>
-    );
+  );
 }
