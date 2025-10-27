@@ -2,10 +2,6 @@
 import "./backrolls.scss";
 import { useState } from 'react';
 import { useBackrollsStore } from '../../store/backrollsStore';
-<<<<<<< HEAD
-=======
-import { getQuoteById } from '../../lib/data';
->>>>>>> 1930342471f319b15259db194645d7d3d9e5ffe6
 import { Quote } from '../../lib/definitions';
 import { styled } from '@mui/material/styles';
 // import { BackrollCardProps } from '../../lib/definitions';
@@ -233,8 +229,4 @@ function Backroll({
             <span>{speaker}</span>
         </div>
     )
-<<<<<<< HEAD
 };
-=======
-}
->>>>>>> 1930342471f319b15259db194645d7d3d9e5ffe6
