@@ -19,7 +19,6 @@ import {
     MenuItem,
     Button,
     Avatar,
-    Grid,
     IconButton
 } from '@mui/material';
 
@@ -96,20 +95,21 @@ export default function Lounge() {
                     </Card>
 
                     {/* Links and Numbers Row */}
-                    <Grid item xs={12} sm={6}>
-                        <Card sx={{
-                            bgcolor: '#e6b8d6',
-                            height: '100%',
-                            borderRadius: 3,
-                            border: '2px solid #ccc',
-                            boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.5)',
+                    <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                        <Box sx={{ flex: 1 }}>
+                            <Card sx={{
+                                bgcolor: '#e6b8d6',
+                                height: '100%',
+                                borderRadius: 3,
+                                border: '2px solid #ccc',
+                                boxShadow: '8px 8px 8px rgba(0, 0, 0, 0.5)',
                         }}>
                             <CardContent>
                             </CardContent>
                         </Card>
-                    </Grid>
+                    </Box>
 
-                    <Grid item xs={12} sm={6}>
+                    <Box sx={{ flex: 1 }}>
                         <Card sx={{
                             bgcolor: '#f0e6d2',
                             height: '100%',
@@ -120,7 +120,8 @@ export default function Lounge() {
                             <CardContent>
                             </CardContent>
                         </Card>
-                    </Grid>
+                    </Box>
+                </Box>
                 </Box>
 
                 {/* Avatar, Auth Info & Additional Info Section */}

@@ -1,14 +1,14 @@
 'use client';
 
 import "./searchCards.scss";
-import { CardProps } from "../../lib/definitions";
+import { Quote } from "../../lib/definitions";
 
 export default function SearchResults({
     searchResults,
     handleSetBackroll
 }: {
-    searchResults: CardProps[];
-    handleSetBackroll: (quote: CardProps) => void;
+    searchResults: Quote[];
+    handleSetBackroll: (quote: Quote) => void;
 }) {
     if (searchResults.length === 0) {
         return (

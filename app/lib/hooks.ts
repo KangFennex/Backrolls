@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useBackrollsStore } from '../store/backrollsStore';
 import { series, seriesSeasons, seriesEpisodes } from './repertoire';
-import { Quote } from './definitions';
+import { Quote, ExtendedUser } from './definitions';
 import { NextResponse } from 'next/server';
 
 export function useQuotes(type: string, enabled = true) {
@@ -37,8 +37,9 @@ export function useQuotes(type: string, enabled = true) {
 
     // Listen for vote updates
     useEffect(() => {
-        const handleVoteUpdate = (event: CustomEvent) => {
-            const { quoteId, newVoteCount } = event.detail;
+        const handleVoteUpdate = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            const { quoteId, newVoteCount } = customEvent.detail;
 
             setQuotes(currentQuotes =>
                 currentQuotes.map(quote =>
@@ -70,7 +71,7 @@ export function useQuotes(type: string, enabled = true) {
 
 // Remove later and replace with NextAuth manage session
 export function useAuth() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<ExtendedUser | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -167,7 +168,7 @@ export const useSeriesFiltering = () => {
     };
 
     const getSeriesDisplayName = (seriesId: string): string => {
-        const foundSeries = series.find(s => s.id === seriesId);
+        const foundSeries = series.find(s => s.name === seriesId);
         return foundSeries?.name || seriesId;
     };
 

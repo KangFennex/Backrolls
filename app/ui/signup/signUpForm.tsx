@@ -11,10 +11,11 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { GLogo } from '../sharedComponents';
 import { useRouter } from 'next/navigation';
+import { SignupFormErrors } from '../../lib/definitions';
 
 export default function SignUpForm() {
     const router = useRouter();
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<SignupFormErrors>({});
     const [pending, setPending] = useState(false);
 
     const [usernameError, setUsernameError] = useState(false);

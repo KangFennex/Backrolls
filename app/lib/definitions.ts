@@ -29,6 +29,13 @@ export interface FavoriteQuoteDetails {
     share_count: number;
 }
 
+export interface SignupFormErrors {
+    username?: string[];
+    email?: string[];
+    password?: string[];
+    general?: string;
+}
+
 export const SignupFormSchema = z.object({
     username: z
         .string()

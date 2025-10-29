@@ -146,13 +146,11 @@ export function QuoteCard({
                             </Avatar>
                         }
                     />
-                    <CardMedia alt="" />
+                    <CardMedia component="div" />
                     <CardContent sx={{ display: 'flex', width: '100%', marginTop: isCompact ? '5px' : '5px', gap: isCompact ? 1 : 2, padding: '8px', paddingTop: 0 }}>
                         <Backroll
                             quote_text={quote.quote_text}
                             speaker={quote.speaker}
-                            season={quote.season}
-                            episode={quote.episode}
                             maxLength={isCompact ? 60 : 150}
                         />
                     </CardContent>
@@ -160,7 +158,7 @@ export function QuoteCard({
                     <CardActions disableSpacing sx={{ '&.MuiCardActions-root': { padding: '0' } }}>
                         <div className="flex items-center space-between w-full px-1">
                             <VoteButtons
-                                quote_id={quote.id}
+                                quote_id={String(quote.id)}
                                 currentVoteCount={quote.vote_count}
                             />
                             <CardActions disableSpacing sx={{
@@ -171,7 +169,7 @@ export function QuoteCard({
                             }}>
                                 <CopyButton textToCopy={quote.quote_text} />
                                 <FavoriteButton
-                                    quote_id={quote.id}
+                                    quote_id={String(quote.id)}
                                     onRemoveFavorite={onRemoveFavorite}
                                 />
                                 <ShareButton />
