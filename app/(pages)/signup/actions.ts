@@ -42,7 +42,7 @@ export async function userExists(email: string, username?: string) {
     }
 }
 
-export async function signup(state, formData) {
+export async function signup(formData: FormData) {
     try {
         // Validate fields
         const validationResult = SignupFormSchema.safeParse({
