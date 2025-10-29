@@ -1,6 +1,11 @@
-export default function PageContainer({ children }: { children: React.ReactNode }) {
+interface PageContainerProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+export default function PageContainer({ children, className }: PageContainerProps) {
     return (
-        <div className="pageContainer">
+        <div className={`pageContainer ${className || ''}`}>
                 {children}
         </div>
     );

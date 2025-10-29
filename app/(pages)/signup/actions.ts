@@ -82,7 +82,7 @@ export async function signup(formData: FormData): Promise<SignupResult> {
         const existenceCheck = await userExists(email, username);
         console.log('Existence check result:', existenceCheck);
 
-        if (existenceCheck.exists && existenceCheck.field && existenceCheck.error) {
+        if (existenceCheck.exists) {
             return { errors: { [existenceCheck.field]: [existenceCheck.error] } };
         }
 

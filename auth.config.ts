@@ -1,12 +1,13 @@
-import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+import type { NextAuthOptions } from 'next-auth';
 
-export const authConfig = {
+export const authConfig: NextAuthOptions = {
     pages: {
         signIn: '/login',
     },
     callbacks: {
-        authorized({ auth, request: { nextUrl } }) {
+        authorized({ auth, request: { nextUrl } }: { auth: any; request: { nextUrl: any } }) {
             const isLoggedIn = !!auth?.user;
             const isProtectedRoute = nextUrl.pathname.startsWith('/lounge') ||
                 nextUrl.pathname.startsWith('/submit');
@@ -18,7 +19,7 @@ export const authConfig = {
 
             return true; // Allow access to public routes
         },
-        async jwt({ token, user, account }) {
+        async jwt({ token, user, account }: { token: any; user?: any; account?: any }) {
             if (user) {
                 token.id = user.id;
             }
@@ -27,7 +28,7 @@ export const authConfig = {
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token }: { session: any; token?: any }) {
             if (token?.id) {
                 session.user.id = token.id as string;
             }
@@ -52,7 +53,7 @@ export const authConfig = {
         }),
     ],
     session: {
-        strategy: 'jwt',
-        macAge: 30 * 24 * 60 * 60, // 30 days
+        strategy: 'jwt' as const,
+        maxAge: 30 * 24 * 60 * 60, // 30 days
     },
-} satisfies NextAuthConfig;
+} satisfies NextAuthOptions;
