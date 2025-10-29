@@ -52,7 +52,7 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
     },
 
     // Load user-specific data (favorites, votes, shares)
-    loadUserData: async (userId: string) => {
+    loadUserData: async () => {
         set({ isLoading: true });
 
         try {
