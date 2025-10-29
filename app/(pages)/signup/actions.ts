@@ -9,11 +9,9 @@ const supabase = createClient(
 );
 
 // Types for return values
-interface UserExistsResult {
-    exists: boolean;
-    field?: 'email' | 'username';
-    error?: string;
-}
+type UserExistsResult = 
+    | { exists: false; error?: string }
+    | { exists: true; field: 'email' | 'username'; error: string };
 
 interface UserProfile {
     id: string;
@@ -84,7 +82,7 @@ export async function signup(formData: FormData): Promise<SignupResult> {
         const existenceCheck = await userExists(email, username);
         console.log('Existence check result:', existenceCheck);
 
-        if (existenceCheck.exists) {
+        if (existenceCheck.exists && existenceCheck.field && existenceCheck.error) {
             return { errors: { [existenceCheck.field]: [existenceCheck.error] } };
         }
 
