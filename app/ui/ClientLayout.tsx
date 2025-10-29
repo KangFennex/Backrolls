@@ -11,17 +11,21 @@ import SearchModal from "./search/SearchModal";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Portal from '@mui/material/Portal';
 
+import SuspenseWrapper from './SuspenseWrapper';
+
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     return (
-        <SeriesProvider>
-            <NavigationProvider>
-                <SearchProvider>
-                    <ClientLayoutContent>
-                        {children}
-                    </ClientLayoutContent>
-                </SearchProvider>
-            </NavigationProvider>
-        </SeriesProvider>
+        <SuspenseWrapper fallback={<div>Loading application...</div>}>
+            <SeriesProvider>
+                <NavigationProvider>
+                    <SearchProvider>
+                        <ClientLayoutContent>
+                            {children}
+                        </ClientLayoutContent>
+                    </SearchProvider>
+                </NavigationProvider>
+            </SeriesProvider>
+        </SuspenseWrapper>
     );
 }
 
