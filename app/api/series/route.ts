@@ -5,10 +5,10 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
 
-    const category = searchParams.get('category');
-    const series = searchParams.get('series');
-    const season = searchParams.get('season') ? parseInt(searchParams.get('season')!) : null;
-    const episode = searchParams.get('episode') ? parseInt(searchParams.get('episode')!) : null;
+    const category = searchParams.get('category') || undefined;
+    const series = searchParams.get('series') || undefined;
+    const season = searchParams.get('season') ? parseInt(searchParams.get('season')!) : undefined;
+    const episode = searchParams.get('episode') ? parseInt(searchParams.get('episode')!) : undefined;
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 50;
 
     try {

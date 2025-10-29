@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { toggleFavoriteQuote, getUserFavoritesWithDetails } from '../favorites/favorites';
 import { getUserFromRequest } from '../../lib/auth';
+import { FavoriteQuoteDetails } from '../../lib/definitions';
 
 export async function POST(request: NextRequest) {
     try {
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(result);
     } catch (error) {
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: error instanceof Error ? error.message : 'Unknown error' },
             { status: 500 }
         );
     }
@@ -33,7 +34,7 @@ export async function GET() {
         }
 
         // Get user's favorites from the database
-        const favoritesWithDetails = await getUserFavoritesWithDetails(userId);
+        const favoritesWithDetails = await getUserFavoritesWithDetails(userId) as unknown as FavoriteQuoteDetails[];
         const favoriteIds = favoritesWithDetails.map(quote => quote.id);
 
         return NextResponse.json({
@@ -42,7 +43,7 @@ export async function GET() {
         });
     } catch (error) {
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: error instanceof Error ? error.message : 'Unknown error' },
             { status: 500 }
         );
     }

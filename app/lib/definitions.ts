@@ -7,6 +7,28 @@ export type User = {
     password: string;
 };
 
+export interface ExtendedUser {
+    id?: string;
+    username?: string;
+    email?: string | null;
+    name?: string | null;
+    image?: string | null;
+}
+
+export interface FavoriteQuoteDetails {
+    id: string | number;
+    quote_text: string;
+    created_at: string;
+    series: string;
+    season: number;
+    episode: number;
+    timestamp: string;
+    speaker: string;
+    context: string;
+    vote_count: number;
+    share_count: number;
+}
+
 export const SignupFormSchema = z.object({
     username: z
         .string()

@@ -1,14 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { createClient } from "@supabase/supabase-js";
 import type { NextAuthOptions, User } from "next-auth";
-
-interface ExtendedUser {
-    id?: string;
-    username?: string;
-    email?: string | null;
-    name?: string | null;
-    image?: string | null;
-}
+import { ExtendedUser } from "./definitions";
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
