@@ -8,7 +8,27 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export async function userExists(email: string, username?: string) {
+// Types for return values
+interface UserExistsResult {
+    exists: boolean;
+    field?: 'email' | 'username';
+    error?: string;
+}
+
+interface UserProfile {
+    id: string;
+    username: string;
+    email: string;
+}
+
+interface SignupResult {
+    success?: boolean;
+    errors?: Record<string, string[]>;
+    error?: string;
+    user?: UserProfile;
+}
+
+export async function userExists(email: string, username?: string): Promise<UserExistsResult> {
     try {
         const query = supabase.from('profiles')
             .select('email, username')
@@ -36,13 +56,13 @@ export async function userExists(email: string, username?: string) {
         }
         return { exists: false };
 
-    } catch (error) {
+    } catch (error: unknown) {
         console.error('Error in userExists:', error);
         return { exists: false };
     }
 }
 
-export async function signup(formData: FormData) {
+export async function signup(formData: FormData): Promise<SignupResult> {
     try {
         // Validate fields
         const validationResult = SignupFormSchema.safeParse({
@@ -96,7 +116,7 @@ export async function signup(formData: FormData) {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Try to get profile with retries
-        let profile = null;
+        let profile: UserProfile | null = null;
         let retryCount = 0;
         const maxRetries = 3;
 
@@ -125,7 +145,7 @@ export async function signup(formData: FormData) {
                 console.log('Profile found:', profile);
                 break;
 
-            } catch (profileError) {
+            } catch (profileError: unknown) {
                 console.log(`Profile fetch attempt ${retryCount + 1} failed:`, profileError);
                 retryCount++;
 
@@ -151,7 +171,7 @@ export async function signup(formData: FormData) {
                             profile = newProfile;
                             console.log('Profile created manually:', profile);
                         }
-                    } catch (manualCreateError) {
+                    } catch (manualCreateError: unknown) {
                         console.error('Manual profile creation failed:', manualCreateError);
                     }
                     break;
@@ -171,13 +191,15 @@ export async function signup(formData: FormData) {
             }
         };
 
-    } catch (error) {
+    } catch (error: unknown) {
         console.error('Unexpected error in signup - Full details:', error);
-        console.error('Error message:', error.message);
-        console.error('Error stack:', error.stack);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorStack = error instanceof Error ? error.stack : undefined;
+        console.error('Error message:', errorMessage);
+        console.error('Error stack:', errorStack);
         return {
             success: false,
-            error: `Unexpected error: ${error.message}`
+            error: `Unexpected error: ${errorMessage}`
         };
     }
 }
