@@ -1,12 +1,13 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { createClient } from "@supabase/supabase-js";
+import type { NextAuthOptions } from "next-auth";
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -14,7 +15,7 @@ export const authOptions = {
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials) {
+            async authorize(credentials: any) {
                 // Supabase sign in
                 const { data, error } = await supabase.auth.signInWithPassword({
                     email: credentials.email,
@@ -45,11 +46,11 @@ export const authOptions = {
         }),
     ],
     session: {
-        strategy: "jwt",
+        strategy: "jwt" as const,
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user }: { token: any; user?: any }) {
             if (user) {
                 console.log('JWT callback - user login detected:', user.email);
                 token.id = user.id;
@@ -58,7 +59,7 @@ export const authOptions = {
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token }: { session: any; token?: any }) {
             if (token) {
                 session.user.id = token.id;
                 session.user.username = token.username;
