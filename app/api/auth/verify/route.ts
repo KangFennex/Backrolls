@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { verifyToken } from '../../../lib/auth';
 
-export async function GET(req: NextRequest) {
-    const payload = await verifyToken(req);
+export async function GET() {
+    const payload = await verifyToken();
 
     if (!payload) {
         return NextResponse.json({ authenticated: false }, { status: 401 });

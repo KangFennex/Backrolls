@@ -7,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { GLogo } from '../sharedComponents';
 import { useRouter } from 'next/navigation';
@@ -212,6 +213,14 @@ export default function SignUpForm() {
                     variant="contained">
                     {pending ? "Submitting..." : "Sign up"}
                 </Button>
+                <Typography variant="body2" color="textSecondary" align="center">
+                    By signing up, you agree to our Terms of Service and Privacy Policy.
+                </Typography>
+                {errors.general && (
+                    <Typography variant="body2" color="error" align="center">
+                        {errors.general}
+                    </Typography>
+                )}
             </Box>
         </Card>
     )

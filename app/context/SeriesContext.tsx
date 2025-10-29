@@ -168,7 +168,7 @@ export function SeriesProvider({ children }: { children: React.ReactNode }) {
         if (newEpisode !== selectedEpisode) {
             setSelectedEpisodeState(newEpisode);
         }
-    }, [searchParams]);
+    }, [searchParams, seriesCategory, selectedSeries, selectedSeason, selectedEpisode]);
 
     // Clear filters when navigating to different pages (not series page)
     useEffect(() => {

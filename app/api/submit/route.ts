@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const userId = await getUserFromRequest(req);
+        const userId = await getUserFromRequest();
 
         if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -31,7 +31,11 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: true, data: result });
 
     } catch (error) {
-        return NextResponse.json({ error: 'Failed to retrieve user information.' }, { status: 500 });
+        console.error('Submit quote error:', error);
+        return NextResponse.json({
+            error: 'Failed to submit quote.',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
     }
 
 }

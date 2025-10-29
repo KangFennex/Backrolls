@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useBackrollsStore } from '../store/backrollsStore';
 import { series, seriesSeasons, seriesEpisodes } from './repertoire';
 import { Quote } from './definitions';
+import { NextResponse } from 'next/server';
 
 export function useQuotes(type: string, enabled = true) {
     const [quotes, setQuotes] = useState<Quote[]>([]);
@@ -25,6 +26,10 @@ export function useQuotes(type: string, enabled = true) {
             }
         } catch (error) {
             setError('Failed to fetch quotes');
+            return NextResponse.json({
+                error: 'Failed to fetch quotes.',
+                details: error instanceof Error ? error.message : 'Unknown error'
+            }, { status: 500 });
         } finally {
             setLoading(false);
         }

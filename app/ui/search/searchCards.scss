@@ -86,7 +86,7 @@ $highlight4 : #01AD9B;
     }
 
     &:nth-child(4n+1) {
-        border-color: hsla(random(365), random(365), 50%, 1);
+        border-color: hsla(math.random(365), random(365), 50%, 1%);
         // border-color: $highlight1;
     }
 

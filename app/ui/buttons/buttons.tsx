@@ -3,7 +3,7 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import { FaRegCopy } from "react-icons/fa";
-import { IoShareSocialSharp, IoAddCircleOutline, IoAddCircleSharp } from "react-icons/io5";
+import { IoShareSocialSharp } from "react-icons/io5";
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useAuth } from '../../lib/hooks';
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../lib/hooks';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import { westernZodiacSigns, chineseZodiacSigns } from '../../lib/repertoire';
 import { PhotoCamera, Edit } from '@mui/icons-material';
 import { RenderFavorites } from './components/favorites';
@@ -46,16 +47,12 @@ export default function Lounge() {
 
     const handleLogout = async () => {
         try {
-            // Call logout API to clear cookie server-side
-            await fetch('/api/auth/logout', { method: 'POST' });
-
-            // Redirect to login
-            router.push('/login');
+            // Use NextAuth signOut
+            await signOut({ callbackUrl: '/' });
         } catch (error) {
             console.error('Logout failed:', error);
-            // Fallback: clear cookie client-side
-            document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            router.push('/');
+            // Fallback: redirect to login
+            router.push('/login');
         }
     };
 

@@ -1,8 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import { NextRequest } from 'next/server';
 
-export async function verifyToken(request: NextRequest) {
+export async function verifyToken() {
     try {
         // Get session from NextAuth
         const session = await getServerSession(authOptions);
@@ -22,7 +21,7 @@ export async function verifyToken(request: NextRequest) {
     }
 }
 
-export async function getUserFromRequest(request: NextRequest): Promise<string | null> {
+export async function getUserFromRequest(): Promise<string | null> {
     try {
         const session = await getServerSession(authOptions);
 

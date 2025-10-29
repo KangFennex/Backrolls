@@ -10,14 +10,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(result, { status: 400 });
     }
 
-    // Set JWT cookie using jose-generated token
-    const response = NextResponse.json({ success: true, user: result.user });
-    response.cookies.set('token', result.token, {
-        httpOnly: true,
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 7 // 7 days
-    });
-    return response;
+    // Return success response without setting JWT cookie
+    return NextResponse.json({ success: true, user: result.user });
 }

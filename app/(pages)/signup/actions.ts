@@ -2,21 +2,11 @@
 
 import { SignupFormSchema } from "../../lib/definitions"
 import { createClient } from '@supabase/supabase-js';
-import { SignJWT } from 'jose';
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
-
-async function createJWT(user) {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
-    return await new SignJWT({ id: user.id, username: user.username, email: user.email })
-        .setProtectedHeader({ alg: 'HS256' })
-        .setIssuedAt()
-        .setExpirationTime('7d')
-        .sign(secret);
-}
 
 export async function userExists(email: string, username?: string) {
     try {
@@ -102,15 +92,6 @@ export async function signup(state, formData) {
 
         console.log('Auth successful, user ID:', authData.user.id);
 
-        // Create JWT token
-        console.log('Creating JWT...');
-        const jwt = await createJWT({
-            id: authData.user.id,
-            username,
-            email
-        });
-        console.log('JWT created successfully');
-
         // Delay to allow for the database trigger to complete
         await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -187,8 +168,7 @@ export async function signup(state, formData) {
                 id: authData.user.id,
                 username: username,
                 email: email
-            },
-            token: jwt
+            }
         };
 
     } catch (error) {

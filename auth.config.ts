@@ -1,5 +1,4 @@
 import type { NextAuthConfig } from 'next-auth';
-import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 
 export const authConfig = {
@@ -9,15 +8,15 @@ export const authConfig = {
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isInLounge = nextUrl.pathname.startsWith('/lounge');
+            const isProtectedRoute = nextUrl.pathname.startsWith('/lounge') ||
+                nextUrl.pathname.startsWith('/submit');
 
-            if (isInLounge) {
+            if (isProtectedRoute) {
                 if (isLoggedIn) return true;
                 return false; // Redirect unauthenticated users to login page
-            } else if (isLoggedIn) {
-                return Response.redirect(new URL('/lounge', nextUrl));
             }
-            return true;
+
+            return true; // Allow access to public routes
         },
         async jwt({ token, user, account }) {
             if (user) {
@@ -43,10 +42,10 @@ export const authConfig = {
         Credentials({
             name: 'credentials',
             credentials: {
-                email: { label: 'Email', type: 'email '},
+                email: { label: 'Email', type: 'email ' },
                 password: { label: 'Password', type: 'password' },
             },
-            async authorize(credentials) {
+            async authorize() {
                 // This will be handled in auth.ts
                 return null;
             },
