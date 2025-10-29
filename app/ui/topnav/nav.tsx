@@ -2,22 +2,13 @@
 
 import Logo from './logo/logo';
 import Search from '../search/Search';
-import { GrLounge } from 'react-icons/gr';
 import { BsCupHot, BsCupHotFill } from "react-icons/bs";
 import { RiSofaLine, RiSofaFill } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
-import { NavProps } from '../../lib/definitions';
-import { useAuth } from "../../lib/hooks"
+import { useAuth } from "../../lib/hooks";
 
-function Nav({
-    searchModal,
-    openSearchModal,
-    handleInputChange,
-    clearSearchInput,
-    searchInput,
-    handleSearchSubmit,
-}: NavProps) {
+function Nav() {
     const { isAuthenticated } = useAuth();
 
     return (
@@ -31,14 +22,7 @@ function Nav({
                 </div>
 
                 <div className="flex-1 ml-2 min-w-0 max-w-[300px] md:min-w-[350px] md:max-w-[500px] lg:min-w-[600px] lg:max-w-[750px] md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
-                    <Search
-                        searchModal={searchModal}
-                        openSearchModal={openSearchModal}
-                        handleInputChange={handleInputChange}
-                        clearSearchInput={clearSearchInput}
-                        searchInput={searchInput}
-                        handleSearchSubmit={handleSearchSubmit}
-                    />
+                    <Search />
                 </div>
 
                 <div className="flex-shrink-0 mt-2">

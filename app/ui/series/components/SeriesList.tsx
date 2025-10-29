@@ -1,10 +1,10 @@
 'use client'
 
 import { useSeriesContext } from '../../../context/SeriesContext';
+import { useNavigationContext } from '../../../context/NavigationContext';
 import { useState, useEffect } from 'react';
 import { Quote } from '../../../lib/definitions';
 import { QuoteCard } from '../../backrolls/backrollsCards';
-import SeriesBreadcrumbs from './SeriesBreadcrumbs';
 
 export default function SeriesList() {
     const {
@@ -14,8 +14,14 @@ export default function SeriesList() {
         selectedEpisode
     } = useSeriesContext();
 
+    const { navigateToBackroll } = useNavigationContext();
+
     const [filteredQuotes, setFilteredQuotes] = useState<Quote[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const handleQuoteClick = (quote: Quote) => {
+        navigateToBackroll(quote);
+    };
 
     useEffect(() => {
         const fetchQuotes = async () => {
@@ -83,6 +89,7 @@ export default function SeriesList() {
                             quote={quote}
                             variant="compact"
                             index={index}
+                            onDoubleClick={() => handleQuoteClick(quote)}
                         />
                     </div>
                 ))}

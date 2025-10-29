@@ -3,13 +3,11 @@
 import "./searchCards.scss";
 import SearchResults from "./searchCards";
 import { SearchCardsSkeleton } from "../skeletons";
-import { SearchModalProps } from "../../lib/definitions";
+import { useSearchContext } from "../../context/SearchContext";
 
-export default function SearchModal({
-    searchResults,
-    loading,
-    handleSetBackroll,
-}: SearchModalProps) {
+export default function SearchModal() {
+    const { searchResults, loading, handleSetBackroll } = useSearchContext();
+
     return (
         <div className="search-modal z-50 mt-14">
             <div className="search-modal__content">
@@ -17,7 +15,9 @@ export default function SearchModal({
                     <SearchCardsSkeleton />
                 ) : (
                     <SearchResults
-                        searchResults={searchResults} handleSetBackroll={handleSetBackroll} />
+                        searchResults={searchResults}
+                        handleSetBackroll={handleSetBackroll}
+                    />
                 )}
             </div>
         </div>
