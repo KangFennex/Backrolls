@@ -99,9 +99,9 @@ export const RenderFavorites = () => {
                     <div className={`
                         flex 
                         ${isExpanded ? 'flex-wrap' : 'flex-nowrap'}
-                        justify-center
+                        ${isExpanded ? 'justify-center' : ''}
                         gap-2
-                        p-2 
+                        p-2
                         h-full 
                         w-full
                         max-w-full
