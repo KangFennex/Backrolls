@@ -1,7 +1,7 @@
-import { User } from '../../../lib/definitions';
+import { ExtendedUser } from '../../../lib/definitions';
 
 interface ProfileCardProps {
-    user?: User;
+    user?: ExtendedUser | null;
     onEditToggle: () => void;
 }
 
