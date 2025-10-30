@@ -27,6 +27,7 @@
 	}
 
 	&__input-container {
+		width: auto;
 		display: flex;
 		align-items: center;
 		flex-grow: 1;
@@ -34,6 +35,7 @@
 	}
 
 	&__input {
+		width: 50px;
 		flex: 1;
 		border: none;
 		outline: none;
@@ -109,10 +111,10 @@
 	}
 
 	&__micButton {
-	&.listening {
-      animation: pulse 1.5s infinite;
-      background-color: rgba(255, 0, 0, 0.1);
-    }
+		&.listening {
+			animation: pulse 1.5s infinite;
+			background-color: rgba(255, 0, 0, 0.1);
+		}
 	}
 
 	&__micIcon {
@@ -121,9 +123,9 @@
 		fill: #8a8a8a;
 		transition: fill 0.2s ease;
 
-		    .listening & {
-     	 color: #ea4335;
-    }
+		.listening & {
+			color: #ea4335;
+		}
 	}
 
 	&__micButton:hover &__micIcon {
@@ -132,15 +134,17 @@
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1);
+	}
 }
 
 @media (min-width: 640px) {

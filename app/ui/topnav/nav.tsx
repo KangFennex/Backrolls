@@ -19,7 +19,7 @@ function Nav() {
                     <Logo />
                 </div>
 
-                <div className="flex-1 ml-2 mr-2 min-w-0 md:min-w-[350px] md:max-w-[500px] lg:min-w-[600px] lg:max-w-[750px] md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+                <div className="flex-1 ml-2 mr-2 min-w-0 md:min-w-[350px] md:max-w-[400px] lg:min-w-[500px] lg:max-w-[650px] md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
                     <Search />
                 </div>
 

@@ -77,7 +77,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     {searchModal && <SearchModal />}
                 </Portal>
             </ClickAwayListener>
-            <div className="main pt-14 md:pt-0 min-h-screen overflow-x-hidden overflow-y-hidden">
+            <div className="main mt-14 md:mt-0 min-h-screen overflow-x-hidden overflow-y-hidden">
                 {children}
             </div>
         </div>
