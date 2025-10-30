@@ -6,6 +6,7 @@ import { RiCloseLargeFill } from "react-icons/ri";
 import usePlaceholderLogic from "../../lib/utils";
 import { useSearchContext } from "../../context/SearchContext";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import SearchModal from "./SearchModal";
 
 export default function Search() {
   const {
@@ -53,36 +54,39 @@ export default function Search() {
   };
 
   return (
-    <div className="search">
-      <div className="search__input-container">
-        {searchModal ?
-          <RiCloseLargeFill
-            onClick={clearSearchInput}
-            size={20} className="search__closeIcon"
-          /> :
-          <FaSearch size={20} className="search__icon" />}
-        <input
-          className="search__input"
-          id="search-input"
-          placeholder={placeholder}
-          type="text"
-          value={searchInput || ''}
-          onChange={handleInput}
-          onKeyDown={handleSearchSubmit}
-          aria-label="Search"
-        />
+    <div className="search-container relative">
+      <div className="search">
+        <div className="search__input-container">
+          {searchModal ?
+            <RiCloseLargeFill
+              onClick={clearSearchInput}
+              size={20} className="search__closeIcon"
+            /> :
+            <FaSearch size={20} className="search__icon" />}
+          <input
+            className="search__input"
+            id="search-input"
+            placeholder={placeholder}
+            type="text"
+            value={searchInput || ''}
+            onChange={handleInput}
+            onKeyDown={handleSearchSubmit}
+            aria-label="Search"
+          />
+        </div>
+        <div className="search__border"></div>
+        <button
+          aria-label="Voice search"
+          className={`search__micButton ${listening ? 'listening' : ''}`}
+          onClick={toggleListening}
+        >
+          <FaMicrophone
+            size={20}
+            className="search__micIcon"
+          />
+        </button>
       </div>
-      <div className="search__border"></div>
-      <button
-        aria-label="Voice search"
-        className={`search__micButton ${listening ? 'listening' : ''}`}
-        onClick={toggleListening}
-      >
-        <FaMicrophone
-          size={20}
-          className="search__micIcon"
-        />
-      </button>
+      {searchModal && <SearchModal />}
     </div>
   );
 }

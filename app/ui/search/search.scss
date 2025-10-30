@@ -1,4 +1,8 @@
-// Credit to https://uiverse.io/DipeshPun91/light-mayfly-18
+.search-container {
+	position: relative;
+	width: 100%;
+	z-index: 40;
+}
 
 .search {
 	display: flex;

@@ -1,6 +1,5 @@
 'use client';
 
-import "./searchCards.scss";
 import { Quote } from "../../lib/definitions";
 
 export default function SearchResults({

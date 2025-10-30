@@ -7,9 +7,7 @@ import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
-import SearchModal from "./search/SearchModal";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Portal from '@mui/material/Portal';
 
 import SuspenseWrapper from './SuspenseWrapper';
 
@@ -32,7 +30,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     useAuth();
 
-    const { searchModal, closeSearchModal } = useSearchContext();
+    const { closeSearchModal } = useSearchContext();
 
     const [menu, setMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -73,9 +71,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             </div>
 
             <ClickAwayListener onClickAway={closeSearchModal}>
-                <Portal>
-                    {searchModal && <SearchModal />}
-                </Portal>
+                <div></div>
             </ClickAwayListener>
             <div className="main mt-14 md:mt-0 min-h-screen overflow-x-hidden overflow-y-hidden">
                 {children}
