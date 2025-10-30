@@ -46,6 +46,9 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     grid-template-columns: 200px 1fr;
                     grid-template-rows: auto 1fr;
                     min-height: 100vh;
+                    width: 100vw;
+                    max-width: 100vw;
+                    overflow-x: hidden;
                 }
                 
                 .header { grid-area: header; }
@@ -73,7 +76,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             <ClickAwayListener onClickAway={closeSearchModal}>
                 <div></div>
             </ClickAwayListener>
-            <div className="main mt-14 md:mt-0 min-h-screen overflow-x-hidden overflow-y-hidden">
+            <div className="main mt-14 md:mt-0 min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
                 {children}
             </div>
         </div>

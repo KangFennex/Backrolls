@@ -5,10 +5,10 @@ import PageContainer from '../../ui/pageContainer';
 
 export default function LoungePage() {
     return (
-        <PageContainer>
-            <div className="flex flex-col items-center pt-3">
+        <main>
+            <PageContainer>
                 <Lounge />
-            </div>
-        </PageContainer>
+            </PageContainer>
+        </main>
     )
 }
