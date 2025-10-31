@@ -81,28 +81,3 @@
     }
 }
 
-.shimmer-effect {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 5px;
-    width: 50%;
-    background: linear-gradient(to right, transparent, rgb(62, 170, 221));
-    opacity: 0.3;
-    animation: shimmer 3s linear infinite;
-
-    // Hide on desktop dropdown
-    @media (min-width: 768px) {
-        display: none;
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%);
-    }
-
-    100% {
-        transform: translateX(200%);
-    }
-}

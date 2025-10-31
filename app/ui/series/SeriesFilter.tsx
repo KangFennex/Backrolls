@@ -67,7 +67,7 @@ export default function SeriesFilter() {
     };
 
     return (
-        <div className="series-filter space-y-6 w-full max-w-4xl">
+        <div className="series-filter flex flex-col space-y-6 w-full max-w-4xl">
             {/* Filter Controls */}
             <div className="flex flex-row gap-4 justify-center items-center">
                 {/* Category Split Button */}

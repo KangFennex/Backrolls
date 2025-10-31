@@ -10,11 +10,12 @@ interface MenuProps {
 }
 
 const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function Menu({ menu, setMenu }, ref) {
         return (
             <nav
                 ref={ref}
-                className="menu absolute mt-14 w-full h-full z-50 justify-start"
+                className="menu w-full flex flex-col"
             >
                 <SelectCategory />
             </nav>

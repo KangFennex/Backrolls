@@ -1,4 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
 import type { NextAuthOptions, User } from "next-auth";
 import { ExtendedUser } from "./definitions";
@@ -10,11 +11,23 @@ const supabase = createClient(
 
 export const authOptions: NextAuthOptions = {
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
+                }
+            }
+        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
+                remember: { label: "Remember me", type: "checkbox" },
             },
             async authorize(credentials: Record<string, string> | undefined) {
                 if (!credentials?.email || !credentials?.password) {
@@ -46,22 +59,91 @@ export const authOptions: NextAuthOptions = {
                     id: data.user.id,
                     email: data.user.email,
                     username: profile.username,
+                    remember: credentials.remember === "true",
                 }
             },
         }),
     ],
     session: {
         strategy: "jwt" as const,
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        maxAge: 24 * 60 * 60, // Default: 1 day (will be extended if "remember me" is checked)
     },
     callbacks: {
-        async jwt({ token, user }) {
+        async signIn({ user, account }) {
+            // Handle Google OAuth sign-in
+            if (account?.provider === "google") {
+                try {
+                    // Check if user exists in Supabase
+                    const { data: existingProfile, error: fetchError } = await supabase
+                        .from("profiles")
+                        .select("*")
+                        .eq("email", user.email)
+                        .single();
+
+                    if (fetchError && fetchError.code !== 'PGRST116') {
+                        console.error("Error checking existing profile:", fetchError);
+                        return false;
+                    }
+
+                    if (!existingProfile) {
+                        // Create new profile for Google user
+                        const username = user.email?.split('@')[0] || user.name?.replace(/\s/g, '').toLowerCase();
+                        
+                        const { error: insertError } = await supabase
+                            .from("profiles")
+                            .insert({
+                                id: user.id,
+                                email: user.email,
+                                username: username,
+                                created_at: new Date().toISOString(),
+                            });
+
+                        if (insertError) {
+                            console.error("Error creating Google user profile:", insertError);
+                            return false;
+                        }
+                    }
+                } catch (error) {
+                    console.error("Google sign-in error:", error);
+                    return false;
+                }
+            }
+            return true;
+        },
+        async jwt({ token, user, account }) {
             if (user) {
                 console.log('JWT callback - user login detected:', user.email);
                 token.id = user.id;
-                token.username = (user as User & { username?: string }).username;
                 token.email = user.email;
+                
+                // Handle remember me for credentials login
+                const remember = (user as User & { remember?: boolean }).remember;
+                if (remember) {
+                    // Extend session to 30 days if remember me is checked
+                    token.remember = true;
+                }
+
+                // For Google OAuth, get username from profile
+                if (account?.provider === "google") {
+                    // Fetch username from Supabase profile
+                    const { data: profile } = await supabase
+                        .from("profiles")
+                        .select("username")
+                        .eq("email", user.email)
+                        .single();
+                    
+                    token.username = profile?.username || user.email?.split('@')[0];
+                } else {
+                    // For credentials login, username comes from authorize function
+                    token.username = (user as User & { username?: string }).username;
+                }
             }
+            
+            // Set dynamic expiration based on remember me
+            if (token.remember) {
+                token.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60); // 30 days
+            }
+            
             return token;
         },
         async session({ session, token }) {
@@ -70,6 +152,9 @@ export const authOptions: NextAuthOptions = {
                 extendedUser.id = token.id as string;
                 extendedUser.username = token.username as string;
                 extendedUser.email = token.email as string;
+                
+                // Add remember flag to session for frontend use
+                (session as typeof session & { remember?: boolean }).remember = token.remember;
             }
             return session;
         },

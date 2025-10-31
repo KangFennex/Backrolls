@@ -1,6 +1,6 @@
 'use client';
 
-import Logo from './logo/logo';
+import { NavLogo } from '../sharedComponents';
 import Search from '../search/Search';
 import { BsCupHot, BsCupHotFill } from "react-icons/bs";
 import { RiSofaLine, RiSofaFill } from "react-icons/ri";
@@ -16,7 +16,7 @@ function Nav() {
             <nav className="relative h-full w-full mx-auto md:px-3 flex items-center justify-between">
 
                 <div className="flex-shrink-0 w-10 md:w-12 md:ml-14 md:mt-2">
-                    <Logo />
+                    <NavLogo />
                 </div>
 
                 <div className="flex-1 ml-2 mr-2 min-w-0 md:min-w-[350px] md:max-w-[400px] lg:min-w-[500px] lg:max-w-[650px] md:absolute md:left-1/2 md:transform md:-translate-x-1/2">

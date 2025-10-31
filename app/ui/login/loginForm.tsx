@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -13,9 +13,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
-import { GLogo } from '../sharedComponents';
+import { BackrollsLogo } from '../sharedComponents';
 import ForgotPassword from "../forgotPassword";
 import { useRouter } from "next/navigation";
+import { LoginFormSkeleton, LoginSuccessMessage } from './LoginSkeleton';
 
 export default function LoginForm() {
     const [emailError, setEmailError] = useState(false);
@@ -24,6 +25,8 @@ export default function LoginForm() {
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -71,18 +74,25 @@ export default function LoginForm() {
                 redirect: false,
                 email,
                 password,
-                callbackUrl: "/lounge"
+                remember: rememberMe.toString(),
+                callbackUrl: "/"
             });
 
             if (result?.error) {
                 throw new Error("Couldn't log you in")
-                setIsLoading(false);
             }
-
             else {
-                // Redirect on success
+                // Trigger session refresh to update auth state immediately
+                await getSession();
+
+                // Show success state
                 setIsLoading(false);
-                router.push("/lounge");
+                setIsSuccess(true);
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    router.push("/");
+                }, 3000);
             }
         } catch (error) {
             console.error("Login failed:", error);
@@ -90,6 +100,46 @@ export default function LoginForm() {
         }
     }
 
+    const handleGoogleSignIn = async () => {
+        setIsLoading(true);
+        try {
+            const result = await signIn("google", {
+                redirect: false,
+                callbackUrl: "/"
+            });
+
+            if (result?.error) {
+                throw new Error("Google sign-in failed");
+            } else if (result?.ok) {
+                // Trigger session refresh
+                await getSession();
+
+                // Show success state
+                setIsLoading(false);
+                setIsSuccess(true);
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    router.push("/");
+                }, 3000);
+            }
+        } catch (error) {
+            console.error("Google sign-in failed:", error);
+            setIsLoading(false);
+        }
+    }
+
+    // Show skeleton while loading
+    if (isLoading) {
+        return <LoginFormSkeleton />;
+    }
+
+    // Show success message after successful login
+    if (isSuccess) {
+        return <LoginSuccessMessage />;
+    }
+
+    // Show normal form
     return (
         <Card
             variant="outlined"
@@ -109,7 +159,7 @@ export default function LoginForm() {
                 gap: 2,
                 padding: '20px'
             }}>
-                <GLogo />
+                <BackrollsLogo />
             </Box>
             <Divider />
             <Box
@@ -169,12 +219,48 @@ export default function LoginForm() {
                     />
                 </FormControl>
                 <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
+                    control={
+                        <Checkbox
+                            checked={rememberMe}
+                            onChange={(e) => setRememberMe(e.target.checked)}
+                            color="primary"
+                        />
+                    }
                     label="Remember me"
                 />
                 <ForgotPassword open={open} handleClose={handleClose} />
                 <Button type="submit" fullWidth variant="contained">
-                    {isLoading ? 'Signing in...' : 'Sign in'}
+                    Sign in
+                </Button>
+
+                <Divider sx={{ my: 2 }}>
+                    <Typography variant="body2" color="text.secondary">
+                        OR
+                    </Typography>
+                </Divider>
+
+                <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={handleGoogleSignIn}
+                    sx={{
+                        borderColor: '#db4437',
+                        color: '#db4437',
+                        '&:hover': {
+                            borderColor: '#c23321',
+                            backgroundColor: 'rgba(219, 68, 55, 0.04)',
+                        }
+                    }}
+                    startIcon={
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                            <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                        </svg>
+                    }
+                >
+                    Continue with Google
                 </Button>
                 <Typography sx={{ textAlign: 'center' }}>
                     Don&apos;t have an account?{' '}

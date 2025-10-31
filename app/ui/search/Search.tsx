@@ -7,6 +7,7 @@ import usePlaceholderLogic from "../../lib/utils";
 import { useSearchContext } from "../../context/SearchContext";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import SearchModal from "./SearchModal";
+import { Selectors } from "./components/Selectors";
 
 export default function Search() {
   const {
@@ -73,6 +74,9 @@ export default function Search() {
             onKeyDown={handleSearchSubmit}
             aria-label="Search"
           />
+        </div>
+        <div className="search__filters">
+          <Selectors />
         </div>
         <div className="search__border"></div>
         <button

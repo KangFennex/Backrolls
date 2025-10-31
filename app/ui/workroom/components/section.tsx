@@ -1,5 +1,6 @@
 import { QuoteCard } from '../../backrolls/backrollsCards';
 import { Quote } from '../../../lib/definitions';
+import { useNavigationContext } from '../../../context/NavigationContext';
 import { IoIosArrowForward } from "react-icons/io";
 
 interface SectionProps {
@@ -10,6 +11,12 @@ interface SectionProps {
 
 
 export default function Section({ title, quotes, loading }: SectionProps) {
+
+    const { navigateToBackroll } = useNavigationContext();
+
+    const handleQuoteClick = (quote: Quote) => {
+        navigateToBackroll(quote);
+    };
 
     if (loading) {
         return (
@@ -33,6 +40,7 @@ export default function Section({ title, quotes, loading }: SectionProps) {
                                 quote={quote}
                                 variant="compact"
                                 index={index}
+                                onDoubleClick={() => handleQuoteClick(quote)}
                             />
                         </div>
                     ))}

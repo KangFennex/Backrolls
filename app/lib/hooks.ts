@@ -3,6 +3,7 @@ import { useBackrollsStore } from '../store/backrollsStore';
 import { series, seriesSeasons, seriesEpisodes } from './repertoire';
 import { Quote, ExtendedUser } from './definitions';
 import { NextResponse } from 'next/server';
+import { useSession } from 'next-auth/react';
 
 export function useQuotes(type: string, enabled = true) {
     const [quotes, setQuotes] = useState<Quote[]>([]);
@@ -69,46 +70,69 @@ export function useQuotes(type: string, enabled = true) {
     };
 }
 
-// Remove later and replace with NextAuth manage session
 export function useAuth() {
     const [user, setUser] = useState<ExtendedUser | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const { data: session, status } = useSession();
 
     const setCurrentUser = useBackrollsStore((state) => state.setCurrentUser);
 
-    useEffect(() => {
-        async function checkAuth() {
-            setIsLoading(true);
+    // Function to check auth from custom endpoint
+    const checkCustomAuth = useCallback(async () => {
+        try {
+            const response = await fetch('/api/auth/verify', {
+                credentials: 'include',
+            });
 
-            try {
-                const response = await fetch('/api/auth/verify', {
-                    credentials: 'include',
-                });
+            const result = await response.json();
 
-                const result = await response.json();
-
-                if (result.authenticated && result.user) {
-                    setUser(result.user);
-                    setIsAuthenticated(true);
-                    setCurrentUser(result.user.id);
-                } else {
-                    setUser(null);
-                    setIsAuthenticated(false);
-                    setCurrentUser(null);
-                }
-            } catch (error) {
+            if (result.authenticated && result.user) {
+                setUser(result.user);
+                setIsAuthenticated(true);
+                setCurrentUser(result.user.id);
+            } else {
                 setUser(null);
                 setIsAuthenticated(false);
                 setCurrentUser(null);
-                console.error('Auth verification failed:', error);
-            } finally {
-                setIsLoading(false);
             }
+        } catch (error) {
+            setUser(null);
+            setIsAuthenticated(false);
+            setCurrentUser(null);
+            console.error('Auth verification failed:', error);
         }
-
-        checkAuth();
     }, [setCurrentUser]);
+
+    // Listen for NextAuth session changes
+    useEffect(() => {
+        setIsLoading(status === 'loading');
+
+        if (status === 'authenticated' && session?.user) {
+            // Session exists - update state
+            const extendedUser: ExtendedUser = {
+                id: session.user.id,
+                username: session.user.name || session.user.email?.split('@')[0],
+                email: session.user.email,
+                name: session.user.name,
+                image: session.user.image
+            };
+
+            setUser(extendedUser);
+            setIsAuthenticated(true);
+            setCurrentUser(session.user.id);
+        } else if (status === 'unauthenticated') {
+            // No session - check custom auth as fallback
+            checkCustomAuth();
+        }
+    }, [session, status, setCurrentUser, checkCustomAuth]);
+
+    // Initial auth check
+    useEffect(() => {
+        if (status === 'unauthenticated') {
+            checkCustomAuth().finally(() => setIsLoading(false));
+        }
+    }, [status, checkCustomAuth]);
 
     return {
         user,

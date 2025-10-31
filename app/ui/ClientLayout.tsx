@@ -39,44 +39,44 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
         <div className="app-layout">
             <style jsx global>{`
                 .app-layout {
-                    display: grid;
-                    grid-template-areas: 
-                        "header header"
-                        "sidebar main";
-                    grid-template-columns: 200px 1fr;
-                    grid-template-rows: auto 1fr;
+                    display: flex;
+                    flex-direction: column;
                     min-height: 100vh;
                     width: 100vw;
                     max-width: 100vw;
                     overflow-x: hidden;
                 }
                 
-                .header { grid-area: header; }
-                .sidebar { grid-area: sidebar; }
-                .main { grid-area: main; }
+                .header { 
+                    position: sticky;
+                    top: 0;
+                    z-index: 50;
+                }
                 
-                @media (max-width: 768px) {
-                    .app-layout {
-                        grid-template-areas: 
-                            "header"
-                            "sidebar"
-                            "main";
-                        grid-template-columns: 1fr;
-                    }
+                .menu-section {
+                    position: sticky;
+                    top: 60px; /* Adjust this based on your header height */
+                    z-index: 40;
+                    border-bottom: 1px solid #e5e7eb;
+                }
+                
+                .main { 
+                    flex: 1;
+                    width: 100%;
                 }
             `}</style>
             <header className="header">
                 <Nav />
             </header>
 
-            <div className="sidebar">
+            <div className="menu-section">
                 <Menu menu={menu} setMenu={setMenu} ref={menuRef} />
             </div>
 
             <ClickAwayListener onClickAway={closeSearchModal}>
                 <div></div>
             </ClickAwayListener>
-            <div className="main mt-14 md:mt-0 min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
+            <div className="main min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
                 {children}
             </div>
         </div>
