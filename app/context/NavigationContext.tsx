@@ -8,6 +8,7 @@ import { useBackrollsStore } from '../store/backrollsStore';
 interface NavigationContextType {
     navigateToBackroll: (quote: Quote, searchQuery?: string) => void;
     navigateToBackrollsWithResults: (quotes: Quote[], searchQuery?: string) => void;
+    navigateToRandomBackroll: (quote: Quote) => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -17,6 +18,18 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
     const setDisplayResultsToStore = useBackrollsStore((state) => state.setDisplayResults);
+
+    const navigateToRandomBackroll = async (quote: Quote) => {
+        try {
+            // Set the single quote to display
+            setDisplayResultsToStore([quote]);
+
+            // Navigate to backrolls page
+            router.replace(`/backrolls`);
+        } catch (error) {
+            console.error('Error navigating to random backroll:', error);
+        }
+    }
 
     const navigateToBackroll = (quote: Quote, searchQuery?: string) => {
         const params = new URLSearchParams(searchParams);
@@ -63,7 +76,8 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     return (
         <NavigationContext.Provider value={{
             navigateToBackroll,
-            navigateToBackrollsWithResults
+            navigateToBackrollsWithResults,
+            navigateToRandomBackroll
         }}>
             {children}
         </NavigationContext.Provider>

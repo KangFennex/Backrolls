@@ -197,3 +197,79 @@ export async function getFilteredQuotes(filters: {
 
     return quotes || [];
 }
+
+// Function to get a random quote
+export async function getRandomQuote() {
+    try {
+        // Method 1: Try using PostgreSQL random() function
+        const { data: randomQuotes, error: randomError } = await supabase
+            .from('quotes')
+            .select(`
+                id,
+                quote_text,
+                created_at,
+                category,
+                series,
+                season,
+                episode,
+                timestamp,
+                speaker,
+                context,
+                user_id,
+                is_approved,
+                vote_count,
+                share_count
+            `)
+            .order('random()')
+            .limit(1);
+
+        if (!randomError && randomQuotes && randomQuotes.length > 0) {
+            console.log('Random quote fetched with random() function:', randomQuotes[0].id);
+            return randomQuotes[0];
+        }
+
+        console.log('random() function failed, trying alternative method...');
+
+        // Method 2: Fallback - Get all quotes and pick one randomly
+        const { data: allQuotes, error: allError } = await supabase
+            .from('quotes')
+            .select(`
+                id,
+                quote_text,
+                created_at,
+                category,
+                series,
+                season,
+                episode,
+                timestamp,
+                speaker,
+                context,
+                user_id,
+                is_approved,
+                vote_count,
+                share_count
+            `)
+            .limit(100); // Limit to first 100 for performance
+
+        if (allError) {
+            console.error('Error fetching quotes for random selection:', allError);
+            return null;
+        }
+
+        if (!allQuotes || allQuotes.length === 0) {
+            console.log('No quotes found in database');
+            return null;
+        }
+
+        // Pick a random quote from the results
+        const randomIndex = Math.floor(Math.random() * allQuotes.length);
+        const selectedQuote = allQuotes[randomIndex];
+
+        console.log('Random quote selected from fallback method:', selectedQuote.id);
+        return selectedQuote;
+
+    } catch (error) {
+        console.error('Unexpected error in getRandomQuote:', error);
+        return null;
+    }
+}

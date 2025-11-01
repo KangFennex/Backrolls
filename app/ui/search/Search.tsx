@@ -1,11 +1,10 @@
 'use client';
 
 import "./search.scss";
-import { FaSearch, FaMicrophone } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { RiCloseLargeFill } from "react-icons/ri";
 import usePlaceholderLogic from "../../lib/utils";
 import { useSearchContext } from "../../context/SearchContext";
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import SearchModal from "./SearchModal";
 import { Selectors } from "./components/Selectors";
 
@@ -18,7 +17,7 @@ export default function Search() {
     handleSearchSubmit,
   } = useSearchContext();
   const placeholder = usePlaceholderLogic();
-  const { resetTranscript, listening } = useSpeechRecognition();
+
 
   /*   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       console.log("Browser doesn't support speech recognition");
@@ -42,17 +41,6 @@ export default function Search() {
     }
   };
 
-  const toggleListening = () => {
-    if (listening) {
-      SpeechRecognition.stopListening();
-    } else {
-      resetTranscript();
-      SpeechRecognition.startListening({
-        continuous: true,
-        language: 'en-US'
-      });
-    }
-  };
 
   return (
     <div className="search-container relative">
@@ -75,20 +63,11 @@ export default function Search() {
             aria-label="Search"
           />
         </div>
-        <div className="search__filters">
+
+        <div className="search__border"></div>
+        <div className="search__selectors">
           <Selectors />
         </div>
-        <div className="search__border"></div>
-        <button
-          aria-label="Voice search"
-          className={`search__micButton ${listening ? 'listening' : ''}`}
-          onClick={toggleListening}
-        >
-          <FaMicrophone
-            size={20}
-            className="search__micIcon"
-          />
-        </button>
       </div>
       {searchModal && <SearchModal />}
     </div>

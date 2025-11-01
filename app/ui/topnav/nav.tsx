@@ -19,21 +19,21 @@ function Nav() {
                     <NavLogo />
                 </div>
 
-                <div className="flex-1 ml-2 mr-2 min-w-0 md:min-w-[350px] md:max-w-[400px] lg:min-w-[500px] lg:max-w-[650px] md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+                <div className="flex-1 ml-0 mr-0 sm:ml-2 sm:mr-2 min-w-0 md:min-w-[350px] md:max-w-[400px] lg:min-w-[500px] lg:max-w-[650px] md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
                     <Search />
                 </div>
 
                 <div className="flex-shrink-0">
                     <nav className="flex flex-row gap-2 sm:gap-3 items-center justify center">
-                        <Link href="/submit" aria-label="Submit a quote">
+                        <Link href="/submit" className="hidden sm:block" aria-label="Submit a quote">
                             <FaPlus size={35} className="text-pink-500 text-2xl sm:text-3xl md:text-4xl" />
                         </Link>
-                        <Link href="/coffee" aria-label="Buy me a coffee">
+                        <Link href="/coffee" className="hidden sm:block" aria-label="Buy me a coffee">
                             {isAuthenticated ?
                                 <BsCupHotFill size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" /> :
                                 <BsCupHot size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" />}
                         </Link>
-                        <Link href="/lounge" aria-label="Access the lounge">
+                        <Link href="/lounge" className="mx-2 sm:mx-0" aria-label="Access the lounge">
                             {isAuthenticated ?
                                 <RiSofaFill size={35} className="text-pink-500 text-4xl sm:text-5xl mb-1" /> :
                                 <RiSofaLine size={35} className="text-pink-500 text-4xl sm:text-5xl mb-1" />}
