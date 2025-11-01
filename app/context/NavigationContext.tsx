@@ -8,7 +8,7 @@ import { useBackrollsStore } from '../store/backrollsStore';
 interface NavigationContextType {
     navigateToBackroll: (quote: Quote, searchQuery?: string) => void;
     navigateToBackrollsWithResults: (quotes: Quote[], searchQuery?: string) => void;
-    navigateToRandomBackroll: (quote: Quote) => void;
+    navigateToRandomBackroll: (quotes: Quote | Quote[]) => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -19,10 +19,13 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     const router = useRouter();
     const setDisplayResultsToStore = useBackrollsStore((state) => state.setDisplayResults);
 
-    const navigateToRandomBackroll = async (quote: Quote) => {
+    const navigateToRandomBackroll = async (quotes: Quote | Quote[]) => {
         try {
-            // Set the single quote to display
-            setDisplayResultsToStore([quote]);
+            // Convert to array if it's a single quote, keep as array if it's already an array
+            const quotesArray = Array.isArray(quotes) ? quotes : [quotes];
+
+            // Set the quote(s) to display
+            setDisplayResultsToStore(quotesArray);
 
             // Navigate to backrolls page
             router.replace(`/backrolls`);

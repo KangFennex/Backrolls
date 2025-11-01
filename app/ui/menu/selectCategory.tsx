@@ -98,7 +98,7 @@ export default function SelectCategory() {
             {/* Scrollable Menu Container */}
             <div
                 ref={scrollContainerRef}
-                className="select-category flex text-gray-800 gap-2 items-center justify-center overflow-x-auto flex-1"
+                className="select-category flex text-gray-800 gap-2 items-center justify-start md:justify-center overflow-x-auto flex-1"
                 onScroll={checkScrollPosition}
             >
                 {categories.map((category, idx) => {

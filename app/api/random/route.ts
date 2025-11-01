@@ -3,13 +3,16 @@ import { getRandomQuote } from '../data/data';
 
 export async function GET(request: NextRequest) {
     try {
-        // Use request parameter to avoid Vercel deployment issues
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const url = new URL(request.url);
+        const limitParam = url.searchParams.get('limit');
+        const limit = limitParam ? parseInt(limitParam, 10) : 1;
         
-        const quote = await getRandomQuote();
+        // Validate limit (max 20 to prevent abuse)
+        const validatedLimit = Math.min(Math.max(limit, 1), 20);
         
-        if (!quote) {
+        const result = await getRandomQuote(validatedLimit);
+        
+        if (!result) {
             return NextResponse.json(
                 { 
                     success: false, 
@@ -19,7 +22,11 @@ export async function GET(request: NextRequest) {
             );
         }
         
-        return NextResponse.json({ quote });
+        // Return consistent structure - always use 'quote' key for backward compatibility
+        return NextResponse.json({ 
+            quote: result,
+            count: Array.isArray(result) ? result.length : 1
+        });
     } catch (error) {
         console.error('Error in random route:', error);
 
