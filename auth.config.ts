@@ -1,13 +1,29 @@
 import Credentials from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import type { NextAuthOptions } from 'next-auth';
 
-export const authConfig: NextAuthOptions = {
+// Define the configuration type since NextAuth v4 types aren't resolving properly
+interface AuthConfig {
+    pages?: {
+        signIn?: string;
+        [key: string]: string | undefined;
+    };
+    callbacks?: {
+        jwt?: (params: { token: Record<string, unknown>; user?: Record<string, unknown>; account?: Record<string, unknown> }) => Record<string, unknown>;
+        session?: (params: { session: Record<string, unknown>; token?: Record<string, unknown> }) => Record<string, unknown>;
+    };
+    providers: unknown[];
+    session?: {
+        strategy?: 'jwt' | 'database';
+        maxAge?: number;
+    };
+}
+
+export const authConfig: AuthConfig = {
     pages: {
         signIn: '/login',
     },
     callbacks: {
-        async jwt({ token, user, account }: { token: any; user?: any; account?: any }) {
+        async jwt({ token, user, account }: { token: Record<string, unknown>; user?: Record<string, unknown>; account?: Record<string, unknown> }) {
             if (user) {
                 token.id = user.id;
             }
@@ -16,9 +32,10 @@ export const authConfig: NextAuthOptions = {
             }
             return token;
         },
-        async session({ session, token }: { session: any; token?: any }) {
+        async session({ session, token }: { session: Record<string, unknown>; token?: Record<string, unknown> }) {
             if (token?.id) {
-                session.user.id = token.id as string;
+                const sessionWithUser = session as { user: { id?: string; [key: string]: unknown } };
+                sessionWithUser.user.id = token.id as string;
             }
             return session;
         },
@@ -44,4 +61,4 @@ export const authConfig: NextAuthOptions = {
         strategy: 'jwt' as const,
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
-} satisfies NextAuthOptions;
+};
