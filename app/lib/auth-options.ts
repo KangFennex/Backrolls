@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import type { NextAuthOptions, User } from "next-auth";
+import type { AuthOptions, User } from "next-auth";
 import { ExtendedUser } from "./definitions";
 
 const supabase = createClient(
@@ -9,7 +9,7 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
