@@ -7,6 +7,14 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+// Define user type for credentials
+interface AuthUser {
+    id: string;
+    email: string | null;
+    username?: string;
+    remember?: boolean;
+}
+
 // Define the configuration type since NextAuth v4 types aren't resolving properly
 interface AuthConfig {
     pages?: {
@@ -58,7 +66,7 @@ export const authConfig: AuthConfig = {
                 password: { label: 'Password', type: 'password' },
                 remember: { label: 'Remember me', type: 'checkbox' },
             },
-            async authorize(credentials: Record<string, string> | undefined) {
+            async authorize(credentials: Record<string, string> | undefined): Promise<AuthUser | null> {
                 if (!credentials?.email || !credentials?.password) {
                     return null;
                 }
@@ -89,7 +97,7 @@ export const authConfig: AuthConfig = {
                     email: data.user.email,
                     username: profile.username,
                     remember: credentials.remember === "true",
-                } as Record<string, unknown>;
+                };
             },
         }),
     ] as unknown[],
