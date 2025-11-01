@@ -94,7 +94,7 @@ export const authConfig: AuthConfig = {
 
                 return {
                     id: data.user.id,
-                    email: data.user.email,
+                    email: data.user.email || null,
                     username: profile.username,
                     remember: credentials.remember === "true",
                 };
