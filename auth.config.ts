@@ -1,5 +1,11 @@
 import Credentials from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 // Define the configuration type since NextAuth v4 types aren't resolving properly
 interface AuthConfig {
@@ -48,12 +54,42 @@ export const authConfig: AuthConfig = {
         Credentials({
             name: 'credentials',
             credentials: {
-                email: { label: 'Email', type: 'email ' },
+                email: { label: 'Email', type: 'email' },
                 password: { label: 'Password', type: 'password' },
+                remember: { label: 'Remember me', type: 'checkbox' },
             },
-            async authorize() {
-                // This will be handled in auth.ts
-                return null;
+            async authorize(credentials: Record<string, string> | undefined) {
+                if (!credentials?.email || !credentials?.password) {
+                    return null;
+                }
+
+                // Supabase sign in
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: credentials.email,
+                    password: credentials.password,
+                });
+
+                if (error || !data.user) {
+                    throw new Error("Invalid email or password");
+                }
+
+                // Get user profile from profiles table
+                const { data: profile, error: profileError } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", data.user.id)
+                    .single();
+
+                if (profileError) {
+                    throw new Error("User profile not found");
+                }
+
+                return {
+                    id: data.user.id,
+                    email: data.user.email,
+                    username: profile.username,
+                    remember: credentials.remember === "true",
+                } as Record<string, unknown>;
             },
         }),
     ] as unknown[],
