@@ -1,10 +1,12 @@
-import { auth } from '../../auth';
+import { getServerSession } from 'next-auth/next';
+import { authConfig } from '../../auth.config';
 import { ExtendedUser } from './definitions';
 
 export async function verifyToken() {
     try {
         // Get session from NextAuth
-        const session = await auth();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const session = await getServerSession(authConfig as any);
 
         if (session?.user) {
             const user = session.user as ExtendedUser;
@@ -24,7 +26,8 @@ export async function verifyToken() {
 
 export async function getUserFromRequest(): Promise<string | null> {
     try {
-        const session = await auth();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const session = await getServerSession(authConfig as any);
         const user = session?.user as ExtendedUser;
 
         return user?.id || null;
