@@ -15,10 +15,10 @@ function Nav() {
         <div className="top-0 w-full z-50 px-3">
             {/* Main nav container - responsive height */}
             <nav className="relative w-full mx-auto md:px-3">
-                
+
                 {/* Top row - logo and icons */}
                 <div className="h-14 flex items-center justify-between">
-                    <div className="flex-shrink-0 w-10 md:w-12 md:ml-14 md:mt-2">
+                    <div className="flex-shrink-0 w-10 md:w-12 md:mt-2">
                         <NavLogo />
                     </div>
 

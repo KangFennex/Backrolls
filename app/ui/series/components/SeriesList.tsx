@@ -23,6 +23,28 @@ export default function SeriesList() {
         navigateToBackroll(quote);
     };
 
+    // Listen for vote updates to keep counts in sync
+    useEffect(() => {
+        const handleVoteUpdate = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            const { quoteId, newVoteCount } = customEvent.detail;
+
+            setFilteredQuotes(currentQuotes =>
+                currentQuotes.map(quote =>
+                    quote.id === quoteId
+                        ? { ...quote, vote_count: newVoteCount }
+                        : quote
+                )
+            );
+        };
+
+        window.addEventListener('voteUpdated', handleVoteUpdate);
+
+        return () => {
+            window.removeEventListener('voteUpdated', handleVoteUpdate);
+        };
+    }, []);
+
     useEffect(() => {
         const fetchQuotes = async () => {
             if (!seriesCategory) return;
