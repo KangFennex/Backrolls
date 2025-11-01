@@ -1,11 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from './auth-options';
+import { auth } from '../../auth';
 import { ExtendedUser } from './definitions';
 
 export async function verifyToken() {
     try {
         // Get session from NextAuth
-        const session = await getServerSession(authOptions);
+        const session = await auth();
 
         if (session?.user) {
             const user = session.user as ExtendedUser;
@@ -25,7 +24,7 @@ export async function verifyToken() {
 
 export async function getUserFromRequest(): Promise<string | null> {
     try {
-        const session = await getServerSession(authOptions);
+        const session = await auth();
         const user = session?.user as ExtendedUser;
 
         return user?.id || null;
