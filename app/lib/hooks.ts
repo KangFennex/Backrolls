@@ -110,17 +110,18 @@ export function useAuth() {
 
         if (status === 'authenticated' && session?.user) {
             // Session exists - update state
+            const sessionUser = session.user as ExtendedUser;
             const extendedUser: ExtendedUser = {
-                id: session.user.id,
-                username: session.user.name || session.user.email?.split('@')[0],
-                email: session.user.email,
-                name: session.user.name,
-                image: session.user.image
+                id: sessionUser.id,
+                username: sessionUser.username || sessionUser.name || sessionUser.email?.split('@')[0],
+                email: sessionUser.email,
+                name: sessionUser.name,
+                image: sessionUser.image
             };
 
             setUser(extendedUser);
             setIsAuthenticated(true);
-            setCurrentUser(session.user.id);
+            setCurrentUser(sessionUser.id);
         } else if (status === 'unauthenticated') {
             // No session - check custom auth as fallback
             checkCustomAuth();
