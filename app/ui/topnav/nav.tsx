@@ -7,8 +7,13 @@ import { RiSofaLine, RiSofaFill } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import { useAuth } from "../../lib/hooks";
+import { FilterSelectors } from '../search/components/FilterSelectors';
 
-function Nav() {
+interface NavProps {
+    toggleSideMenu: () => void;
+}
+
+function Nav({ toggleSideMenu }: NavProps) {
     const { isAuthenticated } = useAuth();
 
     return (
@@ -37,11 +42,15 @@ function Nav() {
                                     <BsCupHotFill size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" /> :
                                     <BsCupHot size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" />}
                             </Link>
-                            <Link href="/lounge" className="mx-2 sm:mx-0" aria-label="Access the lounge">
+                            <button 
+                                onClick={toggleSideMenu} 
+                                className="mx-2 sm:mx-0" 
+                                aria-label="Open navigation menu"
+                            >
                                 {isAuthenticated ?
                                     <RiSofaFill size={35} className="text-pink-500 text-4xl sm:text-5xl mb-1" /> :
                                     <RiSofaLine size={35} className="text-pink-500 text-4xl sm:text-5xl mb-1" />}
-                            </Link>
+                            </button>
                         </nav>
                     </div>
                 </div>
@@ -49,6 +58,11 @@ function Nav() {
                 {/* Search bar for mobile/tablet screens - below the main row */}
                 <div className="md:hidden pb-3 px-2">
                     <Search />
+                </div>
+
+                {/* Filter selectors - below search on all screens */}
+                <div className="pb-2 px-2 flex justify-center">
+                    <FilterSelectors />
                 </div>
             </nav>
         </div>

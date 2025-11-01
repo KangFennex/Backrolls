@@ -32,8 +32,11 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
     const { closeSearchModal } = useSearchContext();
 
-    const [menu, setMenu] = useState(false);
+    const [sideMenuOpen, setSideMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+
+    const closeSideMenu = () => setSideMenuOpen(false);
+    const toggleSideMenu = () => setSideMenuOpen(!sideMenuOpen);
 
     return (
         <div className="app-layout">
@@ -45,6 +48,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     width: 100vw;
                     max-width: 100vw;
                     overflow-x: hidden;
+                    position: relative;
                 }
                 
                 .header { 
@@ -53,11 +57,40 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     z-index: 50;
                 }
                 
-                .menu-section {
-                    position: sticky;
-                    top: 60px; /* Adjust this based on your header height */
-                    z-index: 40;
-                    border-bottom: 1px solid #e5e7eb;
+                .side-menu {
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                    height: 100vh;
+                    width: 200px;
+                    background: white;
+                    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease-in-out;
+                    z-index: 60;
+                    overflow-y: auto;
+                }
+                
+                .side-menu.open {
+                    transform: translateX(0);
+                }
+                
+                .menu-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 55;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+                }
+                
+                .menu-overlay.open {
+                    opacity: 1;
+                    visibility: visible;
                 }
                 
                 .main { 
@@ -66,11 +99,18 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 }
             `}</style>
             <header className="header">
-                <Nav />
+                <Nav toggleSideMenu={toggleSideMenu} />
             </header>
 
-            <div className="menu-section">
-                <Menu menu={menu} setMenu={setMenu} ref={menuRef} />
+            {/* Menu overlay */}
+            <div
+                className={`menu-overlay ${sideMenuOpen ? 'open' : ''}`}
+                onClick={closeSideMenu}
+            ></div>
+
+            {/* Side menu */}
+            <div className={`side-menu ${sideMenuOpen ? 'open' : ''}`} ref={menuRef}>
+                <Menu closeSideMenu={closeSideMenu} />
             </div>
 
             <ClickAwayListener onClickAway={closeSearchModal}>

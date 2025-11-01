@@ -1,31 +1,37 @@
 'use client';
 
 import Link from 'next/link';
-import  { selectBackgroundColor } from '../../lib/utils';
-import { MdOutlineCheckroom } from 'react-icons/md';
+import { selectBackgroundColor } from '../../lib/utils';
+import { MdOutlineWorkOutline } from 'react-icons/md';
+import { RiSofaLine } from 'react-icons/ri';
 
 const links = [
     {
         href: '/',
         label: 'Workroom',
-        icon: MdOutlineCheckroom,
+        icon: MdOutlineWorkOutline,
+    },
+    {
+        href: '/lounge',
+        label: 'Lounge',
+        icon: RiSofaLine,
     }
 ];
 
 export default function NavLinks() {
 
     return (
-        <nav className="flex flex-col space-y-2 pb-1"> 
+        <nav className="flex flex-col space-y-3">
             {links.map((link, idx) => (
                 <Link
                     key={link.href}
                     href={link.href}
-                    style={{backgroundColor: selectBackgroundColor(idx)}}
+                    style={{ backgroundColor: selectBackgroundColor(idx) }}
                     className={
-                        'flex relative items-center justify-center border p-4 w-72 rounded-md text-gray-800 font-semibold hover:bg-gray-100'
+                        'flex items-center border p-3 w-full rounded-md text-gray-800 font-semibold hover:bg-gray-100 transition-colors'
                     }
                 >
-                    {link.icon && <link.icon className="mr-2 absolute left-5" size={30} />}
+                    {link.icon && <link.icon className="mr-3" size={24} />}
                     {link.label}
                 </Link>
             ))}
