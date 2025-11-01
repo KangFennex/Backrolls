@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
                     if (!existingProfile) {
                         // Create new profile for Google user
                         const username = user.email?.split('@')[0] || user.name?.replace(/\s/g, '').toLowerCase();
-                        
+
                         const { error: insertError } = await supabase
                             .from("profiles")
                             .insert({
@@ -115,7 +115,7 @@ export const authOptions: NextAuthOptions = {
                 console.log('JWT callback - user login detected:', user.email);
                 token.id = user.id;
                 token.email = user.email;
-                
+
                 // Handle remember me for credentials login
                 const remember = (user as User & { remember?: boolean }).remember;
                 if (remember) {
@@ -131,19 +131,19 @@ export const authOptions: NextAuthOptions = {
                         .select("username")
                         .eq("email", user.email)
                         .single();
-                    
+
                     token.username = profile?.username || user.email?.split('@')[0];
                 } else {
                     // For credentials login, username comes from authorize function
                     token.username = (user as User & { username?: string }).username;
                 }
             }
-            
+
             // Set dynamic expiration based on remember me
             if (token.remember) {
                 token.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60); // 30 days
             }
-            
+
             return token;
         },
         async session({ session, token }) {
@@ -152,9 +152,9 @@ export const authOptions: NextAuthOptions = {
                 extendedUser.id = token.id as string;
                 extendedUser.username = token.username as string;
                 extendedUser.email = token.email as string;
-                
+
                 // Add remember flag to session for frontend use
-                (session as typeof session & { remember?: boolean }).remember = token.remember;
+                (session as typeof session & { remember?: boolean }).remember = typeof token.remember === 'boolean' ? token.remember : undefined;
             }
             return session;
         },
