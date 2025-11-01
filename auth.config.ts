@@ -11,7 +11,7 @@ interface AuthConfig {
         jwt?: (params: { token: Record<string, unknown>; user?: Record<string, unknown>; account?: Record<string, unknown> }) => Record<string, unknown> | Promise<Record<string, unknown>>;
         session?: (params: { session: Record<string, unknown>; token?: Record<string, unknown> }) => Record<string, unknown> | Promise<Record<string, unknown>>;
     };
-    providers: unknown[];
+    providers: Array<Record<string, unknown>>;
     session?: {
         strategy?: 'jwt' | 'database';
         maxAge?: number;
