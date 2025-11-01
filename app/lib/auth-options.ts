@@ -1,15 +1,62 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import type { NextAuthOptions, User } from "next-auth";
 import { ExtendedUser } from "./definitions";
+
+// Define basic types for NextAuth callbacks
+interface NextAuthUser {
+    id: string;
+    email?: string | null;
+    name?: string | null;
+    image?: string | null;
+    username?: string | null;
+    remember?: boolean;
+}
+
+interface NextAuthAccount {
+    provider: string;
+    type: string;
+    [key: string]: unknown;
+}
+
+interface NextAuthToken {
+    [key: string]: unknown;
+}
+
+interface NextAuthSession {
+    user: {
+        id?: string;
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
+        username?: string | null;
+    };
+    [key: string]: unknown;
+}
+
+// Define the configuration type since NextAuth v4 types aren't resolving properly
+interface AuthConfig {
+    providers: unknown[];
+    secret?: string;
+    session?: unknown;
+    callbacks?: {
+        signIn?: (params: { user: NextAuthUser; account: NextAuthAccount | null }) => boolean | Promise<boolean>;
+        jwt?: (params: { token: NextAuthToken; user?: NextAuthUser; account?: NextAuthAccount | null }) => NextAuthToken | Promise<NextAuthToken>;
+        session?: (params: { session: NextAuthSession; token: NextAuthToken }) => NextAuthSession | Promise<NextAuthSession>;
+    };
+    pages?: {
+        signIn?: string;
+        error?: string;
+        [key: string]: string | undefined;
+    };
+}
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthConfig = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -117,7 +164,7 @@ export const authOptions: NextAuthOptions = {
                 token.email = user.email;
 
                 // Handle remember me for credentials login
-                const remember = (user as User & { remember?: boolean }).remember;
+                const remember = (user as NextAuthUser).remember;
                 if (remember) {
                     // Extend session to 30 days if remember me is checked
                     token.remember = true;
@@ -135,7 +182,7 @@ export const authOptions: NextAuthOptions = {
                     token.username = profile?.username || user.email?.split('@')[0];
                 } else {
                     // For credentials login, username comes from authorize function
-                    token.username = (user as User & { username?: string }).username;
+                    token.username = (user as NextAuthUser).username;
                 }
             }
 
