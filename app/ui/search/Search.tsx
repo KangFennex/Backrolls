@@ -75,6 +75,7 @@ export default function Search() {
             onKeyDown={handleSearchSubmit}
             aria-label="Search"
           />
+          <div className="search__border flex justify-center"></div>
           <button
             aria-label="Voice search"
             className={`search__micButton ${listening ? 'listening' : ''}`}
