@@ -121,7 +121,7 @@ export function useAuth() {
 
             setUser(extendedUser);
             setIsAuthenticated(true);
-            setCurrentUser(sessionUser.id);
+            setCurrentUser(sessionUser.id || null);
         } else if (status === 'unauthenticated') {
             // No session - check custom auth as fallback
             checkCustomAuth();
