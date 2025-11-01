@@ -6,7 +6,7 @@ export default function BackrollsCardsWrapper() {
     const displayResults = useBackrollsStore((state) => state.displayResults);
 
     return (
-        <div className="backrolls-cards w-full h-full pt-4">
+        <div className={`backrolls-cards w-full h-full pt-4 ${displayResults.length > 1 ? 'flex flex-col' : ''}`}>
             {displayResults.length > 0 ? (
                 displayResults.map((quote, index) => (
                     <QuoteCard
@@ -16,11 +16,11 @@ export default function BackrollsCardsWrapper() {
                         index={index}
                     />
                 ))
-            ) :
+            ) : (
                 <div>
                     <h3>No quotes...</h3>
                 </div>
-            }
+            )}
         </div>
     );
 }
