@@ -23,8 +23,8 @@ interface SplitButtonProps {
     options: SplitButtonOption[];
     onSelect: (value: string | number | null) => void;
     onMainClick?: () => void;
-    backgroundColor: string;
-    hoverColor: string;
+    backgroundColor?: string;
+    hoverColor?: string;
     allowClear?: boolean;
     clearLabel?: string;
     placeholder?: string;
@@ -38,8 +38,8 @@ export default function SplitButton({
     options,
     onSelect,
     onMainClick,
-    backgroundColor,
-    hoverColor,
+    backgroundColor = '#f3f4f6',
+    hoverColor = '#e5e7eb',
     allowClear = false,
     clearLabel = 'All',
     placeholder = 'Select',
@@ -78,16 +78,24 @@ export default function SplitButton({
         <div className="filter-section">
             <React.Fragment>
                 <ButtonGroup
-                    variant="contained"
+                    variant="text"
                     ref={anchorRef}
                     aria-label={`${label} selection`}
                     disabled={seriesCategory === "main-series" ? true : disabled}
                     sx={{
+                        backgroundColor: backgroundColor,
+                        borderRadius: '0.375rem',
+                        border: 'none',
                         '& .MuiButton-root': {
-                            backgroundColor,
-                            color: '#2d3748',
-
-                            '&:hover': { backgroundColor: hoverColor },
+                            backgroundColor: 'transparent',
+                            color: '#374151',
+                            border: 'none',
+                            borderBottom: '2px solid #374151',
+                            borderRadius: '0',
+                            '&:hover': { 
+                                backgroundColor: hoverColor,
+                                borderBottom: '2px solid #374151',
+                            },
                         },
                         '&:disabled': {
                             backgroundColor: backgroundColor,
@@ -101,6 +109,10 @@ export default function SplitButton({
                         },
                         '& .MuiButtonGroup-grouped': {
                             minWidth: 'unset !important',
+                            border: 'none !important',
+                            '&:not(:last-of-type)': {
+                                borderRight: 'none !important',
+                            }
                         }
                     }}
                 >
@@ -108,33 +120,66 @@ export default function SplitButton({
                         display: 'flex',
                         position: 'relative',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '0.1rem',
-                        paddingLeft: '0.4rem',
-                        paddingRight: '0.4rem',
+                        justifyContent: 'flex-start',
+                        padding: '0.5rem 0.75rem',
                         width: 'auto',
-                        borderRadius: '0.375rem',
-                        color: '#1f2937',
-                        fontWeight: 600,
+                        maxWidth: '120px',
+                        border: 'none',
+                        borderRadius: '0',
+                        borderBottom: '2px solid #374151',
+                        color: '#374151',
+                        fontWeight: 500,
+                        backgroundColor: 'transparent',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
                         '&:hover': {
-                            backgroundColor: '#f3f4f6',
+                            backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                            borderBottom: '2px solid #374151',
                         },
                         '&:disabled': {
-                            color: '#9ca3af', // Ensure text is readable when disabled
+                            color: '#9ca3af',
                             opacity: 0.75,
+                            borderBottom: '2px solid #9ca3af',
                         },
-                        textTransform: 'none', // Prevents MUI's default uppercase
+                        textTransform: 'none',
                         minWidth: 'unset',
+                        '& .button-text': {
+                            animation: 'none',
+                            display: 'block',
+                            width: '100%',
+                        },
+                        '&:hover .button-text': {
+                            animation: 'scrollText 3s linear infinite',
+                        },
+                        '@keyframes scrollText': {
+                            '0%': {
+                                transform: 'translateX(0)',
+                            },
+                            '100%': {
+                                transform: 'translateX(-100%)',
+                            },
+                        },
                     }}>
-                        {getDisplayText()}
+                        <span className="button-text">{getDisplayText()}</span>
                     </Button>
                     <Button
                         sx={{
-                            padding: '0',
+                            padding: '0.5rem 0.25rem',
                             width: 'auto',
                             minWidth: 'unset',
+                            border: 'none',
+                            borderRadius: '0',
+                            borderBottom: '2px solid #374151',
+                            backgroundColor: 'transparent',
+                            '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                                borderBottom: '2px solid #374151',
+                            },
+                            '&:disabled': {
+                                borderBottom: '2px solid #9ca3af',
+                            },
                             '&:disabled .MuiSvgIcon-root': {
-                                color: '#9ca3af', // Make arrow icon visible
+                                color: '#9ca3af',
                             }
                         }}
                         aria-controls={menuOpen ? `${label.toLowerCase()}-menu` : undefined}

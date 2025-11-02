@@ -76,8 +76,6 @@ export default function SeriesFilter() {
                     selectedValue={seriesCategory}
                     options={categoryOptions}
                     onSelect={handleCategoryChange}
-                    backgroundColor="#f8bbd9"
-                    hoverColor="#f5a3c7"
                     placeholder="Category"
                 />
 
@@ -87,8 +85,6 @@ export default function SeriesFilter() {
                     selectedValue={selectedSeries}
                     options={seriesOptions}
                     onSelect={handleSeriesChange}
-                    backgroundColor="#d6b8ff"
-                    hoverColor="#c9a3ff"
                     placeholder={`${seriesCategory === "main-series" ? "RuPaul's Drag Race" : "Series"}`}
                     seriesCategory={seriesCategory}
                 />
@@ -100,8 +96,6 @@ export default function SeriesFilter() {
                     options={seasonOptions}
                     onSelect={handleSeasonChange}
                     onMainClick={() => handleSeasonChange(null)}
-                    backgroundColor="#b8f2cd"
-                    hoverColor="#a3efbb"
                     allowClear={true}
                     clearLabel="All Seasons"
                     placeholder="Seasons"
@@ -114,8 +108,6 @@ export default function SeriesFilter() {
                     options={episodeOptions}
                     onSelect={handleEpisodeChange}
                     onMainClick={() => handleEpisodeChange(null)}
-                    backgroundColor="#ffd4b8"
-                    hoverColor="#ffc9a3"
                     allowClear={true}
                     clearLabel="All Episodes"
                     placeholder="Episodes"
