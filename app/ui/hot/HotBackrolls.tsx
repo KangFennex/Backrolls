@@ -26,9 +26,9 @@ export default function HotBackrolls() {
                     key={quote.id}
                     quote={quote}
                     variant="compact"
-                    onClick={() => handleQuoteClick(quote)}
+                    onDoubleClick={() => handleQuoteClick(quote)}
                 />
             ))}
         </main>
-    )
+    );
 };
