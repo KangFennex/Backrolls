@@ -33,7 +33,7 @@ export default function Section({ title, quotes, loading }: SectionProps) {
                 <IoIosArrowForward size={15} color="grey" className="ml-1" />
             </div>
             {quotes && quotes.length > 0 ? (
-                <div className="flex flex-wrap justify-start overflow-y-auto gap-1 pb-2 scrollbar-hide">
+                <div className="flex flex-wrap justify-center overflow-y-auto gap-1 pb-2 scrollbar-hide">
                     {quotes.map((quote, index) => (
                         <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
                             <QuoteCard
