@@ -4,7 +4,7 @@ import { useSeriesContext } from '../../../context/SeriesContext';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import { useState, useEffect } from 'react';
 import { Quote } from '../../../lib/definitions';
-import { QuoteCard } from '../../backrolls/backrollsCards';
+import { BackrollCard } from '../../backrolls/BackrollCard';
 
 export default function SeriesList() {
     const {
@@ -104,10 +104,10 @@ export default function SeriesList() {
             <h2 className="text-xl font-semibold mb-4">
                 Found {filteredQuotes.length} quotes
             </h2>
-            <div className="w-full flex flex-row justify-center flex-wrap space-y-4 mt-6">
+            <div className="w-full flex flex-col justify-center space-y-4 mt-6">
                 {filteredQuotes.map((quote, index) => (
                     <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
-                        <QuoteCard
+                        <BackrollCard
                             quote={quote}
                             variant="compact"
                             index={index}

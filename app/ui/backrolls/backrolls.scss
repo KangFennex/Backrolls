@@ -11,53 +11,110 @@
     border-radius: 8px;
 }
 
-
 .backroll {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    text-align: center;
     width: 100%;
-    min-height: 70px;
-    overflow-y: scroll;
-    padding-top: 0.3rem;
-    padding-right: 15px;
-
-    /* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */
-    &::-webkit-scrollbar {
-        display: none;
+    padding: 1rem 1.5rem;
+    min-height: 120px;
+    
+    /* Responsive padding */
+    @media (min-width: 640px) {
+        padding: 2.5rem 2rem;
     }
     
-    /* Hide scrollbar for Firefox */
-    scrollbar-width: none;
+    @media (min-width: 768px) {
+        padding: 3rem 3rem;
+    }
     
-    /* Hide scrollbar for IE and older Edge */
-    -ms-overflow-style: none;
-
-    & p {
-        font-size: 0.8em;
-        margin-left: 0.3rem;
-        font-weight: 600;
-
-        &:before {
-        content: "“";
-        font-family: Georgia;
-        font-size: 24px;
-        margin-right: 5px;
-        line-height: 0;
-        display: inline-block;
-        display: -webkit-inline-box;
-    }
+    @media (min-width: 1024px) {
+        padding: 3.5rem 4rem;
     }
 
-    & span {
-        display: inline;
-        font-style: italic;
-        float: right;
-        font-size: 0.8em;
-        margin-left: auto;
-
-        &:before {
-            content: '- ';
+    /* Quote text styling */
+    .quote-text {
+        font-family: 'Georgia', 'Times New Roman', serif;
+        font-size: 1.25rem;
+        line-height: 1.7;
+        font-weight: 400;
+        color: #f8f9fa;
+        margin-bottom: 1.5rem;
+        max-width: 100%;
+        
+        /* Responsive font sizes */
+        @media (min-width: 640px) {
+            font-size: 1.375rem;
+            line-height: 1.6;
         }
+        
+        @media (min-width: 768px) {
+            font-size: 1.5rem;
+            line-height: 1.65;
+        }
+        
+        @media (min-width: 1024px) {
+            font-size: 1.625rem;
+            line-height: 1.7;
+            max-width: 90%;
+        }
+        
+        @media (min-width: 1280px) {
+            font-size: 1.75rem;
+            max-width: 85%;
+        }
+
+        /* Quotation marks styling */
+        &::before {
+            content: '"';
+            font-size: 1.8em;
+            color: var(--dark-pink);
+            line-height: 0;
+            margin-right: 0.1em;
+            vertical-align: -0.1em;
+        }
+        
+        &::after {
+            content: '"';
+            font-size: 1.8em;
+            color: var(--dark-pink);
+            line-height: 0;
+            margin-left: 0.1em;
+            vertical-align: -0.1em;
+        }
+    }
+
+    /* Speaker styling */
+    .quote-speaker {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--dark-pink);
+        font-style: italic;
+        position: relative;
+        
+        @media (min-width: 640px) {
+            font-size: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            font-size: 1.05rem;
+        }
+
+        &::before {
+            content: '— ';
+            color: #9ca3af;
+            font-weight: 400;
+        }
+    }
+}
+
+/* Card content container */
+.backroll-card-content {
+    padding: 0 !important;
+    
+    &:last-child {
+        padding-bottom: 0 !important;
     }
 }

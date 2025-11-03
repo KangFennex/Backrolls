@@ -1,0 +1,63 @@
+.backrolls-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.backroll-card {
+    width: fit-content;
+    border-radius: 8px;
+}
+
+
+.backroll {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 70px;
+    overflow-y: scroll;
+    padding-top: 0.3rem;
+    padding-right: 15px;
+
+    /* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
+    
+    /* Hide scrollbar for IE and older Edge */
+    -ms-overflow-style: none;
+
+    & p {
+        font-size: 2em;
+        margin-left: 0.3rem;
+        font-weight: 600;
+
+/*         &:before {
+        content: "“";
+        font-family: Georgia;
+        font-size: 24px;
+        margin-right: 5px;
+        line-height: 0;
+        display: inline-block;
+        display: -webkit-inline-box;
+    } */
+    }
+
+    & span {
+        display: inline;
+        font-style: italic;
+        float: right;
+        font-size: 2em;
+        margin-left: auto;
+
+        &:before {
+            content: '- ';
+        }
+    }
+}

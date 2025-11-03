@@ -1,7 +1,7 @@
-import { QuoteCard } from '../backrolls/QuoteCard';
 import { Quote } from '../../lib/definitions';
 import { useQuotes } from '../../lib/hooks';
 import { useNavigationContext } from '../../context/NavigationContext';
+import { BackrollCard } from '../backrolls/BackrollCard';
 
 export default function FreshBackrolls() {
     const { quotes: freshQuotes, loading: freshLoading } = useQuotes('recent');
@@ -21,12 +21,13 @@ export default function FreshBackrolls() {
 
     return (
         <main className="flex wrap w-full h-full flex-wrap mt-3 p-3 gap-2 justify-center">
-            {freshQuotes.map((quote) => (
-                <QuoteCard
+            {freshQuotes.map((quote, index) => (
+                <BackrollCard
                     key={quote.id}
                     quote={quote}
-                    variant="compact"
+                    variant="full"
                     onDoubleClick={() => handleQuoteClick(quote)}
+                    index={index}
                 />
             ))}
         </main>

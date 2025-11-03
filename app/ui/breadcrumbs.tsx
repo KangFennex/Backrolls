@@ -20,7 +20,7 @@ export default function Breadcrumb({
             className="breadcrumbs"
             onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb" separator="/" sx={{
-                color: '#2C2C2C',
+                color: '#FFFFF0',
                 fontSize: '0.7rem',
                 fontWeight: 700,
             }}>
@@ -40,8 +40,8 @@ export default function Breadcrumb({
                 </Link>
                 <Link
                     underline="hover"
-                    color="text.primary"
                     href="/backrolls"
+                    color="inherit"
                 >
                     E{episode}
                 </Link>

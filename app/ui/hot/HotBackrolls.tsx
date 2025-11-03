@@ -1,4 +1,4 @@
-import { QuoteCard } from '../backrolls/QuoteCard';
+import { BackrollCard } from '../backrolls/BackrollCard';
 import { Quote } from '../../lib/definitions';
 import { useQuotes } from '../../lib/hooks';
 import { useNavigationContext } from '../../context/NavigationContext';
@@ -21,12 +21,13 @@ export default function HotBackrolls() {
 
     return (
         <main className="flex wrap w-full h-full flex-wrap mt-3 p-3 gap-2 justify-center">
-            {hotQuotes.map((quote) => (
-                <QuoteCard
+            {hotQuotes.map((quote, index) => (
+                <BackrollCard
                     key={quote.id}
                     quote={quote}
-                    variant="compact"
+                    variant="full"
                     onDoubleClick={() => handleQuoteClick(quote)}
+                    index={index}
                 />
             ))}
         </main>

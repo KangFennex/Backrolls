@@ -1,7 +1,7 @@
 'use client';
 
 import PageContainer from "../../ui/pageContainer";
-import BackrollCardsWrapper from "../../ui/backrolls/backrollsCards";
+import BackrollCardsWrapper from "../../ui/backrolls/backrollsCardsWrapper";
 
 export default function Page() {
     return (
