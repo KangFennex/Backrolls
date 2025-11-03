@@ -70,7 +70,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     left: 0;
                     width: 100vw;
                     z-index: 50;
-                    padding: 8px 16px;
                     min-height: 50px;
                     display: flex;
                     flex-direction: column;
@@ -89,11 +88,9 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 @media (max-width: 768px) {
                     .filter-bar-absolute {
                         top: 95px; /* Larger value for mobile when search wraps */
-                        padding: 12px 8px;
                     }
                     
                     .filter-bar-fixed {
-                        padding: 12px 8px;
                     }
                 }
 
@@ -103,7 +100,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     left: 0;
                     width: 100vw;
                     z-index: 50;
-                    padding: 8px 16px;
                     backdrop-filter: blur(8px);
                     min-height: 50px;
                     display: flex;
