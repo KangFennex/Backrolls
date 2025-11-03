@@ -92,7 +92,7 @@ export default function SplitButton({
                             border: 'none',
                             borderBottom: '2px solid #374151',
                             borderRadius: '0',
-                            '&:hover': { 
+                            '&:hover': {
                                 backgroundColor: hoverColor,
                                 borderBottom: '2px solid #374151',
                             },
@@ -147,17 +147,6 @@ export default function SplitButton({
                             animation: 'none',
                             display: 'block',
                             width: '100%',
-                        },
-                        '&:hover .button-text': {
-                            animation: 'scrollText 3s linear infinite',
-                        },
-                        '@keyframes scrollText': {
-                            '0%': {
-                                transform: 'translateX(0)',
-                            },
-                            '100%': {
-                                transform: 'translateX(-100%)',
-                            },
                         },
                     }}>
                         <span className="button-text">{getDisplayText()}</span>

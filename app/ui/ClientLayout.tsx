@@ -61,13 +61,12 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
                 .filter-bar-absolute {
                     position: absolute;
-                    top: 45px; /* Default for larger screens */
+                    top: 50px; /* Default for larger screens */
                     left: 0;
                     width: 100vw;
                     z-index: 50;
                     padding: 8px 16px;
-                    backdrop-filter: blur(8px);
-                    height: 45px;
+                    height: 50px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -93,7 +92,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     z-index: 50;
                     padding: 8px 16px;
                     backdrop-filter: blur(8px);
-                    height: 45px;
+                    height: 50px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -105,6 +104,8 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 }
 
                 .main-content {
+                    max-width: 1040px;
+                    margin: auto;
                     margin-top: ${isNavVisible && isAtTop ? '30px' : '25px'};
                     transition: margin-top 0.3s ease-in-out;
                 }
@@ -114,23 +115,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     .main-content {
                         margin-top: ${isNavVisible && isAtTop ? '40px' : '25px'}; 
                     }
-                }
-
-                .main-blur {
-                    position: relative;
-                }
-
-                .main-blur::before {
-                    content: '';
-                    position: absolute;
-                    top: -10px;
-                    left: 0;
-                    right: 0;
-                    height: 20px;
-                    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
-                    backdrop-filter: blur(4px);
-                    z-index: 1;
-                    pointer-events: none;
                 }
                 
                 .side-menu {
@@ -192,7 +176,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
             {/* Main content area with margin for fixed filter bar */}
             <div className="main-content">
-                <div className="main main-blur min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
+                <div className="main min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
                     {children}
                 </div>
             </div>

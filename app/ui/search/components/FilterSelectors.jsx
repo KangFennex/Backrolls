@@ -39,33 +39,33 @@ export const FilterSelectors = () => {
                     <IoFilterSharp
                         title="Filter Backrolls"
                         size={30}
-                        className="text-gray-600 hover:text-pink-500 cursor-pointer" />
+                        className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
                 </Link>
                 <Link href="/hot">
                 <FaFire
                     title="Hot Backrolls"
                     size={25}
-                    className="text-gray-600 hover:text-pink-500 cursor-pointer" />
+                    className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
                     </Link>
                 <Link href="/fresh">
                     <FaRegClock
                         title="Fresh Backrolls"
                         size={25}
-                        className="text-gray-600 hover:text-pink-500 cursor-pointer"
+                        className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200"
                     />
                 </Link>
                 <GiPerspectiveDiceSixFacesRandom
                     title="Random Backroll"
                     size={30}
                     onClick={() => fetchRandomQuote(1)}
-                    className="text-gray-600 hover:text-pink-500 cursor-pointer" />
+                    className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
                 <TbArrowsRandom
-                    title="Random Series Backroll"
+                    title="Random Backrolls"
                     size={26}
                     onClick={() => fetchRandomQuote(5)}
-                    className="text-gray-600 hover:text-pink-500 cursor-pointer" />
+                    className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
                 <Link href="/submit">
-                    <BsChatQuote title="Submit a Quote" size={26} className="text-gray-600 hover:text-pink-500 cursor-pointer" />
+                    <BsChatQuote title="Have a kiki" size={26} className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
                 </Link>
             </>
         </div>
