@@ -5,11 +5,13 @@ import { BsChatQuote } from "react-icons/bs";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
 import { useNavigationContext } from '../../../context/NavigationContext';
+import { useRainbowColors } from '../../../lib/useRainbowColors';
 import Link from "next/link";
 
 export const FilterSelectors = () => {
 
     const { navigateToRandomBackroll } = useNavigationContext();
+    const { getColorForIcon } = useRainbowColors();
 
     const fetchRandomQuote = async (limit = 1) => {
         try {
@@ -39,33 +41,60 @@ export const FilterSelectors = () => {
                     <IoFilterSharp
                         title="Filter Backrolls"
                         size={30}
-                        className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
+                        style={{ 
+                            color: getColorForIcon(0),
+                            transition: 'color 1s ease-in-out'
+                        }}
+                        className="cursor-pointer hover:scale-105 transition-transform duration-200" />
                 </Link>
                 <Link href="/hot">
                 <FaFire
                     title="Hot Backrolls"
                     size={25}
-                    className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    style={{ 
+                        color: getColorForIcon(1),
+                        transition: 'color 1s ease-in-out'
+                    }}
+                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
                     </Link>
                 <Link href="/fresh">
                     <FaRegClock
                         title="Fresh Backrolls"
                         size={25}
-                        className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200"
+                        style={{ 
+                            color: getColorForIcon(2),
+                            transition: 'color 1s ease-in-out'
+                        }}
+                        className="cursor-pointer hover:scale-105 transition-transform duration-200"
                     />
                 </Link>
                 <GiPerspectiveDiceSixFacesRandom
                     title="Random Backroll"
                     size={30}
                     onClick={() => fetchRandomQuote(1)}
-                    className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    style={{ 
+                        color: getColorForIcon(3),
+                        transition: 'color 1s ease-in-out'
+                    }}
+                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
                 <TbArrowsRandom
                     title="Random Backrolls"
                     size={26}
                     onClick={() => fetchRandomQuote(5)}
-                    className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    style={{ 
+                        color: getColorForIcon(4),
+                        transition: 'color 1s ease-in-out'
+                    }}
+                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
                 <Link href="/submit">
-                    <BsChatQuote title="Have a kiki" size={26} className="text-gray-600 hover:text-pink-500 cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    <BsChatQuote 
+                        title="Have a kiki" 
+                        size={26} 
+                        style={{ 
+                            color: getColorForIcon(5),
+                            transition: 'color 1s ease-in-out'
+                        }}
+                        className="cursor-pointer hover:scale-105 transition-transform duration-200" />
                 </Link>
             </>
         </div>
