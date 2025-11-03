@@ -61,7 +61,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
                 .filter-bar-absolute {
                     position: absolute;
-                    top: 45px;
+                    top: 45px; /* Default for larger screens */
                     left: 0;
                     width: 100vw;
                     z-index: 50;
@@ -76,6 +76,13 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     opacity: ${isNavVisible && isAtTop ? '1' : '0'};
                     visibility: ${isNavVisible && isAtTop ? 'visible' : 'hidden'};
                     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+                }
+
+                /* Responsive positioning for smaller screens */
+                @media (max-width: 768px) {
+                    .filter-bar-absolute {
+                        top: 95px; /* Larger value for mobile when search wraps */
+                    }
                 }
 
                 .filter-bar-fixed {
@@ -98,8 +105,15 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 }
 
                 .main-content {
-                    margin-top: ${isNavVisible && isAtTop ? '40px' : '20px'}; /* Account for fixed filter height */
+                    margin-top: ${isNavVisible && isAtTop ? '140px' : '65px'}; /* Adjusted for mobile nav height */
                     transition: margin-top 0.3s ease-in-out;
+                }
+
+                /* Responsive main content margin */
+                @media (min-width: 769px) {
+                    .main-content {
+                        margin-top: ${isNavVisible && isAtTop ? '90px' : '45px'}; /* Desktop values */
+                    }
                 }
 
                 .main-blur {
