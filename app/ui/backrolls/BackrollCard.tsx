@@ -70,10 +70,10 @@ function Backroll({
 
     return (
         <div className="backroll">
-            <p className="quote-text">
+            <p className="backroll__quote-text">
                 {truncatedText}
             </p>
-            <span className="quote-speaker">
+            <span className="backroll__quote-speaker">
                 {speaker}
             </span>
         </div>
@@ -107,7 +107,7 @@ export function BackrollCard({
                 <Card sx={{
                     width: '100%',
                     height: 'auto',
-                    backgroundColor: `${backgroundColor}10`,
+                    backgroundColor: `${backgroundColor}30`,
                     color: '#FFFFF0',
                     borderTop: '1px solid rgba(255, 255, 240, 0.1)',
                     borderBottom: '1px solid rgba(255, 255, 240, 0.1)',
