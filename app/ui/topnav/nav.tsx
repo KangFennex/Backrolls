@@ -41,12 +41,12 @@ function Nav({ toggleSideMenu, isVisible }: NavProps) {
                     <div className="flex-shrink-0">
                         <nav className="flex flex-row gap-2 sm:gap-3 items-center justify-center">
                             <Link href="/submit" aria-label="Submit a quote">
-                                <FaPlus size={35} className="text-pink-500 text-2xl sm:text-3xl md:text-4xl" />
+                                <FaPlus size={35} className="pink-fill text-2xl sm:text-3xl md:text-4xl" />
                             </Link>
                             <Link href="/coffee" aria-label="Buy me a coffee">
                                 {isAuthenticated ?
-                                    <BsCupHotFill size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" /> :
-                                    <BsCupHot size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" />}
+                                    <BsCupHotFill size={30} className="pink-fill text-3xl sm:text-4xl mb-1" /> :
+                                    <BsCupHot size={30} className="pink-fill text-3xl sm:text-4xl mb-1" />}
                             </Link>
                             <button
                                 onClick={toggleSideMenu}
@@ -54,8 +54,8 @@ function Nav({ toggleSideMenu, isVisible }: NavProps) {
                                 aria-label="Open navigation menu"
                             >
                                 {isAuthenticated ?
-                                    <RiSofaFill size={35} className="text-pink-500 text-4xl sm:text-5xl mb-1" /> :
-                                    <RiSofaLine size={35} className="text-pink-500 text-4xl sm:text-5xl mb-1" />}
+                                    <RiSofaFill size={35} className="pink-fill text-4xl sm:text-5xl mb-1" /> :
+                                    <RiSofaLine size={35} className="pink-fill text-4xl sm:text-5xl mb-1" />}
                             </button>
                         </nav>
                     </div>

@@ -70,6 +70,10 @@ body {
     margin: auto;
 }
 
+.pink-fill {
+    fill: var(--dark-pink);
+}
+
 .loginForm {
     border: 3px solid pink
 }
