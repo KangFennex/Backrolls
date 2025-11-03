@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useBackrollsStore } from '../../../store/backrollsStore';
-import { QuoteCard } from '../../backrolls/backrollsCards';
+import { QuoteCard } from '../../backrolls/QuoteCard';
 import { Quote } from '../../../lib/definitions';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
