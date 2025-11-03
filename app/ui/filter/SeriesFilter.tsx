@@ -35,7 +35,7 @@ export default function SeriesFilter({ onClose, className = '' }: SeriesFilterPr
         { value: 'spin-off', label: 'Spin Off' }
     ];
 
-    const availableSeries = getSeriesByCategory(seriesCategory);
+    const availableSeries = seriesCategory ? getSeriesByCategory(seriesCategory) : [];
 
     const seriesOptions = availableSeries.map(series => ({
         value: series.name,
