@@ -134,7 +134,7 @@ export default function SeriesFilter({ onClose, className = '' }: SeriesFilterPr
                     options={seriesOptions}
                     onSelect={handleSeriesChange}
                     placeholder={`${seriesCategory === "main-series" ? "RuPaul's Drag Race" : "Series"}`}
-                    seriesCategory={seriesCategory}
+                    seriesCategory={seriesCategory || undefined}
                 />
 
                 {/* Season Split Button */}
