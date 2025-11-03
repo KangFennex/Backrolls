@@ -78,6 +78,10 @@ body {
     border: 3px solid pink
 }
 
+.rotate-360:hover {
+    transform: rotate(180deg) scale(1.05);
+}
+
 .scrollbar-hide {
 
     /* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */

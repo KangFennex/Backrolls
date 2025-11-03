@@ -6,9 +6,11 @@ import { useScrollDirection } from '../lib/useScrollDirection';
 import { SeriesProvider } from '../context/SeriesContext';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
+import { FilterProvider, useFilterContext } from '../context/FilterContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
-import { FilterSelectors } from './search/components/FilterSelectors';
+import { FilterSelectors } from './filter/FilterSelectors';
+import SeriesFilter from './filter/SeriesFilter';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 import SuspenseWrapper from './SuspenseWrapper';
@@ -19,9 +21,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <SeriesProvider>
                 <NavigationProvider>
                     <SearchProvider>
-                        <ClientLayoutContent>
-                            {children}
-                        </ClientLayoutContent>
+                        <FilterProvider>
+                            <ClientLayoutContent>
+                                {children}
+                            </ClientLayoutContent>
+                        </FilterProvider>
                     </SearchProvider>
                 </NavigationProvider>
             </SeriesProvider>
@@ -34,6 +38,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     const { isNavVisible, isAtTop } = useScrollDirection();
 
     const { closeSearchModal } = useSearchContext();
+    const { isFilterVisible, hideFilter } = useFilterContext();
 
     const [sideMenuOpen, setSideMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -66,21 +71,29 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     width: 100vw;
                     z-index: 50;
                     padding: 8px 16px;
-                    height: 50px;
+                    min-height: 50px;
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
-                    justify-content: center;
+                    justify-content: flex-start;
                     margin: 0;
                     box-sizing: border-box;
                     opacity: ${isNavVisible && isAtTop ? '1' : '0'};
                     visibility: ${isNavVisible && isAtTop ? 'visible' : 'hidden'};
-                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, min-height 0.3s ease-in-out;
+                    backdrop-filter: ${isFilterVisible ? 'blur(8px)' : 'none'};
+                    background: var(--rich-charcoal);
                 }
 
                 /* Responsive positioning for smaller screens */
                 @media (max-width: 768px) {
                     .filter-bar-absolute {
                         top: 95px; /* Larger value for mobile when search wraps */
+                        padding: 12px 8px;
+                    }
+                    
+                    .filter-bar-fixed {
+                        padding: 12px 8px;
                     }
                 }
 
@@ -92,28 +105,44 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     z-index: 50;
                     padding: 8px 16px;
                     backdrop-filter: blur(8px);
-                    height: 50px;
+                    min-height: 50px;
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
-                    justify-content: center;
+                    justify-content: flex-start;
                     margin: 0;
                     box-sizing: border-box;
                     opacity: ${isNavVisible && isAtTop ? '0' : '1'};
                     visibility: ${isNavVisible && isAtTop ? 'hidden' : 'visible'};
-                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, min-height 0.3s ease-in-out;
+                    background: var(--rich-charcoal);
+                }
+
+                .filter-selectors-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    min-height: 50px;
                 }
 
                 .main-content {
                     max-width: 1040px;
                     margin: auto;
-                    margin-top: ${isNavVisible && isAtTop ? '30px' : '25px'};
+                    margin-top: ${isFilterVisible
+                    ? (isNavVisible && isAtTop ? '180px' : '200px')
+                    : (isNavVisible && isAtTop ? '30px' : '25px')
+                };
                     transition: margin-top 0.3s ease-in-out;
                 }
 
                 /* Responsive main content margin */
                 @media (min-width: 769px) {
                     .main-content {
-                        margin-top: ${isNavVisible && isAtTop ? '40px' : '25px'}; 
+                        margin-top: ${isFilterVisible
+                    ? (isNavVisible && isAtTop ? '200px' : '220px')
+                    : (isNavVisible && isAtTop ? '40px' : '25px')
+                }; 
                     }
                 }
                 
@@ -161,12 +190,26 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
             {/* Filter Bar - Absolute positioned (moves with nav when at top) */}
             <div className="filter-bar-absolute">
-                <FilterSelectors />
+                <div className="filter-selectors-container">
+                    <FilterSelectors />
+                </div>
+                {isFilterVisible && (
+                    <div className="w-full justify-center flex">
+                        <SeriesFilter onClose={hideFilter} />
+                    </div>
+                )}
             </div>
 
             {/* Filter Bar - Fixed positioned (always at top when nav is hidden) */}
             <div className="filter-bar-fixed">
-                <FilterSelectors />
+                <div className="filter-selectors-container">
+                    <FilterSelectors />
+                </div>
+                {isFilterVisible && (
+                    <div className="w-full justify-center flex">
+                        <SeriesFilter onClose={hideFilter} />
+                    </div>
+                )}
             </div>
 
             {/* Fixed Nav Header - Slides above filter bar */}

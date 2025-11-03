@@ -4,13 +4,15 @@ import { IoFilterSharp } from "react-icons/io5";
 import { BsChatQuote } from "react-icons/bs";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
-import { useNavigationContext } from '../../../context/NavigationContext';
-import { useRainbowColors } from '../../../lib/useRainbowColors';
+import { useNavigationContext } from '../../context/NavigationContext';
+import { useFilterContext } from '../../context/FilterContext';
+import { useRainbowColors } from '../../lib/useRainbowColors';
 import Link from "next/link";
 
 export const FilterSelectors = () => {
 
     const { navigateToRandomBackroll } = useNavigationContext();
+    const { toggleFilter } = useFilterContext();
     const { getColorForIcon } = useRainbowColors();
 
     const fetchRandomQuote = async (limit = 1) => {
@@ -35,22 +37,21 @@ export const FilterSelectors = () => {
     }
 
     return (
-        <div className="flex flex-row items-center gap-2 justify-center">
-            <>
-                <Link href="/series">
-                    <IoFilterSharp
-                        title="Filter Backrolls"
-                        size={30}
-                        style={{ 
-                            color: getColorForIcon(0),
-                            transition: 'color 1s ease-in-out'
-                        }}
-                        className="cursor-pointer hover:scale-105 transition-transform duration-200" />
-                </Link>
+        <>
+            <div className="flex flex-row items-center gap-2 justify-center">
+                <IoFilterSharp
+                    title="Filter Backrolls"
+                    size={32}
+                    onClick={toggleFilter}
+                    style={{ 
+                        color: getColorForIcon(0),
+                        transition: 'color 1s ease-in-out'
+                    }}
+                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
                 <Link href="/hot">
                 <FaFire
                     title="Hot Backrolls"
-                    size={25}
+                    size={27}
                     style={{ 
                         color: getColorForIcon(1),
                         transition: 'color 1s ease-in-out'
@@ -60,7 +61,7 @@ export const FilterSelectors = () => {
                 <Link href="/fresh">
                     <FaRegClock
                         title="Fresh Backrolls"
-                        size={25}
+                        size={27}
                         style={{ 
                             color: getColorForIcon(2),
                             transition: 'color 1s ease-in-out'
@@ -70,33 +71,33 @@ export const FilterSelectors = () => {
                 </Link>
                 <GiPerspectiveDiceSixFacesRandom
                     title="Random Backroll"
-                    size={30}
+                    size={32}
                     onClick={() => fetchRandomQuote(1)}
                     style={{ 
                         color: getColorForIcon(3),
-                        transition: 'color 1s ease-in-out'
+                        transition: 'color 1s ease-in-out, transform 0.5s ease-in-out'
                     }}
-                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    className="cursor-pointer rotate-360" />
                 <TbArrowsRandom
                     title="Random Backrolls"
-                    size={26}
+                    size={28}
                     onClick={() => fetchRandomQuote(5)}
                     style={{ 
                         color: getColorForIcon(4),
-                        transition: 'color 1s ease-in-out'
+                        transition: 'color 1s ease-in-out, transform 0.5s ease-in-out'
                     }}
-                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    className="cursor-pointer rotate-360" />
                 <Link href="/submit">
                     <BsChatQuote 
                         title="Have a kiki" 
-                        size={26} 
+                        size={28} 
                         style={{ 
                             color: getColorForIcon(5),
                             transition: 'color 1s ease-in-out'
                         }}
                         className="cursor-pointer hover:scale-105 transition-transform duration-200" />
                 </Link>
-            </>
-        </div>
+            </div>
+        </>
     )
 }

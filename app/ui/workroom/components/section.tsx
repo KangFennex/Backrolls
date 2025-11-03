@@ -29,7 +29,7 @@ export default function Section({ title, quotes, loading }: SectionProps) {
     return (
         <section className="w-full h-[370px] scrollbar-hide overflow-y-scroll">
             <div className="flex items-center pb-2">
-                {title && <h2 className="text-lg font-semibold">{title}</h2>}
+                {title && <h2 className="text-lg font-semibold text-pink-500">{title}</h2>}
                 <IoIosArrowForward size={15} color="grey" className="ml-1" />
             </div>
             {quotes && quotes.length > 0 ? (
