@@ -105,14 +105,14 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 }
 
                 .main-content {
-                    margin-top: ${isNavVisible && isAtTop ? '140px' : '65px'}; /* Adjusted for mobile nav height */
+                    margin-top: ${isNavVisible && isAtTop ? '30px' : '25px'};
                     transition: margin-top 0.3s ease-in-out;
                 }
 
                 /* Responsive main content margin */
                 @media (min-width: 769px) {
                     .main-content {
-                        margin-top: ${isNavVisible && isAtTop ? '90px' : '45px'}; /* Desktop values */
+                        margin-top: ${isNavVisible && isAtTop ? '40px' : '25px'}; 
                     }
                 }
 
