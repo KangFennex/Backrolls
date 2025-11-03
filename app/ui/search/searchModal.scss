@@ -1,19 +1,4 @@
 .search-modal {
-    // Mobile: Full screen overlay
-    position: fixed;
-    height: calc(100vh - 3.5rem);
-    bottom: 0;
-    top: 3.5rem;
-    left: 0;
-    right: 0;
-    background-color: var(--whitesmoke);
-    padding: 1rem;
-    padding-bottom: 3rem;
-    overflow-y: auto;
-    z-index: 1000;
-
-    // Medium screens and up: Dropdown under search bar
-    @media (min-width: 768px) {
         position: absolute;
         top: 100%;
         left: 50%;
@@ -32,12 +17,6 @@
         padding: 1rem;
         margin-top: 0.5rem;
         animation: dropdownFadeIn 0.15s ease-out;
-    }
-
-    @media (min-width: 1024px) {
-        max-width: 700px;
-        max-height: 60vh;
-    }
 
 	&::-webkit-scrollbar {
 		width: 8px;

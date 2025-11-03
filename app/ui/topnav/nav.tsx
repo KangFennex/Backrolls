@@ -7,17 +7,23 @@ import { RiSofaLine, RiSofaFill } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import { useAuth } from "../../lib/hooks";
-import { FilterSelectors } from '../search/components/FilterSelectors';
+import { useScrollDirection } from "../../lib/useScrollDirection";
 
 interface NavProps {
     toggleSideMenu: () => void;
+    isVisible?: boolean;
 }
 
-function Nav({ toggleSideMenu }: NavProps) {
+function Nav({ toggleSideMenu, isVisible }: NavProps) {
     const { isAuthenticated } = useAuth();
+    const { isNavVisible } = useScrollDirection();
+
+    // Use the prop if provided, otherwise use the hook
+    const shouldShow = isVisible !== undefined ? isVisible : isNavVisible;
 
     return (
-        <div className="top-0 w-full z-50 px-3">
+        <div className={`w-full px-3 transition-transform duration-300 ease-in-out backdrop-filter backdrop-blur-sm ${shouldShow ? 'translate-y-0' : '-translate-y-full'
+            }`}>
             {/* Main nav container - responsive height */}
             <nav className="relative w-full mx-auto md:px-3">
 
@@ -42,9 +48,9 @@ function Nav({ toggleSideMenu }: NavProps) {
                                     <BsCupHotFill size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" /> :
                                     <BsCupHot size={30} className="text-pink-500 text-3xl sm:text-4xl mb-1" />}
                             </Link>
-                            <button 
-                                onClick={toggleSideMenu} 
-                                className="mx-2 sm:mx-0" 
+                            <button
+                                onClick={toggleSideMenu}
+                                className="mx-2 sm:mx-0"
                                 aria-label="Open navigation menu"
                             >
                                 {isAuthenticated ?
@@ -58,11 +64,6 @@ function Nav({ toggleSideMenu }: NavProps) {
                 {/* Search bar for mobile/tablet screens - below the main row */}
                 <div className="md:hidden pb-3 px-2">
                     <Search />
-                </div>
-
-                {/* Filter selectors - below search on all screens */}
-                <div className="pb-2 px-2 flex justify-center">
-                    <FilterSelectors />
                 </div>
             </nav>
         </div>

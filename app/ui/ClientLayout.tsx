@@ -2,11 +2,13 @@
 
 import { useState, useRef } from "react";
 import { useAuth } from '../lib/hooks';
+import { useScrollDirection } from '../lib/useScrollDirection';
 import { SeriesProvider } from '../context/SeriesContext';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
+import { FilterSelectors } from './search/components/FilterSelectors';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 import SuspenseWrapper from './SuspenseWrapper';
@@ -29,6 +31,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
 function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     useAuth();
+    const { isNavVisible, isAtTop } = useScrollDirection();
 
     const { closeSearchModal } = useSearchContext();
 
@@ -52,9 +55,68 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 }
                 
                 .header { 
-                    position: sticky;
-                    top: 0;
+                    z-index: 51;
+                    transition: transform 0.3s ease-in-out;
+                }
+
+                .filter-bar-absolute {
+                    position: absolute;
+                    top: 45px;
+                    left: 0;
+                    width: 100vw;
                     z-index: 50;
+                    padding: 8px 16px;
+                    backdrop-filter: blur(8px);
+                    height: 45px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0;
+                    box-sizing: border-box;
+                    opacity: ${isNavVisible && isAtTop ? '1' : '0'};
+                    visibility: ${isNavVisible && isAtTop ? 'visible' : 'hidden'};
+                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+                }
+
+                .filter-bar-fixed {
+                    position: fixed;
+                    top: 0px;
+                    left: 0;
+                    width: 100vw;
+                    z-index: 50;
+                    padding: 8px 16px;
+                    backdrop-filter: blur(8px);
+                    height: 45px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0;
+                    box-sizing: border-box;
+                    opacity: ${isNavVisible && isAtTop ? '0' : '1'};
+                    visibility: ${isNavVisible && isAtTop ? 'hidden' : 'visible'};
+                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+                }
+
+                .main-content {
+                    margin-top: ${isNavVisible && isAtTop ? '40px' : '20px'}; /* Account for fixed filter height */
+                    transition: margin-top 0.3s ease-in-out;
+                }
+
+                .main-blur {
+                    position: relative;
+                }
+
+                .main-blur::before {
+                    content: '';
+                    position: absolute;
+                    top: -10px;
+                    left: 0;
+                    right: 0;
+                    height: 20px;
+                    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
+                    backdrop-filter: blur(4px);
+                    z-index: 1;
+                    pointer-events: none;
                 }
                 
                 .side-menu {
@@ -98,9 +160,28 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     width: 100%;
                 }
             `}</style>
+
+            {/* Filter Bar - Absolute positioned (moves with nav when at top) */}
+            <div className="filter-bar-absolute">
+                <FilterSelectors />
+            </div>
+
+            {/* Filter Bar - Fixed positioned (always at top when nav is hidden) */}
+            <div className="filter-bar-fixed">
+                <FilterSelectors />
+            </div>
+
+            {/* Fixed Nav Header - Slides above filter bar */}
             <header className="header">
-                <Nav toggleSideMenu={toggleSideMenu} />
+                <Nav toggleSideMenu={toggleSideMenu} isVisible={isNavVisible} />
             </header>
+
+            {/* Main content area with margin for fixed filter bar */}
+            <div className="main-content">
+                <div className="main main-blur min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
+                    {children}
+                </div>
+            </div>
 
             {/* Menu overlay */}
             <div
@@ -116,9 +197,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             <ClickAwayListener onClickAway={closeSearchModal}>
                 <div></div>
             </ClickAwayListener>
-            <div className="main min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
-                {children}
-            </div>
         </div>
     );
 }

@@ -64,7 +64,9 @@ export const FilterSelectors = () => {
                     size={26}
                     onClick={() => fetchRandomQuote(5)}
                     className="text-gray-600 hover:text-pink-500 cursor-pointer" />
-                <BsChatQuote title="Submit a Quote" size={26} className="text-gray-600 hover:text-pink-500 cursor-pointer" />
+                <Link href="/submit">
+                    <BsChatQuote title="Submit a Quote" size={26} className="text-gray-600 hover:text-pink-500 cursor-pointer" />
+                </Link>
             </>
         </div>
     )
