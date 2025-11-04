@@ -12,12 +12,13 @@ import Menu from "./menu/menu"
 import { FilterSelectors } from './filter/FilterSelectors';
 import SeriesFilter from './filter/SeriesFilter';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { MainPageSkeleton } from './skeletons';
 
 import SuspenseWrapper from './SuspenseWrapper';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     return (
-        <SuspenseWrapper fallback={<div>Loading application...</div>}>
+        <SuspenseWrapper fallback={<MainPageSkeleton />}>
             <SeriesProvider>
                 <NavigationProvider>
                     <SearchProvider>

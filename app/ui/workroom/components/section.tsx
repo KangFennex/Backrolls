@@ -2,6 +2,7 @@ import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import { IoIosArrowForward } from "react-icons/io";
 import { BackrollCard } from '../../backrolls/BackrollCard';
+import { SectionSkeleton } from '../../skeletons';
 
 interface SectionProps {
     title?: string;
@@ -19,21 +20,19 @@ export default function Section({ title, quotes, loading }: SectionProps) {
     };
 
     if (loading) {
-        return (
-            <section className="w-full h-[200px] my-2 p-2 flex items-center justify-center mb-5">
-                <div>Loading quotes...</div>
-            </section>
-        );
+        return <SectionSkeleton />;
     }
 
     return (
         <section className="flex flex-col w-full h-auto scrollbar-hide overflow-y-scroll">
+            {/*
             <div className="flex items-center pb-2">
                 {title && <h2 className="text-lg font-semibold text-pink-500">{title}</h2>}
                 <IoIosArrowForward size={15} color="grey" className="ml-1" />
             </div>
+            */}
             {quotes && quotes.length > 0 ? (
-                <div className="flex flex-col w-full gap-0 overflow-y-auto scrollbar-hide">
+                <div className="flex flex-col w-full gap-2 overflow-y-auto scrollbar-hide">
                     {quotes.map((quote, index) => (
                         <div key={quote.id} className="w-full">
                             <BackrollCard

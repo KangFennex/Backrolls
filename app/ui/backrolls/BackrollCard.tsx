@@ -105,8 +105,9 @@ export function BackrollCard({
         >
             <Box className="backroll-card--content">
                 <Card sx={{
-                    width: '100%',
+                    width: '90%',
                     height: 'auto',
+                    margin: '0 auto',
                     backgroundColor: `${backgroundColor}30`,
                     color: '#FFFFF0',
                     borderTop: '1px solid rgba(255, 255, 240, 0.1)',
