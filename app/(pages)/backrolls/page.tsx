@@ -5,10 +5,10 @@ import BackrollCardsWrapper from "../../ui/backrolls/BackrollsCardsWrapper";
 
 export default function Page() {
     return (
-        <main className="flex min-h-screen min-w-full flex-col">
+        <>
             <PageContainer>
                 <BackrollCardsWrapper />
             </PageContainer>
-        </main>
+        </>
     );
 }

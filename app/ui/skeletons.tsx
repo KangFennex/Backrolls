@@ -215,28 +215,8 @@ export function MainPageSkeleton() {
             </div>
 
             {/* Main Content Skeleton */}
-            <div className="pt-32 pb-8">
-                <div className="max-w-4xl mx-auto px-4">
-                    {/* Section Title Skeleton */}
-                    {/*
-                    <div className="flex items-center pb-4 mb-6">
-                        <Skeleton 
-                            variant="text" 
-                            width={150}
-                            height={24}
-                            sx={{ backgroundColor: 'rgba(255, 105, 180, 0.3)' }}
-                        />
-                        <Skeleton 
-                            variant="circular" 
-                            width={16} 
-                            height={16}
-                            sx={{ 
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                marginLeft: '8px'
-                            }}
-                        />
-                    </div>
-                        */}
+            <div className="w-full pt-32 pb-8">
+                <div className="w-full max-w-4xl mx-auto px-4">
                     {/* Card Skeletons */}
                     <div className="flex flex-col gap-4">
                         {[...Array(3)].map((_, index) => (
@@ -252,27 +232,6 @@ export function MainPageSkeleton() {
 export function SectionSkeleton() {
     return (
         <section className="flex flex-col w-full h-auto">
-            {/* Section Title Skeleton */}
-            {/*
-            <div className="flex items-center pb-2 mb-4">
-                <Skeleton
-                    variant="text"
-                    width={150}
-                    height={24}
-                    sx={{ backgroundColor: 'rgba(255, 105, 180, 0.3)' }}
-                />
-                <Skeleton
-                    variant="circular"
-                    width={15}
-                    height={15}
-                    sx={{
-                        backgroundColor: 'rgba(128, 128, 128, 0.3)',
-                        marginLeft: '8px'
-                    }}
-                />
-            </div>
-                    */}
-            {/* Card Skeletons */}
             <div className="flex flex-col w-full gap-4">
                 {[...Array(3)].map((_, index) => (
                     <BackrollCardSkeleton key={index} />

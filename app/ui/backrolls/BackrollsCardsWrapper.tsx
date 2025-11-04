@@ -6,11 +6,11 @@ export default function BackrollsCardsWrapper() {
     const displayResults = useBackrollsStore((state) => state.displayResults);
 
     return (
-        <div className={`flex flex-col backrolls-cards w-full h-full pt-4`}>
+        <div className="w-full">
             {displayResults.length > 0 ? (
                 displayResults.map((quote, index) => (
                     <BackrollCard
-                        variant="compact"
+                        variant="full"
                         key={quote.id}
                         quote={quote}
                         index={index}

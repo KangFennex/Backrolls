@@ -3,10 +3,10 @@ interface PageContainerProps {
     className?: string;
 }
 
-export default function PageContainer({ children, className }: PageContainerProps) {
+export default function PageContainer({ children }: PageContainerProps) {
     return (
-        <div className={`pageContainer ${className || ''}`}>
-                {children}
+        <div>
+            {children}
         </div>
     );
 }

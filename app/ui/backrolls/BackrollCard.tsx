@@ -88,7 +88,7 @@ export function BackrollCard({
     index = 0,
 }: QuoteCardProps
 ) {
-    const [expanded, setExpanded] = useState(false); // Start collapsed like Reddit
+    const [expanded, setExpanded] = useState(false);
     const isCompact = variant === 'compact';
 
     // Get subtle background color
@@ -105,7 +105,7 @@ export function BackrollCard({
         >
             <Box className="backroll-card--content">
                 <Card sx={{
-                    width: '90%',
+                    width: '100%',
                     height: 'auto',
                     margin: '0 auto',
                     backgroundColor: `${backgroundColor}30`,

@@ -81,7 +81,7 @@ export const FilterSelectors = () => {
                 <TbArrowsRandom
                     title="Random Backrolls"
                     size={28}
-                    onClick={() => fetchRandomQuote(5)}
+                    onClick={() => fetchRandomQuote(3)}
                     style={{ 
                         color: getColorForIcon(4),
                         transition: 'color 1s ease-in-out, transform 0.5s ease-in-out'
