@@ -3,14 +3,13 @@
 import { useState, useRef } from "react";
 import { useAuth } from '../lib/hooks';
 import { useScrollDirection } from '../lib/useScrollDirection';
-import { SeriesProvider } from '../context/SeriesContext';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
 import { FilterProvider, useFilterContext } from '../context/FilterContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
 import { FilterSelectors } from './filter/FilterSelectors';
-import SeriesFilter from './filter/SeriesFilter';
+import FilterDrawer from './filter/FilterDrawer';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 
@@ -19,17 +18,15 @@ import SuspenseWrapper from './SuspenseWrapper';
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     return (
         <SuspenseWrapper fallback={<MainPageSkeleton />}>
-            <SeriesProvider>
-                <NavigationProvider>
-                    <SearchProvider>
-                        <FilterProvider>
-                            <ClientLayoutContent>
-                                {children}
-                            </ClientLayoutContent>
-                        </FilterProvider>
-                    </SearchProvider>
-                </NavigationProvider>
-            </SeriesProvider>
+            <NavigationProvider>
+                <SearchProvider>
+                    <FilterProvider>
+                        <ClientLayoutContent>
+                            {children}
+                        </ClientLayoutContent>
+                    </FilterProvider>
+                </SearchProvider>
+            </NavigationProvider>
         </SuspenseWrapper>
     );
 }
@@ -39,7 +36,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     const { isNavVisible, isAtTop } = useScrollDirection();
 
     const { closeSearchModal } = useSearchContext();
-    const { isFilterVisible, hideFilter } = useFilterContext();
+    const { isDrawerOpen, closeDrawer } = useFilterContext();
 
     const [sideMenuOpen, setSideMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -80,8 +77,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     box-sizing: border-box;
                     opacity: ${isNavVisible && isAtTop ? '1' : '0'};
                     visibility: ${isNavVisible && isAtTop ? 'visible' : 'hidden'};
-                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, min-height 0.3s ease-in-out;
-                    backdrop-filter: ${isFilterVisible ? 'blur(8px)' : 'none'};
+                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
                     background: var(--rich-charcoal);
                 }
 
@@ -89,9 +85,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 @media (max-width: 768px) {
                     .filter-bar-absolute {
                         top: 95px; /* Larger value for mobile when search wraps */
-                    }
-                    
-                    .filter-bar-fixed {
                     }
                 }
 
@@ -111,7 +104,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     box-sizing: border-box;
                     opacity: ${isNavVisible && isAtTop ? '0' : '1'};
                     visibility: ${isNavVisible && isAtTop ? 'hidden' : 'visible'};
-                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, min-height 0.3s ease-in-out;
+                    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
                     background: var(--rich-charcoal);
                 }
 
@@ -124,22 +117,50 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 }
 
                 .main-content {
+                    width: 80%;
                     max-width: 1040px;
                     margin: auto;
-                    margin-top: ${isFilterVisible
-                    ? (isNavVisible && isAtTop ? '180px' : '200px')
-                    : (isNavVisible && isAtTop ? '30px' : '25px')
-                };
+                    margin-top: 30px;
                     transition: margin-top 0.3s ease-in-out;
                 }
 
-                /* Responsive main content margin */
-                @media (min-width: 769px) {
+                /* Media queries for different screen sizes and aspect ratios */
+                
+                /* Large rectangular screens (ultrawide, external monitors) */
+                @media (min-width: 1400px) {
                     .main-content {
-                        margin-top: ${isFilterVisible
-                    ? (isNavVisible && isAtTop ? '200px' : '220px')
-                    : (isNavVisible && isAtTop ? '40px' : '25px')
-                }; 
+                        max-width: 900px; /* More constrained on very wide screens */
+                    }
+                }
+                
+                /* Standard desktop screens */
+                @media (min-width: 1024px) and (max-width: 1399px) {
+                    .main-content {
+                        max-width: 800px; /* Slightly more constrained than current */
+                    }
+                }
+                
+                /* Square-ish screens and smaller desktops */
+                @media (min-width: 768px) and (max-width: 1023px) {
+                    .main-content {
+                        width: 85%;
+                        max-width: 650px; /* Much more constrained for square screens */
+                    }
+                }
+                
+                /* Tablets in landscape */
+                @media (min-width: 640px) and (max-width: 767px) {
+                    .main-content {
+                        width: 90%;
+                        max-width: 600px;
+                    }
+                }
+                
+                /* Mobile devices (keep current good mobile experience) */
+                @media (max-width: 639px) {
+                    .main-content {
+                        width: 95%;
+                        max-width: none; /* Let mobile use full available width */
                     }
                 }
                 
@@ -190,11 +211,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 <div className="filter-selectors-container">
                     <FilterSelectors />
                 </div>
-                {isFilterVisible && (
-                    <div className="w-full justify-center flex">
-                        <SeriesFilter onClose={hideFilter} />
-                    </div>
-                )}
             </div>
 
             {/* Filter Bar - Fixed positioned (always at top when nav is hidden) */}
@@ -202,12 +218,10 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 <div className="filter-selectors-container">
                     <FilterSelectors />
                 </div>
-                {isFilterVisible && (
-                    <div className="w-full justify-center flex">
-                        <SeriesFilter onClose={hideFilter} />
-                    </div>
-                )}
             </div>
+
+            {/* Filter Drawer */}
+            <FilterDrawer open={isDrawerOpen} onClose={closeDrawer} />
 
             {/* Fixed Nav Header - Slides above filter bar */}
             <header className="header">
@@ -216,9 +230,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
             {/* Main content area with margin for fixed filter bar */}
             <div className="main-content">
-                <div className="main min-h-screen overflow-x-hidden overflow-y-hidden w-full min-w-0 max-w-full">
-                    {children}
-                </div>
+                {children}
             </div>
 
             {/* Menu overlay */}

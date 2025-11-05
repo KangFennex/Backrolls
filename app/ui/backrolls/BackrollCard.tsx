@@ -99,13 +99,14 @@ export function BackrollCard({
     };
 
     return (
-        <div className="backroll-card"
+        <div className="backroll-card w-[100%]"
             onDoubleClick={onDoubleClick}
-            style={{ cursor: onDoubleClick ? 'pointer' : 'default', width: '100%' }}
+            style={{ cursor: onDoubleClick ? 'pointer' : 'default' }}
         >
             <Box className="backroll-card--content">
                 <Card sx={{
                     width: '100%',
+                    minWidth: '100%',
                     height: 'auto',
                     margin: '0 auto',
                     backgroundColor: `${backgroundColor}30`,
@@ -123,7 +124,7 @@ export function BackrollCard({
                 }}>
                     <CardHeader
                         title={
-                            <div className="text-xs text-gray-400">
+                            <div className="text-xs warm-ivory">
                                 <Breadcrumb
                                     series={quote.series}
                                     season={quote.season}
@@ -132,7 +133,7 @@ export function BackrollCard({
                             </div>
                         }
                         sx={{
-                            padding: '12px 16px 0px 16px',
+                            padding: '8px 16px 5px 12px',
                             '& .MuiCardHeader-avatar': {
                                 marginRight: '12px'
                             },
@@ -152,7 +153,7 @@ export function BackrollCard({
                         }
                     />
                     <CardMedia component="div" />
-                    <CardContent className="backroll-card-content">
+                    <CardContent className="backroll-card-content flex justify-center items-center">
                         <Backroll
                             quote_text={quote.quote_text}
                             speaker={quote.speaker}
@@ -161,7 +162,7 @@ export function BackrollCard({
                     </CardContent>
 
                     <CardActions disableSpacing sx={{
-                        padding: '8px 16px 12px 16px',
+                        padding: '0 5px',
                         justifyContent: 'space-between',
                         borderTop: 'none'
                     }}>
@@ -196,21 +197,17 @@ export function BackrollCard({
                     </CardActions>
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent sx={{
-                            padding: '0 16px 16px 16px',
+                            padding: '0 5px',
                             borderTop: '1px solid rgba(255, 255, 240, 0.1)',
                             backgroundColor: 'rgba(255, 255, 255, 0.02)'
                         }}>
-                            <div className='flex flex-col gap-3 pt-4 text-sm text-gray-300'>
-                                <div><span className="text-gray-400">Speaker:</span> {quote.speaker}</div>
-                                <div><span className="text-gray-400">Series:</span> {quote.series}</div>
-                                <div><span className="text-gray-400">Season:</span> {quote.season}</div>
-                                <div><span className="text-gray-400">Episode:</span> {quote.episode}</div>
-                                <div><span className="text-gray-400">Timestamp:</span> {quote.timestamp}</div>
-                                <div><span className="text-gray-400">Context:</span> {quote.context}</div>
-                                <div className="flex gap-4 pt-2 border-t border-gray-700">
-                                    <span><span className="text-gray-400">Votes:</span> {quote.vote_count}</span>
-                                    <span><span className="text-gray-400">Shares:</span> {quote.share_count}</span>
-                                </div>
+                            <div className='flex flex-col gap-2 pt-4 text-sm warm-ivory'>
+                                <div><span>Speaker:</span> {quote.speaker}</div>
+                                <div><span>Series:</span> {quote.series}</div>
+                                <div><span>Season:</span> {quote.season}</div>
+                                <div><span>Episode:</span> {quote.episode}</div>
+                                <div><span>Timestamp:</span> {quote.timestamp}</div>
+                                <div><span>Context:</span> {quote.context}</div>
                             </div>
                         </CardContent>
                     </Collapse>

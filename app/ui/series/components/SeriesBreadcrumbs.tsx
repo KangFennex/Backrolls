@@ -1,12 +1,10 @@
-import { useSeriesContext } from "../../../context/SeriesContext";
+'use client'
+
+import { useBackrollsStore } from "../../../store/backrollsStore";
 
 export default function SeriesBreadcrumbs() {
-    const {
-        seriesCategory,
-        selectedSeries,
-        selectedSeason,
-        selectedEpisode,
-    } = useSeriesContext();
+    const { filters } = useBackrollsStore();
+    const { seriesCategory, selectedSeries, selectedSeason, selectedEpisode } = filters;
 
     const adjustedCategory = (category: string | null) => {
         if (category === 'main-series') {

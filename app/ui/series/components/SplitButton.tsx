@@ -6,37 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-const ITEM_HEIGHT = 28;
-const ITEM_PADDING_TOP = 2;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 150,
-        },
-    },
-};
-
-interface SplitButtonOption {
-    value: string | number;
-    label: string;
-}
-
-interface SplitButtonProps {
-    label: string;
-    selectedValue: string | number | null;
-    seriesCategory?: string;
-    options: SplitButtonOption[];
-    onSelect: (value: string | number | null) => void;
-    onMainClick?: () => void;
-    backgroundColor?: string;
-    hoverColor?: string;
-    allowClear?: boolean;
-    clearLabel?: string;
-    placeholder?: string;
-    disabled?: boolean;
-}
+import { SplitButtonProps } from '../../../lib/definitions';
 
 function getStyles(value: string | number, selectedValue: string | number | null, theme: Theme) {
     return {
@@ -73,30 +43,52 @@ export default function SplitButton({
     return (
         <div className="filter-section">
             <FormControl
-                variant="standard"
+                variant="outlined"
+                fullWidth
                 sx={{
-                    width: 120,
+                    minWidth: 200,
                     '& .MuiInputLabel-root': {
-                        color: '#89DAFF',
+                        color: 'rgba(255, 255, 240, 0.7)',
                         '&.Mui-focused': {
-                            color: '#89DAFF',
+                            color: 'var(--dark-pink)',
+                        },
+                        '&.MuiInputLabel-shrink': {
+                            color: 'var(--dark-pink)',
                         },
                     },
-                    '& .MuiInput-underline:before': {
-                        borderBottomColor: '#89DAFF',
-                    },
-                    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                        borderBottomColor: '#89DAFF',
-                    },
-                    '& .MuiInput-underline:after': {
-                        borderBottomColor: '#89DAFF',
+                    '& .MuiOutlinedInput-root': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                        borderRadius: 2,
+                        '& fieldset': {
+                            borderColor: 'rgba(255, 255, 240, 0.2)',
+                        },
+                        '&:hover fieldset': {
+                            borderColor: 'rgba(255, 255, 240, 0.4)',
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: 'var(--dark-pink)',
+                            borderWidth: 2,
+                        },
+                        '&.Mui-disabled': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                            '& fieldset': {
+                                borderColor: 'rgba(255, 255, 240, 0.1)',
+                            },
+                        },
                     },
                     '& .MuiSelect-select': {
-                        color: 'white',
-                        padding: '4px 0',
+                        color: '#FFFFF0',
+                        padding: '12px 14px',
+                        fontSize: '0.95rem',
+                        '&.Mui-disabled': {
+                            color: 'rgba(255, 255, 240, 0.3)',
+                        },
                     },
                     '& .MuiSvgIcon-root': {
-                        color: 'white',
+                        color: 'rgba(255, 255, 240, 0.7)',
+                        '&.Mui-disabled': {
+                            color: 'rgba(255, 255, 240, 0.2)',
+                        },
                     },
                 }}
             >
@@ -106,7 +98,40 @@ export default function SplitButton({
                     id={`${label.toLowerCase()}-select`}
                     value={getDisplayValue()}
                     onChange={handleChange}
-                    MenuProps={MenuProps}
+                    label={label}
+                    MenuProps={{
+                        PaperProps: {
+                            sx: {
+                                backgroundColor: 'var(--rich-charcoal)',
+                                border: '1px solid rgba(255, 255, 240, 0.1)',
+                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+                                '& .MuiMenuItem-root': {
+                                    color: '#FFFFF0',
+                                    fontSize: '0.95rem',
+                                    padding: '10px 16px',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                    },
+                                    '&.Mui-selected': {
+                                        backgroundColor: 'var(--dark-pink)',
+                                        color: '#FFFFF0',
+                                        fontWeight: 600,
+                                        '&:hover': {
+                                            backgroundColor: 'hsl(327, 81%, 50%)',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        },
+                        transformOrigin: {
+                            vertical: 'top',
+                            horizontal: 'left',
+                        },
+                    }}
                     disabled={seriesCategory === "main-series" ? true : disabled}
                 >
                     {allowClear && (

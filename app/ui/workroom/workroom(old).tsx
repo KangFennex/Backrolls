@@ -17,11 +17,6 @@ export default function Workroom() {
                     quotes={recentQuotes}
                     loading={recentLoading}
                 />
-                {/*                 <Section
-                    title="Top Backrolls"
-                    quotes={topRatedQuotes}
-                    loading={topRatedLoading}
-                /> */}
             </PageContainer>
         </main>
     )

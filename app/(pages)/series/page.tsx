@@ -1,13 +1,20 @@
-'use client'
-
 import PageContainer from '../../ui/pageContainer';
-import SeriesPageComponent from '../../ui/series/SeriesPageComponent';
+import SeriesPageServer from '../../ui/series/SeriesPageServer';
 
-export default function SeriesRoute() {
+interface SeriesPageProps {
+    searchParams: Promise<{
+        category?: string;
+        series?: string;
+        season?: string;
+        episode?: string;
+    }>
+}
+
+export default function SeriesRoute({ searchParams }: SeriesPageProps) {
     return (
         <>
             <PageContainer>
-                <SeriesPageComponent />
+                <SeriesPageServer searchParams={searchParams} />
             </PageContainer>
         </>
     );

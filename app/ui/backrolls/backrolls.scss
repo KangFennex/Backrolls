@@ -1,11 +1,8 @@
-.backroll-card {
-    width: fit-content;
-    border-radius: 8px;
-}
-
 .backroll {
     display: flex;
+    position: relative;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: center;
     width: 100%;
@@ -82,21 +79,21 @@
 
     /* Speaker styling */
     &__quote-speaker {
+        position: absolute;
+        bottom: 0;
+        right: 10%;
         font-family: 'Inter', 'Segoe UI', sans-serif;
-        font-size: 0.95rem;
+        font-size: 1rem;
         font-weight: 600;
         color: var(--dark-pink);
         font-style: italic;
-        position: relative;
-        margin-left: auto;
-        margin-right: 15%;
         
         @media (min-width: 640px) {
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
         
         @media (min-width: 768px) {
-            font-size: 1.05rem;
+            font-size: 1.2rem;
         }
 
         &::before {

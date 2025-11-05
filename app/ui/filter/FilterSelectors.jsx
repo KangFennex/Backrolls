@@ -12,7 +12,7 @@ import Link from "next/link";
 export const FilterSelectors = () => {
 
     const { navigateToRandomBackroll } = useNavigationContext();
-    const { toggleFilter } = useFilterContext();
+    const { toggleDrawer } = useFilterContext();
     const { getColorForIcon } = useRainbowColors();
 
     const fetchRandomQuote = async (limit = 1) => {
@@ -38,11 +38,11 @@ export const FilterSelectors = () => {
 
     return (
         <>
-            <div className="flex flex-row items-center gap-2 justify-center">
+            <div className="flex flex-row items-center gap-2 justify-center py-2">
                 <IoFilterSharp
                     title="Filter Backrolls"
                     size={32}
-                    onClick={toggleFilter}
+                    onClick={toggleDrawer}
                     style={{ 
                         color: getColorForIcon(0),
                         transition: 'color 1s ease-in-out'

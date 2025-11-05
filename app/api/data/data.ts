@@ -201,34 +201,28 @@ export async function getFilteredQuotes(filters: {
 // Function to get random quote(s)
 export async function getRandomQuote(limit: number = 1) {
     try {
-        // Method 1: Try using PostgreSQL random() function
+        // Method 1: Use RPC with custom PostgreSQL function
         const { data: randomQuotes, error: randomError } = await supabase
-            .from('quotes')
-            .select(`
-                id,
-                quote_text,
-                created_at,
-                category,
-                series,
-                season,
-                episode,
-                timestamp,
-                speaker,
-                context,
-                user_id,
-                is_approved,
-                vote_count,
-                share_count
-            `)
-            .order('random()')
-            .limit(limit);
+            .rpc('get_random_quotes', { quote_limit: limit });
+
+        // Add detailed error logging
+        if (randomError) {
+            console.error('RPC Error Details:', randomError);
+            console.error('Error code:', randomError.code);
+            console.error('Error message:', randomError.message);
+        }
 
         if (!randomError && randomQuotes && randomQuotes.length > 0) {
-            console.log(`${randomQuotes.length} random quote(s) fetched with random() function`);
+            console.log(`${randomQuotes.length} random quote(s) fetched with RPC function`);
             return limit === 1 ? randomQuotes[0] : randomQuotes;
         }
 
-        console.log('random() function failed, trying alternative method...');
+        console.log('RPC function failed, trying alternative method...');
+        if (randomError) {
+            console.log('RPC failed with error:', randomError.message);
+        } else {
+            console.log('RPC returned no data or empty array');
+        }
 
         // Method 2: Fallback - Get all quotes and pick randomly
         const { data: allQuotes, error: allError } = await supabase
@@ -264,13 +258,13 @@ export async function getRandomQuote(limit: number = 1) {
         // Pick random quote(s) from the results
         const selectedQuotes = [];
         const usedIndexes = new Set();
-        
+
         for (let i = 0; i < Math.min(limit, allQuotes.length); i++) {
             let randomIndex;
             do {
                 randomIndex = Math.floor(Math.random() * allQuotes.length);
             } while (usedIndexes.has(randomIndex));
-            
+
             usedIndexes.add(randomIndex);
             selectedQuotes.push(allQuotes[randomIndex]);
         }

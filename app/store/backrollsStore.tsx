@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { Quote } from '../lib/definitions';
 
+// Filter state type
+type FilterState = {
+    seriesCategory: string;
+    selectedSeries: string | null;
+    selectedSeason: number | null;
+    selectedEpisode: number | null;
+}
+
 type BackrollsState = {
     quotes: Quote[];
     displayResults: Quote[];
@@ -10,6 +18,9 @@ type BackrollsState = {
     currentUser: string | null;
     isLoading: boolean;
 
+    // Filter state
+    filters: FilterState;
+
     // Actions
     setCurrentUser: (userId: string | null) => void;
     setDisplayResults: (results: Quote[]) => void;
@@ -18,6 +29,13 @@ type BackrollsState = {
     toggleFavorite: (quote_id: string) => Promise<void>;
     syncWithDatabase: () => Promise<void>;
     clearUserData: () => void;
+
+    // Filter actions
+    setFilters: (filters: Partial<FilterState>) => void;
+    clearFilters: () => void;
+    initFiltersFromUrl: (searchParams: URLSearchParams) => void;
+    updateUrlFromFilters: (router: { replace: (url: string, options?: { scroll: boolean }) => void }, pathname: string) => void;
+    hasActiveFilters: () => boolean;
 
     // Voting actions
     vote: (quote_id: string, vote_type: 'upvote' | 'downvote') => Promise<void>;
@@ -36,6 +54,14 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
     shares: {},
     currentUser: null,
     isLoading: false,
+
+    // Initialize filter state with defaults
+    filters: {
+        seriesCategory: 'main-series',
+        selectedSeries: null,
+        selectedSeason: null,
+        selectedEpisode: null,
+    },
 
     // Set current user
     setCurrentUser: async (userId: string | null) => {
@@ -267,5 +293,71 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
             shares: {},
             currentUser: null
         });
+    },
+
+    // Filter actions
+    setFilters: (newFilters: Partial<FilterState>) => {
+        console.log('🎯 Setting filters in store:', newFilters);
+        set(state => ({
+            filters: { ...state.filters, ...newFilters }
+        }));
+    },
+
+    clearFilters: () => {
+        set({
+            filters: {
+                seriesCategory: 'main-series',
+                selectedSeries: null,
+                selectedSeason: null,
+                selectedEpisode: null,
+            }
+        });
+    },
+
+    initFiltersFromUrl: (searchParams: URLSearchParams) => {
+        const categoryFromURL = searchParams.get('category') || 'main-series';
+        const seriesFromURL = searchParams.get('series');
+        const seasonFromURL = searchParams.get('season');
+        const episodeFromURL = searchParams.get('episode');
+
+        const newFilters: FilterState = {
+            seriesCategory: categoryFromURL,
+            selectedSeries: seriesFromURL,
+            selectedSeason: seasonFromURL ? parseInt(seasonFromURL) : null,
+            selectedEpisode: episodeFromURL ? parseInt(episodeFromURL) : null,
+        };
+
+        console.log('🔄 Initializing filters from URL:', newFilters);
+        set({ filters: newFilters });
+    },
+
+    updateUrlFromFilters: (router: { replace: (url: string, options?: { scroll: boolean }) => void }, pathname: string) => {
+        const { filters } = get();
+        const params = new URLSearchParams();
+
+        params.set('category', filters.seriesCategory);
+
+        if (filters.selectedSeries) {
+            params.set('series', filters.selectedSeries);
+        }
+
+        if (filters.selectedSeason !== null) {
+            params.set('season', filters.selectedSeason.toString());
+        }
+
+        if (filters.selectedEpisode !== null) {
+            params.set('episode', filters.selectedEpisode.toString());
+        }
+
+        const newURL = `${pathname}${params.toString() ? '?' + params.toString() : ''}`;
+        router.replace(newURL, { scroll: false });
+    },
+
+    hasActiveFilters: () => {
+        const { filters } = get();
+        return filters.seriesCategory !== 'main-series' || 
+               filters.selectedSeries !== null || 
+               filters.selectedSeason !== null || 
+               filters.selectedEpisode !== null;
     },
 }));

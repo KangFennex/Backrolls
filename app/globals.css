@@ -66,9 +66,21 @@ body {
     border-radius: 0.5rem;
     padding: 0.3rem;
     width: 100%;
-    min-width: 100vw;
     min-height: 100vh;
     margin: auto;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    gap: 0.5rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 1rem;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .pink-fill {
@@ -245,6 +257,14 @@ body {
 }
 
 /* Fonts Styling */
+
+.warm-ivory {
+    font-family: "Poppins", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--warm-ivory);
+}
 
 .roboto-condensed {
     font-family: "Roboto Condensed", sans-serif;

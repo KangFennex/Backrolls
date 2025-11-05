@@ -5,8 +5,8 @@ interface PageContainerProps {
 
 export default function PageContainer({ children }: PageContainerProps) {
     return (
-        <div>
+        <>
             {children}
-        </div>
+        </>
     );
 }

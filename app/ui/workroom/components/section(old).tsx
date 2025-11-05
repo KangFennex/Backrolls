@@ -2,7 +2,6 @@ import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import { IoIosArrowForward } from "react-icons/io";
 import { BackrollCard } from '../../backrolls/BackrollCard';
-import { SectionSkeleton } from '../../skeletons';
 
 interface SectionProps {
     title?: string;
@@ -11,17 +10,13 @@ interface SectionProps {
 }
 
 
-export default function Section({ title, quotes, loading }: SectionProps) {
+export default function Section({ quotes, }: SectionProps) {
 
     const { navigateToBackroll } = useNavigationContext();
 
     const handleQuoteClick = (quote: Quote) => {
         navigateToBackroll(quote);
     };
-
-    if (loading) {
-        return <SectionSkeleton />;
-    }
 
     return (
         <section className="flex flex-col w-full h-auto scrollbar-hide overflow-y-scroll">

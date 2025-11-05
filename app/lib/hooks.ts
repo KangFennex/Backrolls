@@ -144,7 +144,7 @@ export function useAuth() {
 
 export const useSeriesFiltering = () => {
     // This hook doesn't manage state - it gets from SeriesContext
-    // and provides utility functions for the filtering page
+    // and provides utility functions for the filtering component
 
     const getSeasonCount = (seriesName: string): number => {
         return seriesSeasons[seriesName] || 1;
