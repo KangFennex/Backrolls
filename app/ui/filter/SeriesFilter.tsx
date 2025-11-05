@@ -6,7 +6,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useSeriesFiltering } from '../../lib/hooks';
 import { IoClose } from "react-icons/io5";
-import SplitButton from '../series/components/SplitButton';
+import SplitButton from './components/SplitButton';
 
 interface SeriesFilterProps {
     onClose?: () => void;

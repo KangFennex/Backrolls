@@ -87,7 +87,7 @@ export const FilterSelectors = () => {
                         transition: 'color 1s ease-in-out, transform 0.5s ease-in-out'
                     }}
                     className="cursor-pointer rotate-360" />
-                <Link href="/submit">
+                <Link href="">
                     <BsChatQuote 
                         title="Have a kiki" 
                         size={28} 

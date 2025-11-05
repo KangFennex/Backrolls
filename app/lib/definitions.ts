@@ -131,7 +131,6 @@ export interface SplitButtonProps {
     label: string;
     selectedValue: string | number | null;
     seriesCategory?: string;
-    options: SplitButtonOption[];
     onSelect: (value: string | number | null) => void;
     onMainClick?: () => void;
     backgroundColor?: string;

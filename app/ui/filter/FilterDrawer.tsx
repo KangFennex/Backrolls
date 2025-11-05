@@ -5,18 +5,18 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useSeriesFiltering } from '../../lib/hooks';
-import { 
-    Drawer, 
-    Box, 
-    Typography, 
-    Divider, 
+import {
+    Drawer,
+    Box,
+    Typography,
+    Divider,
     IconButton,
     Button,
     Stack
 } from '@mui/material';
 import { IoClose, IoFilterOutline } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
-import SplitButton from '../series/components/SplitButton';
+import SplitButton from './components/SplitButton';
 
 interface FilterDrawerProps {
     open: boolean;
@@ -167,10 +167,10 @@ export default function FilterDrawer({ open, onClose }: FilterDrawerProps) {
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <IoFilterOutline size={20} color="var(--dark-pink)" />
-                    <Typography 
-                        variant="h6" 
-                        sx={{ 
-                            color: '#FFFFF0', 
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            color: '#FFFFF0',
                             fontWeight: 600,
                             fontFamily: "'Bitcount Prop Single', sans-serif"
                         }}
@@ -178,13 +178,13 @@ export default function FilterDrawer({ open, onClose }: FilterDrawerProps) {
                         Filters
                     </Typography>
                 </Box>
-                <IconButton 
+                <IconButton
                     onClick={onClose}
-                    sx={{ 
+                    sx={{
                         color: 'rgba(255, 255, 240, 0.7)',
-                        '&:hover': { 
+                        '&:hover': {
                             backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                            color: '#FFFFF0' 
+                            color: '#FFFFF0'
                         }
                     }}
                 >
@@ -197,10 +197,10 @@ export default function FilterDrawer({ open, onClose }: FilterDrawerProps) {
                 <Stack spacing={4}>
                     {/* Category Filter */}
                     <Box>
-                        <Typography 
-                            variant="subtitle2" 
-                            sx={{ 
-                                mb: 2, 
+                        <Typography
+                            variant="subtitle2"
+                            sx={{
+                                mb: 2,
                                 color: 'var(--dark-pink)',
                                 fontWeight: 600,
                                 textTransform: 'uppercase',
@@ -222,10 +222,10 @@ export default function FilterDrawer({ open, onClose }: FilterDrawerProps) {
 
                     {/* Series Filter */}
                     <Box>
-                        <Typography 
-                            variant="subtitle2" 
-                            sx={{ 
-                                mb: 2, 
+                        <Typography
+                            variant="subtitle2"
+                            sx={{
+                                mb: 2,
                                 color: 'var(--dark-pink)',
                                 fontWeight: 600,
                                 textTransform: 'uppercase',
@@ -248,10 +248,10 @@ export default function FilterDrawer({ open, onClose }: FilterDrawerProps) {
 
                     {/* Season Filter */}
                     <Box>
-                        <Typography 
-                            variant="subtitle2" 
-                            sx={{ 
-                                mb: 2, 
+                        <Typography
+                            variant="subtitle2"
+                            sx={{
+                                mb: 2,
                                 color: 'var(--dark-pink)',
                                 fontWeight: 600,
                                 textTransform: 'uppercase',
@@ -275,10 +275,10 @@ export default function FilterDrawer({ open, onClose }: FilterDrawerProps) {
 
                     {/* Episode Filter */}
                     <Box>
-                        <Typography 
-                            variant="subtitle2" 
-                            sx={{ 
-                                mb: 2, 
+                        <Typography
+                            variant="subtitle2"
+                            sx={{
+                                mb: 2,
                                 color: 'var(--dark-pink)',
                                 fontWeight: 600,
                                 textTransform: 'uppercase',
@@ -361,11 +361,11 @@ export default function FilterDrawer({ open, onClose }: FilterDrawerProps) {
 
                 {/* Filter Status */}
                 {hasActiveFilters() && (
-                    <Typography 
-                        variant="caption" 
-                        sx={{ 
-                            mt: 2, 
-                            display: 'block', 
+                    <Typography
+                        variant="caption"
+                        sx={{
+                            mt: 2,
+                            display: 'block',
                             textAlign: 'center',
                             color: 'var(--dark-pink)',
                             fontStyle: 'italic'
