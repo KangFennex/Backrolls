@@ -130,6 +130,7 @@ export type SeriesContextType = {
 export interface SplitButtonProps {
     label: string;
     selectedValue: string | number | null;
+    options: { value: string | number; label: string; }[];
     seriesCategory?: string;
     onSelect: (value: string | number | null) => void;
     onMainClick?: () => void;
