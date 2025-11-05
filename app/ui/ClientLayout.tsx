@@ -94,7 +94,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     left: 0;
                     width: 100vw;
                     z-index: 50;
-                    backdrop-filter: blur(8px);
                     min-height: 50px;
                     display: flex;
                     flex-direction: column;
