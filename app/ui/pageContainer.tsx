@@ -1,7 +1,4 @@
-interface PageContainerProps {
-    children: React.ReactNode;
-    className?: string;
-}
+import { PageContainerProps } from '../lib/definitions';
 
 export default function PageContainer({ children }: PageContainerProps) {
     return (

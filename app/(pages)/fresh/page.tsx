@@ -1,13 +1,11 @@
-'use client'
-
 import PageContainer from '../../ui/pageContainer';
-import FreshBackrolls from '../../ui/fresh/FreshBackrolls';
+import FreshPageServer from '../../ui/fresh/FreshPageServer';
 
 export default function freshPage() {
     return (
         <>
             <PageContainer>
-                <FreshBackrolls />
+                <FreshPageServer />
             </PageContainer>
         </>
     )

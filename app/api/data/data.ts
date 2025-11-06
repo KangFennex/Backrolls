@@ -1,9 +1,28 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Get environment variables with proper fallbacks and validation
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Debug logging for server components
+if (typeof window === 'undefined') {
+    console.log('Server-side environment check:');
+    console.log('NEXT_PUBLIC_SUPABASE_URL:', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log('SUPABASE_URL:', !!process.env.SUPABASE_URL);
+    console.log('SUPABASE_SERVICE_ROLE_KEY:', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+    console.log('Resolved URL:', !!supabaseUrl);
+    console.log('Resolved Key:', !!supabaseKey);
+}
+
+if (!supabaseUrl) {
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL environment variable');
+}
+
+if (!supabaseKey) {
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Search function
 export async function searchQuotes(input: string) {

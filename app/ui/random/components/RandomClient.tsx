@@ -1,18 +1,20 @@
 'use client'
 
+import { useState, useEffect } from 'react';
 import { Quote } from '../../../lib/definitions';
-import { useEffect, useState } from 'react';
 import { BackrollCard } from '../../backrollCards/BackrollCard';
 import { useNavigationContext } from '../../../context/NavigationContext';
+import { RandomClientProps } from '../../../lib/definitions';
 import PageComponentContainer from '../../pageComponentContainer';
 
-interface WorkroomClientProps {
-    initialQuotes: Quote[];
-}
-
-export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
+export default function RandomClient({ randomQuotes }: RandomClientProps) {
     const { navigateToBackroll } = useNavigationContext();
-    const [quotes, setQuotes] = useState<Quote[]>(initialQuotes);
+    const [quotes, setQuotes] = useState<Quote[]>(randomQuotes);
+
+    // Update quotes when randomQuotes prop changes (e.g., when limit changes)
+    useEffect(() => {
+        setQuotes(randomQuotes);
+    }, [randomQuotes]);
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -40,7 +42,7 @@ export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
     if (quotes.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
-                No quotes found for the selected filters.
+                No quotes found.
             </div>
         );
     }
@@ -58,5 +60,5 @@ export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
                 </div>
             ))}
         </PageComponentContainer>
-    );
+    )
 }

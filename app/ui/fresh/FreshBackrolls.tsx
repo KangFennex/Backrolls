@@ -1,13 +1,13 @@
 import { Quote } from '../../lib/definitions';
 import { useQuotes } from '../../lib/hooks';
 import { useNavigationContext } from '../../context/NavigationContext';
-import { BackrollCard } from '../backrolls/BackrollCard';
+import { BackrollCard } from '../backrollCards/BackrollCard';
 
 export default function FreshBackrolls() {
     const { quotes: freshQuotes, loading: freshLoading } = useQuotes('recent');
     const { navigateToBackroll } = useNavigationContext();
 
-    const handleQuoteClick = (quote: Quote) => {
+    const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     };
 
@@ -26,7 +26,7 @@ export default function FreshBackrolls() {
                     key={quote.id}
                     quote={quote}
                     variant="full"
-                    onDoubleClick={() => handleQuoteClick(quote)}
+                    onClick={() => handleClick(quote)}
                     index={index}
                 />
             ))}

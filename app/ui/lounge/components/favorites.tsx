@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useBackrollsStore } from '../../../store/backrollsStore';
-import { QuoteCard } from '../../backrolls/QuoteCard';
+import { QuoteCard } from '../../backrollCards/QuoteCard';
 import { Quote } from '../../../lib/definitions';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
@@ -20,8 +20,8 @@ export const RenderFavorites = () => {
         setFavoritesData(prev => prev.filter(quote => quote.id !== quoteId));
     }
 
-    const handleDoubleClick = (quote: Quote) => {
-        console.log("Double clicked quote:", quote);
+    const handleClick = (quote: Quote) => {
+        console.log("Clicked quote:", quote);
 
         const params = new URLSearchParams(searchParams);
 
@@ -119,7 +119,7 @@ export const RenderFavorites = () => {
                                     quote={quote}
                                     variant="compact"
                                     onRemoveFavorite={removeFavoriteFromData}
-                                    onDoubleClick={() => handleDoubleClick(quote)}
+                                    onClick={() => handleClick(quote)}
                                 />
                             </div>
                         ))}

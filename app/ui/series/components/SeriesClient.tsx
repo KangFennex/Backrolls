@@ -2,21 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { Quote } from '../../../lib/definitions';
-import { BackrollCard } from '../../backrolls/BackrollCard';
+import { BackrollCard } from '../../backrollCards/BackrollCard';
 import { useBackrollsStore } from '../../../store/backrollsStore';
 import { useNavigationContext } from '../../../context/NavigationContext';
+import { SeriesClientProps } from '../../../lib/definitions';
+import PageComponentContainer from '../../pageComponentContainer';
 
-interface SeriesListClientProps {
-    initialQuotes: Quote[];
-    initialFilters: {
-        category?: string;
-        series?: string;
-        season?: number;
-        episode?: number;
-    }
-}
 
-export function SeriesClient({ initialQuotes, initialFilters }: SeriesListClientProps) {
+export function SeriesClient({ initialQuotes, initialFilters }: SeriesClientProps) {
     const { filters, setFilters } = useBackrollsStore();
     const { navigateToBackroll } = useNavigationContext();
 
@@ -106,7 +99,7 @@ export function SeriesClient({ initialQuotes, initialFilters }: SeriesListClient
         return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
     }, []);
 
-    const handleQuoteClick = (quote: Quote) => {
+    const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     };
 
@@ -123,22 +116,20 @@ export function SeriesClient({ initialQuotes, initialFilters }: SeriesListClient
     }
 
     return (
-        <>
+        <PageComponentContainer>
             <h2 className="text-xl font-semibold mb-4">
                 Found {quotes.length} quotes
             </h2>
-            <div className="w-full flex flex-col justify-center space-y-4 mt-6">
-                {quotes.map((quote, index) => (
-                    <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
-                        <BackrollCard
-                            quote={quote}
-                            variant="full"
-                            index={index}
-                            onDoubleClick={() => handleQuoteClick(quote)}
-                        />
-                    </div>
-                ))}
-            </div>
-        </>
+            {quotes.map((quote, index) => (
+                <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
+                    <BackrollCard
+                        quote={quote}
+                        variant="full"
+                        index={index}
+                        onClick={() => handleClick(quote)}
+                    />
+                </div>
+            ))}
+        </PageComponentContainer>
     );
 }

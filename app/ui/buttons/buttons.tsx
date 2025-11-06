@@ -6,6 +6,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useAuth } from '../../lib/hooks';
+import { FaRegComment } from "react-icons/fa6";
 
 export function FavoriteButton({
     quote_id,
@@ -116,6 +117,14 @@ export function CopyButton({ textToCopy }: { textToCopy: string }) {
     return (
         <div className="copy-btn pb-1" aria-label="Copy quote to clipboard" onClick={handleCopy}>
             <FaRegCopy size={17} className="hover:text-pink-500 hover:scale-110 transition-all duration-300" />
+        </div>
+    );
+}
+
+export function CommentButton() {
+    return (
+        <div className="comment-btn" aria-label="Comment on quote">
+            <FaRegComment size={17} className="hover:text-pink-500 hover:scale-110 transition-all duration-300" />
         </div>
     );
 }

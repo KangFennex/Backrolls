@@ -8,7 +8,6 @@ import { useBackrollsStore } from '../store/backrollsStore';
 interface NavigationContextType {
     navigateToBackroll: (quote: Quote, searchQuery?: string) => void;
     navigateToBackrollsWithResults: (quotes: Quote[], searchQuery?: string) => void;
-    navigateToRandomBackroll: (quotes: Quote | Quote[]) => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -19,21 +18,6 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     const router = useRouter();
     const setDisplayResultsToStore = useBackrollsStore((state) => state.setDisplayResults);
 
-    const navigateToRandomBackroll = async (quotes: Quote | Quote[]) => {
-        try {
-            // Convert to array if it's a single quote, keep as array if it's already an array
-            const quotesArray = Array.isArray(quotes) ? quotes : [quotes];
-
-            // Set the quote(s) to display
-            setDisplayResultsToStore(quotesArray);
-
-            // Navigate to backrolls page
-            router.replace(`/backrolls`);
-        } catch (error) {
-            console.error('Error navigating to random backroll:', error);
-        }
-    }
-
     const navigateToBackroll = (quote: Quote, searchQuery?: string) => {
         const params = new URLSearchParams(searchParams);
 
@@ -43,16 +27,27 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
             params.delete('query');
         }
 
+        console.log('navigateToBackroll - searchQuery:', searchQuery);
+
         // Clear page parameter if not already on backrolls page
         if (pathname !== '/backrolls') {
             params.delete('page');
         }
 
+        console.log('navigateToBackroll - pathname:', pathname);
+
+        // Clear parameters that don't belong on backrolls page
+        params.delete('limit');
+
         // Set the single quote to display
         setDisplayResultsToStore([quote]);
 
+        console.log('navigateToBackroll - navigating to /backrolls with params:', params.toString());
+
         // Navigate to backrolls page
         router.replace(`/backrolls?${params.toString()}`);
+
+        console.log('navigateToBackroll - finished navigating');
     };
 
     const navigateToBackrollsWithResults = (quotes: Quote[], searchQuery?: string) => {
@@ -69,6 +64,9 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
             params.delete('page');
         }
 
+        // Clear parameters that don't belong on backrolls page
+        params.delete('limit');
+
         // Set all quotes to display
         setDisplayResultsToStore(quotes);
 
@@ -80,7 +78,6 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         <NavigationContext.Provider value={{
             navigateToBackroll,
             navigateToBackrollsWithResults,
-            navigateToRandomBackroll
         }}>
             {children}
         </NavigationContext.Provider>

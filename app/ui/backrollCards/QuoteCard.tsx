@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Quote } from '../../lib/definitions';
+import { Quote, QuoteCardProps } from '../../lib/definitions';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Avatar from '@mui/material/Avatar';
@@ -16,7 +16,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Breadcrumb from "../breadcrumbs";
 import { getBackrollCardBackground } from '../../lib/hooks';
-import './backrolls.scss';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -47,18 +46,11 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     ],
 }));
 
-interface QuoteCardProps {
-    quote: Quote;
-    variant?: 'full' | 'compact';
-    onRemoveFavorite?: (quote_id: string) => void;
-    onDoubleClick?: () => void;
-    index?: number;
-}
 
 function Backroll({
     quote_text,
     speaker,
-    maxLength = 280,
+    maxLength = 60,
 }: {
     quote_text: string;
     speaker: string;
@@ -70,61 +62,55 @@ function Backroll({
 
     return (
         <div className="backroll">
-            <p className="backroll__quote-text">
-                {truncatedText}
-            </p>
-            <span className="backroll__quote-speaker">
-                {speaker}
-            </span>
+            <p>{truncatedText}</p>
+            <span>{speaker}</span>
         </div>
     )
 }
 
-export function BackrollCard({
+export function QuoteCard({
     quote,
     variant = 'full',
     onRemoveFavorite,
-    onDoubleClick,
+    onClick,
     index = 0,
 }: QuoteCardProps
 ) {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(true);
     const isCompact = variant === 'compact';
-
-    // Get subtle background color
-    const backgroundColor = getBackrollCardBackground(index);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     return (
-        <div className="backroll-card w-[100%]"
-            onDoubleClick={onDoubleClick}
-            style={{ cursor: onDoubleClick ? 'pointer' : 'default' }}
+        <div className="backroll-card"
+            onClick={onClick}
+            style={{ cursor: onClick ? 'pointer' : 'default' }}
         >
-            <Box className="backroll-card--content">
+            <Box className="backroll-card--content flex flex-col items-center justify-center">
                 <Card sx={{
-                    width: '100%',
-                    minWidth: '100%',
-                    height: 'auto',
-                    margin: '0 auto',
-                    backgroundColor: `${backgroundColor}30`,
-                    color: '#FFFFF0',
-                    borderTop: '1px solid rgba(255, 255, 240, 0.1)',
-                    borderBottom: '1px solid rgba(255, 255, 240, 0.1)',
-                    borderLeft: 'none',
-                    borderRight: 'none',
-                    borderRadius: '16px',
-                    boxShadow: 'none',
-                    transition: 'background-color 0.2s ease-in-out',
+                    width: isCompact ? 240 : 300,
+                    maxHeight: isCompact ? 200 : 400,
+                    backgroundColor: getBackrollCardBackground(index),
+                    color: 'var(--rich-charcoal)',
+                    border: '1px solid var(--rich-charcoal)',
+                    borderRadius: '8px',
+                    boxShadow: `
+        0 4px 8px color-mix(in srgb, var(--rich-charcoal) 15%, transparent),
+        0 2px 4px color-mix(in srgb, var(--rich-charcoal) 10%, transparent)
+    `,
+                    transition: 'box-shadow 0.3s ease',
                     '&:hover': {
-                        backgroundColor: `${backgroundColor}20`,
+                        boxShadow: `
+            0 6px 12px color-mix(in srgb, var(--rich-charcoal) 20%, transparent),
+            0 4px 8px color-mix(in srgb, var(--rich-charcoal) 15%, transparent)
+        `
                     }
                 }}>
                     <CardHeader
                         title={
-                            <div className="text-xs warm-ivory">
+                            <div>
                                 <Breadcrumb
                                     series={quote.series}
                                     season={quote.season}
@@ -133,52 +119,49 @@ export function BackrollCard({
                             </div>
                         }
                         sx={{
-                            padding: '8px 16px 5px 12px',
-                            '& .MuiCardHeader-avatar': {
-                                marginRight: '12px'
-                            },
-                            '& .MuiCardHeader-content': {
-                                overflow: 'hidden'
+                            padding: '5px', '& .MuiCardHeader-avatar': {
+                                marginRight: '10px'
                             }
                         }}
                         action={
-                            <IconButton aria-label="settings" size="small" sx={{ color: 'gray' }}>
-                                <MoreVertIcon fontSize="small" />
+                            <IconButton aria-label="settings">
+                                <MoreVertIcon />
                             </IconButton>
                         }
                         avatar={
                             <Avatar aria-label="avatar" sx={{ width: 30, height: 30 }}>
-                                <Image src="/media/rupaul.jpg" alt="RuPaul" width={30} height={30} />
+                                <Image src="/media/rupaul.jpg" alt="RuPaul" width={40} height={40} />
                             </Avatar>
                         }
                     />
                     <CardMedia component="div" />
-                    <CardContent className="backroll-card-content flex justify-center items-center">
+                    <CardContent sx={{ display: 'flex', width: '100%', marginTop: isCompact ? '5px' : '5px', gap: isCompact ? 1 : 2, padding: '8px', paddingTop: 0 }}>
                         <Backroll
                             quote_text={quote.quote_text}
                             speaker={quote.speaker}
-                            maxLength={isCompact ? 120 : 300}
+                            maxLength={isCompact ? 60 : 150}
                         />
                     </CardContent>
 
-                    <CardActions disableSpacing sx={{
-                        padding: '0 5px',
-                        justifyContent: 'space-between',
-                        borderTop: 'none'
-                    }}>
-                        <div className="flex items-center justify-between gap-4">
+                    <CardActions disableSpacing sx={{ '&.MuiCardActions-root': { padding: '0' } }}>
+                        <div className="flex items-center space-between w-full px-1">
                             <VoteButtons
                                 quote_id={String(quote.id)}
                                 currentVoteCount={quote.vote_count}
                             />
-                            <div className="flex items-center gap-2">
+                            <CardActions disableSpacing sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                marginLeft: 'auto',
+                                gap: isCompact ? 1 : 2
+                            }}>
                                 <CopyButton textToCopy={quote.quote_text} />
                                 <FavoriteButton
                                     quote_id={String(quote.id)}
                                     onRemoveFavorite={onRemoveFavorite}
                                 />
                                 <ShareButton />
-                            </div>
+                            </CardActions>
                         </div>
                         {!isCompact && (
                             <ExpandMore
@@ -186,31 +169,27 @@ export function BackrollCard({
                                 onClick={handleExpandClick}
                                 aria-expanded={expanded}
                                 aria-label="show more"
-                                sx={{
-                                    color: 'gray',
-                                    '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' }
-                                }}
+                                sx={{ mr: '0.6rem' }}
                             >
                                 <ExpandMoreIcon />
                             </ExpandMore>
                         )}
                     </CardActions>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        <CardContent sx={{
-                            padding: '0 5px',
-                            borderTop: '1px solid rgba(255, 255, 240, 0.1)',
-                            backgroundColor: 'rgba(255, 255, 255, 0.02)'
-                        }}>
-                            <div className='flex flex-col gap-2 pt-4 text-sm warm-ivory'>
-                                <div><span>Speaker:</span> {quote.speaker}</div>
-                                <div><span>Series:</span> {quote.series}</div>
-                                <div><span>Season:</span> {quote.season}</div>
-                                <div><span>Episode:</span> {quote.episode}</div>
-                                <div><span>Timestamp:</span> {quote.timestamp}</div>
-                                <div><span>Context:</span> {quote.context}</div>
-                            </div>
-                        </CardContent>
-                    </Collapse>
+
+                    {!isCompact && (
+                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                            <CardContent className='flex flex-col gap-2'>
+                                <h4>{`Speaker: ${quote.speaker}`}</h4>
+                                <h4>{`Series: ${quote.series}`}</h4>
+                                <h4>{`Season: ${quote.season}`}</h4>
+                                <h4>{`Episode: ${quote.episode}`}</h4>
+                                <h4>{`Timestamp: ${quote.timestamp}`}</h4>
+                                <h4>{`Context: ${quote.context}`}</h4>
+                                <h4>{`Vote Count: ${quote.vote_count}`}</h4>
+                                <h4>{`Share Count: ${quote.share_count}`}</h4>
+                            </CardContent>
+                        </Collapse>
+                    )}
                 </Card>
             </Box>
         </div >

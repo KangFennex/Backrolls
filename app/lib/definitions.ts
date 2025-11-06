@@ -82,7 +82,7 @@ export type CardProps = {
     speaker: string;
     season: number;
     episode: number;
-    onClick: () => void;
+    onClick?: () => void;
 };
 
 export type NavProps = {
@@ -115,6 +115,39 @@ export type BackrollCardProps = {
     displayResults: string[];
 }
 
+export interface QuoteCardProps {
+    quote: Quote;
+    variant?: 'full' | 'compact';
+    onRemoveFavorite?: (quote_id: string) => void;
+    onClick?: () => void;
+    index?: number;
+}
+
+export interface BackrollHeaderProps {
+    quote: Quote;
+}
+
+export interface BackrollContentProps {
+    quoteText: string;
+    speaker: string;
+    maxLength?: number;
+}
+
+export interface BackrollActionsProps {
+    quoteId: string;
+    quoteText: string;
+    currentVoteCount: number;
+    isCompact: boolean;
+    expanded: boolean;
+    onExpandClick: () => void;
+    onRemoveFavorite?: (quote_id: string) => void;
+}
+
+export interface BackrollDetailsProps {
+    quote: Quote;
+    expanded: boolean;
+}
+
 export type SeriesContextType = {
     seriesCategory: string;
     selectedSeries: string | null;
@@ -140,4 +173,87 @@ export interface SplitButtonProps {
     clearLabel?: string;
     placeholder?: string;
     disabled?: boolean;
+}
+
+export interface SeriesPageServerProps {
+    searchParams: Promise<{
+        category?: string;
+        series?: string;
+        season?: string;
+        episode?: string;
+    }>
+}
+
+export interface SeriesClientProps {
+    initialQuotes: Quote[];
+    initialFilters: {
+        category?: string;
+        series?: string;
+        season?: number;
+        episode?: number;
+    }
+}
+
+export interface RandomPageProps {
+    searchParams: Promise<{
+        limit?: string;
+    }>
+}
+
+export interface RandomPageServerProps {
+    searchParams: Promise<{
+        limit?: string;
+    }>
+}
+
+export interface SeriesPageProps {
+    searchParams: Promise<{
+        category?: string;
+        series?: string;
+        season?: string;
+        episode?: string;
+    }>
+}
+
+export interface RandomServerProps {
+    limit: number;
+}
+
+export interface RandomClientProps {
+    randomQuotes: Quote[];
+}
+
+export interface PageContainerProps {
+    children: React.ReactNode;
+}
+
+export interface PageComponentContainerProps {
+    children: React.ReactNode;
+}
+
+export interface FilterDrawerProps {
+    open: boolean;
+    onClose: () => void;
+}
+
+export interface FilterHeaderProps {
+    onClose: () => void;
+}
+
+export interface FilterControlsProps {
+    seriesCategory: string;
+    selectedSeries: string | null;
+    selectedSeason: number | null;
+    selectedEpisode: number | null;
+    onCategoryChange: (category: string | number | null) => void;
+    onSeriesChange: (series: string | number | null) => void;
+    onSeasonChange: (season: string | number | null) => void;
+    onEpisodeChange: (episode: string | number | null) => void;
+}
+
+export interface FilterActionsProps {
+    seriesCategory: string;
+    hasActiveFilters: boolean;
+    onApplyFilters: () => void;
+    onClearFilters: () => void;
 }

@@ -1,19 +1,19 @@
 'use client'
 
-import { Quote } from '../../../lib/definitions';
 import { useEffect, useState } from 'react';
 import { BackrollCard } from '../../backrollCards/BackrollCard';
+import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import PageComponentContainer from '../../pageComponentContainer';
 
-interface WorkroomClientProps {
-    initialQuotes: Quote[];
-}
-
-export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
+export default function BackrollsClient({ displayResults }: { displayResults: Quote[] }) {
     const { navigateToBackroll } = useNavigationContext();
-    const [quotes, setQuotes] = useState<Quote[]>(initialQuotes);
-
+    const [quotes, setQuotes] = useState<Quote[]>(displayResults);
+    
+    // Debug logging
+    console.log('BackrollsClient - displayResults prop:', displayResults);
+    console.log('BackrollsClient - quotes state:', quotes);
+    
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     };
@@ -23,7 +23,6 @@ export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
         const handleVoteUpdate = (event: Event) => {
             const customEvent = event as CustomEvent;
             const { quoteId, newVoteCount } = customEvent.detail;
-
             setQuotes(currentQuotes =>
                 currentQuotes.map(quote =>
                     quote.id === quoteId
@@ -40,7 +39,7 @@ export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
     if (quotes.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
-                No quotes found for the selected filters.
+                No quotes found.
             </div>
         );
     }

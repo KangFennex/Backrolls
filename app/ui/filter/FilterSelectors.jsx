@@ -4,37 +4,27 @@ import { IoFilterSharp } from "react-icons/io5";
 import { BsChatQuote } from "react-icons/bs";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
-import { useNavigationContext } from '../../context/NavigationContext';
 import { useFilterContext } from '../../context/FilterContext';
 import { useRainbowColors } from '../../lib/useRainbowColors';
+import { useRouter } from 'next/navigation';
 import Link from "next/link";
 
 export const FilterSelectors = () => {
 
-    const { navigateToRandomBackroll } = useNavigationContext();
     const { toggleDrawer } = useFilterContext();
     const { getColorForIcon } = useRainbowColors();
+    const router = useRouter();
 
-    const fetchRandomQuote = async (limit = 1) => {
-        try {
-            const response = await fetch(`/api/random?limit=${limit}`);
-            const data = await response.json();
-
-            console.log('Random quote API response:', data); // Debug log
-
-            if (response.ok && data.quote) {
-                // Navigate to backrolls page with the random quote
-                navigateToRandomBackroll(data.quote);
-            } else {
-                // Handle API errors or missing quote
-                const errorMessage = data.error || 'Failed to fetch random quote';
-                console.error('Error fetching random quote:', errorMessage);
-                // You could add user feedback here, like a toast notification
-            }
-        } catch (error) {
-            console.error('Error fetching random quote:', error);
-        }
+    const pushRandomBackroll = async (limit = 1) => {
+        // Navigate to random page with limit parameter
+        router.push(`/random?limit=${limit}`);
     }
+
+    const pushHotBackroll = async () => {
+        // Navigate to hot page
+        router.push(`/hot`);
+    }
+
 
     return (
         <>
@@ -43,59 +33,42 @@ export const FilterSelectors = () => {
                     title="Filter Backrolls"
                     size={32}
                     onClick={toggleDrawer}
-                    style={{ 
-                        color: getColorForIcon(0),
-                        transition: 'color 1s ease-in-out'
-                    }}
-                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    style={{ color: getColorForIcon(0) }}
+                    className="filter-icon filter-icon-pulse" />
                 <Link href="/hot">
                 <FaFire
                     title="Hot Backrolls"
                     size={27}
-                    style={{ 
-                        color: getColorForIcon(1),
-                        transition: 'color 1s ease-in-out'
-                    }}
-                    className="cursor-pointer hover:scale-105 transition-transform duration-200" />
+                    onClick={() => pushHotBackroll()}
+                    style={{ color: getColorForIcon(1) }}
+                    className="filter-icon filter-icon-pulse" />
                     </Link>
                 <Link href="/fresh">
                     <FaRegClock
                         title="Fresh Backrolls"
                         size={27}
-                        style={{ 
-                            color: getColorForIcon(2),
-                            transition: 'color 1s ease-in-out'
-                        }}
-                        className="cursor-pointer hover:scale-105 transition-transform duration-200"
-                    />
+                        style={{ color: getColorForIcon(2) }}
+                        className="filter-icon filter-icon-pulse"
+                    /> 
                 </Link>
                 <GiPerspectiveDiceSixFacesRandom
                     title="Random Backroll"
                     size={32}
-                    onClick={() => fetchRandomQuote(1)}
-                    style={{ 
-                        color: getColorForIcon(3),
-                        transition: 'color 1s ease-in-out, transform 0.5s ease-in-out'
-                    }}
-                    className="cursor-pointer rotate-360" />
+                    onClick={() => pushRandomBackroll(1)}
+                    style={{ color: getColorForIcon(3) }}
+                    className="random-icon" />
                 <TbArrowsRandom
                     title="Random Backrolls"
                     size={28}
-                    onClick={() => fetchRandomQuote(3)}
-                    style={{ 
-                        color: getColorForIcon(4),
-                        transition: 'color 1s ease-in-out, transform 0.5s ease-in-out'
-                    }}
-                    className="cursor-pointer rotate-360" />
+                    onClick={() => pushRandomBackroll(3)}
+                    style={{ color: getColorForIcon(4) }}
+                    className="random-icon" />
                 <Link href="">
                     <BsChatQuote 
                         title="Have a kiki" 
                         size={28} 
-                        style={{ 
-                            color: getColorForIcon(5),
-                            transition: 'color 1s ease-in-out'
-                        }}
-                        className="cursor-pointer hover:scale-105 transition-transform duration-200" />
+                        style={{ color: getColorForIcon(5) }}
+                        className="filter-icon filter-icon-pulse" />
                 </Link>
             </div>
         </>

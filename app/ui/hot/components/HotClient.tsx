@@ -1,18 +1,14 @@
-'use client'
+'use client';
 
-import { Quote } from '../../../lib/definitions';
 import { useEffect, useState } from 'react';
 import { BackrollCard } from '../../backrollCards/BackrollCard';
+import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import PageComponentContainer from '../../pageComponentContainer';
 
-interface WorkroomClientProps {
-    initialQuotes: Quote[];
-}
-
-export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
+export default function HotClient({ hotBackrolls }: { hotBackrolls: Quote[] }) {
     const { navigateToBackroll } = useNavigationContext();
-    const [quotes, setQuotes] = useState<Quote[]>(initialQuotes);
+    const [quotes, setQuotes] = useState<Quote[]>(hotBackrolls);
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -40,7 +36,7 @@ export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
     if (quotes.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
-                No quotes found for the selected filters.
+                No hot quotes found.
             </div>
         );
     }
@@ -58,5 +54,5 @@ export function WorkroomClient({ initialQuotes }: WorkroomClientProps) {
                 </div>
             ))}
         </PageComponentContainer>
-    );
+    )
 }
