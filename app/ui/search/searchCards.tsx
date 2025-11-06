@@ -48,8 +48,8 @@ function SearchResult({
     onClick: () => void;
 }) {
 
-    const truncatedQuote = quote.length > 80
-        ? quote.substring(0, 80).trim() + "..."
+    const truncatedQuote = quote.length > 45
+        ? quote.substring(0, 45).trim() + "..."
         : quote;
 
     return (
@@ -58,7 +58,7 @@ function SearchResult({
             className="search-result-item cursor-pointer
            transition-all duration-150 ease-out"
         >
-            <p className="text-gray-800 font-medium leading-relaxed transition-colors duration-150 pl-5">
+            <p className="text-gray-800 hover:bg-blue-100 font-medium leading-relaxed transition-colors duration-150 p-2 pl-5">
                 {truncatedQuote}
             </p>
         </div >

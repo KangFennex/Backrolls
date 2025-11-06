@@ -22,7 +22,7 @@ function Nav({ toggleSideMenu, isVisible }: NavProps) {
     const shouldShow = isVisible !== undefined ? isVisible : isNavVisible;
 
     return (
-        <div className={`w-full px-3 transition-transform duration-300 ease-in-out backdrop-filter backdrop-blur-sm ${shouldShow ? 'translate-y-0' : '-translate-y-full'
+        <div className={`w-full px-3 transition-transform duration-300 ease-in-out ${shouldShow ? 'translate-y-0' : '-translate-y-full'
             }`}>
             {/* Main nav container - responsive height */}
             <nav className="relative w-full mx-auto md:px-3">

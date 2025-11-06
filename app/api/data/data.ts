@@ -233,7 +233,7 @@ export async function getRandomQuote(limit: number = 1) {
 
         if (!randomError && randomQuotes && randomQuotes.length > 0) {
             console.log(`${randomQuotes.length} random quote(s) fetched with RPC function`);
-            return limit === 1 ? randomQuotes[0] : randomQuotes;
+            return randomQuotes; // Always return array for consistency
         }
 
         console.log('RPC function failed, trying alternative method...');
@@ -266,12 +266,12 @@ export async function getRandomQuote(limit: number = 1) {
 
         if (allError) {
             console.error('Error fetching quotes for random selection:', allError);
-            return null;
+            return []; // Return empty array instead of null
         }
 
         if (!allQuotes || allQuotes.length === 0) {
             console.log('No quotes found in database');
-            return null;
+            return []; // Return empty array instead of null
         }
 
         // Pick random quote(s) from the results
@@ -289,10 +289,10 @@ export async function getRandomQuote(limit: number = 1) {
         }
 
         console.log(`${selectedQuotes.length} random quote(s) selected from fallback method`);
-        return limit === 1 ? selectedQuotes[0] : selectedQuotes;
+        return selectedQuotes; // Always return array for consistency
 
     } catch (error) {
         console.error('Unexpected error in getRandomQuote:', error);
-        return null;
+        return []; // Return empty array instead of null for consistency
     }
 }

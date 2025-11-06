@@ -257,3 +257,8 @@ export interface FilterActionsProps {
     onApplyFilters: () => void;
     onClearFilters: () => void;
 }
+
+export interface SeriesFilterProps {
+    onClose?: () => void;
+    className?: string;
+}

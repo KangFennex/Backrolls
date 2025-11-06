@@ -7,11 +7,7 @@ import { useBackrollsStore } from '../../store/backrollsStore';
 import { useSeriesFiltering } from '../../lib/hooks';
 import { IoClose } from "react-icons/io5";
 import SplitButton from './components/SplitButton';
-
-interface SeriesFilterProps {
-    onClose?: () => void;
-    className?: string;
-}
+import { SeriesFilterProps } from '../../lib/definitions';
 
 export default function SeriesFilter({ onClose, className = '' }: SeriesFilterProps) {
     const router = useRouter();

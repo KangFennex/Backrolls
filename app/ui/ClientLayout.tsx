@@ -104,7 +104,9 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                     opacity: ${isNavVisible && isAtTop ? '0' : '1'};
                     visibility: ${isNavVisible && isAtTop ? 'hidden' : 'visible'};
                     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-                    background: var(--rich-charcoal);
+                    /* background: var(--rich-charcoal); */
+                    background: rgba(34, 34, 34, 0.8);
+                    backdrop-filter: blur(7px);
                 }
 
                 .filter-selectors-container {

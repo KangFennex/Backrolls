@@ -39,7 +39,7 @@ export function BackrollCard({
                     minWidth: '100%',
                     height: 'auto',
                     margin: '0 auto',
-                    backgroundColor: `${backgroundColor}30`,
+                    backgroundColor: `${backgroundColor}90`,
                     color: '#FFFFF0',
                     borderTop: '1px solid rgba(255, 255, 240, 0.1)',
                     borderBottom: '1px solid rgba(255, 255, 240, 0.1)',
@@ -48,14 +48,14 @@ export function BackrollCard({
                     borderRadius: '16px',
                     boxShadow: 'none',
                     transition: 'background-color 0.2s ease-in-out',
-                    '&:hover': {
-                        backgroundColor: `${backgroundColor}20`,
-                    }
+                    /*'&:hover': {
+                        backgroundColor: `${backgroundColor}`,
+                    }*/
                 }}>
                     <BackrollHeader quote={quote} />
-                    
+
                     <CardMedia component="div" />
-                    
+
                     <BackrollContent
                         quoteText={quote.quote_text}
                         speaker={quote.speaker}
@@ -71,7 +71,7 @@ export function BackrollCard({
                         onExpandClick={handleExpandClick}
                         onRemoveFavorite={onRemoveFavorite}
                     />
-                    
+
                     <BackrollDetails quote={quote} expanded={expanded} />
                 </Card>
             </Box>

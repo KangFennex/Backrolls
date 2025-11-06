@@ -9,11 +9,11 @@ import PageComponentContainer from '../../pageComponentContainer';
 
 export default function RandomClient({ randomQuotes }: RandomClientProps) {
     const { navigateToBackroll } = useNavigationContext();
-    const [quotes, setQuotes] = useState<Quote[]>(randomQuotes);
+    const [quotes, setQuotes] = useState<Quote[]>(randomQuotes || []);
 
     // Update quotes when randomQuotes prop changes (e.g., when limit changes)
     useEffect(() => {
-        setQuotes(randomQuotes);
+        setQuotes(randomQuotes || []);
     }, [randomQuotes]);
 
     const handleClick = (quote: Quote) => {
