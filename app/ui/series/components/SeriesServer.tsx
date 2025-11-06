@@ -1,8 +1,8 @@
 import { getFilteredQuotes } from '../../../api/data/data';
 import { SeriesClient } from './SeriesClient';
-import { SeriesListServerProps } from '../../../lib/definitions';
+import { SeriesPageProps } from '../../../lib/definitions';
 
-export default async function SeriesServer({ searchParams }: SeriesListServerProps) {
+export default async function SeriesServer({ searchParams }: SeriesPageProps) {
     const params = await searchParams;
     const category = params.category;
     const series = params.series;
