@@ -83,7 +83,7 @@ body {
 }
 
 .backrollCard-font {
-    font-family: "Indie Flower", cursive;
+    font-family: "Indie Flower", sans-serif;
     src: url('/fonts/IndieFlower-Regular');
     font-optical-sizing: auto;
     font-weight: 500;
