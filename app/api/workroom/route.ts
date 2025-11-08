@@ -3,9 +3,8 @@ import { getRandomQuote } from '../data/data';
 
 export async function GET(request: NextRequest) {
     try {
-        // Validate limit (max 30 to prevent abuse)
-        const url = new URL(request.url);
-        const limitParam = url.searchParams.get('limit');
+        // Use request.nextUrl for Next.js compatibility
+        const limitParam = request.nextUrl.searchParams.get('limit');
         const limit = limitParam ? parseInt(limitParam, 10) : 30; // Default to 30 for workroom
 
         // Validate limit (max 30 to prevent abuse)

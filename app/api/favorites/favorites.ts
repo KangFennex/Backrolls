@@ -44,7 +44,6 @@ export async function getUserFavoritesWithDetails(userId: string) {
                     episode,
                     timestamp,
                     speaker,
-                    context,
                     vote_count,
                     share_count
                 )

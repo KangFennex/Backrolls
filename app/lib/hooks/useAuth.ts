@@ -9,7 +9,8 @@ export function useAuth() {
     const [isLoading, setIsLoading] = useState(true);
     const { data: session, status } = useSession();
 
-    const setCurrentUser = useBackrollsStore((state) => state.setCurrentUser);
+    // Get setCurrentUser outside of useEffect to avoid dependency issues
+    const setCurrentUserRef = useBackrollsStore((state) => state.setCurrentUser);
 
     // Function to check auth from custom endpoint
     const checkCustomAuth = useCallback(async () => {
@@ -23,19 +24,20 @@ export function useAuth() {
             if (result.authenticated && result.user) {
                 setUser(result.user);
                 setIsAuthenticated(true);
-                setCurrentUser(result.user.id);
+                setCurrentUserRef(result.user.id);
             } else {
                 setUser(null);
                 setIsAuthenticated(false);
-                setCurrentUser(null);
+                setCurrentUserRef(null);
             }
         } catch (error) {
             setUser(null);
             setIsAuthenticated(false);
-            setCurrentUser(null);
+            setCurrentUserRef(null);
             console.error('Auth verification failed:', error);
         }
-    }, [setCurrentUser]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Listen for NextAuth session changes
     useEffect(() => {
@@ -54,12 +56,13 @@ export function useAuth() {
 
             setUser(extendedUser);
             setIsAuthenticated(true);
-            setCurrentUser(sessionUser.id || null);
+            setCurrentUserRef(sessionUser.id || null);
         } else if (status === 'unauthenticated') {
             // No session - check custom auth as fallback
             checkCustomAuth();
         }
-    }, [session, status, setCurrentUser, checkCustomAuth]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [session, status, checkCustomAuth]);
 
     // Initial auth check
     useEffect(() => {

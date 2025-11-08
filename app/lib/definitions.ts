@@ -24,7 +24,6 @@ export interface FavoriteQuoteDetails {
     episode: number;
     timestamp: string;
     speaker: string;
-    context: string;
     vote_count: number;
     share_count: number;
 }
@@ -62,11 +61,22 @@ export type Quote = {
     season: number;
     episode: number;
     timestamp: string;
-    context: string;
     user_id: string;
     is_approved: boolean;
     vote_count: number;
     share_count: number;
+    // Optional relationship to contexts
+    contexts?: QuoteContext[];
+};
+
+export type QuoteContext = {
+    id: string;
+    quote_id: string;
+    context: string;
+    submitted_by: string | null;
+    submitted_at: string;
+    is_verified: boolean;
+    created_at: string;
 };
 
 
