@@ -67,6 +67,7 @@ export type Quote = {
     share_count: number;
     // Optional relationship to contexts
     contexts?: QuoteContext[];
+    isMainPage?: boolean;
 };
 
 export type QuoteContext = {
@@ -158,8 +159,6 @@ export interface BackrollDetailsProps {
     quote: Quote;
     expanded: boolean;
 }
-
-
 
 export interface SplitButtonProps {
     label: string;

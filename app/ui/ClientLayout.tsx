@@ -15,6 +15,7 @@ import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { usePathname } from 'next/navigation';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -57,6 +58,8 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     const closeSideMenu = () => setSideMenuOpen(false);
     const toggleSideMenu = () => setSideMenuOpen(!sideMenuOpen);
 
+    const isMainPage = usePathname() === '/';
+
     return (
         <div className="app-layout">
             {/* Filter Bar - Absolute positioned (moves with nav when at top) */}
@@ -82,7 +85,7 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             </header>
 
             {/* Main content area with margin for fixed filter bar */}
-            <div className="main-content">
+            <div className={`main-content ${isMainPage ? 'isMainPage' : ''}`}>
                 {children}
             </div>
 

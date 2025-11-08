@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { BackrollCard } from '..//backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useHotQuotes } from '../../lib/hooks';
@@ -9,7 +10,9 @@ import { Quote } from '../../lib/definitions';
 
 export default function HotPageClient() {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: hotData } = useHotQuotes();
+    const { data: hotData } = useHotQuotes(10);
+    const queryClient = useQueryClient();
+
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     }
@@ -19,19 +22,27 @@ export default function HotPageClient() {
             const customEvent = event as CustomEvent;
             const { quoteId, newVoteCount } = customEvent.detail;
 
-            // ⚠️ NOTE: With TanStack Query, we'd typically use mutations
-            // for vote updates, but for now we'll keep the existing pattern
-            // We'll cover mutations in future hooks!
+            // Updates the TanStack Query cache directly
+            queryClient.setQueryData<{ quotes: Quote[]; count: number }>(
+                ['hotQuotes', 10],
+                (oldData) => {
+                    if (!oldData?.quotes) return oldData;
 
-            // This is a limitation of the current approach - we can't directly
-            // update the cached data. In a full TanStack Query implementation,
-            // we'd use queryClient.setQueryData() to update the cache
-            console.log('Vote update received:', quoteId, newVoteCount);
+                    return {
+                        ...oldData,
+                        quotes: oldData.quotes.map((quote) =>
+                            quote.id === quoteId
+                                ? { ...quote, vote_count: newVoteCount }
+                                : quote
+                        )
+                    };
+                }
+            );
         };
 
         window.addEventListener('voteUpdated', handleVoteUpdate);
         return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, []);
+    }, [queryClient]);
 
     return (
         <PageComponentContainer>

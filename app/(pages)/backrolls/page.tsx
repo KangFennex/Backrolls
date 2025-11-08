@@ -1,11 +1,11 @@
 import PageContainer from "../../ui/pageContainer";
-import BackrollsPageServer from "../../ui/backrolls/BackrollsPageServer";
+import BackrollsPageClient from "../../ui/backrolls/BackrollsPageClient";
 
-export default function Page() {
+export default function BackrollsPage() {
     return (
         <>
             <PageContainer>
-                <BackrollsPageServer />
+                <BackrollsPageClient />
             </PageContainer>
         </>
     );

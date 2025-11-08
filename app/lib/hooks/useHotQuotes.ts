@@ -4,7 +4,15 @@ export function useHotQuotes(limit: number = 10) {
     return useSuspenseQuery({
         queryKey: ['hotQuotes', limit],
         queryFn: async () => {
-            const response = await fetch('/api/hot');
+
+            // Absolute URL for SSR compatibility
+            const baseUrl = typeof window === 'undefined'
+                ? process.env.NEXTAUTH_URL || 'http://localhost:3000'
+                : '';
+            const url = `${baseUrl}/api/hot?limit=${limit}`;
+
+            const response = await fetch(url);
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

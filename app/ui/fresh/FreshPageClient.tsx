@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query';;
 import { BackrollCard } from '..//backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useFreshQuotes } from '../../lib/hooks';
@@ -10,6 +11,7 @@ import { Quote } from '../../lib/definitions';
 export default function FreshPageClient() {
     const { navigateToBackroll } = useNavigationContext();
     const { data: freshData } = useFreshQuotes();
+    const queryClient = useQueryClient();
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -20,13 +22,22 @@ export default function FreshPageClient() {
             const customEvent = event as CustomEvent;
             const { quoteId, newVoteCount } = customEvent.detail;
 
-            // ⚠️ NOTE: With TanStack Query, we'd typically use mutations
-            // for vote updates, but for now we'll keep the existing pattern
-            // We'll cover mutations in future hooks!
+            queryClient.setQueryData<{ quote: Quote[] }>(
+                ['freshQuotes'],
+                (oldData) => {
+                    if (!oldData?.quote) return oldData;
 
-            // This is a limitation of the current approach - we can't directly
-            // update the cached data. In a full TanStack Query implementation,
-            // we'd use queryClient.setQueryData() to update the cache
+                    return {
+                        ...oldData,
+                        quote: oldData.quote.map((quote) =>
+                            quote.id === quoteId
+                                ? { ...quote, vote_count: newVoteCount }
+                                : quote
+                        )
+                    };
+                }
+            );
+
             console.log('Vote update received:', quoteId, newVoteCount);
         };
 

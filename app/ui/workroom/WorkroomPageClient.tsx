@@ -1,15 +1,22 @@
 'use client'
 
 import { Quote } from '../../lib/definitions';
-import { useEffect } from 'react';
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query';
 import { useWorkroomQuotes } from '../../lib/hooks';
 import { BackrollCard } from '../backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
+import { usePathname } from 'next/navigation';
 
 export default function WorkroomPageClient() {
     const { navigateToBackroll } = useNavigationContext();
     const { data: randomData } = useWorkroomQuotes(30);
+    const queryClient = useQueryClient();
+    const pathname = usePathname();
+
+    const isMainPage = pathname === '/';
+
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     }
@@ -19,19 +26,27 @@ export default function WorkroomPageClient() {
             const customEvent = event as CustomEvent;
             const { quoteId, newVoteCount } = customEvent.detail;
 
-            // ⚠️ NOTE: With TanStack Query, we'd typically use mutations
-            // for vote updates, but for now we'll keep the existing pattern
-            // We'll cover mutations in future hooks!
+            // Updates the TanStack Query cache directly
+            queryClient.setQueryData<{ quote: Quote[] }>(
+                ['workroomQuotes', 30],
+                (oldData) => {
+                    if (!oldData?.quote) return oldData;
 
-            // This is a limitation of the current approach - we can't directly
-            // update the cached data. In a full TanStack Query implementation,
-            // we'd use queryClient.setQueryData() to update the cache
-            console.log('Vote update received:', quoteId, newVoteCount);
+                    return {
+                        ...oldData,
+                        quote: oldData.quote.map((quote) =>
+                            quote.id === quoteId
+                                ? { ...quote, vote_count: newVoteCount }
+                                : quote
+                        )
+                    };
+                }
+            );
         };
 
         window.addEventListener('voteUpdated', handleVoteUpdate);
         return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, []);
+    }, [queryClient]);
 
     if (!randomData?.quote || randomData.quote.length === 0) {
         return (
@@ -50,6 +65,7 @@ export default function WorkroomPageClient() {
                         variant="full"
                         index={index}
                         onClick={() => handleClick(quote)}
+                        isMainPage={isMainPage}
                     />
                 </div>
             ))}

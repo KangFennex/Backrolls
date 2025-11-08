@@ -3,12 +3,12 @@ import { getTopRatedQuotes } from '../data/data';
 
 export async function GET(request: NextRequest) {
     try {
-        // Extract query parameters for future extensibility
-        const url = new URL(request.url);
-        const limit = parseInt(url.searchParams.get('limit') || '10');
 
-        // Validate limit (max 50 to prevent abuse)
-        const validatedLimit = Math.min(Math.max(limit, 1), 50);
+        const limitParam = request.nextUrl.searchParams.get('limit');
+        const limit = limitParam ? parseInt(limitParam, 10) : 30;
+
+        // Validate limit (max 30 to prevent abuse)
+        const validatedLimit = Math.min(Math.max(limit, 1), 30);
 
         const quotes = await getTopRatedQuotes(validatedLimit);
 

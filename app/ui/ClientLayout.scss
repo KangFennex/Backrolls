@@ -87,6 +87,10 @@
     margin: auto;
     margin-top: 30px;
     transition: margin-top 0.3s ease-in-out;
+
+    &.isMainPage {
+        max-width: 1000px;
+    }
 }
 
 /* Media queries for different screen sizes and aspect ratios */
@@ -95,6 +99,10 @@
 @media (min-width: 1400px) {
     .main-content {
         max-width: 600px; /* More constrained on very wide screens */
+
+        &.isMainPage {
+            max-width: 1000px;
+        }
     }
 }
 
@@ -102,6 +110,10 @@
 @media (min-width: 1024px) and (max-width: 1399px) {
     .main-content {
         max-width: 600px; /* Slightly more constrained than current */
+
+        &.isMainPage {
+            max-width: 1000px;
+        }
     }
 }
 

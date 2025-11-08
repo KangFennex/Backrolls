@@ -3,7 +3,6 @@ import { QuoteCardProps } from '../../lib/definitions';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { getBackrollCardBackground } from '../../lib/hooks';
 import { selectBackgroundColor } from '../../lib/utils'
 import BackrollHeader from './components/BackrollHeader';
 import BackrollContent from './components/BackrollContent';
@@ -17,6 +16,7 @@ export function BackrollCard({
     onRemoveFavorite,
     onClick,
     index = 0,
+    isMainPage = false
 }: QuoteCardProps
 ) {
     const [expanded, setExpanded] = useState(false);
@@ -30,7 +30,7 @@ export function BackrollCard({
     };
 
     return (
-        <div className="backroll-card w-[100%]"
+        <div className={`backroll-card ${isMainPage ? 'isMainPage' : ''}`}
             style={{ cursor: onClick ? 'pointer' : 'default' }}
         >
             <Box className="backroll-card--content">

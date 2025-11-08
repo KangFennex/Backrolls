@@ -1,3 +1,12 @@
+.backroll-card {
+    width: 100%;
+
+    &.isMainPage {
+        width: fit-content;
+        max-width: 450px;
+    }
+}
+
 .backroll {
     display: flex;
     position: relative;
@@ -9,7 +18,11 @@
     padding: 0.3rem 0.5rem;
     min-height: 120px;
     font-family: 'Bitcount Prop Single', sans-serif;
-    
+
+    &.isMainPage {
+        min-height: 100px;
+    }
+
     /* Responsive padding */
     @media (min-width: 640px) {
         padding: 0.4rem 0.5rem;
