@@ -12,16 +12,16 @@ const RAINBOW_COLORS = [
     '#e6baff', // Pastel Purple
 ];
 
-export const useRainbowColors = () => {
+export const useRainbowColors = (duration: number = 5000) => {
     const [colorOffset, setColorOffset] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setColorOffset(prev => (prev + 1) % RAINBOW_COLORS.length);
-        }, 5000); // Change every 5 seconds
+        }, duration);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [duration]);
 
     // Generate colors for each icon, ensuring no two icons have the same color
     const getColorForIcon = (iconIndex: number) => {
@@ -29,5 +29,5 @@ export const useRainbowColors = () => {
         return RAINBOW_COLORS[colorIndex];
     };
 
-    return { getColorForIcon };
+    return { getColorForIcon, transitionDuration: duration };
 };
