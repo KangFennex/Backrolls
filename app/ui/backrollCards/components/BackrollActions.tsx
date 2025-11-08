@@ -77,8 +77,11 @@ export default function BackrollActions({
                     aria-expanded={expanded}
                     aria-label="show more"
                     sx={{
-                        color: 'gray',
-                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' }
+                        color: '#FFFFF0 !important',
+                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
+                        '& .MuiSvgIcon-root': {
+                            color: '#FFFFF0 !important'
+                        }
                     }}
                 >
                     <ExpandMoreIcon />

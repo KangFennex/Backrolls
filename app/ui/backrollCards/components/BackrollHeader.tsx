@@ -28,7 +28,16 @@ export default function BackrollHeader({ quote }: BackrollHeaderProps) {
                 }
             }}
             action={
-                <IconButton aria-label="settings" size="small" sx={{ color: 'gray' }}>
+                <IconButton 
+                    aria-label="settings" 
+                    size="small" 
+                    sx={{ 
+                        color: '#FFFFF0 !important',
+                        '& .MuiSvgIcon-root': {
+                            color: '#FFFFF0 !important'
+                        }
+                    }}
+                >
                     <MoreVertIcon fontSize="small" />
                 </IconButton>
             }
