@@ -33,7 +33,7 @@ export function BackrollCard({
         <div className="backroll-card w-[100%]"
             style={{ cursor: onClick ? 'pointer' : 'default' }}
         >
-            <Box className="backroll-card--content" onClick={onClick}>
+            <Box className="backroll-card--content">
                 <Card sx={{
                     width: '100%',
                     minWidth: '100%',
@@ -57,6 +57,7 @@ export function BackrollCard({
                     <CardMedia component="div" />
 
                     <BackrollContent
+                        onClick={onClick}
                         quoteText={quote.quote_text}
                         speaker={quote.speaker}
                         maxLength={isCompact ? 120 : 300}

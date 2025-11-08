@@ -29,10 +29,13 @@ function Backroll({
 export default function BackrollContent({
     quoteText,
     speaker,
-    maxLength
+    maxLength,
+    onClick,
 }: BackrollContentProps) {
     return (
-        <CardContent className="backroll-card-content flex justify-center items-center">
+        <CardContent
+            onClick={onClick}
+            className="backroll-card-content flex justify-center items-center">
             <Backroll
                 quote_text={quoteText}
                 speaker={speaker}

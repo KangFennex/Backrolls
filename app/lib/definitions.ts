@@ -141,6 +141,7 @@ export interface BackrollContentProps {
     quoteText: string;
     speaker: string;
     maxLength?: number;
+    onClick?: () => void;
 }
 
 export interface BackrollActionsProps {
