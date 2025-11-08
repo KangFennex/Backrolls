@@ -1,0 +1,171 @@
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.header { 
+    z-index: 51;
+    transition: transform 0.3s ease-in-out;
+}
+
+.filter-bar-absolute {
+    position: absolute;
+    top: 50px; /* Default for larger screens */
+    left: 0;
+    width: 100vw;
+    z-index: 50;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    box-sizing: border-box;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    background: var(--rich-charcoal);
+    
+    // Default state - hidden
+    opacity: 0;
+    visibility: hidden;
+    
+    // Show when nav is visible and at top
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Responsive positioning for smaller screens */
+    @media (max-width: 768px) {
+        top: 95px; /* Larger value for mobile when search wraps */
+    }
+}
+
+.filter-bar-fixed {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100vw;
+    z-index: 50;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    box-sizing: border-box;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    background: rgba(34, 34, 34, 0.8);
+    backdrop-filter: blur(7px);
+    
+    // Default state - visible
+    opacity: 1;
+    visibility: visible;
+    
+    // Hide when nav is visible and at top
+    &.hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.filter-selectors-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 50px;
+}
+
+.main-content {
+    width: 80%;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 30px;
+    transition: margin-top 0.3s ease-in-out;
+}
+
+/* Media queries for different screen sizes and aspect ratios */
+
+/* Large rectangular screens (ultrawide, external monitors) */
+@media (min-width: 1400px) {
+    .main-content {
+        max-width: 600px; /* More constrained on very wide screens */
+    }
+}
+
+/* Standard desktop screens */
+@media (min-width: 1024px) and (max-width: 1399px) {
+    .main-content {
+        max-width: 600px; /* Slightly more constrained than current */
+    }
+}
+
+/* Square-ish screens and smaller desktops */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .main-content {
+        width: 85%;
+        max-width: 650px; /* Much more constrained for square screens */
+    }
+}
+
+/* Tablets in landscape */
+@media (min-width: 640px) and (max-width: 767px) {
+    .main-content {
+        width: 90%;
+        max-width: 600px;
+    }
+}
+
+/* Mobile devices (keep current good mobile experience) */
+@media (max-width: 639px) {
+    .main-content {
+        width: 95%;
+        max-width: none; /* Let mobile use full available width */
+    }
+}
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 200px;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 60;
+    overflow-y: auto;
+    
+    &.open {
+        transform: translateX(0);
+    }
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 55;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    
+    &.open {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.main { 
+    flex: 1;
+    width: 100%;
+}

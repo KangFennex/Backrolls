@@ -24,7 +24,7 @@ export const useRainbowColors = () => {
     }, []);
 
     // Generate colors for each icon, ensuring no two icons have the same color
-    const getColorForIcon = (iconIndex) => {
+    const getColorForIcon = (iconIndex: number) => {
         const colorIndex = (iconIndex + colorOffset) % RAINBOW_COLORS.length;
         return RAINBOW_COLORS[colorIndex];
     };

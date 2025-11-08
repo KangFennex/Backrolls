@@ -3,9 +3,10 @@ import { getRandomQuote } from '../data/data';
 
 export async function GET(request: NextRequest) {
     try {
+        // Validate limit (max 30 to prevent abuse)
         const url = new URL(request.url);
         const limitParam = url.searchParams.get('limit');
-        const limit = limitParam ? parseInt(limitParam, 10) : 1;
+        const limit = limitParam ? parseInt(limitParam, 10) : 30; // Default to 30 for workroom
 
         // Validate limit (max 30 to prevent abuse)
         const validatedLimit = Math.min(Math.max(limit, 1), 30);
@@ -25,7 +26,6 @@ export async function GET(request: NextRequest) {
         // Return consistent structure - always use 'quote' key for backward compatibility
         return NextResponse.json({
             quote: result,
-            count: Array.isArray(result) ? result.length : 1
         });
     } catch (error) {
         console.error('Error in random route:', error);

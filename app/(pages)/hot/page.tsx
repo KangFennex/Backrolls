@@ -1,11 +1,11 @@
 import PageContainer from '../../ui/pageContainer';
-import HotPageServer from '../../ui/hot/HotPageServer';
+import HotPageClient from '../../ui/hot/HotPageClient';
 
 export default function hotPage() {
     return (
         <>
             <PageContainer>
-                <HotPageServer />
+                <HotPageClient />
             </PageContainer>
         </>
     )

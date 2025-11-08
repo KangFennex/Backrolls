@@ -1,5 +1,5 @@
-import RandomServer from './components/RandomServer';
 import { RandomPageServerProps } from '../../lib/definitions';
+import RandomServer from './components/RandomServer';
 
 export default async function RandomPageServer({ searchParams }: RandomPageServerProps) {
     const params = await searchParams;

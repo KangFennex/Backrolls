@@ -148,17 +148,7 @@ export interface BackrollDetailsProps {
     expanded: boolean;
 }
 
-export type SeriesContextType = {
-    seriesCategory: string;
-    selectedSeries: string | null;
-    selectedSeason: number | null;
-    selectedEpisode: number | null;
-    setSeriesCategory: (category: string) => void;
-    setSelectedSeries: (series: string | null) => void;
-    setSelectedSeason: (season: number | null) => void;
-    setSelectedEpisode: (episode: number | null) => void;
-    clearFilters: () => void;
-}
+
 
 export interface SplitButtonProps {
     label: string;
@@ -173,6 +163,20 @@ export interface SplitButtonProps {
     clearLabel?: string;
     placeholder?: string;
     disabled?: boolean;
+}
+
+// Define props for Series components
+
+export type SeriesContextType = {
+    seriesCategory: string;
+    selectedSeries: string | null;
+    selectedSeason: number | null;
+    selectedEpisode: number | null;
+    setSeriesCategory: (category: string) => void;
+    setSelectedSeries: (series: string | null) => void;
+    setSelectedSeason: (season: number | null) => void;
+    setSelectedEpisode: (episode: number | null) => void;
+    clearFilters: () => void;
 }
 
 export interface SeriesPageServerProps {
@@ -194,6 +198,24 @@ export interface SeriesClientProps {
     }
 }
 
+export interface SeriesPageProps {
+    searchParams: Promise<{
+        category?: string;
+        series?: string;
+        season?: string;
+        episode?: string;
+    }>
+}
+
+// Define props for RandomServer and RandomClient components
+export interface RandomServerProps {
+    limit: number;
+}
+
+export interface RandomClientProps {
+    randomQuotes: Quote[];
+}
+
 export interface RandomPageProps {
     searchParams: Promise<{
         limit?: string;
@@ -206,23 +228,7 @@ export interface RandomPageServerProps {
     }>
 }
 
-export interface SeriesPageProps {
-    searchParams: Promise<{
-        category?: string;
-        series?: string;
-        season?: string;
-        episode?: string;
-    }>
-}
-
-export interface RandomServerProps {
-    limit: number;
-}
-
-export interface RandomClientProps {
-    randomQuotes: Quote[];
-}
-
+// Define props for PageContainer and PageComponentContainer components
 export interface PageContainerProps {
     children: React.ReactNode;
 }
@@ -231,6 +237,7 @@ export interface PageComponentContainerProps {
     children: React.ReactNode;
 }
 
+// Define props for FilterDrawer and its subcomponents
 export interface FilterDrawerProps {
     open: boolean;
     onClose: () => void;

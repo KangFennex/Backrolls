@@ -1,4 +1,4 @@
-import WorkroomPageServer from './ui/workroom/WorkroomPageServer';
+import WorkroomPageClient from './ui/workroom/WorkroomPageClient';
 import PageContainer from './ui/pageContainer';
 
 export default function HomePage() {
@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <>
       <PageContainer>
-        <WorkroomPageServer />
+        <WorkroomPageClient />
       </PageContainer>
     </>
   );

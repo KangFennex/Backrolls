@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { getBackrollCardBackground } from '../../lib/hooks';
+import { selectBackgroundColor } from '../../lib/utils'
 import BackrollHeader from './components/BackrollHeader';
 import BackrollContent from './components/BackrollContent';
 import BackrollActions from './components/BackrollActions';
@@ -22,7 +23,7 @@ export function BackrollCard({
     const isCompact = variant === 'compact';
 
     // Get subtle background color
-    const backgroundColor = getBackrollCardBackground(index);
+    const backgroundColor = selectBackgroundColor(index);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -30,16 +31,15 @@ export function BackrollCard({
 
     return (
         <div className="backroll-card w-[100%]"
-            onClick={onClick}
             style={{ cursor: onClick ? 'pointer' : 'default' }}
         >
-            <Box className="backroll-card--content">
+            <Box className="backroll-card--content" onClick={onClick}>
                 <Card sx={{
                     width: '100%',
                     minWidth: '100%',
                     height: 'auto',
                     margin: '0 auto',
-                    backgroundColor: `${backgroundColor}90`,
+                    backgroundColor: `${backgroundColor}80`,
                     color: '#FFFFF0',
                     borderTop: '1px solid rgba(255, 255, 240, 0.1)',
                     borderBottom: '1px solid rgba(255, 255, 240, 0.1)',
@@ -48,9 +48,9 @@ export function BackrollCard({
                     borderRadius: '16px',
                     boxShadow: 'none',
                     transition: 'background-color 0.2s ease-in-out',
-                    /*'&:hover': {
-                        backgroundColor: `${backgroundColor}`,
-                    }*/
+                    '&:hover': {
+                        backgroundColor: `${backgroundColor}90`,
+                    }
                 }}>
                     <BackrollHeader quote={quote} />
 

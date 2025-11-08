@@ -16,7 +16,7 @@ function Backroll({
 
     return (
         <div className="backroll">
-            <p className="backroll__quote-text">
+            <p className="backroll__quote-text backrollCard-font">
                 {truncatedText}
             </p>
             <span className="backroll__quote-speaker">
@@ -26,10 +26,10 @@ function Backroll({
     );
 }
 
-export default function BackrollContent({ 
-    quoteText, 
-    speaker, 
-    maxLength 
+export default function BackrollContent({
+    quoteText,
+    speaker,
+    maxLength
 }: BackrollContentProps) {
     return (
         <CardContent className="backroll-card-content flex justify-center items-center">

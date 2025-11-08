@@ -7,7 +7,7 @@ import { RiSofaLine, RiSofaFill } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import { useAuth } from "../../lib/hooks";
-import { useScrollDirection } from "../../lib/useScrollDirection";
+import { useScrollDirection } from "../../lib/hooks";
 
 interface NavProps {
     toggleSideMenu: () => void;

@@ -16,150 +16,155 @@ export function SearchCardsSkeleton() {
     )
 }
 
-export function BackrollCardSkeleton() {
+export function BackrollCardSkeleton({ index = 0 }: { index?: number }) {
+    // Use similar background logic as your real cards
+    const backgrounds = [
+        '#FFE4E1', '#FFEFD5', '#FFE4B5', '#FFDAB9', '#FFB6C1', '#FFC0CB',
+        '#E0FFFF', '#F0F8FF', '#E6E6FA', '#DDA0DD', '#D8BFD8', '#B0E0E6',
+        '#F0FFF0', '#F5FFFA', '#E0FFE0', '#AFEEEE', '#98FB98', '#C7FFDB'
+    ];
+    
+    const backgroundColor = backgrounds[index % backgrounds.length];
+    
     return (
-        <div className="w-full mb-4">
+        <div className="flex justify-center w-full mb-4">
             <Box sx={{
-                width: '100%',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                borderRadius: '16px',
-                border: '1px solid rgba(255, 255, 240, 0.1)',
+                width: 300,
+                maxHeight: 400,
+                backgroundColor: backgroundColor,
+                color: 'var(--rich-charcoal)',
+                border: '1px solid var(--rich-charcoal)',
+                borderRadius: '8px',
+                boxShadow: `
+                    0 4px 8px color-mix(in srgb, var(--rich-charcoal) 15%, transparent),
+                    0 2px 4px color-mix(in srgb, var(--rich-charcoal) 10%, transparent)
+                `,
                 overflow: 'hidden',
                 position: 'relative'
             }}>
-                {/* Card Header Skeleton */}
-                <div className="p-4 pb-2">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <Skeleton
-                                variant="circular"
-                                width={24}
-                                height={24}
-                                sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                            />
-                            <Skeleton
-                                variant="text"
-                                width={120}
-                                height={16}
-                                sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                            />
-                        </div>
+                {/* Card Header Skeleton - matches your CardHeader */}
+                <div className="p-2 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
                         <Skeleton
                             variant="circular"
-                            width={20}
-                            height={20}
-                            sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                            width={30}
+                            height={30}
+                            sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
+                        />
+                        <Skeleton
+                            variant="text"
+                            width={120}
+                            height={16}
+                            sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
                         />
                     </div>
+                    <Skeleton
+                        variant="circular"
+                        width={24}
+                        height={24}
+                        sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
+                    />
                 </div>
 
-                {/* Quote Content Skeleton */}
-                <div className="px-6 py-8">
-                    <div className="text-center space-y-4">
+                {/* Quote Content Skeleton - matches your backroll component */}
+                <div className="px-2 py-4 flex flex-col justify-center items-center text-center min-h-[120px]">
+                    <div className="text-center space-y-3 w-full">
+                        {/* Quote text lines */}
                         <Skeleton
                             variant="text"
-                            width="90%"
-                            height={32}
+                            width="85%"
+                            height={28}
                             sx={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                backgroundColor: 'rgba(44, 44, 44, 0.2)',
                                 margin: '0 auto',
-                                fontSize: '1.5rem'
+                                fontSize: '1.3rem'
                             }}
                         />
                         <Skeleton
                             variant="text"
-                            width="75%"
-                            height={32}
+                            width="70%"
+                            height={28}
                             sx={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                backgroundColor: 'rgba(44, 44, 44, 0.2)',
                                 margin: '0 auto',
-                                fontSize: '1.5rem'
+                                fontSize: '1.3rem'
                             }}
                         />
                         <Skeleton
                             variant="text"
-                            width="60%"
-                            height={32}
+                            width="55%"
+                            height={28}
                             sx={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                backgroundColor: 'rgba(44, 44, 44, 0.2)',
                                 margin: '0 auto',
-                                fontSize: '1.5rem'
+                                fontSize: '1.3rem'
                             }}
                         />
 
-                        {/* Speaker Skeleton */}
-                        <div className="pt-4">
+                        {/* Speaker Skeleton - positioned like your speaker styling */}
+                        <div className="pt-3 flex justify-end pr-8">
                             <Skeleton
                                 variant="text"
-                                width="40%"
-                                height={20}
+                                width={80}
+                                height={18}
                                 sx={{
-                                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                                    margin: '0 auto'
+                                    backgroundColor: 'rgba(44, 44, 44, 0.15)'
                                 }}
                             />
                         </div>
                     </div>
                 </div>
 
-                {/* Card Actions Skeleton */}
-                <div className="px-4 pb-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                                <Skeleton
-                                    variant="circular"
-                                    width={20}
-                                    height={20}
-                                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                                />
-                                <Skeleton
-                                    variant="circular"
-                                    width={20}
-                                    height={20}
-                                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                                />
-                                <Skeleton
-                                    variant="text"
-                                    width={30}
-                                    height={16}
-                                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                                />
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Skeleton
-                                    variant="circular"
-                                    width={20}
-                                    height={20}
-                                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                                />
-                                <Skeleton
-                                    variant="circular"
-                                    width={20}
-                                    height={20}
-                                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                                />
-                                <Skeleton
-                                    variant="circular"
-                                    width={20}
-                                    height={20}
-                                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                                />
-                            </div>
+                {/* Card Actions Skeleton - matches your CardActions */}
+                <div className="px-2 pb-2">
+                    <div className="flex items-center justify-between w-full">
+                        {/* Vote buttons area */}
+                        <div className="flex items-center gap-1">
+                            <Skeleton
+                                variant="circular"
+                                width={24}
+                                height={24}
+                                sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
+                            />
+                            <Skeleton
+                                variant="text"
+                                width={20}
+                                height={16}
+                                sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
+                            />
+                            <Skeleton
+                                variant="circular"
+                                width={24}
+                                height={24}
+                                sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
+                            />
                         </div>
+                        
+                        {/* Action buttons area */}
+                        <div className="flex items-center gap-1">
+                            {[...Array(3)].map((_, i) => (
+                                <Skeleton
+                                    key={i}
+                                    variant="circular"
+                                    width={24}
+                                    height={24}
+                                    sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
+                                />
+                            ))}
+                        </div>
+                        
+                        {/* Expand button */}
                         <Skeleton
                             variant="circular"
                             width={24}
                             height={24}
-                            sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                            sx={{ backgroundColor: 'rgba(44, 44, 44, 0.2)' }}
                         />
                     </div>
                 </div>
 
                 {/* Shimmer Effect */}
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="shimmer-effect-skeleton"></div>
-                </div>
+                <div className="shimmer-effect-skeleton"></div>
             </Box>
         </div>
     );
@@ -219,8 +224,8 @@ export function MainPageSkeleton() {
                 <div className="w-full max-w-4xl mx-auto px-4">
                     {/* Card Skeletons */}
                     <div className="flex flex-col gap-4">
-                        {[...Array(3)].map((_, index) => (
-                            <BackrollCardSkeleton key={index} />
+                        {[...Array(6)].map((_, index) => (
+                            <BackrollCardSkeleton key={index} index={index} />
                         ))}
                     </div>
                 </div>
@@ -233,8 +238,8 @@ export function SectionSkeleton() {
     return (
         <section className="flex flex-col w-full h-auto">
             <div className="flex flex-col w-full gap-4">
-                {[...Array(3)].map((_, index) => (
-                    <BackrollCardSkeleton key={index} />
+                {[...Array(6)].map((_, index) => (
+                    <BackrollCardSkeleton key={index} index={index} />
                 ))}
             </div>
         </section>

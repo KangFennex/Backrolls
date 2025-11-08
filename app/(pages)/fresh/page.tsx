@@ -1,11 +1,11 @@
 import PageContainer from '../../ui/pageContainer';
-import FreshPageServer from '../../ui/fresh/FreshPageServer';
+import FreshPageClient from '../../ui/fresh/FreshPageClient';
 
 export default function freshPage() {
     return (
         <>
             <PageContainer>
-                <FreshPageServer />
+                <FreshPageClient />
             </PageContainer>
         </>
     )

@@ -6,7 +6,7 @@ import { BsChatQuote } from "react-icons/bs";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
 import { useFilterContext } from '../../context/FilterContext';
-import { useRainbowColors } from '../../lib/useRainbowColors';
+import { useRainbowColors } from '../../lib/hooks';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from "next/link";
 
