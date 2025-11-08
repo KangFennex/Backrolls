@@ -67,7 +67,6 @@ export type Quote = {
     share_count: number;
     // Optional relationship to contexts
     contexts?: QuoteContext[];
-    isMainPage?: boolean;
 };
 
 export type QuoteContext = {
@@ -132,6 +131,7 @@ export interface QuoteCardProps {
     onRemoveFavorite?: (quote_id: string) => void;
     onClick?: () => void;
     index?: number;
+    isMainPage?: boolean;
 }
 
 export interface BackrollHeaderProps {
