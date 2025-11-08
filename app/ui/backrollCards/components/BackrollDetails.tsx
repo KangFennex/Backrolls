@@ -16,7 +16,7 @@ export default function BackrollDetails({ quote, expanded }: BackrollDetailsProp
                     <div><span>Season:</span> {quote.season}</div>
                     <div><span>Episode:</span> {quote.episode}</div>
                     <div><span>Timestamp:</span> {quote.timestamp}</div>
-                    <div><span>Context:</span> {quote.context}</div>
+                    <div><span>Context:</span></div>
                 </div>
             </CardContent>
         </Collapse>
