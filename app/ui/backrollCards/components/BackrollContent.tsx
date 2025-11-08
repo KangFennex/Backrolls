@@ -4,20 +4,15 @@ import { BackrollContentProps } from '../../../lib/definitions';
 function Backroll({
     quote_text,
     speaker,
-    maxLength = 280,
 }: {
     quote_text: string;
     speaker: string;
-    maxLength?: number;
 }) {
-    const truncatedText = quote_text.length > maxLength
-        ? quote_text.substring(0, maxLength) + '...'
-        : quote_text;
 
     return (
         <div className="backroll">
             <p className="backroll__quote-text backrollCard-font">
-                {truncatedText}
+                {quote_text}
             </p>
             <span className="backroll__quote-speaker">
                 {speaker}
@@ -29,17 +24,23 @@ function Backroll({
 export default function BackrollContent({
     quoteText,
     speaker,
-    maxLength,
     onClick,
 }: BackrollContentProps) {
     return (
         <CardContent
             onClick={onClick}
-            className="backroll-card-content flex justify-center items-center">
+            sx={{
+                flex: 1, // Take up available space
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '120px',
+                padding: '0.5rem !important'
+            }}
+            className="backroll-card-content">
             <Backroll
                 quote_text={quoteText}
                 speaker={speaker}
-                maxLength={maxLength}
             />
         </CardContent>
     );

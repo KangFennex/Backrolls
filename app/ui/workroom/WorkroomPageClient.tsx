@@ -21,6 +21,25 @@ export default function WorkroomPageClient() {
         navigateToBackroll(quote);
     }
 
+    // Assign card size based on quote text length
+    const getMosaicClass = (quote: Quote) => {
+        if (!isMainPage) return '';
+
+        const textLength = quote.quote_text.length;
+
+        // Very long quotes get large cards (2x2)
+        if (textLength > 70) return 'card-large';
+
+        // Long quotes get wide cards (2x1)
+        if (textLength > 50) return 'card-wide';
+
+        // Medium quotes get tall cards (1x2)
+        if (textLength > 30) return 'card-tall';
+
+        // Short quotes get normal cards (1x1)
+        return '';
+    };
+
     useEffect(() => {
         const handleVoteUpdate = (event: Event) => {
             const customEvent = event as CustomEvent;
@@ -59,7 +78,10 @@ export default function WorkroomPageClient() {
     return (
         <PageComponentContainer>
             {randomData?.quote?.map((quote: Quote, index: number) => (
-                <div key={quote.id} className={`${isMainPage ? 'w-full md:w-auto' : 'flex-shrink-0 min-w-[250px]'}`}>
+                <div
+                    key={quote.id}
+                    className={`${isMainPage ? getMosaicClass(quote) : 'flex-shrink-0 min-w-[250px]'}`}
+                >
                     <BackrollCard
                         quote={quote}
                         variant="full"

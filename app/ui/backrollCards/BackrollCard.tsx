@@ -37,7 +37,7 @@ export function BackrollCard({
                 <Card sx={{
                     width: '100%',
                     minWidth: '100%',
-                    height: 'auto',
+                    height: isMainPage ? '100%' : 'auto',
                     margin: '0 auto',
                     backgroundColor: `${backgroundColor}80`,
                     color: '#FFFFF0',
@@ -48,6 +48,8 @@ export function BackrollCard({
                     borderRadius: '16px',
                     boxShadow: 'none',
                     transition: 'background-color 0.2s ease-in-out',
+                    display: isMainPage ? 'flex' : 'block',
+                    flexDirection: isMainPage ? 'column' : undefined,
                     '&:hover': {
                         backgroundColor: `${backgroundColor}90`,
                     }
@@ -60,7 +62,6 @@ export function BackrollCard({
                         onClick={onClick}
                         quoteText={quote.quote_text}
                         speaker={quote.speaker}
-                        maxLength={isCompact ? 120 : 300}
                     />
 
                     <BackrollActions

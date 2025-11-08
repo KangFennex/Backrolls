@@ -48,7 +48,8 @@ export default function BackrollActions({
         <CardActions disableSpacing sx={{
             padding: '0 5px',
             justifyContent: 'space-between',
-            borderTop: 'none'
+            borderTop: 'none',
+            marginTop: 'auto' // Push to bottom
         }}>
             <div className="flex items-center justify-center gap-10 w-full">
                 <div>
