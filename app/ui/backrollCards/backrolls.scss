@@ -3,7 +3,19 @@
 
     &.isMainPage {
         width: fit-content;
-        max-width: 450px;
+        max-width: 250px;
+
+        @media (min-width: 640px) {
+            max-width: 300px;
+        }
+
+        @media (min-width: 768px) {
+            max-width: 350px;
+        }
+
+        @media (min-width: 1024px) {
+            max-width: 450px;
+        }
     }
 }
 
