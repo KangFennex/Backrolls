@@ -2,7 +2,7 @@
     width: 100%;
 
     &.isMainPage {
-        width: 100vw;
+        width: 100%; /* Respect parent container width */
         margin: auto;
 
         @media (min-width: 640px) {
@@ -12,10 +12,11 @@
         }
 
         @media (min-width: 768px) {
-
+            max-width: 600px;
         }
 
         @media (min-width: 1024px) {
+            max-width: 700px;
         }
     }
 }

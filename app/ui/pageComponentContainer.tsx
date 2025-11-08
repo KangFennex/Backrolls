@@ -6,7 +6,7 @@ export default function PageComponentContainer({ children }: PageComponentContai
     const isMainPage = pathname === '/';
 
     return (
-        <div className={`PageComponentContainer w-full flex justify-center space-y-4 mt-6 pb-5 ${isMainPage ? 'flex-wrap' : 'flex-col'} ${isMainPage ? 'gap-3' : ''} ${isMainPage ? 'items-center' : ''}`}>
+        <div className={`PageComponentContainer w-full flex justify-center mt-6 pb-5 space-y-4 ${isMainPage ? 'flex-wrap gap-3 items-center' : 'flex-col'}`}>
             {children}
         </div>
     );

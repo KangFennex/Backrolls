@@ -59,7 +59,7 @@ export default function WorkroomPageClient() {
     return (
         <PageComponentContainer>
             {randomData?.quote?.map((quote: Quote, index: number) => (
-                <div key={quote.id} className={`${isMainPage ? '' : 'flex-shrink-0 min-w-[250px]'}`}>
+                <div key={quote.id} className={`${isMainPage ? 'w-full sm:w-auto' : 'flex-shrink-0 min-w-[250px]'}`}>
                     <BackrollCard
                         quote={quote}
                         variant="full"
