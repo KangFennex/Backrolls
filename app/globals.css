@@ -2,8 +2,8 @@
 
 /* Local font declarations */
 @font-face {
-    font-family: 'Exo 2';
-    src: url('/fonts/Exo2-VariableFont_wght') format('truetype');
+    font-family: 'Gluten';
+    src: url('/fonts/gLUTEN.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -91,7 +91,7 @@ body {
 }
 
 .backrollCard-font {
-    font-family: "Exo 2", sans-serif;
+    font-family: 'Gluten', sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
