@@ -7,14 +7,19 @@
     // Enable grid layout only on tablets and larger
     @media (min-width: 768px) {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        grid-auto-rows: minmax(150px, auto);
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); // Smaller columns for 3-4 columns
+        grid-auto-rows: minmax(140px, auto); // Slightly smaller rows
         grid-auto-flow: dense; // Fill gaps intelligently
     }
 
     @media (min-width: 1024px) {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        grid-auto-rows: minmax(160px, auto);
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); // More columns
+        grid-auto-rows: minmax(150px, auto);
+    }
+
+    @media (min-width: 1280px) {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); // 4 columns on large screens
+        grid-auto-rows: minmax(150px, auto);
     }
 
     // Direct children should fill their grid cells when in grid mode
