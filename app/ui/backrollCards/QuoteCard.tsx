@@ -184,7 +184,7 @@ export function QuoteCard({
                                 <h4>{`Season: ${quote.season}`}</h4>
                                 <h4>{`Episode: ${quote.episode}`}</h4>
                                 <h4>{`Timestamp: ${quote.timestamp}`}</h4>
-                                <h4>{`Context: ${quote.context}`}</h4>
+                                <h4>{`Context:`}</h4>
                                 <h4>{`Vote Count: ${quote.vote_count}`}</h4>
                                 <h4>{`Share Count: ${quote.share_count}`}</h4>
                             </CardContent>
