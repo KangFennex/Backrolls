@@ -2,20 +2,20 @@
     width: 100%;
 
     &.isMainPage {
-        width: fit-content;
-        max-width: 250px;
+        width: 100vw;
+        margin: auto;
 
         @media (min-width: 640px) {
-                width: fit-content;
-                max-width: 250px;
+            width: fit-content;
+            max-width: 550px;
+            margin: 0;
         }
 
         @media (min-width: 768px) {
-            max-width: 350px;
+
         }
 
         @media (min-width: 1024px) {
-            max-width: 450px;
         }
     }
 }
