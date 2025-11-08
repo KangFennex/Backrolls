@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function useHotQuotes(limit: number = 10) {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ['hotQuotes', limit],
         queryFn: async () => {
             const response = await fetch('/api/hot');

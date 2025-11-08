@@ -9,7 +9,7 @@ import { Quote } from '../../lib/definitions';
 
 export default function HotPageClient() {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: hotData, isLoading, error } = useHotQuotes();
+    const { data: hotData } = useHotQuotes();
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     }
@@ -35,9 +35,7 @@ export default function HotPageClient() {
 
     return (
         <PageComponentContainer>
-            {isLoading && <p>Loading...</p>}
-            {error && <p>Error: {error.message}</p>}
-            {hotData?.quotes && hotData.quotes.map((quote, index) => (
+            {hotData?.quotes && hotData.quotes.map((quote: Quote, index: number) => (
                 <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
                     <BackrollCard
                         quote={quote}

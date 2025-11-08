@@ -9,7 +9,7 @@ import PageComponentContainer from '../pageComponentContainer';
 
 export default function WorkroomPageClient() {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: randomData, error } = useWorkroomQuotes(30);
+    const { data: randomData } = useWorkroomQuotes(30);
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     }
@@ -33,14 +33,6 @@ export default function WorkroomPageClient() {
         return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
     }, []);
 
-    if (error) {
-        return (
-            <div className="text-center py-8 text-red-500">
-                Failed to load backrolls: {error.message}
-            </div>
-        );
-    }
-
     if (!randomData?.quote || randomData.quote.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
@@ -51,7 +43,7 @@ export default function WorkroomPageClient() {
 
     return (
         <PageComponentContainer>
-            {randomData?.quote?.map((quote, index) => (
+            {randomData?.quote?.map((quote: Quote, index: number) => (
                 <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
                     <BackrollCard
                         quote={quote}

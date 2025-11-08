@@ -9,7 +9,7 @@ import { Quote } from '../../lib/definitions';
 
 export default function FreshPageClient() {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: freshData, error } = useFreshQuotes();
+    const { data: freshData } = useFreshQuotes();
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -34,19 +34,9 @@ export default function FreshPageClient() {
         return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
     }, []);
 
-    if (error) {
-        return (
-            <PageComponentContainer>
-                <div className="text-center py-8 text-red-500">
-                    <p>Failed to load fresh quotes: {error.message}</p>
-                </div>
-            </PageComponentContainer>
-        );
-    }
-
     return (
         <PageComponentContainer>
-            {freshData?.quotes && freshData.quotes.map((quote, index) => (
+            {freshData?.quotes && freshData.quotes.map((quote: Quote, index: number) => (
                 <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
                     <BackrollCard
                         quote={quote}

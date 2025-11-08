@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function useWorkroomQuotes(limit: number = 1) {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ['workroomQuotes', limit],
         queryFn: async () => {
             const response = await fetch(`/api/workroom?limit=${limit}`);
