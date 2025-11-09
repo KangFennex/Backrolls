@@ -7,10 +7,12 @@ export function useAuth() {
     const [user, setUser] = useState<ExtendedUser | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [dataLoaded, setDataLoaded] = useState(false); // Track if we've loaded user data
     const { data: session, status } = useSession();
 
-    // Get setCurrentUser outside of useEffect to avoid dependency issues
+    // Get store functions outside of useEffect to avoid dependency issues
     const setCurrentUserRef = useBackrollsStore((state) => state.setCurrentUser);
+    const loadUserData = useBackrollsStore((state) => state.loadUserData);
 
     // Function to check auth from custom endpoint
     const checkCustomAuth = useCallback(async () => {
@@ -24,26 +26,34 @@ export function useAuth() {
             if (result.authenticated && result.user) {
                 setUser(result.user);
                 setIsAuthenticated(true);
-                setCurrentUserRef(result.user.id);
+                await setCurrentUserRef(result.user.id);
+                
+                // Load user data once after setting user
+                if (!dataLoaded) {
+                    await loadUserData();
+                    setDataLoaded(true);
+                }
             } else {
                 setUser(null);
                 setIsAuthenticated(false);
-                setCurrentUserRef(null);
+                await setCurrentUserRef(null);
+                setDataLoaded(false);
             }
         } catch (error) {
             setUser(null);
             setIsAuthenticated(false);
-            setCurrentUserRef(null);
+            await setCurrentUserRef(null);
+            setDataLoaded(false);
             console.error('Auth verification failed:', error);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [dataLoaded]);
 
     // Listen for NextAuth session changes
     useEffect(() => {
         setIsLoading(status === 'loading');
 
-        if (status === 'authenticated' && session?.user) {
+        if (status === 'authenticated' && session?.user && !dataLoaded) {
             // Session exists - update state
             const sessionUser = session.user as ExtendedUser;
             const extendedUser: ExtendedUser = {
@@ -56,13 +66,19 @@ export function useAuth() {
 
             setUser(extendedUser);
             setIsAuthenticated(true);
-            setCurrentUserRef(sessionUser.id || null);
+            
+            // Set user and load data once
+            (async () => {
+                await setCurrentUserRef(sessionUser.id || null);
+                await loadUserData();
+                setDataLoaded(true);
+            })();
         } else if (status === 'unauthenticated') {
             // No session - check custom auth as fallback
             checkCustomAuth();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [session, status, checkCustomAuth]);
+    }, [session, status, checkCustomAuth, dataLoaded]);
 
     // Initial auth check
     useEffect(() => {

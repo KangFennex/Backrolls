@@ -58,11 +58,11 @@ export default function WorkroomPageClient() {
     }
 
     return (
-        <PageComponentContainer>
+        <PageComponentContainer variant={isMainPage ? 'mosaic' : 'list'}>
             {randomData?.quote?.map((quote: Quote, index: number) => (
                 <div
                     key={quote.id}
-                    className={`${isMainPage ? getMosaicClass(quote.quote_text, index) : 'flex-shrink-0 min-w-[250px]'}`}
+                    className={isMainPage ? getMosaicClass(quote.quote_text, index) : ''}
                 >
                     <BackrollCard
                         quote={quote}

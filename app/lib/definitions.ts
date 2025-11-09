@@ -245,7 +245,7 @@ export interface PageContainerProps {
 
 export interface PageComponentContainerProps {
     children: React.ReactNode;
-    quotesLength?: number;
+    variant?: 'mosaic' | 'list';
 }
 
 // Define props for FilterDrawer and its subcomponents

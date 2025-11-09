@@ -63,12 +63,17 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
         selectedEpisode: null,
     },
 
-    // Set current user
+    // Set current user (without triggering data load - prevents infinite loops)
     setCurrentUser: async (userId: string | null) => {
+        const currentUserId = get().currentUser;
+        
+        // Only update if user actually changed
+        if (currentUserId === userId) return;
+        
         set({ currentUser: userId });
-        if (userId) {
-            await get().loadUserData(userId);
-        } else {
+        
+        // Only clear data when logging out, don't auto-load on login
+        if (!userId) {
             get().clearUserData();
         }
     },

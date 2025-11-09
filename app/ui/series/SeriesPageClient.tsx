@@ -52,7 +52,7 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
     );
 
     const quotes = data?.quotes || [];
-    const octoQuotes = quotes.length > 8;
+    const useMosaic = quotes.length > 8;
 
     // Listen for vote updates and update TanStack Query cache
     useEffect(() => {
@@ -95,7 +95,7 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
                         {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
                     </div>
                 )}
-                <PageComponentContainer>
+                <PageComponentContainer variant="list">
                     <div className="text-center py-8 text-gray-400">Loading quotes...</div>
                 </PageComponentContainer>
             </div>
@@ -115,7 +115,7 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
                         {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
                     </div>
                 )}
-                <PageComponentContainer>
+                <PageComponentContainer variant="list">
                     <div className="text-center py-8 text-red-400">
                         Error loading quotes: {error.message}
                     </div>
@@ -137,7 +137,7 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
                         {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
                     </div>
                 )}
-                <PageComponentContainer>
+                <PageComponentContainer variant="list">
                     <div className="text-center py-8 text-gray-500">
                         No quotes found for the selected filters.
                     </div>
@@ -158,12 +158,12 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
                     {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
                 </div>
             )}
-            <PageComponentContainer quotesLength={quotes.length}>
+            <PageComponentContainer variant={useMosaic ? 'mosaic' : 'list'}>
                 <h2 className="text-xl font-semibold mb-4 text-[#FFFFF0]">
                     Found {quotes.length} quotes
                 </h2>
                 {quotes.map((quote, index) => (
-                    <div key={quote.id} className={`${octoQuotes ? getMosaicClass(quote.quote_text, index) : 'flex-shrink-0 min-w-[250px]'}`}>
+                    <div key={quote.id} className={useMosaic ? getMosaicClass(quote.quote_text, index) : ''}>
                         <BackrollCard
                             quote={quote}
                             variant="full"

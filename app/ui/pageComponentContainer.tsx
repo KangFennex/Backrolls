@@ -1,14 +1,13 @@
 import { PageComponentContainerProps } from '../lib/definitions';
-import { usePathname } from 'next/navigation';
 import './pageComponentContainer.scss';
 
-export default function PageComponentContainer({ children, quotesLength }: PageComponentContainerProps) {
-    const pathname = usePathname();
-    const isMainPage = pathname === '/';
-    const hasOctoQuotes = quotesLength !== undefined && quotesLength > 8;
+export default function PageComponentContainer({ children, variant = 'list' }: PageComponentContainerProps) {
+    // variant options:
+    // 'mosaic' - Grid layout with spanning cards (for 8+ quotes or main page)
+    // 'list' - Vertical list layout (for < 8 quotes)
 
     return (
-        <div className={`PageComponentContainer w-full mt-6 pb-5 ${isMainPage ? 'mosaic-grid' : 'flex flex-col space-y-4 justify-center'} ${hasOctoQuotes ? 'mosaic-grid2' : ''}`}>
+        <div className={`PageComponentContainer w-full mt-6 pb-5 ${variant === 'mosaic' ? 'mosaic-grid' : 'flex flex-col space-y-4 justify-center'}`}>
             {children}
         </div>
     );
