@@ -245,6 +245,7 @@ export interface PageContainerProps {
 
 export interface PageComponentContainerProps {
     children: React.ReactNode;
+    quotesLength?: number;
 }
 
 // Define props for FilterDrawer and its subcomponents

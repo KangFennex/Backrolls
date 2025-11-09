@@ -13,3 +13,4 @@ export { usePlaceholderLogic } from './usePlaceholderLogic';
 export { useHotQuotes } from './useHotQuotes';
 export { useFreshQuotes } from './useFreshQuotes';
 export { useWorkroomQuotes } from './useWorkroomQuotes';
+export { useSeriesQuotes } from './useSeriesQuotes';

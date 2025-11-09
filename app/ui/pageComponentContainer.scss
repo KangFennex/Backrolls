@@ -1,12 +1,13 @@
 .mosaic-grid {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
     width: 100%;
+    gap: 1rem;
 
     // Enable grid layout only on tablets and larger
     @media (min-width: 768px) {
         display: grid;
+        gap: 0.75rem;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); // Smaller columns for 3-4 columns
         grid-auto-rows: minmax(140px, auto); // Slightly smaller rows
         grid-auto-flow: dense; // Fill gaps intelligently
@@ -14,6 +15,40 @@
 
     @media (min-width: 1024px) {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); // 4 columns on large screens
+        grid-auto-rows: minmax(150px, auto);
+    }
+
+    @media (min-width: 1280px) {
+    }
+
+    // Direct children should fill their grid cells when in grid mode
+    > div {
+        display: flex;
+        flex-direction: column;
+        
+        @media (min-width: 768px) {
+            min-height: 100%;
+        }
+    }
+}
+
+.mosaic-grid2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+
+    // Enable grid layout only on tablets and larger
+    @media (min-width: 768px) {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); // Smaller columns for 3-4 columns
+        grid-auto-rows: minmax(140px, auto); // Slightly smaller rows
+        grid-auto-flow: dense; // Fill gaps intelligently
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // 4 columns on large screens
         grid-auto-rows: minmax(150px, auto);
     }
 

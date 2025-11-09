@@ -1,6 +1,5 @@
 'use client';
 
-import { NavLogo } from '../sharedComponents';
 import Search from '../search/Search';
 import { BsCupHot, BsCupHotFill } from "react-icons/bs";
 import { RiSofaLine, RiSofaFill } from "react-icons/ri";
@@ -8,6 +7,7 @@ import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import { useAuth } from "../../lib/hooks";
 import { useScrollDirection } from "../../lib/hooks";
+import { NavLogo } from '../sharedComponents';
 
 interface NavProps {
     toggleSideMenu: () => void;

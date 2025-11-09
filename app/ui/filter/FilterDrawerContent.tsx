@@ -95,6 +95,11 @@ export function FilterDrawerContent({ open, onClose }: FilterDrawerProps) {
     const handleApplyFilters = () => {
         // Update URL from current store state
         updateUrlFromFilters(router, '/series');
+        
+        // TanStack Query will automatically refetch when the filters change
+        // because the query key includes the filter values
+        // No need to manually invalidate - the query key change triggers refetch
+        
         onClose();
     };
 
@@ -102,6 +107,9 @@ export function FilterDrawerContent({ open, onClose }: FilterDrawerProps) {
         clearFilters();
         // Update URL to reflect cleared state
         updateUrlFromFilters(router, pathname);
+        
+        // Again, TanStack Query automatically handles the refetch
+        // when filters change (query key changes)
     };
 
     const drawerContent = (
