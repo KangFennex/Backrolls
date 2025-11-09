@@ -34,6 +34,9 @@ export default function SplitButton({
     };
 
     const getDisplayValue = () => {
+        if (seriesCategory === "main-series") {
+            return 'RuPaul\'s Drag Race';
+        }
         if (selectedValue === null || selectedValue === undefined) {
             return '';
         }

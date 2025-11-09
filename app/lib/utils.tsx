@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Quote } from "../definitions";
 
 export default function usePlaceholderLogic() {
     const placeholders = [
