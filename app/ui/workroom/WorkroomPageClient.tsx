@@ -62,7 +62,7 @@ export default function WorkroomPageClient() {
             {randomData?.quote?.map((quote: Quote, index: number) => (
                 <div
                     key={quote.id}
-                    className={`${isMainPage ? getMosaicClass(quote, index) : 'flex-shrink-0 min-w-[250px]'}`}
+                    className={`${isMainPage ? getMosaicClass(quote.quote_text, index) : 'flex-shrink-0 min-w-[250px]'}`}
                 >
                     <BackrollCard
                         quote={quote}
