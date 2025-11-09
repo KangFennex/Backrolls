@@ -24,7 +24,7 @@ type BackrollsState = {
     // Actions
     setCurrentUser: (userId: string | null) => void;
     setDisplayResults: (results: Quote[]) => void;
-    loadUserData: (userId: string) => Promise<void>;
+    loadUserData: () => Promise<void>;
     setFavorites: (favorites: string[]) => void;
     toggleFavorite: (quote_id: string) => Promise<void>;
     syncWithDatabase: () => Promise<void>;
@@ -287,7 +287,7 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
     syncWithDatabase: async () => {
         const { currentUser } = get();
         if (currentUser) {
-            await get().loadUserData(currentUser);
+            await get().loadUserData();
         }
     },
 
