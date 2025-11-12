@@ -29,7 +29,6 @@ export function useQuizQuotes(limit: number = 10) {
         queryFn: () => fetchQuizQuotes(limit),
         staleTime: Infinity, // Always fetch fresh quiz questions // Not, changed to Infinity
         gcTime: 0, // Don't cache quiz questions (was cacheTime in v4) // Why not cache?
-        keepPreviousData: true, // Added, in case user comes back - need infer is needed and for what
         refetchOnWindowFocus: false, // Don't refetch when user returns to tab (they're mid-quiz)
     });
 }
