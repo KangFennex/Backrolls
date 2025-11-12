@@ -2,8 +2,8 @@
 
 /* Local font declarations */
 @font-face {
-    font-family: 'Gluten';
-    src: url('/fonts/Gluten.ttf') format('truetype');
+    font-family: 'Atma-Regular';
+    src: url('/fonts/Atma-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -91,7 +91,7 @@ body {
 }
 
 .backrollCard-font {
-    font-family: 'Gluten', sans-serif;
+    font-family: 'Atma-Regular', sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
