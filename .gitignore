@@ -11,8 +11,8 @@
 !.yarn/versions
 
 # old files
-/app/ui/filters/SeriesFilter(old).tsx
-/app/lib/newRepertoire.ts
+./app/ui/filters/SeriesFilter(old).tsx
+./app/lib/newRepertoire.ts
 
 # testing
 /coverage
