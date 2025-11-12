@@ -5,17 +5,17 @@ import { useState, useRef } from "react";
 import { useAuth, useScrollDirection } from '../lib/hooks';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
-import { FilterProvider, useFilterContext } from '../context/FilterContext';
+import { FilterProvider } from '../context/FilterContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
 import { FilterSelectors } from './filter/FilterSelectors';
-import FilterDrawer from './filter/FilterDrawer';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { usePathname } from 'next/navigation';
+import FiltersModal from './filter/FiltersModal';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -48,14 +48,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     useAuth();
     const { isNavVisible, isAtTop } = useScrollDirection();
-
     const { closeSearchModal } = useSearchContext();
-    const { isDrawerOpen, closeDrawer } = useFilterContext();
 
     const [sideMenuOpen, setSideMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
-    const closeSideMenu = () => setSideMenuOpen(false);
+    const closeSideMenu = () => setSideMenuOpen(true);
     const toggleSideMenu = () => setSideMenuOpen(!sideMenuOpen);
 
     const isMainPage = usePathname() === '/';
@@ -76,9 +74,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 </div>
             </div>
 
-            {/* Filter Drawer */}
-            <FilterDrawer open={isDrawerOpen} onClose={closeDrawer} />
-
             {/* Fixed Nav Header - Slides above filter bar */}
             <header className="header">
                 <Nav toggleSideMenu={toggleSideMenu} isVisible={isNavVisible} />
@@ -88,6 +83,9 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             <div className={`main-content ${isMainPage ? 'isMainPage' : ''}`}>
                 {children}
             </div>
+
+            {/* Filters Modal */}
+            <FiltersModal />
 
             {/* Menu overlay */}
             <div

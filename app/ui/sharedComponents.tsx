@@ -9,8 +9,7 @@ export const NavLogo = () => {
             href="/"
             className="logo text-5xl items-center h-full">
             <span style={{
-                color: 'var(--dark-pink)', //getColorForIcon(0),
-                // transition: `color ${transitionDuration}ms ease-in-out`
+                color: 'var(--dark-pink)',
             }}>
                 Backrolls
 
@@ -21,9 +20,13 @@ export const NavLogo = () => {
 
 export const BackrollsLogo = () => {
     return (
-        <div className="logo text-5xl text-pink-100">
-            Backrolls
+        <div className="logo text-5xl items-center h-full cursor-default">
+            <span style={{
+                color: 'var(--dark-pink)',
+            }}>
+                Backrolls
+            </span>
         </div>
-    )
+    );
 }
 

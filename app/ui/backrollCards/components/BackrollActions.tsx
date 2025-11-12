@@ -46,12 +46,11 @@ export default function BackrollActions({
 
     return (
         <CardActions disableSpacing sx={{
-            padding: '0 5px',
             justifyContent: 'space-between',
             borderTop: 'none',
             marginTop: 'auto' // Push to bottom
         }}>
-            <div className="flex items-center justify-center gap-10 w-full">
+            <div className="flex items-center justify-between w-full">
                 <div>
                     <VoteButtons
                         quote_id={quoteId}
@@ -61,7 +60,7 @@ export default function BackrollActions({
                 <div>
                     <CommentButton />
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                     <ShareButton />
                     <CopyButton textToCopy={quoteText} />
                     <FavoriteButton

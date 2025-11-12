@@ -3,10 +3,8 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 
 interface FilterContextType {
-    isFilterVisible: boolean;
-    showFilter: () => void;
-    hideFilter: () => void;
-    toggleFilter: () => void;
+    isFiltersModalVisible: boolean;
+    toggleFilters: () => void;
     isDrawerOpen: boolean;
     openDrawer: () => void;
     closeDrawer: () => void;
@@ -16,12 +14,10 @@ interface FilterContextType {
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export function FilterProvider({ children }: { children: ReactNode }) {
-    const [isFilterVisible, setIsFilterVisible] = useState(false);
+    const [isFiltersModalVisible, setIsFiltersModalVisible] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    const showFilter = () => setIsFilterVisible(true);
-    const hideFilter = () => setIsFilterVisible(false);
-    const toggleFilter = () => setIsFilterVisible(prev => !prev);
+    const toggleFilters = () => setIsFiltersModalVisible(prev => !prev);
 
     const openDrawer = () => setIsDrawerOpen(true);
     const closeDrawer = () => setIsDrawerOpen(false);
@@ -29,10 +25,8 @@ export function FilterProvider({ children }: { children: ReactNode }) {
 
     return (
         <FilterContext.Provider value={{
-            isFilterVisible,
-            showFilter,
-            hideFilter,
-            toggleFilter,
+            isFiltersModalVisible,
+            toggleFilters,
             isDrawerOpen,
             openDrawer,
             closeDrawer,

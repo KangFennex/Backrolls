@@ -8,11 +8,12 @@ import { FaRegClock } from "react-icons/fa";
 import { useFilterContext } from '../../context/FilterContext';
 import { useRainbowColors } from '../../lib/hooks';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { PiGameControllerBold } from "react-icons/pi";
 import Link from "next/link";
 
 export const FilterSelectorsContent = () => {
 
-    const { toggleDrawer } = useFilterContext();
+    const { isFiltersModalVisible, toggleFilters } = useFilterContext();
     const { getColorForIcon } = useRainbowColors();
     const router = useRouter();
     const pathname = usePathname();
@@ -43,9 +44,10 @@ export const FilterSelectorsContent = () => {
                 <IoFilterSharp
                     title="Filter Backrolls"
                     size={pathnameState === '/series' ? 35 : 32}
-                    onClick={toggleDrawer}
+                    onClick={() => toggleFilters()}
                     style={{ color: getColorForIcon(0) }}
-                    className="filter-icon filter-icon-pulse" />
+                    className={`filter-icon filter-icon-pulse transition-transform duration-800 ease-in-out ${isFiltersModalVisible ? 'rotate-180' : ''
+                        }`} />
                 <Link href="/hot">
                     <FaFire
                         title="Hot Backrolls"
@@ -74,6 +76,13 @@ export const FilterSelectorsContent = () => {
                     onClick={() => pushRandomBackroll(3)}
                     style={{ color: getColorForIcon(4) }}
                     className="random-icon" />
+                <Link href="/quiz">
+                    <PiGameControllerBold
+                        title="Backroll Quiz"
+                        size={pathnameState === '/quiz' ? 35 : 28}
+                        style={{ color: getColorForIcon(6) }}
+                        className="filter-icon filter-icon-pulse" />
+                </Link>
                 <Link href="">
                     <BsChatQuote
                         title="Have a kiki"

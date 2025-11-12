@@ -280,3 +280,15 @@ export interface SeriesFilterProps {
     onClose?: () => void;
     className?: string;
 }
+
+// Quiz
+
+export interface QuizQuestion {
+    id: string;
+    quote: string;
+    correctSpeaker: string;  // Just the name, simpler than nested object
+    series: string;
+    season: number;
+    episode: number;
+    options: string[];  // Array of speaker names (shuffled, includes correct answer)
+}

@@ -39,19 +39,17 @@ export function BackrollCard({
                     minWidth: '100%',
                     height: isMainPage ? '100%' : 'auto',
                     margin: '0 auto',
-                    backgroundColor: `${backgroundColor}80`,
+                    backgroundColor: 'transparent',
                     color: '#FFFFF0',
-                    borderTop: '1px solid rgba(255, 255, 240, 0.1)',
-                    borderBottom: '1px solid rgba(255, 255, 240, 0.1)',
-                    borderLeft: 'none',
-                    borderRight: 'none',
+                    border: '2px solid rgba(255, 255, 240, 0.2)',
                     borderRadius: '16px',
                     boxShadow: 'none',
                     transition: 'background-color 0.2s ease-in-out',
                     display: isMainPage ? 'flex' : 'block',
                     flexDirection: isMainPage ? 'column' : undefined,
                     '&:hover': {
-                        backgroundColor: `${backgroundColor}90`,
+                        backgroundColor: 'rgba(255, 255, 240, 0.1)',
+                        border: `2px solid ${backgroundColor}80`,
                     }
                 }}>
                     <BackrollHeader quote={quote} />

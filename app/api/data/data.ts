@@ -290,3 +290,61 @@ export async function getRandomQuote(limit: number = 1) {
         return []; // Return empty array instead of null for consistency
     }
 }
+
+// Function to get quiz questions with wrong answer options
+export async function getQuizQuotes(limit: number = 10) {
+    try {
+        // Step 1: Get random quotes for the quiz
+        const quotes = await getRandomQuote(limit);
+
+        if (!quotes || quotes.length === 0) {
+            console.log('No quotes available for quiz');
+            return [];
+        }
+
+        // Step 2: Get a pool of unique speakers for wrong answer options
+        const { data: allSpeakers, error: speakersError } = await supabase
+            .from('quotes')
+            .select('speaker')
+            .order('speaker', { ascending: true });
+
+        if (speakersError) {
+            console.error('Error fetching speakers for quiz options:', speakersError);
+            return [];
+        }
+
+        // Create unique speaker pool (excluding duplicates)
+        const uniqueSpeakers = [...new Set(allSpeakers?.map(s => s.speaker) || [])];
+
+        // Step 3: Build quiz questions with options
+        const quizQuestions = quotes.map((quote) => {
+            const correctSpeaker = quote.speaker;
+
+            // Get 3 wrong answers (different from correct speaker)
+            const wrongOptions = uniqueSpeakers
+                .filter(speaker => speaker !== correctSpeaker)
+                .sort(() => Math.random() - 0.5) // Shuffle
+                .slice(0, 3);
+
+            // Combine correct answer with wrong answers and shuffle
+            const allOptions = [correctSpeaker, ...wrongOptions].sort(() => Math.random() - 0.5);
+
+            return {
+                id: quote.id.toString(),
+                quote: quote.quote_text,
+                correctSpeaker: correctSpeaker,
+                series: quote.series,
+                season: quote.season,
+                episode: quote.episode,
+                options: allOptions
+            };
+        });
+
+        console.log(`Generated ${quizQuestions.length} quiz questions`);
+        return quizQuestions;
+
+    } catch (error) {
+        console.error('Unexpected error in getQuizQuotes:', error);
+        return [];
+    }
+}
