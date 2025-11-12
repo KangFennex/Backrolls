@@ -25,7 +25,7 @@ export default function FiltersModal() {
                     },
                 }}
             >
-                <FiltersModalContent onClose={toggleFilters} />
+                <FiltersModalContent />
             </Dialog>
         </Suspense>
     );
