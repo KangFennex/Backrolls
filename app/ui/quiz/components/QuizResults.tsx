@@ -1,14 +1,24 @@
-import { Card, Typography, Button, Container } from '@mui/material';
+import { Card, Typography, Button, Container, Box, Divider } from '@mui/material';
+
+interface UserAnswer {
+    questionIndex: number;
+    selectedAnswer: string;
+    correctAnswer: string;
+    quote: string;
+    isCorrect: boolean;
+}
 
 interface QuizResultsProps {
     score: number;
     totalQuestions: number;
+    userAnswers: UserAnswer[];
     onRestart: () => void;
 }
 
 export default function QuizResults({
     score,
     totalQuestions,
+    userAnswers,
     onRestart
 }: QuizResultsProps) {
     const percentage = (score / totalQuestions) * 100;
@@ -17,7 +27,7 @@ export default function QuizResults({
 
     return (
         <Container maxWidth="md" className="text-center">
-            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-500/20">
+            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-500/20 mb-6" sx={{ backgroundColor: 'transparent' }}>
                 <div className="mb-6">
                     {isPerfect ? (
                         <Typography variant="h3" className="text-yellow-400 mb-2">
@@ -36,12 +46,13 @@ export default function QuizResults({
 
                 <Typography
                     variant="h2"
-                    className={`font-bold mb-2 ${isPerfect
+                    className={`font-bold mb-2 ${
+                        isPerfect
                             ? 'text-yellow-400'
                             : isGood
                                 ? 'text-green-400'
                                 : 'text-pink-400'
-                        }`}
+                    }`}
                 >
                     {score} / {totalQuestions}
                 </Typography>
@@ -59,6 +70,62 @@ export default function QuizResults({
                     Shantay, You Stay! (Play Again)
                 </Button>
             </Card>
+
+            {/* Answer Review Section */}
+            <Box className="space-y-4">
+                <Typography variant="h5" className="text-gray-200 mb-4 text-left">
+                    Review Your Answers
+                </Typography>
+                
+                {userAnswers.map((answer, index) => (
+                    <Card 
+                        key={index} 
+                        className={`p-4 text-left border-2 ${
+                            answer.isCorrect 
+                                ? 'border-green-500 bg-green-900/10' 
+                                : 'border-red-500 bg-red-900/10'
+                        }`}
+                        sx={{ backgroundColor: 'transparent' }}
+                    >
+                        <Box className="flex items-start gap-3">
+                            <Typography 
+                                variant="h6" 
+                                className={`font-bold ${
+                                    answer.isCorrect ? 'text-green-400' : 'text-red-400'
+                                }`}
+                            >
+                                {answer.isCorrect ? '✓' : '✗'}
+                            </Typography>
+                            
+                            <Box className="flex-1">
+                                <Typography variant="body1" className="text-gray-300 italic mb-2">
+                                    &ldquo;{answer.quote}&rdquo;
+                                </Typography>
+                                
+                                <Divider className="my-2 bg-gray-700" />
+                                
+                                <Box className="space-y-1">
+                                    <Typography variant="body2" className="text-gray-400">
+                                        <span className="font-semibold">Your answer:</span>{' '}
+                                        <span className={answer.isCorrect ? 'text-green-400' : 'text-red-400'}>
+                                            {answer.selectedAnswer}
+                                        </span>
+                                    </Typography>
+                                    
+                                    {!answer.isCorrect && (
+                                        <Typography variant="body2" className="text-gray-400">
+                                            <span className="font-semibold">Correct answer:</span>{' '}
+                                            <span className="text-green-400">
+                                                {answer.correctAnswer}
+                                            </span>
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Card>
+                ))}
+            </Box>
         </Container>
     );
 }

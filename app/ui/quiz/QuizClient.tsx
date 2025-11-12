@@ -15,12 +15,22 @@ import {
     QuizEmpty
 } from './components';
 
+interface UserAnswer {
+    questionIndex: number;
+    selectedAnswer: string;
+    correctAnswer: string;
+    quote: string;
+    isCorrect: boolean;
+}
+
 export default function QuizClient() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
     const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(new Set());
+    const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     const { data: questions, isLoading, error, refetch } = useQuizQuotes(10);
 
@@ -63,6 +73,15 @@ export default function QuizClient() {
             setScore(score + 1);
         }
 
+        // Store the answer for results page
+        setUserAnswers([...userAnswers, {
+            questionIndex: currentQuestionIndex,
+            selectedAnswer: option,
+            correctAnswer: currentQuestion.correctSpeaker,
+            quote: currentQuestion.quote,
+            isCorrect
+        }]);
+
         setAnsweredQuestions(new Set(answeredQuestions).add(currentQuestionIndex));
     };
 
@@ -70,8 +89,19 @@ export default function QuizClient() {
         if (isLastQuestion) {
             setShowResult(true);
         } else {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setSelectedAnswer(null);
+            // Start transition
+            setIsTransitioning(true);
+            
+            // Wait for fade out, then change question
+            setTimeout(() => {
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
+                setSelectedAnswer(null);
+                
+                // Fade back in
+                setTimeout(() => {
+                    setIsTransitioning(false);
+                }, 50);
+            }, 300);
         }
     };
 
@@ -81,6 +111,8 @@ export default function QuizClient() {
         setScore(0);
         setShowResult(false);
         setAnsweredQuestions(new Set());
+        setUserAnswers([]);
+        setIsTransitioning(false);
         refetch();
     };
 
@@ -90,6 +122,7 @@ export default function QuizClient() {
                 <QuizResults
                     score={score}
                     totalQuestions={questions.length}
+                    userAnswers={userAnswers}
                     onRestart={handleRestart}
                 />
             </PageComponentContainer>
@@ -98,7 +131,10 @@ export default function QuizClient() {
 
     return (
         <PageComponentContainer variant="list">
-            <Container maxWidth="md">
+            <Container 
+                maxWidth="md" 
+                className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+            >
                 <QuizHeader
                     currentQuestion={currentQuestionIndex + 1}
                     totalQuestions={questions.length}
@@ -123,8 +159,6 @@ export default function QuizClient() {
 
                 {isAnswered && (
                     <QuizFeedback
-                        isCorrect={selectedAnswer === currentQuestion.correctSpeaker}
-                        correctAnswer={currentQuestion.correctSpeaker}
                         isLastQuestion={isLastQuestion}
                         onNext={handleNext}
                     />

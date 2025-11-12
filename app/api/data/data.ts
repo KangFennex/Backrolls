@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { Quote } from '../../lib/definitions';
 
 // Get environment variables with proper fallbacks and validation
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -291,7 +292,7 @@ export async function getRandomQuote(limit: number = 1) {
     }
 }
 
-// Function to get quiz questions with wrong answer options
+// Get quiz questions with wrong answer options
 export async function getQuizQuotes(limit: number = 10) {
     try {
         // Step 1: Get random quotes for the quiz
@@ -317,7 +318,7 @@ export async function getQuizQuotes(limit: number = 10) {
         const uniqueSpeakers = [...new Set(allSpeakers?.map(s => s.speaker) || [])];
 
         // Step 3: Build quiz questions with options
-        const quizQuestions = quotes.map((quote) => {
+        const quizQuestions = quotes.map((quote: Quote) => {
             const correctSpeaker = quote.speaker;
 
             // Get 3 wrong answers (different from correct speaker)
