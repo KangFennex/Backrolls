@@ -14,6 +14,7 @@
     --grey-background: #282828;
     --dark-foreground: #222533;
     --darker-foreground: #060306;
+    --hover-bg-color: rgba(255, 255, 240, 0.1);
     --pastel-pink: #E4A0B7;
     --dark-pink: hsl(327, 81%, 60%);
     /* #EE5BAC */

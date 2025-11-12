@@ -4,4 +4,5 @@ export { default as QuizOptions } from './QuizOptions';
 export { default as QuizFeedback } from './QuizFeedback';
 export { default as QuizResults } from './QuizResults';
 export { default as QuizLoading } from './QuizLoading';
+export { default as QuizLead } from './QuizLead';
 export { default as QuizError, QuizEmpty } from './QuizError';

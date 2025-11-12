@@ -10,6 +10,7 @@ import {
     QuizOptions,
     QuizFeedback,
     QuizResults,
+    QuizLead,
     QuizLoading,
     QuizError,
     QuizEmpty
@@ -27,6 +28,7 @@ export default function QuizClient() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [score, setScore] = useState(0);
+    const [displayLead, setDisplayLead] = useState(true);
     const [showResult, setShowResult] = useState(false);
     const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(new Set());
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -91,12 +93,12 @@ export default function QuizClient() {
         } else {
             // Start transition
             setIsTransitioning(true);
-            
+
             // Wait for fade out, then change question
             setTimeout(() => {
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
                 setSelectedAnswer(null);
-                
+
                 // Fade back in
                 setTimeout(() => {
                     setIsTransitioning(false);
@@ -116,6 +118,18 @@ export default function QuizClient() {
         refetch();
     };
 
+    const handleLeadToggle = () => {
+        setDisplayLead(!displayLead);
+    };
+
+    if (displayLead) {
+        return (
+            <PageComponentContainer variant="list">
+                <QuizLead onStartQuiz={handleLeadToggle} />
+            </PageComponentContainer>
+        );
+    }
+
     if (showResult) {
         return (
             <PageComponentContainer variant="list">
@@ -131,8 +145,8 @@ export default function QuizClient() {
 
     return (
         <PageComponentContainer variant="list">
-            <Container 
-                maxWidth="md" 
+            <Container
+                maxWidth="md"
                 className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
             >
                 <QuizHeader
