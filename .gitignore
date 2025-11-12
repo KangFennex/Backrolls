@@ -10,9 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
-# old files
-./app/ui/filters/SeriesFilter(old).tsx
-./app/lib/newRepertoire.ts
+# old files - work in progress, not ready for build
+app/ui/filter/SeriesFilter(old).tsx
+app/lib/newRepertoire.ts
 
 # testing
 /coverage
