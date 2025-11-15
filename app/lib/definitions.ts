@@ -66,9 +66,11 @@ export type Quote = {
     id: string | number;
     quote_text: string;
     region: string;
+    series: string;
     series_code: string;
     season: number;
     episode: number;
+    episode_title?: string;
     speaker: string;
     type: string;
     timestamp: string;
@@ -77,6 +79,7 @@ export type Quote = {
     is_approved: boolean;
     vote_count: number;
     share_count: number;
+    created_at?: string;
     // optional original language quote_text if not in English
     original_language?: string;
     // Optional relationship to contexts
