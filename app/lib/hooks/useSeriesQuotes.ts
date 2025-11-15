@@ -19,7 +19,7 @@ interface SeriesQueryData {
  * Custom hook to fetch filtered series quotes using TanStack Query
  * This hook integrates with the Zustand store for filter state management
  */
-export function useSeriesQuotes(filters: SeriesFilters, initialData?: Quote[]) {
+export function useSeriesQuotes(filters: SeriesFilters) {
     const queryClient = useQueryClient();
 
     // Generate a stable query key based on filters
@@ -50,6 +50,8 @@ export function useSeriesQuotes(filters: SeriesFilters, initialData?: Quote[]) {
                 searchParams.set('episode', episode.toString());
             }
 
+            console.log('🔍 Fetching quotes with params:', searchParams.toString());
+
             const response = await fetch(`/api/series?${searchParams.toString()}`);
 
             if (!response.ok) {
@@ -57,16 +59,17 @@ export function useSeriesQuotes(filters: SeriesFilters, initialData?: Quote[]) {
             }
 
             const data = await response.json();
+            console.log('✅ Received quotes:', data.count, 'quotes for episode', episode);
+            console.log('First quote:', data.quotes[0]?.quote_text?.substring(0, 50));
             return data;
         },
         // Only run query if region exists
         enabled: !!filters.region,
-        // Use server-side data as initial data for hydration
-        initialData: initialData ? { quotes: initialData, count: initialData.length } : undefined,
-        // Keep previous data while fetching new results
-        placeholderData: (previousData) => previousData,
-        // Stale time to prevent unnecessary refetches
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        // Don't use initialData - it prevents proper refetching
+        // Use refetchOnMount to always get fresh data
+        refetchOnMount: true,
+        // Reduce stale time so filters trigger refetch
+        staleTime: 0,
     });
 
     /**

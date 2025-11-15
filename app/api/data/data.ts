@@ -215,7 +215,8 @@ export async function getFilteredQuotes(filters: {
     }
 
     if (series) {
-        query = query.eq('series', series);
+        // Query by series_code (e.g., "rpdr") instead of series full name
+        query = query.eq('series_code', series);
     }
 
     if (season !== undefined && season !== null) {

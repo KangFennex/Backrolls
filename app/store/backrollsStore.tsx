@@ -322,7 +322,7 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
 
     initFiltersFromUrl: (searchParams: URLSearchParams) => {
         const regionFromURL = searchParams.get('region') || 'americas';
-        const seriesFromURL = searchParams.get('series') || 'rpdr';
+        const seriesFromURL = searchParams.get('series');
         const seasonFromURL = searchParams.get('season');
         const episodeFromURL = searchParams.get('episode');
 

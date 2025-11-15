@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Quote } from '../../lib/definitions';
 import { BackrollCard } from '../backrollCards/BackrollCard';
 import { useBackrollsStore } from '../../store/backrollsStore';
@@ -9,31 +10,31 @@ import { useSeriesQuotes } from '../../lib/hooks';
 import PageComponentContainer from '../pageComponentContainer';
 import { getMosaicClass } from '../../lib/utils';
 
-interface SeriesPageClientProps {
-    initialQuotes: Quote[];
-    initialFilters: {
-        region?: string;
-        series?: string;
-        season?: number;
-        episode?: number;
-    };
-}
-
-export default function SeriesPageClient({ initialQuotes, initialFilters }: SeriesPageClientProps) {
-    const { filters, setFilters } = useBackrollsStore();
+export default function SeriesPageClient(): React.ReactElement {
+    // Use selector to ensure component re-renders when filters change
+    const filters = useBackrollsStore((state) => state.filters);
+    const setFilters = useBackrollsStore((state) => state.setFilters);
     const { navigateToBackroll } = useNavigationContext();
+    const searchParams = useSearchParams();
+    
+    console.log('🔄 SeriesPageClient render, filters:', filters);
 
-    // Sync initial filters with store on mount
+    // Sync filters from URL params on mount and when URL actually changes
     useEffect(() => {
-        if (initialFilters.region) {
-            setFilters({
-                selectedRegion: initialFilters.region,
-                selectedSeries: initialFilters.series || null,
-                selectedSeason: initialFilters.season || null,
-                selectedEpisode: initialFilters.episode || null
-            });
-        }
-    }, [initialFilters, setFilters]);
+        const region = searchParams.get('region') || 'americas';
+        const series = searchParams.get('series');
+        const season = searchParams.get('season');
+        const episode = searchParams.get('episode');
+
+        console.log('📍 URL params changed:', { region, series, season, episode });
+
+        setFilters({
+            selectedRegion: region,
+            selectedSeries: series,
+            selectedSeason: season ? parseInt(season) : null,
+            selectedEpisode: episode ? parseInt(episode) : null,
+        });
+    }, [searchParams, setFilters]);
 
     // Use TanStack Query to fetch quotes based on current filters
     const {
@@ -41,18 +42,35 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
         isLoading,
         error,
         updateQuoteInCache
-    } = useSeriesQuotes(
-        {
+    } = useSeriesQuotes({
+        region: filters.selectedRegion,
+        series: filters.selectedSeries,
+        season: filters.selectedSeason,
+        episode: filters.selectedEpisode,
+    });
+
+    // Debug: Log when filters change
+    useEffect(() => {
+        console.log('🎯 Current filters passed to useSeriesQuotes:', {
             region: filters.selectedRegion,
             series: filters.selectedSeries,
             season: filters.selectedSeason,
             episode: filters.selectedEpisode,
-        },
-        initialQuotes // Hydrate from server-side data
-    );
+        });
+    }, [filters.selectedRegion, filters.selectedSeries, filters.selectedSeason, filters.selectedEpisode]);
 
     const quotes = data?.quotes || [];
     const useMosaic = quotes.length > 8;
+
+    // Debug: Log when data changes
+    useEffect(() => {
+        const currentQuotes = data?.quotes || [];
+        console.log('📦 Data updated, showing', currentQuotes.length, 'quotes');
+        if (currentQuotes.length > 0) {
+            console.log('First quote:', currentQuotes[0].quote_text?.substring(0, 50));
+            console.log('Episode of first quote:', currentQuotes[0].episode);
+        }
+    }, [data]);
 
     // Listen for vote updates and update TanStack Query cache
     useEffect(() => {

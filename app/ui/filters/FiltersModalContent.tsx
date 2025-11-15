@@ -123,13 +123,33 @@ export default function FiltersModalContent() {
             season: localSeason,
             episode: localEpisode,
         });
+        
+        // Update store first
         setFilters({
             selectedRegion: localRegion,
             selectedSeries: localSeries,
             selectedSeason: localSeason,
             selectedEpisode: localEpisode,
         });
-        updateUrlFromFilters(router, pathname);
+        
+        // Build URL with query params directly from local state
+        const params = new URLSearchParams();
+        params.set('region', localRegion);
+        
+        if (localSeries) {
+            params.set('series', localSeries);
+        }
+        
+        if (localSeason !== null) {
+            params.set('season', localSeason.toString());
+        }
+        
+        if (localEpisode !== null) {
+            params.set('episode', localEpisode.toString());
+        }
+        
+        // Navigate to series page with filters
+        router.push(`/series?${params.toString()}`);
         toggleFilters();
     };
 
