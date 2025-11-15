@@ -290,4 +290,5 @@ const seriesEpisodes: SeriesEpisodes = {
 ];
 */}
 
-export { series, codeEquivalence, seriesSeasons, seriesEpisodes, DragRaceSeries };
+export { series, codeEquivalence, seriesSeasons, seriesEpisodes };
+export type { DragRaceSeries };
