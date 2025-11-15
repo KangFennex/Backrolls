@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Quote } from '../definitions';
 
 interface SeriesFilters {
-    category?: string;
+    region?: string;
     series?: string | null;
     season?: number | null;
     episode?: number | null;
@@ -23,20 +23,20 @@ export function useSeriesQuotes(filters: SeriesFilters, initialData?: Quote[]) {
     const queryClient = useQueryClient();
 
     // Generate a stable query key based on filters
-    const queryKey = ['seriesQuotes', filters.category, filters.series, filters.season, filters.episode];
+    const queryKey = ['seriesQuotes', filters.region, filters.series, filters.season, filters.episode];
 
     const query = useQuery<SeriesQueryData, Error>({
         queryKey,
         queryFn: async () => {
-            const { category, series, season, episode } = filters;
+            const { region, series, season, episode } = filters;
 
-            // Don't fetch if no category is selected
-            if (!category) {
+            // Don't fetch if no region is selected
+            if (!region) {
                 return { quotes: [], count: 0 };
             }
 
             const searchParams = new URLSearchParams();
-            searchParams.set('category', category);
+            searchParams.set('region', region);
 
             if (series) {
                 searchParams.set('series', series);
@@ -59,8 +59,8 @@ export function useSeriesQuotes(filters: SeriesFilters, initialData?: Quote[]) {
             const data = await response.json();
             return data;
         },
-        // Only run query if category exists
-        enabled: !!filters.category,
+        // Only run query if region exists
+        enabled: !!filters.region,
         // Use server-side data as initial data for hydration
         initialData: initialData ? { quotes: initialData, count: initialData.length } : undefined,
         // Keep previous data while fetching new results

@@ -12,7 +12,7 @@ import { getMosaicClass } from '../../lib/utils';
 interface SeriesPageClientProps {
     initialQuotes: Quote[];
     initialFilters: {
-        category?: string;
+        region?: string;
         series?: string;
         season?: number;
         episode?: number;
@@ -25,9 +25,9 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
 
     // Sync initial filters with store on mount
     useEffect(() => {
-        if (initialFilters.category) {
+        if (initialFilters.region) {
             setFilters({
-                seriesCategory: initialFilters.category,
+                selectedRegion: initialFilters.region,
                 selectedSeries: initialFilters.series || null,
                 selectedSeason: initialFilters.season || null,
                 selectedEpisode: initialFilters.episode || null
@@ -43,7 +43,7 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
         updateQuoteInCache
     } = useSeriesQuotes(
         {
-            category: filters.seriesCategory,
+            region: filters.selectedRegion,
             series: filters.selectedSeries,
             season: filters.selectedSeason,
             episode: filters.selectedEpisode,
@@ -71,25 +71,27 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
         navigateToBackroll(quote);
     };
 
-    // Helper function to format category display
-    const adjustedCategory = (category: string | null) => {
-        if (category === 'main-series') return "RuPaul's Drag Race";
-        if (category === 'all-stars') return "All-Stars";
-        if (category === 'spin-off') return "Spin-Off";
-        if (category === 'international') return "International";
-        return category;
+    // Helper function to format region display
+    const adjustedRegion = (region: string | null) => {
+        if (region === 'americas') return "Americas";
+        if (region === 'asia') return "Asia";
+        if (region === 'europe') return "Europe";
+        if (region === 'oceania') return "Oceania";
+        if (region === 'africa') return "Africa";
+        if (region === 'global') return "Global";
+        return region;
     };
 
-    const { seriesCategory, selectedSeries, selectedSeason, selectedEpisode } = filters;
+    const { selectedRegion, selectedSeries, selectedSeason, selectedEpisode } = filters;
 
     // Loading state
     if (isLoading) {
         return (
             <div className="w-full">
                 {/* Breadcrumbs */}
-                {(seriesCategory || selectedSeries || selectedSeason || selectedEpisode) && (
+                {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
                     <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
-                        {seriesCategory && <span>{adjustedCategory(seriesCategory)} <span> • </span></span>}
+                        {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
                         {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
                         {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
                         {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
@@ -107,9 +109,9 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
         return (
             <div className="w-full">
                 {/* Breadcrumbs */}
-                {(seriesCategory || selectedSeries || selectedSeason || selectedEpisode) && (
+                {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
                     <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
-                        {seriesCategory && <span>{adjustedCategory(seriesCategory)} <span> • </span></span>}
+                        {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
                         {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
                         {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
                         {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
@@ -129,9 +131,9 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
         return (
             <div className="w-full">
                 {/* Breadcrumbs */}
-                {(seriesCategory || selectedSeries || selectedSeason || selectedEpisode) && (
+                {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
                     <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
-                        {seriesCategory && <span>{adjustedCategory(seriesCategory)} <span> • </span></span>}
+                        {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
                         {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
                         {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
                         {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
@@ -150,9 +152,9 @@ export default function SeriesPageClient({ initialQuotes, initialFilters }: Seri
     return (
         <div className="w-full">
             {/* Breadcrumbs */}
-            {(seriesCategory || selectedSeries || selectedSeason || selectedEpisode) && (
+            {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
                 <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-5">
-                    {seriesCategory && <span>{adjustedCategory(seriesCategory)} <span> • </span></span>}
+                    {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
                     {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
                     {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
                     {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}

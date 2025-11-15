@@ -24,6 +24,7 @@ export default function QuizResults({
     const percentage = (score / totalQuestions) * 100;
     const isPerfect = score === totalQuestions;
     const isGood = percentage >= 70;
+    const isSafe = percentage >= 40 && percentage < 70;
 
     return (
         <Container maxWidth="md" className="text-center">
@@ -31,28 +32,33 @@ export default function QuizResults({
                 <div className="mb-6">
                     {isPerfect ? (
                         <Typography variant="h3" className="text-yellow-400 mb-2">
-                            👑 Yes Mama!
+                            💅 You&apos;re a Winner Baby!
                         </Typography>
                     ) : isGood ? (
                         <Typography variant="h4" className="text-green-400 mb-2">
-                            💅 You&apos;re a Winner Baby!
+                            👑 Yes Mama!
+                        </Typography>
+                    ) : isSafe ? (
+                        <Typography variant="h4" className="text-pink-400 mb-2">
+                            ❤️ You are safe! But girl, in this economy...
                         </Typography>
                     ) : (
-                        <Typography variant="h4" className="text-pink-400 mb-2">
-                            ❤️ You can are safe! But girl, in this economy...
+                        <Typography variant="h4" className="text-red-400 mb-2">
+                            💔 I&apos;m sorry my dear, but you are up for elimination!
                         </Typography>
-                    )}
+                    )
+
+                    }
                 </div>
 
                 <Typography
                     variant="h2"
-                    className={`font-bold mb-2 ${
-                        isPerfect
-                            ? 'text-yellow-400'
-                            : isGood
-                                ? 'text-green-400'
-                                : 'text-pink-400'
-                    }`}
+                    className={`font-bold mb-2 ${isPerfect
+                        ? 'text-yellow-400'
+                        : isGood
+                            ? 'text-green-400'
+                            : 'text-pink-400'
+                        }`}
                 >
                     {score} / {totalQuestions}
                 </Typography>
@@ -76,34 +82,32 @@ export default function QuizResults({
                 <Typography variant="h5" className="text-gray-200 mb-4 text-left">
                     Review Your Answers
                 </Typography>
-                
+
                 {userAnswers.map((answer, index) => (
-                    <Card 
-                        key={index} 
-                        className={`p-4 text-left border-2 ${
-                            answer.isCorrect 
-                                ? 'border-green-500 bg-green-900/10' 
-                                : 'border-red-500 bg-red-900/10'
-                        }`}
+                    <Card
+                        key={index}
+                        className={`p-4 text-left border-2 ${answer.isCorrect
+                            ? 'border-green-500 bg-green-900/10'
+                            : 'border-red-500 bg-red-900/10'
+                            }`}
                         sx={{ backgroundColor: 'transparent' }}
                     >
                         <Box className="flex items-start gap-3">
-                            <Typography 
-                                variant="h6" 
-                                className={`font-bold ${
-                                    answer.isCorrect ? 'text-green-400' : 'text-red-400'
-                                }`}
+                            <Typography
+                                variant="h6"
+                                className={`font-bold ${answer.isCorrect ? 'text-green-400' : 'text-red-400'
+                                    }`}
                             >
                                 {answer.isCorrect ? '✓' : '✗'}
                             </Typography>
-                            
+
                             <Box className="flex-1">
                                 <Typography variant="body1" className="text-gray-300 italic mb-2">
                                     &ldquo;{answer.quote}&rdquo;
                                 </Typography>
-                                
+
                                 <Divider className="my-2 bg-gray-700" />
-                                
+
                                 <Box className="space-y-1">
                                     <Typography variant="body2" className="text-gray-400">
                                         <span className="font-semibold">Your answer:</span>{' '}
@@ -111,7 +115,7 @@ export default function QuizResults({
                                             {answer.selectedAnswer}
                                         </span>
                                     </Typography>
-                                    
+
                                     {!answer.isCorrect && (
                                         <Typography variant="body2" className="text-gray-400">
                                             <span className="font-semibold">Correct answer:</span>{' '}

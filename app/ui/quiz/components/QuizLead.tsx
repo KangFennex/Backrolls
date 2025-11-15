@@ -11,7 +11,7 @@ export default function QuizLead({ onStartQuiz }: QuizLeadProps) {
         }}>
             <h1 className="backrollCard-font text-5xl font-bold mb-6 text-center">Welcome to the Backrolls Quiz!</h1>
             <p className="text-4xl mb-8 text-center">
-                We know you&apos;ve got backrolls, but how well do you really know them? The stage is yours. And remember, don&apos;t fuck it up!
+                We know you&apos;ve got backrolls, but how well do you really know them? The stage is yours. And remember, do not fuck it up!
             </p>
             <button
                 onClick={onStartQuiz}

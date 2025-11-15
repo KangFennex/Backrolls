@@ -10,13 +10,16 @@ export default function BackrollDetails({ quote, expanded }: BackrollDetailsProp
                 borderTop: '1px solid rgba(255, 255, 240, 0.1)',
                 backgroundColor: 'rgba(255, 255, 255, 0.02)'
             }}>
-                <div className='flex flex-col gap-2 pt-4 text-sm warm-ivory'>
-                    <div><span>Speaker:</span> {quote.speaker}</div>
-                    <div><span>Series:</span> {quote.series}</div>
-                    <div><span>Season:</span> {quote.season}</div>
-                    <div><span>Episode:</span> {quote.episode}</div>
-                    <div><span>Timestamp:</span> {quote.timestamp}</div>
-                    <div><span>Context:</span></div>
+                <div className='flex flex-col gap-2 pt-4 ml-3'>
+                    <div><span className='backrollCard-font text-2xl'>Speaker:</span> {quote.speaker}</div>
+                    <div><span className='backrollCard-font text-2xl'>Series:</span> {quote.series}</div>
+                    <div><span className='backrollCard-font text-2xl'>Season:</span> {quote.season}</div>
+                    <div><span className='backrollCard-font text-2xl'>Episode:</span> {quote.episode}</div>
+                    <div><span className='backrollCard-font text-2xl'>Episode Title:</span> {quote.episode_title}</div>
+                    <div><span className='backrollCard-font text-2xl'>Type:</span> {quote.type}</div>
+                    <div><span className='backrollCard-font text-2xl'>Air Date:</span> {quote.air_date}</div>
+                    <div><span className='backrollCard-font text-2xl'>Timestamp:</span> {quote.timestamp}</div>
+                    <div><span className='backrollCard-font text-2xl'>Context:</span></div>
                 </div>
             </CardContent>
         </Collapse>

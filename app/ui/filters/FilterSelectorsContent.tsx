@@ -5,7 +5,7 @@ import { IoFilterSharp } from "react-icons/io5";
 import { BsChatQuote } from "react-icons/bs";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
-import { useFilterContext } from '../../context/FilterContext';
+import { useFiltersContext } from '../../context/FiltersModalContext';
 import { useRainbowColors } from '../../lib/hooks';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { PiGameControllerBold } from "react-icons/pi";
@@ -13,7 +13,7 @@ import Link from "next/link";
 
 export const FilterSelectorsContent = () => {
 
-    const { isFiltersModalVisible, toggleFilters } = useFilterContext();
+    const { isFiltersModalVisible, toggleFilters } = useFiltersContext();
     const { getColorForIcon } = useRainbowColors();
     const router = useRouter();
     const pathname = usePathname();

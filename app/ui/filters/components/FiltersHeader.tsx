@@ -1,11 +1,11 @@
 'use client'
 
 import { Box, IconButton } from '@mui/material';
-import { IoClose, IoFilterOutline } from "react-icons/io5";
-import { FilterHeaderProps } from '../../../lib/definitions';
+import { IoClose } from "react-icons/io5";
+import { FiltersHeaderProps } from '../../../lib/definitions';
 import { BackrollsLogo } from '../../sharedComponents';
 
-export default function FilterHeader({ onClose }: FilterHeaderProps) {
+export default function FiltersHeader({ onClose }: FiltersHeaderProps) {
     return (
         <Box
             sx={{

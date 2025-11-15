@@ -5,17 +5,17 @@ import { useState, useRef } from "react";
 import { useAuth, useScrollDirection } from '../lib/hooks';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
-import { FilterProvider } from '../context/FilterContext';
+import { FiltersProvider } from '../context/FiltersModalContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
-import { FilterSelectors } from './filter/FilterSelectors';
+import { FilterSelectors } from './filters/FilterSelectors';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { usePathname } from 'next/navigation';
-import FiltersModal from './filter/FiltersModal';
+import FiltersModal from './filters/FiltersModal';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -31,13 +31,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <QueryClientProvider client={queryClient}>
             <NavigationProvider>
                 <SearchProvider>
-                    <FilterProvider>
+                    <FiltersProvider>
                         <SuspenseWrapper fallback={<MainPageSkeleton />}>
                             <ClientLayoutContent>
                                 {children}
                             </ClientLayoutContent>
                         </SuspenseWrapper>
-                    </FilterProvider>
+                    </FiltersProvider>
                 </SearchProvider>
             </NavigationProvider>
             <ReactQueryDevtools initialIsOpen={false} />

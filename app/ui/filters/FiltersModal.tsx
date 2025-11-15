@@ -3,10 +3,10 @@
 import { Suspense } from 'react';
 import { Dialog } from '@mui/material';
 import FiltersModalContent from './FiltersModalContent';
-import { useFilterContext } from '../../context/FilterContext';
+import { useFiltersContext } from '../../context/FiltersModalContext';
 
 export default function FiltersModal() {
-    const { isFiltersModalVisible, toggleFilters } = useFilterContext();
+    const { isFiltersModalVisible, toggleFilters } = useFiltersContext();
 
     return (
         <Suspense fallback={<div>Loading filters</div>}>

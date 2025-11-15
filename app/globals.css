@@ -58,6 +58,18 @@
     --rich-charcoal: #2C2C2C;
     --dark-gray: #333333;
     --deep-brown: #3A2F2A;
+
+    /* White that go with pastel colours */
+    --warm-light-grey: hsl(0, 0%, 97%);
+    /* #F8F8F8 */
+    --soft-off-white: hsl(0, 0%, 99%);
+    /* #FEFEFE */
+    --warm-ivory: hsl(60, 100%, 97%);
+    /* #FFFEF2 */
+    --cool-ghost-white: hsl(240, 100%, 99%);
+    /* #F8F8FF */
+    --antique-parchment: hsl(34, 78%, 94%);
+    /* #FAF0E6 */
 }
 
 body {
@@ -94,9 +106,9 @@ body {
 .backrollCard-font {
     font-family: 'Atma-Regular', sans-serif;
     font-optical-sizing: auto;
-    font-weight: 400;
+    font-weight: 500;
     font-style: normal;
-    color: var(--warm-ivory);
+    color: var(--antique-parchment);
 }
 
 .pink-fill {

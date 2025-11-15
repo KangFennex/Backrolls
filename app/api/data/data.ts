@@ -37,12 +37,17 @@ export async function searchQuotes(input: string) {
             id,
             quote_text,
             created_at,
-            category,
+            region,
             series,
+            series_code,
             season,
             episode,
+            episode_title,
             timestamp,
             speaker,
+            type,
+            air_date,
+            original_language,
             user_id,
             is_approved,
             vote_count,
@@ -71,12 +76,17 @@ export async function getQuoteById(id: string | number) {
             id,
             quote_text,
             created_at,
-            category,
+            region,
             series,
+            series_code,
             season,
             episode,
+            episode_title,
             timestamp,
             speaker,
+            type,
+            air_date,
+            original_language,
             user_id,
             is_approved,
             vote_count,
@@ -101,12 +111,17 @@ export async function getRecentQuotes(limit: number = 10) {
             id,
             quote_text,
             created_at,
-            category,
+            region,
             series,
+            series_code,
             season,
             episode,
+            episode_title,
             timestamp,
             speaker,
+            type,
+            air_date,
+            original_language,
             user_id,
             is_approved,
             vote_count,
@@ -129,12 +144,17 @@ export async function getTopRatedQuotes(limit: number = 10) {
             id, 
             quote_text, 
             created_at,
-            category,
-            series, 
+            region,
+            series,
+            series_code,
             season, 
             episode,
+            episode_title,
             timestamp, 
-            speaker, 
+            speaker,
+            type,
+            air_date,
+            original_language,
             user_id, 
             is_approved,
             vote_count, 
@@ -157,13 +177,13 @@ export async function getTopRatedQuotes(limit: number = 10) {
 }
 
 export async function getFilteredQuotes(filters: {
-    category?: string;
+    region?: string;
     series?: string;
     season?: number;
     episode?: number;
     limit?: number;
 }) {
-    const { category, series, season, episode, limit = 50 } = filters;
+    const { region, series, season, episode, limit = 50 } = filters;
 
     console.log('Filtering quotes with:', filters);
 
@@ -173,20 +193,25 @@ export async function getFilteredQuotes(filters: {
             id,
             quote_text,
             created_at,
-            category,
+            region,
             series,
+            series_code,
             season,
             episode,
+            episode_title,
             timestamp,
             speaker,
+            type,
+            air_date,
+            original_language,
             user_id,
             is_approved,
             vote_count,
             share_count
         `);
 
-    if (category) {
-        query = query.eq('category', category);
+    if (region) {
+        query = query.eq('region', region);
     }
 
     if (series) {
@@ -246,12 +271,17 @@ export async function getRandomQuote(limit: number = 1) {
                 id,
                 quote_text,
                 created_at,
-                category,
+                region,
                 series,
+                series_code,
                 season,
                 episode,
+                episode_title,
                 timestamp,
                 speaker,
+                type,
+                air_date,
+                original_language,
                 user_id,
                 is_approved,
                 vote_count,

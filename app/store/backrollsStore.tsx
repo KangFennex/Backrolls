@@ -3,7 +3,7 @@ import { Quote } from '../lib/definitions';
 
 // Filter state type
 type FilterState = {
-    seriesCategory: string;
+    selectedRegion: string;
     selectedSeries: string | null;
     selectedSeason: number | null;
     selectedEpisode: number | null;
@@ -57,8 +57,8 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
 
     // Initialize filter state with defaults
     filters: {
-        seriesCategory: 'main-series',
-        selectedSeries: null,
+        selectedRegion: 'americas',
+        selectedSeries: 'rpdr',
         selectedSeason: null,
         selectedEpisode: null,
     },
@@ -66,12 +66,12 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
     // Set current user (without triggering data load - prevents infinite loops)
     setCurrentUser: async (userId: string | null) => {
         const currentUserId = get().currentUser;
-        
+
         // Only update if user actually changed
         if (currentUserId === userId) return;
-        
+
         set({ currentUser: userId });
-        
+
         // Only clear data when logging out, don't auto-load on login
         if (!userId) {
             get().clearUserData();
@@ -309,10 +309,11 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
     },
 
     clearFilters: () => {
+        console.log('🔄 Clearing all filters to defaults');
         set({
             filters: {
-                seriesCategory: 'main-series',
-                selectedSeries: null,
+                selectedRegion: 'americas',
+                selectedSeries: 'rpdr',
                 selectedSeason: null,
                 selectedEpisode: null,
             }
@@ -320,13 +321,13 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
     },
 
     initFiltersFromUrl: (searchParams: URLSearchParams) => {
-        const categoryFromURL = searchParams.get('category') || 'main-series';
-        const seriesFromURL = searchParams.get('series');
+        const regionFromURL = searchParams.get('region') || 'americas';
+        const seriesFromURL = searchParams.get('series') || 'rpdr';
         const seasonFromURL = searchParams.get('season');
         const episodeFromURL = searchParams.get('episode');
 
         const newFilters: FilterState = {
-            seriesCategory: categoryFromURL,
+            selectedRegion: regionFromURL,
             selectedSeries: seriesFromURL,
             selectedSeason: seasonFromURL ? parseInt(seasonFromURL) : null,
             selectedEpisode: episodeFromURL ? parseInt(episodeFromURL) : null,
@@ -340,7 +341,7 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
         const { filters } = get();
         const params = new URLSearchParams();
 
-        params.set('category', filters.seriesCategory);
+        params.set('region', filters.selectedRegion);
 
         if (filters.selectedSeries) {
             params.set('series', filters.selectedSeries);
@@ -360,9 +361,9 @@ export const useBackrollsStore = create<BackrollsState>((set, get) => ({
 
     hasActiveFilters: () => {
         const { filters } = get();
-        return filters.seriesCategory !== 'main-series' || 
-               filters.selectedSeries !== null || 
-               filters.selectedSeason !== null || 
-               filters.selectedEpisode !== null;
+        return filters.selectedRegion !== 'americas' ||
+            filters.selectedSeries !== null ||
+            filters.selectedSeason !== null ||
+            filters.selectedEpisode !== null;
     },
 }));

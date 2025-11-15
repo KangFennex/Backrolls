@@ -1,67 +1,65 @@
-import { series, seriesSeasons, seriesEpisodes } from '../repertoire';
+import { codeEquivalence, series, seriesSeasons, seriesEpisodes } from '../newRepertoire';
+
 
 export const useSeriesFiltering = () => {
     // This hook doesn't manage state - it gets from SeriesContext
     // and provides utility functions for the filtering component
 
-    const getSeasonCount = (seriesName: string): number => {
+    const getSeriesByRegion = (region: string) => {
+        const regionMap: Record<string, string> = {
+            'americas': 'americas',
+            'asia': 'asia',
+            'europe': 'europe',
+            'oceania': 'oceania',
+            'africa': 'africa',
+            'global': 'global'
+        };
+        const seriesRegion = regionMap[region];
+        return series.filter(s => s.region === seriesRegion);
+    };
+
+    const getSeriesOptions = (code: string) => {
+        const seriesName = codeEquivalence[code] || code;
+        return series
+            .filter(s => s.name === seriesName)
+            .map(s => ({
+                value: s.name,
+                label: s.name
+            }));
+    }
+
+    const getSeasonCount = (code: string): number => {
+        const seriesName = codeEquivalence[code] || code;
         return seriesSeasons[seriesName] || 1;
     };
 
-    const getSeasonOptions = (seriesName: string) => {
-        const seasonCount = getSeasonCount(seriesName);
+    const getSeasonOptions = (code: string) => {
+        const seasonCount = getSeasonCount(code);
         return Array.from({ length: seasonCount }, (_, i) => ({
             value: i + 1,
             label: `Season ${i + 1}`
         }));
     };
 
-    const getEpisodeCount = (seriesName: string, season: number): number => {
+    const getEpisodeCount = (code: string, season: number): number => {
+        const seriesName = codeEquivalence[code] || code;
         return seriesEpisodes[seriesName]?.[season] || seriesEpisodes.default?.[season] || 10;
     };
 
-    const getEpisodeOptions = (seriesName: string, season: number) => {
-        const episodeCount = getEpisodeCount(seriesName, season);
+    const getEpisodeOptions = (code: string, season: number) => {
+        const episodeCount = getEpisodeCount(code, season);
         return Array.from({ length: episodeCount }, (_, i) => ({
             value: i + 1,
             label: `Episode ${i + 1}`
         }));
     };
 
-    const getSeriesByCategory = (category: string) => {
-        const categoryMap: Record<string, string> = {
-            'main-series': 'main-series',
-            'all-stars': 'all-stars',
-            'international': 'international',
-            'spin-off': 'spin-off'
-        };
-
-        const seriesType = categoryMap[category];
-        return series.filter(s => s.type === seriesType);
-    };
-
-    const getCategoryDisplayName = (category: string): string => {
-        const displayNames: Record<string, string> = {
-            'main-series': 'Main Series',
-            'all-stars': 'All Stars',
-            'international': 'International',
-            'spin-off': 'Spin Offs'
-        };
-        return displayNames[category] || category;
-    };
-
-    const getSeriesDisplayName = (seriesId: string): string => {
-        const foundSeries = series.find(s => s.name === seriesId);
-        return foundSeries?.name || seriesId;
-    };
-
     return {
+        getSeriesOptions,
         getSeasonCount,
         getSeasonOptions,
         getEpisodeOptions,
         getEpisodeCount,
-        getSeriesByCategory,
-        getCategoryDisplayName,
-        getSeriesDisplayName
+        getSeriesByRegion
     };
 };

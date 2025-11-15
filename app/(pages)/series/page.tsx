@@ -5,14 +5,14 @@ import { SeriesPageProps } from '../../lib/definitions';
 
 export default async function SeriesRoute({ searchParams }: SeriesPageProps) {
     const params = await searchParams;
-    const category = params.category;
+    const region = params.region;
     const series = params.series;
     const season = params.season ? parseInt(params.season) : undefined;
     const episode = params.episode ? parseInt(params.episode) : undefined;
 
     // Fetch initial data on server for hydration
-    const quotes = category ? await getFilteredQuotes({
-        category,
+    const quotes = region ? await getFilteredQuotes({
+        region,
         series,
         season,
         episode,
@@ -24,7 +24,7 @@ export default async function SeriesRoute({ searchParams }: SeriesPageProps) {
             <SeriesPageClient
                 initialQuotes={quotes}
                 initialFilters={{
-                    category,
+                    region,
                     series,
                     season,
                     episode

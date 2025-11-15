@@ -32,10 +32,10 @@ export default function BackrollContent({
             sx={{
                 flex: 1, // Take up available space
                 display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: '120px',
-                padding: '0.5rem !important'
+                flexDirection: 'column',
+                height: '100%',
+                padding: '0.1rem !important',
+                paddingBottom: '0 !important',
             }}
             className="backroll-card-content">
             <Backroll

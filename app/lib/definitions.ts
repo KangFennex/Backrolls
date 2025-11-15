@@ -1,5 +1,12 @@
 import { z } from 'zod'
 
+// =============================================================================
+// AUTHENTICATION & USER TYPES
+// =============================================================================
+
+/**
+ * Base user type for authentication
+ */
 export type User = {
     id: string;
     username: string;
@@ -7,6 +14,9 @@ export type User = {
     password: string;
 };
 
+/**
+ * Extended user profile with optional social/OAuth fields
+ */
 export interface ExtendedUser {
     id?: string;
     username?: string;
@@ -15,26 +25,9 @@ export interface ExtendedUser {
     image?: string | null;
 }
 
-export interface FavoriteQuoteDetails {
-    id: string | number;
-    quote_text: string;
-    created_at: string;
-    series: string;
-    season: number;
-    episode: number;
-    timestamp: string;
-    speaker: string;
-    vote_count: number;
-    share_count: number;
-}
-
-export interface SignupFormErrors {
-    username?: string[];
-    email?: string[];
-    password?: string[];
-    general?: string;
-}
-
+/**
+ * Form validation schema for user signup
+ */
 export const SignupFormSchema = z.object({
     username: z
         .string()
@@ -52,23 +45,47 @@ export const SignupFormSchema = z.object({
         .trim(),
 })
 
+/**
+ * Error structure for signup form validation
+ */
+export interface SignupFormErrors {
+    username?: string[];
+    email?: string[];
+    password?: string[];
+    general?: string;
+}
+
+// =============================================================================
+// QUOTE DATA TYPES
+// =============================================================================
+
+/**
+ * Core quote entity representing a memorable line from Drag Race
+ */
 export type Quote = {
     id: string | number;
     quote_text: string;
-    category: string;
-    series: string;
-    speaker: string;
+    region: string;
+    series_code: string;
     season: number;
     episode: number;
+    speaker: string;
+    type: string;
     timestamp: string;
+    air_date: string;
     user_id: string;
     is_approved: boolean;
     vote_count: number;
     share_count: number;
+    // optional original language quote_text if not in English
+    original_language?: string;
     // Optional relationship to contexts
     contexts?: QuoteContext[];
 };
 
+/**
+ * Additional context for quotes (background story, scene description, etc.)
+ */
 export type QuoteContext = {
     id: string;
     quote_id: string;
@@ -79,13 +96,38 @@ export type QuoteContext = {
     created_at: string;
 };
 
+/**
+ * Detailed information for favorited quotes
+ */
+export interface FavoriteQuoteDetails {
+    id: string | number;
+    quote_text: string;
+    created_at: string;
+    series: string;
+    season: number;
+    episode: number;
+    timestamp: string;
+    speaker: string;
+    vote_count: number;
+    share_count: number;
+}
 
+// =============================================================================
+// COMPONENT PROPS - CARD COMPONENTS
+// =============================================================================
+
+/**
+ * Props for card wrapper that contains multiple quote cards
+ */
 export type CardWrapperProps = {
     searchResults: Quote[];
     clearSearchInput?: () => void;
     handleSetBackroll: (id: string) => void;
 };
 
+/**
+ * Basic card props for simplified quote display
+ */
 export type CardProps = {
     id: string;
     quote: string;
@@ -95,6 +137,74 @@ export type CardProps = {
     onClick?: () => void;
 };
 
+/**
+ * Props for individual quote card with full functionality
+ */
+export interface QuoteCardProps {
+    quote: Quote;
+    variant?: 'full' | 'compact';
+    onRemoveFavorite?: (quote_id: string) => void;
+    onClick?: () => void;
+    index?: number;
+    isMainPage?: boolean;
+}
+
+// =============================================================================
+// COMPONENT PROPS - BACKROLL COMPONENTS
+// =============================================================================
+
+/**
+ * Header section of backroll card
+ */
+export interface BackrollHeaderProps {
+    quote: Quote;
+}
+
+/**
+ * Content section displaying quote text and speaker
+ */
+export interface BackrollContentProps {
+    quoteText: string;
+    speaker: string;
+    maxLength?: number;
+    onClick?: () => void;
+}
+
+/**
+ * Action buttons for backroll (vote, share, expand, etc.)
+ */
+export interface BackrollActionsProps {
+    quoteId: string;
+    quoteText: string;
+    currentVoteCount: number;
+    isCompact: boolean;
+    expanded: boolean;
+    onExpandClick: () => void;
+    onRemoveFavorite?: (quote_id: string) => void;
+}
+
+/**
+ * Detailed information section that expands/collapses
+ */
+export interface BackrollDetailsProps {
+    quote: Quote;
+    expanded: boolean;
+}
+
+/**
+ * Display component for backroll search results
+ */
+export type BackrollCardProps = {
+    displayResults: string[];
+}
+
+// =============================================================================
+// COMPONENT PROPS - NAVIGATION & SEARCH
+// =============================================================================
+
+/**
+ * Navigation component props
+ */
 export type NavProps = {
     menu: boolean;
     setMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -106,12 +216,18 @@ export type NavProps = {
     handleSearchSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
+/**
+ * Search modal component props
+ */
 export type SearchModalProps = {
     searchResults: Quote[];
     loading: boolean;
     handleSetBackroll: (id: string) => void;
 };
 
+/**
+ * Search component props
+ */
 export type SearchProps = {
     searchModal: boolean;
     handleInputChange: (input: string) => void;
@@ -121,45 +237,13 @@ export type SearchProps = {
     handleSearchSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-export type BackrollCardProps = {
-    displayResults: string[];
-}
+// =============================================================================
+// COMPONENT PROPS - FILTERS & DROPDOWNS
+// =============================================================================
 
-export interface QuoteCardProps {
-    quote: Quote;
-    variant?: 'full' | 'compact';
-    onRemoveFavorite?: (quote_id: string) => void;
-    onClick?: () => void;
-    index?: number;
-    isMainPage?: boolean;
-}
-
-export interface BackrollHeaderProps {
-    quote: Quote;
-}
-
-export interface BackrollContentProps {
-    quoteText: string;
-    speaker: string;
-    maxLength?: number;
-    onClick?: () => void;
-}
-
-export interface BackrollActionsProps {
-    quoteId: string;
-    quoteText: string;
-    currentVoteCount: number;
-    isCompact: boolean;
-    expanded: boolean;
-    onExpandClick: () => void;
-    onRemoveFavorite?: (quote_id: string) => void;
-}
-
-export interface BackrollDetailsProps {
-    quote: Quote;
-    expanded: boolean;
-}
-
+/**
+ * Split button dropdown component for filter selection
+ */
 export interface SplitButtonProps {
     label: string;
     selectedValue: string | number | null;
@@ -175,8 +259,70 @@ export interface SplitButtonProps {
     disabled?: boolean;
 }
 
-// Define props for Series components
+/**
+ * Series filter component props
+ */
+export interface SeriesFilterProps {
+    onClose?: () => void;
+    className?: string;
+}
 
+// =============================================================================
+// COMPONENT PROPS - FILTER DRAWER
+// =============================================================================
+
+/**
+ * Main filter drawer component props
+ */
+export interface FilterDrawerProps {
+    open: boolean;
+    onClose: () => void;
+}
+
+/**
+ * Filter drawer header component props
+ */
+export interface FiltersHeaderProps {
+    onClose: () => void;
+}
+
+export interface FiltersChipProps {
+    label: string;
+    onClick: () => void;
+    color?: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+}
+
+/**
+ * Filter controls within the drawer
+ */
+export interface FilterControlsProps {
+    seriesCategory: string;
+    selectedSeries: string | null;
+    selectedSeason: number | null;
+    selectedEpisode: number | null;
+    onCategoryChange: (category: string | number | null) => void;
+    onSeriesChange: (series: string | number | null) => void;
+    onSeasonChange: (season: string | number | null) => void;
+    onEpisodeChange: (episode: string | number | null) => void;
+}
+
+/**
+ * Filter action buttons (apply, clear)
+ */
+export interface FilterActionsProps {
+    seriesCategory: string;
+    hasActiveFilters: boolean;
+    onApplyFilters: () => void;
+    onClearFilters: () => void;
+}
+
+// =============================================================================
+// CONTEXT & PAGE PROPS - SERIES
+// =============================================================================
+
+/**
+ * Context for managing series filtering state
+ */
 export type SeriesContextType = {
     seriesCategory: string;
     selectedSeries: string | null;
@@ -189,100 +335,105 @@ export type SeriesContextType = {
     clearFilters: () => void;
 }
 
+/**
+ * Server props for series pages
+ */
 export interface SeriesPageServerProps {
     searchParams: Promise<{
-        category?: string;
+        region?: string;
         series?: string;
         season?: string;
         episode?: string;
     }>
 }
 
+/**
+ * Client props for series pages
+ */
 export interface SeriesClientProps {
     initialQuotes: Quote[];
     initialFilters: {
-        category?: string;
+        region?: string;
         series?: string;
         season?: number;
         episode?: number;
     }
 }
 
+/**
+ * Series page component props
+ */
 export interface SeriesPageProps {
     searchParams: Promise<{
-        category?: string;
+        region?: string;
         series?: string;
         season?: string;
         episode?: string;
     }>
 }
 
-// Define props for RandomServer and RandomClient components
+// =============================================================================
+// PAGE PROPS - RANDOM QUOTES
+// =============================================================================
+
+/**
+ * Server props for random quotes page
+ */
 export interface RandomServerProps {
     limit: number;
 }
 
+/**
+ * Client props for random quotes page
+ */
 export interface RandomClientProps {
     randomQuotes: Quote[];
 }
 
+/**
+ * Random page component props
+ */
 export interface RandomPageProps {
     searchParams: Promise<{
         limit?: string;
     }>
 }
 
+/**
+ * Server props for random page
+ */
 export interface RandomPageServerProps {
     searchParams: Promise<{
         limit?: string;
     }>
 }
 
-// Define props for PageContainer and PageComponentContainer components
+// =============================================================================
+// LAYOUT & CONTAINER PROPS
+// =============================================================================
+
+/**
+ * Main page container props
+ */
 export interface PageContainerProps {
     children: React.ReactNode;
 }
 
+/**
+ * Component container with layout variants
+ */
 export interface PageComponentContainerProps {
     children: React.ReactNode;
     variant?: 'mosaic' | 'list';
 }
 
-// Define props for FilterDrawer and its subcomponents
-export interface FilterDrawerProps {
-    open: boolean;
-    onClose: () => void;
-}
+// =============================================================================
+// QUIZ FEATURE TYPES
+// =============================================================================
 
-export interface FilterHeaderProps {
-    onClose: () => void;
-}
-
-export interface FilterControlsProps {
-    seriesCategory: string;
-    selectedSeries: string | null;
-    selectedSeason: number | null;
-    selectedEpisode: number | null;
-    onCategoryChange: (category: string | number | null) => void;
-    onSeriesChange: (series: string | number | null) => void;
-    onSeasonChange: (season: string | number | null) => void;
-    onEpisodeChange: (episode: string | number | null) => void;
-}
-
-export interface FilterActionsProps {
-    seriesCategory: string;
-    hasActiveFilters: boolean;
-    onApplyFilters: () => void;
-    onClearFilters: () => void;
-}
-
-export interface SeriesFilterProps {
-    onClose?: () => void;
-    className?: string;
-}
-
-// Quiz
-
+/**
+ * Quiz question structure for "Who Said It?" game
+ */
 export interface QuizQuestion {
     id: string;
     quote: string;

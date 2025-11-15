@@ -67,7 +67,7 @@ export const getMosaicClass = (quoteText: string, index: number): string => {
 
     // Medium quotes (30-50 chars) - mostly tall, some normal
     if (textLength > 30) {
-        return variant < 2 ? 'card-tall' : '';
+        return variant < 2 ? '' : '';
     }
 
     // Short quotes (< 30 chars) - mostly normal, occasional tall
