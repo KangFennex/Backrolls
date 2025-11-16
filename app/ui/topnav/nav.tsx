@@ -3,20 +3,24 @@
 import Search from '../search/Search';
 import { BsCupHot, BsCupHotFill } from "react-icons/bs";
 import { RiSofaLine, RiSofaFill } from "react-icons/ri";
+import { IoIosArrowDown } from "react-icons/io";
 import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import { useAuth } from "../../lib/hooks";
 import { useScrollDirection } from "../../lib/hooks";
 import { NavLogo } from '../sharedComponents';
+import { useRef } from 'react';
 
 interface NavProps {
-    toggleSideMenu: () => void;
+    toggleDropdownMenu?: () => void;
     isVisible?: boolean;
+    isMenuOpen?: boolean;
 }
 
-function Nav({ toggleSideMenu, isVisible }: NavProps) {
+function Nav({ toggleDropdownMenu, isVisible, isMenuOpen }: NavProps) {
     const { isAuthenticated } = useAuth();
     const { isNavVisible } = useScrollDirection();
+    const arrowButtonRef = useRef<HTMLDivElement>(null);
 
     // Use the prop if provided, otherwise use the hook
     const shouldShow = isVisible !== undefined ? isVisible : isNavVisible;
@@ -48,15 +52,27 @@ function Nav({ toggleSideMenu, isVisible }: NavProps) {
                                     <BsCupHotFill size={30} className="pink-fill text-3xl sm:text-4xl mb-1" /> :
                                     <BsCupHot size={30} className="pink-fill text-3xl sm:text-4xl mb-1" />}
                             </Link>
-                            <button
-                                onClick={toggleSideMenu}
-                                className="mx-2 sm:mx-0"
-                                aria-label="Open navigation menu"
-                            >
+                            <Link href="/lounge" aria-label="Lounge">
                                 {isAuthenticated ?
                                     <RiSofaFill size={35} className="pink-fill text-4xl sm:text-5xl mb-1" /> :
                                     <RiSofaLine size={35} className="pink-fill text-4xl sm:text-5xl mb-1" />}
-                            </button>
+                            </Link>
+                            <div 
+                                ref={arrowButtonRef}
+                                onClick={() => {
+                                    console.log('Arrow clicked, toggleDropdownMenu:', toggleDropdownMenu);
+                                    toggleDropdownMenu?.();
+                                }} 
+                                className="cursor-pointer relative"
+                                aria-label="Open menu"
+                            >
+                                <IoIosArrowDown 
+                                    size={24} 
+                                    className={`pink-fill text-4xl sm:text-5xl mb-1 transition-transform duration-200 ${
+                                        isMenuOpen ? 'rotate-180' : 'rotate-0'
+                                    }`} 
+                                />
+                            </div>
                         </nav>
                     </div>
                 </div>

@@ -1,11 +1,12 @@
 'use client';
 
 import './ClientLayout.scss';
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useAuth, useScrollDirection } from '../lib/hooks';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
 import { FiltersProvider } from '../context/FiltersModalContext';
+import { MenuProvider, useMenu } from '../context/MenuContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
 import { FilterSelectors } from './filters/FilterSelectors';
@@ -32,11 +33,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <NavigationProvider>
                 <SearchProvider>
                     <FiltersProvider>
-                        <SuspenseWrapper fallback={<MainPageSkeleton />}>
-                            <ClientLayoutContent>
-                                {children}
-                            </ClientLayoutContent>
-                        </SuspenseWrapper>
+                        <MenuProvider>
+                            <SuspenseWrapper fallback={<MainPageSkeleton />}>
+                                <ClientLayoutContent>
+                                    {children}
+                                </ClientLayoutContent>
+                            </SuspenseWrapper>
+                        </MenuProvider>
                     </FiltersProvider>
                 </SearchProvider>
             </NavigationProvider>
@@ -49,12 +52,8 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     useAuth();
     const { isNavVisible, isAtTop } = useScrollDirection();
     const { closeSearchModal } = useSearchContext();
-
-    const [sideMenuOpen, setSideMenuOpen] = useState(false);
+    const { isMenuOpen, toggleMenu, closeMenu } = useMenu();
     const menuRef = useRef<HTMLDivElement>(null);
-
-    const closeSideMenu = () => setSideMenuOpen(true);
-    const toggleSideMenu = () => setSideMenuOpen(!sideMenuOpen);
 
     const isMainPage = usePathname() === '/';
 
@@ -76,8 +75,23 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
             {/* Fixed Nav Header - Slides above filter bar */}
             <header className="header">
-                <Nav toggleSideMenu={toggleSideMenu} isVisible={isNavVisible} />
+                <Nav 
+                    toggleDropdownMenu={toggleMenu} 
+                    isVisible={isNavVisible}
+                    isMenuOpen={isMenuOpen}
+                />
             </header>
+
+            {/* Dropdown Menu */}
+            <ClickAwayListener 
+                onClickAway={closeMenu}
+                mouseEvent={isMenuOpen ? 'onMouseDown' : false}
+                touchEvent={isMenuOpen ? 'onTouchStart' : false}
+            >
+                <div>
+                    <Menu isOpen={isMenuOpen} ref={menuRef} />
+                </div>
+            </ClickAwayListener>
 
             {/* Main content area with margin for fixed filter bar */}
             <div className={`main-content ${isMainPage ? 'isMainPage' : ''}`}>
@@ -86,17 +100,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
             {/* Filters Modal */}
             <FiltersModal />
-
-            {/* Menu overlay */}
-            <div
-                className={`menu-overlay ${sideMenuOpen ? 'open' : ''}`}
-                onClick={closeSideMenu}
-            ></div>
-
-            {/* Side menu */}
-            <div className={`side-menu ${sideMenuOpen ? 'open' : ''}`} ref={menuRef}>
-                <Menu closeSideMenu={closeSideMenu} />
-            </div>
 
             <ClickAwayListener onClickAway={closeSearchModal}>
                 <div></div>

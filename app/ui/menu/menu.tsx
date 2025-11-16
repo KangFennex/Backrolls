@@ -1,42 +1,65 @@
 'use client';
 
 import React from "react";
-import "./menu.scss";
-import SelectCategory from "./selectCategory";
-import NavLinks from "./nav-link";
-import { IoClose } from "react-icons/io5";
+import Link from 'next/link';
 
 interface MenuProps {
-    closeSideMenu: () => void;
+    isOpen: boolean;
 }
 
 const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
-    function Menu({ closeSideMenu }, ref) {
+    function Menu({ isOpen }, ref) {
+        console.log('Menu render - isOpen:', isOpen);
+        
         return (
             <nav
                 ref={ref}
-                className="menu w-full h-full flex flex-col bg-white"
+                className={`
+                    fixed right-3 sm:right-4 md:right-6
+                    mt-1
+                    w-[160px] sm:w-[180px]
+                    bg-[#1a1a1a] 
+                    border border-[#333]
+                    rounded-lg
+                    shadow-xl
+                    transition-all duration-200 ease-in-out
+                    origin-top-right
+                    ${isOpen 
+                        ? 'opacity-100 scale-100 visible' 
+                        : 'opacity-0 scale-95 invisible pointer-events-none'
+                    }
+                    z-[70]
+                `}
+                style={{
+                    top: 'calc(3.5rem)', // Adjust based on nav height
+                }}
             >
-                {/* Header with close button */}
-                <div className="flex ml-auto items-center p-4 border-b border-gray-200">
-                    <button
-                        onClick={closeSideMenu}
-                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                        aria-label="Close menu"
+                <div className="py-1.5">
+                    <Link 
+                        href="/profile" 
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-[#2a2a2a] transition-colors"
                     >
-                        <IoClose size={30} className="text-pink-500" />
-                    </button>
-                </div>
-
-                {/* Navigation Links */}
-                <div className="p-4 border-b border-gray-200">
-                    <NavLinks />
-                </div>
-
-                {/* Categories */}
-                <div className="p-4 flex-1">
-                    <h3 className="text-sm font-medium text-gray-700 mb-3">Categories</h3>
-                    <SelectCategory />
+                        Profile
+                    </Link>
+                    <Link 
+                        href="/settings" 
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-[#2a2a2a] transition-colors"
+                    >
+                        Settings
+                    </Link>
+                    <Link 
+                        href="/about" 
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-[#2a2a2a] transition-colors"
+                    >
+                        About
+                    </Link>
+                    <div className="border-t border-[#333] my-1"></div>
+                    <Link 
+                        href="/logout" 
+                        className="block px-4 py-2 text-sm text-red-400 hover:bg-[#2a2a2a] transition-colors"
+                    >
+                        Logout
+                    </Link>
                 </div>
             </nav>
         );

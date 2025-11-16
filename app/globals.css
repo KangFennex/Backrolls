@@ -303,8 +303,8 @@ body {
 /* Logo */
 @font-face {
     font-family: 'Bitcount Prop Single';
-    src: url('/fonts/BitcountPropSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf') format('truetype-variations');
-    font-weight: 100 900;
+    src: url('/fonts/BitcountPropSingle.ttf') format('truetype-variations');
+    font-weight: 100 300 400 900;
     font-style: normal;
     font-display: swap;
 }
@@ -312,12 +312,12 @@ body {
 .logo {
     font-family: 'Bitcount Prop Single', sans-serif;
     font-optical-sizing: auto;
-    font-style: normal;
+    font-weight: 400;
     font-variation-settings:
-        "slnt" 0,
-        "CRSV" 0.5,
-        "ELSH" 0,
-        "ELXP" 0;
+    "slnt" 0,
+    "CRSV" 0.5,
+    "ELSH" 0,
+    "ELXP" 0;
 }
 
 /* Fonts Styling */
