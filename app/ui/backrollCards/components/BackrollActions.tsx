@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import CardActions from '@mui/material/CardActions';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from '../../buttons/buttons';
+import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from './ActionButtons';
 import { BackrollActionsProps } from '../../../lib/definitions';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -37,7 +37,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export default function BackrollActions({
     quoteId,
     quoteText,
-    currentVoteCount,
+    initialVoteCount,
     isCompact,
     expanded,
     onExpandClick,
@@ -54,7 +54,7 @@ export default function BackrollActions({
                 <div>
                     <VoteButtons
                         quote_id={quoteId}
-                        currentVoteCount={currentVoteCount}
+                        initialVoteCount={initialVoteCount}
                     />
                 </div>
                 <div>

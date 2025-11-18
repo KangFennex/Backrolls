@@ -1,7 +1,7 @@
 'use client';
 
 import './ClientLayout.scss';
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useAuth, useScrollDirection } from '../lib/hooks';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
@@ -13,38 +13,52 @@ import { FilterSelectors } from './filters/FilterSelectors';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { usePathname } from 'next/navigation';
 import FiltersModal from './filters/FiltersModal';
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: 1000 * 60 * 5, // 5 minutes
-            gcTime: 1000 * 60 * 10, // 10 minutes (formerly cacheTime)
-        },
-    },
-})
+import { trpc, getBaseUrl } from '../lib/trpc';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { httpLink } from '@trpc/client';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
+    const [queryClient] = useState(() => new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 1000 * 60 * 5, // 5 minutes
+                gcTime: 1000 * 60 * 10, // 10 minutes
+            },
+        },
+    }));
+
+    const [trpcClient] = useState(() =>
+        trpc.createClient({
+            links: [
+                httpLink({
+                    url: `${getBaseUrl()}/api/trpc`,
+                }),
+            ],
+        })
+    );
+
     return (
-        <QueryClientProvider client={queryClient}>
-            <NavigationProvider>
-                <SearchProvider>
-                    <FiltersProvider>
-                        <MenuProvider>
-                            <SuspenseWrapper fallback={<MainPageSkeleton />}>
-                                <ClientLayoutContent>
-                                    {children}
-                                </ClientLayoutContent>
-                            </SuspenseWrapper>
-                        </MenuProvider>
-                    </FiltersProvider>
-                </SearchProvider>
-            </NavigationProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+            <QueryClientProvider client={queryClient}>
+                <NavigationProvider>
+                    <SearchProvider>
+                        <FiltersProvider>
+                            <MenuProvider>
+                                <SuspenseWrapper fallback={<MainPageSkeleton />}>
+                                    <ClientLayoutContent>
+                                        {children}
+                                    </ClientLayoutContent>
+                                </SuspenseWrapper>
+                            </MenuProvider>
+                        </FiltersProvider>
+                    </SearchProvider>
+                </NavigationProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+        </trpc.Provider>
     );
 }
 
@@ -75,21 +89,21 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
             {/* Fixed Nav Header - Slides above filter bar */}
             <header className="header">
-                <Nav 
-                    toggleDropdownMenu={toggleMenu} 
+                <Nav
+                    toggleDropdownMenu={toggleMenu}
                     isVisible={isNavVisible}
                     isMenuOpen={isMenuOpen}
                 />
             </header>
 
             {/* Dropdown Menu */}
-            <ClickAwayListener 
+            <ClickAwayListener
                 onClickAway={closeMenu}
                 mouseEvent={isMenuOpen ? 'onMouseDown' : false}
                 touchEvent={isMenuOpen ? 'onTouchStart' : false}
             >
                 <div>
-                    <Menu isOpen={isMenuOpen} ref={menuRef} />
+                    <Menu isOpen={isMenuOpen} ref={menuRef} onClick={closeMenu} />
                 </div>
             </ClickAwayListener>
 

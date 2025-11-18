@@ -5,8 +5,8 @@ import { Quote } from '../lib/definitions';
 import { NavigationContextContent } from './NavigationContextContent';
 
 interface NavigationContextType {
-    navigateToBackroll: (quote: Quote, searchQuery?: string) => void;
-    navigateToBackrollsWithResults: (quotes: Quote[], searchQuery?: string) => void;
+    navigateToBackroll: (quote: Quote) => void;
+    navigateToBackrollsWithResults: (searchQuery: string) => void;
 }
 
 export const NavigationContext = createContext<NavigationContextType | undefined>(undefined);

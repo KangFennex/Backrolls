@@ -1,13 +1,13 @@
 'use client'
 
-import Lounge from '../../ui/lounge/lounge';
+import LoungePageClient from '../../ui/lounge/LoungePageClient';
 import PageContainer from '../../ui/pageContainer';
 
 export default function LoungePage() {
     return (
         <>
             <PageContainer>
-                <Lounge />
+                <LoungePageClient />
             </PageContainer>
         </>
     )

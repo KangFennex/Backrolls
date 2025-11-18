@@ -12,7 +12,7 @@ import { getMosaicClass } from '../../lib/utils';
 
 export default function WorkroomPageClient() {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: randomData } = useWorkroomQuotes(30);
+    const { data: quotes, isLoading } = useWorkroomQuotes(30);
     const queryClient = useQueryClient();
     const pathname = usePathname();
 
@@ -27,20 +27,17 @@ export default function WorkroomPageClient() {
             const customEvent = event as CustomEvent;
             const { quoteId, newVoteCount } = customEvent.detail;
 
-            // Updates the TanStack Query cache directly
-            queryClient.setQueryData<{ quote: Quote[] }>(
-                ['workroomQuotes', 30],
+            // Updates the TanStack Query cache directly - tRPC returns array directly
+            queryClient.setQueryData<Quote[]>(
+                [['quotes', 'getRandom'], { input: { limit: 30 } }],
                 (oldData) => {
-                    if (!oldData?.quote) return oldData;
+                    if (!oldData) return oldData;
 
-                    return {
-                        ...oldData,
-                        quote: oldData.quote.map((quote) =>
-                            quote.id === quoteId
-                                ? { ...quote, vote_count: newVoteCount }
-                                : quote
-                        )
-                    };
+                    return oldData.map((quote) =>
+                        quote.id === quoteId
+                            ? { ...quote, voteCount: newVoteCount }
+                            : quote
+                    );
                 }
             );
         };
@@ -49,7 +46,15 @@ export default function WorkroomPageClient() {
         return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
     }, [queryClient]);
 
-    if (!randomData?.quote || randomData.quote.length === 0) {
+    if (isLoading) {
+        return (
+            <div className="text-center py-8 text-gray-500">
+                Loading...
+            </div>
+        );
+    }
+
+    if (!quotes || quotes.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
                 No backrolls for you today
@@ -59,7 +64,7 @@ export default function WorkroomPageClient() {
 
     return (
         <PageComponentContainer variant={isMainPage ? 'mosaic' : 'list'}>
-            {randomData?.quote?.map((quote: Quote, index: number) => (
+            {quotes.map((quote: Quote, index: number) => (
                 <div
                     key={quote.id}
                     className={isMainPage ? getMosaicClass(quote.quote_text, index) : ''}

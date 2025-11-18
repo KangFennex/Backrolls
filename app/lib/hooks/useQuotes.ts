@@ -1,37 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Quote } from '../definitions';
-import { NextResponse } from 'next/server';
+'use client';
 
-export function useQuotes(type: string, enabled = true) {
-    const [quotes, setQuotes] = useState<Quote[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+import { useEffect } from 'react';
+import { trpc } from '../trpc';
 
-    const fetchQuotes = useCallback(async () => {
-        if (!enabled) return;
+export function useQuotes(type: string, enabled = true, limit = 10) {
+    const utils = trpc.useUtils();
 
-        setLoading(true);
-        setError(null);
-
-        try {
-            const response = await fetch(`/api/display?type=${type}&limit=10`);
-            const data = await response.json();
-
-            if (data.success) {
-                setQuotes(data.quotes || []);
-            } else {
-                setError(data.error || 'Failed to fetch quotes');
-            }
-        } catch (error) {
-            setError('Failed to fetch quotes');
-            return NextResponse.json({
-                error: 'Failed to fetch quotes.',
-                details: error instanceof Error ? error.message : 'Unknown error'
-            }, { status: 500 });
-        } finally {
-            setLoading(false);
-        }
-    }, [enabled, type]);
+    // Select the appropriate query based on type
+    const query = type === 'recent'
+        ? trpc.quotes.getRecent.useQuery({ limit }, { enabled })
+        : trpc.quotes.getTopRated.useQuery({ limit }, { enabled });
 
     // Listen for vote updates
     useEffect(() => {
@@ -39,13 +17,26 @@ export function useQuotes(type: string, enabled = true) {
             const customEvent = event as CustomEvent;
             const { quoteId, newVoteCount } = customEvent.detail;
 
-            setQuotes(currentQuotes =>
-                currentQuotes.map(quote =>
-                    quote.id === quoteId
-                        ? { ...quote, vote_count: newVoteCount }
-                        : quote
-                )
-            )
+            // Update both caches
+            if (type === 'recent') {
+                utils.quotes.getRecent.setData({ limit }, (oldData) => {
+                    if (!oldData) return oldData;
+                    return oldData.map(quote =>
+                        quote.id === quoteId
+                            ? { ...quote, voteCount: newVoteCount }
+                            : quote
+                    );
+                });
+            } else {
+                utils.quotes.getTopRated.setData({ limit }, (oldData) => {
+                    if (!oldData) return oldData;
+                    return oldData.map(quote =>
+                        quote.id === quoteId
+                            ? { ...quote, voteCount: newVoteCount }
+                            : quote
+                    );
+                });
+            }
         }
 
         window.addEventListener('voteUpdated', handleVoteUpdate);
@@ -53,16 +44,12 @@ export function useQuotes(type: string, enabled = true) {
         return () => {
             window.removeEventListener('voteUpdated', handleVoteUpdate);
         };
-    }, []);
-
-    useEffect(() => {
-        fetchQuotes();
-    }, [fetchQuotes]);
+    }, [type, limit, utils]);
 
     return {
-        quotes,
-        loading,
-        error,
-        refresh: fetchQuotes
+        quotes: query.data || [],
+        loading: query.isLoading,
+        error: query.error?.message || null,
+        refresh: query.refetch
     };
 }

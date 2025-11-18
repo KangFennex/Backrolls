@@ -1,0 +1,53 @@
+'use client';
+
+import { trpc } from '../trpc';
+
+export function useFavorites() {
+    return trpc.favorites.getUserFavorites.useQuery(undefined, {
+        staleTime: 1000 * 60 * 5, // 5 minutes - don't refetch frequently
+        refetchOnWindowFocus: false, // Don't refetch on every tab focus
+    });
+}
+
+export function useToggleFavorite() {
+    const utils = trpc.useUtils();
+
+    return trpc.favorites.toggleFavorite.useMutation({
+        // Optimistic update
+        onMutate: async (variables) => {
+            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+            await utils.favorites.getUserFavorites.cancel();
+
+            // Snapshot the previous value for rollback
+            const previousFavorites = utils.favorites.getUserFavorites.getData();
+
+            // Optimistically update the cache
+            utils.favorites.getUserFavorites.setData(undefined, (old) => {
+                const favoriteIds = old?.favoriteIds || [];
+                const isCurrentlyFavorited = favoriteIds.includes(variables.quoteId);
+
+                return {
+                    favoriteIds: isCurrentlyFavorited
+                        ? favoriteIds.filter(id => id !== variables.quoteId) // Remove
+                        : [...favoriteIds, variables.quoteId] // Add
+                };
+            });
+
+            // Return context with the snapshot for potential rollback
+            return { previousFavorites };
+        },
+
+        // If mutation fails, rollback to previous state
+        onError: (err, variables, context) => {
+            console.error('Failed to toggle favorite:', err);
+            if (context?.previousFavorites) {
+                utils.favorites.getUserFavorites.setData(undefined, context.previousFavorites);
+            }
+        },
+
+        // Always sync with server after mutation (success or error)
+        onSettled: () => {
+            utils.favorites.getUserFavorites.invalidate();
+        },
+    });
+}

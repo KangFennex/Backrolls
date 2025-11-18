@@ -2,15 +2,30 @@
 
 import React from "react";
 import Link from 'next/link';
+import { useAuth } from '../..//lib/hooks';
+import { signOut } from 'next-auth/react';
 
 interface MenuProps {
     isOpen: boolean;
+    onClick: () => void;
 }
 
 const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
-    function Menu({ isOpen }, ref) {
-        console.log('Menu render - isOpen:', isOpen);
-        
+    function Menu({ isOpen, onClick }, ref) {
+        const { isAuthenticated } = useAuth();
+
+        const handleLogout = async () => {
+            try {
+                onClick();
+                // Use NextAuth signOut
+                await signOut({ callbackUrl: '/' });
+            } catch (error) {
+                console.error('Logout failed:', error);
+                // Fallback: redirect to login
+                router.push('/');
+            }
+        };
+
         return (
             <nav
                 ref={ref}
@@ -24,8 +39,8 @@ const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
                     shadow-xl
                     transition-all duration-200 ease-in-out
                     origin-top-right
-                    ${isOpen 
-                        ? 'opacity-100 scale-100 visible' 
+                    ${isOpen
+                        ? 'opacity-100 scale-100 visible'
                         : 'opacity-0 scale-95 invisible pointer-events-none'
                     }
                     z-[70]
@@ -35,31 +50,55 @@ const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
                 }}
             >
                 <div className="py-1.5">
-                    <Link 
-                        href="/profile" 
-                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-[#2a2a2a] transition-colors"
+                    {!isAuthenticated ? (
+                        <Link
+                            href="/login"
+                            onClick={onClick}
+                            className="block px-4 py-2 text-md text-gray-200 hover:bg-[#2a2a2a] transition-colors"
+                        >
+                            Login
+                        </Link>
+                    ) : null}
+                    <Link
+                        href="/lounge"
+                        onClick={onClick}
+                        className="block px-4 py-2 text-md text-gray-200 hover:bg-[#2a2a2a] transition-colors"
                     >
-                        Profile
+                        Lounge
                     </Link>
-                    <Link 
-                        href="/settings" 
-                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-[#2a2a2a] transition-colors"
+                    <Link
+                        href="/submit"
+                        onClick={onClick}
+                        className="block px-4 py-2 text-md text-gray-200 hover:bg-[#2a2a2a] transition-colors"
                     >
-                        Settings
+                        Submit Backroll
                     </Link>
-                    <Link 
-                        href="/about" 
-                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-[#2a2a2a] transition-colors"
+                    <Link
+                        href="/about"
+                        onClick={onClick}
+                        className="block px-4 py-2 text-md text-gray-200 hover:bg-[#2a2a2a] transition-colors"
                     >
                         About
                     </Link>
-                    <div className="border-t border-[#333] my-1"></div>
-                    <Link 
-                        href="/logout" 
-                        className="block px-4 py-2 text-sm text-red-400 hover:bg-[#2a2a2a] transition-colors"
+                    <Link
+                        href="/policies"
+                        onClick={onClick}
+                        className="block px-4 py-2 text-md text-gray-200 hover:bg-[#2a2a2a] transition-colors"
                     >
-                        Logout
+                        Policies
                     </Link>
+                    {!isAuthenticated ? null : (
+                        <>
+                            <div className="border-t border-[#333] my-1"></div>
+                            <button
+                                onClick={handleLogout}
+                                className="w-full cursor-pointer block px-4 py-2 text-md text-red-400 hover:bg-[#2a2a2a] transition-colors"
+                            >
+                                Logout
+                            </button>
+
+                        </>
+                    )}
                 </div>
             </nav>
         );

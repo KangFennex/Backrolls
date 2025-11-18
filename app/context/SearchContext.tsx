@@ -4,6 +4,7 @@ import { createContext, useContext, ReactNode, useState, useCallback } from 'rea
 import { useDebouncedCallback } from 'use-debounce';
 import { Quote } from '../lib/definitions';
 import { useNavigationContext } from './NavigationContext';
+import { trpc } from '../lib/trpc';
 
 interface SearchContextType {
     // Search state
@@ -27,6 +28,7 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
 export function SearchProvider({ children }: { children: ReactNode }) {
     const { navigateToBackroll, navigateToBackrollsWithResults } = useNavigationContext();
+    const utils = trpc.useUtils();
 
     const [searchModal, setSearchModal] = useState(false);
     const [searchInput, setSearchInput] = useState<string>("");
@@ -53,25 +55,19 @@ export function SearchProvider({ children }: { children: ReactNode }) {
         setLoading(true);
         openSearchModal();
 
-        // Fetch search results from the API
+        // Fetch search results using tRPC
         try {
-            const response = await fetch(`/api/search?q=${encodeURIComponent(input)}`);
-            if (response.ok) {
-                console.log('Starting the search fetch');
-                const data = await response.json();
-                console.log('Search fetch completed', data);
-                setSearchResults(data.quotes || []);
-            } else {
-                console.error('Search failed');
-                setSearchResults([]);
-            }
+            console.log('Starting the search with tRPC');
+            const results = await utils.quotes.search.fetch({ query: input });
+            console.log('Search completed', results);
+            setSearchResults(results as Quote[]);
         } catch (error) {
             console.error('Search error:', error);
             setSearchResults([]);
         }
 
         setLoading(false);
-    }, [clearSearchInput, openSearchModal]);
+    }, [clearSearchInput, openSearchModal, utils]);
 
     const debouncedSearchQuotesHandler = useDebouncedCallback(searchQuotesHandler, 300);
 
@@ -85,33 +81,20 @@ export function SearchProvider({ children }: { children: ReactNode }) {
             closeSearchModal();
         }
         clearSearchInput();
-        navigateToBackroll(backroll, searchInput);
-    }, [searchModal, closeSearchModal, clearSearchInput, navigateToBackroll, searchInput]);
+        navigateToBackroll(backroll);
+    }, [searchModal, closeSearchModal, clearSearchInput, navigateToBackroll]);
 
-    const handleSearchSubmit = useCallback(async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleSearchSubmit = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
 
+            if (!searchInput.trim()) return;
+
             closeSearchModal();
-            setLoading(true);
-
-            try {
-                const response = await fetch(`/api/search?q=${encodeURIComponent(searchInput)}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    navigateToBackrollsWithResults(data.quotes || [], searchInput);
-                } else {
-                    console.error('Search failed');
-                    navigateToBackrollsWithResults([], searchInput);
-                }
-            } catch (error) {
-                console.error('Search error:', error);
-                navigateToBackrollsWithResults([], searchInput);
-            }
-
-            setLoading(false);
+            clearSearchInput();
+            navigateToBackrollsWithResults(searchInput);
         }
-    }, [closeSearchModal, searchInput, navigateToBackrollsWithResults]);
+    }, [closeSearchModal, clearSearchInput, searchInput, navigateToBackrollsWithResults]);
 
     return (
         <SearchContext.Provider value={{
