@@ -23,13 +23,19 @@ export function useToggleFavorite() {
 
             // Optimistically update the cache
             utils.favorites.getUserFavorites.setData(undefined, (old) => {
-                const favoriteIds = old?.favoriteIds || [];
+                if (!old) return old;
+
+                const quotes = old.quotes || [];
+                const favoriteIds = old.favoriteIds || [];
                 const isCurrentlyFavorited = favoriteIds.includes(variables.quoteId);
 
                 return {
+                    quotes: isCurrentlyFavorited
+                        ? quotes.filter(q => q.id !== variables.quoteId) // Remove quote
+                        : quotes, // Keep quotes (will refetch to get new one)
                     favoriteIds: isCurrentlyFavorited
-                        ? favoriteIds.filter(id => id !== variables.quoteId) // Remove
-                        : [...favoriteIds, variables.quoteId] // Add
+                        ? favoriteIds.filter(id => id !== variables.quoteId) // Remove ID
+                        : [...favoriteIds, variables.quoteId] // Add ID
                 };
             });
 
