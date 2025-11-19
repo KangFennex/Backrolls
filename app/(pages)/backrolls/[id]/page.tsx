@@ -2,11 +2,11 @@ import PageContainer from "../../../ui/pageContainer";
 import BackrollDetailClient from "../../../ui/backrolls/BackrollDetailClient";
 import { Suspense } from 'react';
 
-interface BackrollDetailClientProps {
-    param: Promise<{ id: string }>;
+interface BackrollDetailPageProps {
+    params: Promise<{ id: string }>;
 }
 
-export default async function BackrollDetailPage({ params }: BackrollDetailClientProps) {
+export default async function BackrollDetailPage({ params }: BackrollDetailPageProps) {
     const { id } = await params;
     return (
         <PageContainer>
