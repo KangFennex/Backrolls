@@ -6,12 +6,12 @@ import PageComponentContainer from '../pageComponentContainer';
 import { trpc } from '../../lib/trpc';
 
 interface BackrollDetailClientProps {
-    quoteId: string;
+    backrollId: string;
 }
 
-export default function BackrollDetailClient({ quoteId }: BackrollDetailClientProps) {
+export default function BackrollDetailClient({ backrollId }: BackrollDetailClientProps) {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: quote, isLoading, error } = trpc.quotes.getById.useQuery({ id: quoteId });
+    const { data: quote, isLoading, error } = trpc.quotes.getById.useQuery({ id: backrollId });
 
     if (isLoading) {
         return (
