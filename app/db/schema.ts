@@ -62,7 +62,7 @@ export const quoteContexts = pgTable('quote_contexts', {
 export const backrollComments = pgTable('backroll_comments', {
     id: uuid('id').defaultRandom().primaryKey(),
     quote_id: uuid('quote_id').notNull().references(() => quotes.id, { onDelete: 'cascade' }),
-    parent_comment_id: uuid('parent_comment_id').references(() => backrollComments.id, { onDelete: 'cascade' }),
+    parent_comment_id: uuid('parent_comment_id').references((): AnyPgColumn => backrollComments.id, { onDelete: 'cascade' }),
     user_id: uuid('user_id').notNull(),
     comment_text: text('comment_text').notNull(),
     created_at: timestamp('created_at').defaultNow().notNull(),
@@ -103,3 +103,6 @@ export type NewQuoteContext = typeof quoteContexts.$inferInsert;
 
 export type CommentVote = typeof commentVotes.$inferSelect;
 export type NewCommentVote = typeof commentVotes.$inferInsert;
+
+export type BackrollComment = typeof backrollComments.$inferSelect;
+export type NewBackrollComment = typeof backrollComments.$inferInsert;
