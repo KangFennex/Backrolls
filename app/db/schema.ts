@@ -1,4 +1,5 @@
 import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date, unique } from 'drizzle-orm/pg-core'; // Added unique import
+import { PgTable } from 'drizzle-orm/pg-core';
 
 export type BackrollCommentsTable = PgTable;
 
