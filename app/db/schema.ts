@@ -1,5 +1,7 @@
 import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date, unique } from 'drizzle-orm/pg-core'; // Added unique import
 
+export type BackrollCommentsTable = PgTable;
+
 export const quotes = pgTable('quotes', {
     id: uuid('id').defaultRandom().primaryKey(),
     quote_text: text('quote_text').notNull(),

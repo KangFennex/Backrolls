@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import { BackrollsLogo } from '../sharedComponents';
 
 export function SubmitForm() {
     const backroll = <span className='logo pink-fill'><p>Backroll</p></span>;
