@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import { FaRegCopy } from "react-icons/fa";
@@ -8,11 +8,12 @@ import { FaRegComment } from "react-icons/fa6";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { useAuth } from '../../../lib/hooks';
 import { useFavorites, useToggleFavorite, useVotes, useToggleVote } from '../../../lib/hooks';
+import { useCommentButton } from "../../../lib/hooks/useCommentButton";
 
 export function FavoriteButton({
-    quote_id,
+    quoteId,
 }: {
-    quote_id: string,
+    quoteId: string,
 }) {
     const { isAuthenticated } = useAuth();
 
@@ -25,20 +26,23 @@ export function FavoriteButton({
 
     // Determine if this quote is favorited
     const isFavorited = isAuthenticated
-        ? favoritesData?.favoriteIds.includes(quote_id) || false
-        : guestFavorites.has(quote_id);
+        ? favoritesData?.favoriteIds.includes(quoteId) || false
+        : guestFavorites.has(quoteId);
 
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
+
+        console.log('quoteId value:', quoteId); // Add this
+        console.log('quoteId type:', typeof quoteId); // Add this
 
         if (!isAuthenticated) {
             // Guest user - just toggle local state (instant, no server call)
             setGuestFavorites(prev => {
                 const newSet = new Set(prev);
-                if (newSet.has(quote_id)) {
-                    newSet.delete(quote_id);
+                if (newSet.has(quoteId)) {
+                    newSet.delete(quoteId);
                 } else {
-                    newSet.add(quote_id);
+                    newSet.add(quoteId);
                 }
                 return newSet;
             });
@@ -46,7 +50,7 @@ export function FavoriteButton({
         }
 
         // Authenticated user - trigger mutation with optimistic update
-        toggleFavoriteMutation.mutate({ quoteId: quote_id });
+        toggleFavoriteMutation.mutate({ quoteId: quoteId });
     };
 
     return (
@@ -66,10 +70,10 @@ export function FavoriteButton({
 };
 
 export function VoteButtons({
-    quote_id,
+    quoteId,
     initialVoteCount = 0,
 }: {
-    quote_id: string,
+    quoteId: string,
     initialVoteCount?: number,
 }) {
     const { isAuthenticated } = useAuth();
@@ -86,7 +90,7 @@ export function VoteButtons({
 
     // Determine user's vote status
     const userVote = isAuthenticated
-        ? votesData?.votes.find(v => v.quote_id === quote_id)
+        ? votesData?.votes.find(v => v.quote_id === quoteId)
         : null;
 
     const userHasUpvoted = isAuthenticated
@@ -96,19 +100,6 @@ export function VoteButtons({
     const userHasDownvoted = isAuthenticated
         ? userVote?.vote_type === 'downvote'
         : guestVote === 'downvote';
-
-    // Listen for vote count updates from server
-    useEffect(() => {
-        const handleVoteUpdate = (event: Event) => {
-            const customEvent = event as CustomEvent;
-            if (customEvent.detail.quoteId === quote_id) {
-                setDisplayVoteCount(customEvent.detail.newVoteCount);
-            }
-        };
-
-        window.addEventListener('voteUpdated', handleVoteUpdate);
-        return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, [quote_id]);
 
     const handleVote = (voteType: 'upvote' | 'downvote') => {
         if (!isAuthenticated) {
@@ -146,11 +137,13 @@ export function VoteButtons({
         }
 
         // Trigger mutation (user's vote status updated in hook)
-        toggleVoteMutation.mutate({ quoteId: quote_id, voteType });
+        toggleVoteMutation.mutate({ quoteId: quoteId, voteType });
     };
 
     return (
-        <div className="vote-buttons flex gap-2 px-2">
+        <div className="flex rounded-full py-1 px-3 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300"
+            aria-label="Vote buttons"
+        >
             <button
                 onClick={(e) => {
                     e.stopPropagation();
@@ -226,10 +219,28 @@ export function CopyButton({ textToCopy }: { textToCopy: string }) {
     );
 }
 
-export function CommentButton() {
+export function CommentButton({
+    onClick,
+    quoteId
+}: {
+    onClick: () => void,
+    quoteId: string,
+}) {
+    // Fetch comments for this quote
+    const { data: commentCount = 0 } = useCommentButton(quoteId)
+
     return (
-        <div className="comment-btn" aria-label="Comment on quote">
-            <FaRegComment size={17} className="hover:text-pink-500 hover:scale-110 transition-all duration-300" />
-        </div>
+        <button
+            className="comment-btn relative flex items-center justify-center p-2 transition-all duration-300 group"
+            aria-label={`${commentCount} comments - Click to view and comment`}
+            onClick={onClick}
+        >
+            <div className="flex rounded-full py-1 px-3 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300">
+                <FaRegComment size={20} className="group-hover:text-pink-500 transition-colors duration-300" />
+                <span className="text-md h-5 w-5 flex items-center justify-center font-medium group-hover:text-pink-500 transition-colors duration-300">
+                    {commentCount > 99 ? '99+' : commentCount}
+                </span>
+            </div>
+        </button>
     );
 }

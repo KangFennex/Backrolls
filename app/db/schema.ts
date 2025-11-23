@@ -1,4 +1,4 @@
-import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date } from 'drizzle-orm/pg-core';
+import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date, unique } from 'drizzle-orm/pg-core'; // Added unique import
 
 export const quotes = pgTable('quotes', {
     id: uuid('id').defaultRandom().primaryKey(),
@@ -53,10 +53,37 @@ export const quoteContexts = pgTable('quote_contexts', {
     id: uuid('id').defaultRandom().primaryKey(),
     quote_id: uuid('quote_id').notNull(),
     context: text('context').notNull(),
-    submitted_by: uuid('submitted_by'),
+    user_id: uuid('user_id').notNull(),
     submitted_at: timestamp('submitted_at').defaultNow().notNull(),
     is_verified: boolean('is_verified').default(false).notNull(),
 });
+
+// Backroll comments schema
+export const backrollComments = pgTable('backroll_comments', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    quote_id: uuid('quote_id').notNull().references(() => quotes.id, { onDelete: 'cascade' }),
+    parent_comment_id: uuid('parent_comment_id').references(() => backrollComments.id, { onDelete: 'cascade' }),
+    user_id: uuid('user_id').notNull(),
+    comment_text: text('comment_text').notNull(),
+    created_at: timestamp('created_at').defaultNow().notNull(),
+    updated_at: timestamp('updated_at').defaultNow().notNull(),
+    is_edited: boolean('is_edited').default(false).notNull(),
+    is_flagged: boolean('is_flagged').default(false).notNull(),
+    vote_count: bigint('vote_count', { mode: 'number' }).default(0).notNull(),
+    status: text('status', { enum: ['active', 'deleted', 'flagged'] }).default('active'),
+});
+
+export const commentVotes = pgTable('comment_votes', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    comment_id: uuid('comment_id').notNull().references(() => backrollComments.id, { onDelete: 'cascade' }),
+    user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+    vote_type: text('vote_type', { enum: ['up', 'down'] }).notNull(),
+    created_at: timestamp('created_at').defaultNow().notNull(),
+    updated_at: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => ({
+    // Prevent duplicate votes
+    unq: unique().on(table.user_id, table.comment_id),
+}));
 
 // Type exports for use in your application
 export type Quote = typeof quotes.$inferSelect;
@@ -73,3 +100,6 @@ export type NewVote = typeof votes.$inferInsert;
 
 export type QuoteContext = typeof quoteContexts.$inferSelect;
 export type NewQuoteContext = typeof quoteContexts.$inferInsert;
+
+export type CommentVote = typeof commentVotes.$inferSelect;
+export type NewCommentVote = typeof commentVotes.$inferInsert;

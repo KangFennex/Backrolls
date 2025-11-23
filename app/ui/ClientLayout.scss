@@ -27,7 +27,7 @@
     margin: 0;
     box-sizing: border-box;
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    background: var(--rich-charcoal);
+    background: transparent;
     
     // Default state - hidden
     opacity: 0;

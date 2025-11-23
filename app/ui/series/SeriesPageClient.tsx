@@ -41,7 +41,6 @@ export default function SeriesPageClient(): React.ReactElement {
         data,
         isLoading,
         error,
-        updateQuoteInCache
     } = useSeriesQuotes({
         region: filters.selectedRegion,
         series: filters.selectedSeries,
@@ -71,19 +70,6 @@ export default function SeriesPageClient(): React.ReactElement {
             console.log('Episode of first quote:', currentQuotes[0].episode);
         }
     }, [data]);
-
-    // Listen for vote updates and update TanStack Query cache
-    useEffect(() => {
-        const handleVoteUpdate = (event: Event) => {
-            const customEvent = event as CustomEvent;
-            const { quoteId, newVoteCount } = customEvent.detail;
-
-            updateQuoteInCache(quoteId, { vote_count: newVoteCount });
-        };
-
-        window.addEventListener('voteUpdated', handleVoteUpdate);
-        return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, [updateQuoteInCache]);
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);

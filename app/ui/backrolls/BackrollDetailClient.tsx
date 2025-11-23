@@ -1,9 +1,11 @@
+// Update your existing BackrollDetailClient.tsx
 'use client'
 
 import { BackrollCard } from '../backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
 import { trpc } from '../../lib/trpc';
+import BackrollCommentsContainer from './components/BackrollCommentsContainer';
 
 interface BackrollDetailClientProps {
     backrollId: string;
@@ -43,6 +45,8 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                     onClick={() => navigateToBackroll(quote)}
                 />
             </div>
+            {/* Pass the quoteId to the comments container */}
+            <BackrollCommentsContainer quoteId={backrollId} />
         </PageComponentContainer>
     );
 }

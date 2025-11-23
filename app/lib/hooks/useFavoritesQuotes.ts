@@ -1,11 +1,15 @@
 'use client';
 
 import { trpc } from '../trpc';
+import { useSession } from 'next-auth/react';
 
 export function useFavorites() {
+    const { data: session } = useSession();
+
     return trpc.favorites.getUserFavorites.useQuery(undefined, {
         staleTime: 1000 * 60 * 5, // 5 minutes - don't refetch frequently
         refetchOnWindowFocus: false, // Don't refetch on every tab focus
+        enabled: !!session?.user?.id,
     });
 }
 

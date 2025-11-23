@@ -1,8 +1,6 @@
 'use client'
 
 import { Quote } from '../../lib/definitions';
-import { useEffect } from 'react'
-import { useQueryClient } from '@tanstack/react-query';
 import { useWorkroomQuotes } from '../../lib/hooks';
 import { BackrollCard } from '../backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
@@ -13,7 +11,6 @@ import { getMosaicClass } from '../../lib/utils';
 export default function WorkroomPageClient() {
     const { navigateToBackroll } = useNavigationContext();
     const { data: quotes, isLoading } = useWorkroomQuotes(30);
-    const queryClient = useQueryClient();
     const pathname = usePathname();
 
     const isMainPage = pathname === '/';
@@ -21,30 +18,6 @@ export default function WorkroomPageClient() {
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     }
-
-    useEffect(() => {
-        const handleVoteUpdate = (event: Event) => {
-            const customEvent = event as CustomEvent;
-            const { quoteId, newVoteCount } = customEvent.detail;
-
-            // Updates the TanStack Query cache directly - tRPC returns array directly
-            queryClient.setQueryData<Quote[]>(
-                [['quotes', 'getRandom'], { input: { limit: 30 } }],
-                (oldData) => {
-                    if (!oldData) return oldData;
-
-                    return oldData.map((quote) =>
-                        quote.id === quoteId
-                            ? { ...quote, voteCount: newVoteCount }
-                            : quote
-                    );
-                }
-            );
-        };
-
-        window.addEventListener('voteUpdated', handleVoteUpdate);
-        return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, [queryClient]);
 
     if (isLoading) {
         return (

@@ -1,9 +1,14 @@
 'use client';
 
 import { trpc } from '../trpc';
+import { useSession } from 'next-auth/react';
 
 export function useVotes() {
-    return trpc.votes.getUserVotes.useQuery();
+    const { data: session } = useSession();
+
+    return trpc.votes.getUserVotes.useQuery(undefined, {
+        enabled: !!session?.user?.id,
+    });
 }
 
 export function useToggleVote() {
@@ -47,7 +52,7 @@ export function useToggleVote() {
             // Return context for rollback
             return { previousVotes };
         },
-        
+
         onError: (err, variables, context) => {
             console.error('Failed to toggle vote:', err);
             // Rollback on error
@@ -55,7 +60,7 @@ export function useToggleVote() {
                 utils.votes.getUserVotes.setData(undefined, context.previousVotes);
             }
         },
-        
+
         onSuccess: (data) => {
             // Dispatch event so vote count updates across all components
             window.dispatchEvent(new CustomEvent('voteUpdated', {
@@ -65,7 +70,7 @@ export function useToggleVote() {
                 }
             }));
         },
-        
+
         onSettled: () => {
             // Sync with server
             utils.votes.getUserVotes.invalidate();

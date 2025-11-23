@@ -1,8 +1,5 @@
-// Export all hooks from their individual files
 export { useAuth } from './useAuth';
-export { useQuotes } from './useQuotes';
 export { useSeriesFiltering } from './useSeriesFiltering';
-export { useSeriesSeasons } from './useSeriesSeasons';
 export { useRainbowColors } from './useRainbowColors';
 export { useScrollDirection } from './useScrollDirection';
 export { getBackrollCardBackground } from './useBackrollCardBackground';

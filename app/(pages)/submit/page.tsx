@@ -1,15 +1,13 @@
 'use client';
 
 import PageContainer from "../../ui/pageContainer";
-import Submit from "../../ui/submit/submit";
+import SubmitPageClient from "../../ui/submit/submitPageClient";
 
 export default function Page() {
     return (
         <>
             <PageContainer>
-                <div className="flex flex-col items-center justify-center w-full h-full">
-                    <Submit />
-                </div>
+                <SubmitPageClient />
             </PageContainer>
         </>
     );

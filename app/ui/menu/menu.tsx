@@ -60,6 +60,13 @@ const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
                         </Link>
                     ) : null}
                     <Link
+                        href="/tea-room"
+                        onClick={onClick}
+                        className="block px-4 py-2 text-md text-gray-200 hover:bg-[#2a2a2a] transition-colors"
+                    >
+                        Tea Room
+                    </Link>
+                    <Link
                         href="/lounge"
                         onClick={onClick}
                         className="block px-4 py-2 text-md text-gray-200 hover:bg-[#2a2a2a] transition-colors"

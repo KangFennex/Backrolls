@@ -35,6 +35,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             links: [
                 httpLink({
                     url: `${getBaseUrl()}/api/trpc`,
+                    fetch(url, options) {
+                        return fetch(url, {
+                            ...options,
+                            credentials: 'include',
+                        });
+                    },
                 }),
             ],
         })

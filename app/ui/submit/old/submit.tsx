@@ -5,7 +5,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import { series } from '../../lib/repertoire';
-import { useSeriesSeasons } from '../../lib/hooks';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -55,8 +54,10 @@ function SubmitForm() {
     } = useSeriesSeasons();
     const [formData, setFormData] = useState({
         quote: '',
+        region: '',
         speaker: '',
         series: '',
+        type: '',
         season: '',
         episode: '',
         timestamp: '',

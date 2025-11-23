@@ -1,15 +1,18 @@
 import { z } from 'zod';
-import { router, publicProcedure } from '../trpc';
+import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { db } from '../../db';
 import { votes, quotes } from '../../db/schema';
 import { eq, and, sql } from 'drizzle-orm';
-import { getUserFromRequest } from '../../lib/auth';
 
 export const votesRouter = router({
     // Get all votes for current user
     getUserVotes: publicProcedure
-        .query(async () => {
-            const userId = await getUserFromRequest();
+        .query(async ({ ctx }) => {
+
+            if (!ctx.session?.user?.id) {
+                return { votes: [] };
+            }
+            const userId = ctx.session.user.id;
 
             if (!userId) {
                 return { votes: [] };
@@ -29,13 +32,13 @@ export const votesRouter = router({
         }),
 
     // Toggle vote (add, remove, or switch)
-    toggleVote: publicProcedure
+    toggleVote: protectedProcedure
         .input(z.object({
             quoteId: z.string().uuid(),
             voteType: z.enum(['upvote', 'downvote']),
         }))
-        .mutation(async ({ input }) => {
-            const userId = await getUserFromRequest();
+        .mutation(async ({ ctx, input }) => {
+            const userId = ctx.session.user.id;
 
             if (!userId) {
                 throw new Error('User not authenticated');

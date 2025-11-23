@@ -1,16 +1,20 @@
 import { z } from 'zod';
-import { router, publicProcedure } from '../trpc';
+import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { db } from '../../db';
 import { favorites, quotes } from '../../db/schema';
 import { eq, and, inArray } from 'drizzle-orm';
-import { getUserFromRequest } from '../../lib/auth';
 
 export const favoritesRouter = router({
     // Get all favorites for current user (returns full quote data)
     getUserFavorites: publicProcedure
-        .query(async () => {
-            const userId = await getUserFromRequest();
-            
+        .query(async ({ ctx }) => {
+
+            if (!ctx.session?.user?.id) {
+                return { favoriteIds: [], quotes: [] };
+            }
+
+            const userId = ctx.session.user.id;
+
             if (!userId) {
                 return { favoriteIds: [], quotes: [] };
             }
@@ -40,12 +44,12 @@ export const favoritesRouter = router({
         }),
 
     // Toggle favorite (add or remove)
-    toggleFavorite: publicProcedure
+    toggleFavorite: protectedProcedure
         .input(z.object({
             quoteId: z.string().uuid(),
         }))
-        .mutation(async ({ input }) => {
-            const userId = await getUserFromRequest();
+        .mutation(async ({ ctx, input }) => {
+            const userId = ctx.session.user.id;
 
             if (!userId) {
                 throw new Error('User not authenticated');

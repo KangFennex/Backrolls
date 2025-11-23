@@ -70,6 +70,7 @@ export function BackrollCard({
                         expanded={expanded}
                         onExpandClick={handleExpandClick}
                         onRemoveFavorite={onRemoveFavorite}
+                        onClick={onClick}
                     />
 
                     <BackrollDetails quote={quote} expanded={expanded} />

@@ -48,7 +48,7 @@ export const authConfig: AuthConfig = {
         },
         async session({ session, token }: { session: Record<string, unknown>; token?: Record<string, unknown> }) {
             if (token?.id) {
-                const sessionWithUser = session as { user: { id?: string; [key: string]: unknown } };
+                const sessionWithUser = session as { user: { id?: string;[key: string]: unknown } };
                 sessionWithUser.user.id = token.id as string;
             }
             return session;

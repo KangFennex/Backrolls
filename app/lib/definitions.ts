@@ -184,6 +184,7 @@ export interface BackrollActionsProps {
     expanded: boolean;
     onExpandClick: () => void;
     onRemoveFavorite?: (quote_id: string) => void;
+    onClick: () => void;
 }
 
 /**

@@ -2,13 +2,12 @@ import { router, publicProcedure } from '../trpc';
 import { db } from '../../db';
 import { quotes } from '../../db/schema';
 import { eq, desc } from 'drizzle-orm';
-import { getUserFromRequest } from '../../lib/auth';
 
 export const submittedRouter = router({
     // Get all submitted quotes for current user
     getUserSubmitted: publicProcedure
-        .query(async () => {
-            const userId = await getUserFromRequest();
+        .query(async ({ ctx }) => {
+            const userId = ctx.session.user.id;
 
             if (!userId) {
                 return { quotes: [], count: 0 };

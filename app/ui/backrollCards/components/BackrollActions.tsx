@@ -9,13 +9,38 @@ interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
 }
 
+interface ShareCopyFavoriteProps {
+    quoteId: string;
+    quoteText: string;
+    onRemoveFavorite?: () => void;
+}
+
+export function ShareCopyFavorite({
+    quoteId,
+    quoteText,
+    onRemoveFavorite
+}: ShareCopyFavoriteProps) {
+    return (
+        <div className="flex items-center gap-2 mr-1">
+            <ShareButton />
+            <CopyButton textToCopy={quoteText} />
+            <FavoriteButton
+                onRemoveFavorite={onRemoveFavorite}
+                quoteId={quoteId}
+            />
+        </div>
+    );
+}
+
 const ExpandMore = styled((props: ExpandMoreProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { expand, ...other } = props;
     return <IconButton {...other} />;
 })(({ theme }) => ({
     marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
+    marginRight: theme.spacing(1),
+    padding: theme.spacing(0.2),
+    transition: theme.transitions.create(['transform', 'background-color'], {
         duration: theme.transitions.duration.shortest,
     }),
     variants: [
@@ -42,29 +67,30 @@ export default function BackrollActions({
     expanded,
     onExpandClick,
     onRemoveFavorite,
+    onClick
 }: BackrollActionsProps) {
 
     return (
         <CardActions disableSpacing sx={{
             justifyContent: 'space-between',
             borderTop: 'none',
-            marginTop: 'auto' // Push to bottom
+            marginTop: 'auto', // Push to bottom
+            padding: 0
         }}>
             <div className="flex items-center justify-between w-full">
                 <div>
                     <VoteButtons
-                        quote_id={quoteId}
+                        quoteId={quoteId}
                         initialVoteCount={initialVoteCount}
                     />
                 </div>
                 <div>
-                    <CommentButton />
+                    <CommentButton onClick={onClick} quoteId={quoteId} />
                 </div>
-                <div className="flex items-center gap-3">
-                    <ShareButton />
-                    <CopyButton textToCopy={quoteText} />
-                    <FavoriteButton
-                        quote_id={quoteId}
+                <div>
+                    <ShareCopyFavorite
+                        quoteId={quoteId}
+                        quoteText={quoteText}
                         onRemoveFavorite={onRemoveFavorite}
                     />
                 </div>
@@ -77,7 +103,9 @@ export default function BackrollActions({
                     aria-label="show more"
                     sx={{
                         color: '#FFFFF0 !important',
-                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
+                        '&:hover': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                        },
                         '& .MuiSvgIcon-root': {
                             color: '#FFFFF0 !important'
                         }

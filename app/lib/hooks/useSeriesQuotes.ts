@@ -1,7 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
 import { trpc } from '../trpc';
-import { Quote } from '../definitions';
 
 interface SeriesFilters {
     region?: string;
@@ -10,10 +10,6 @@ interface SeriesFilters {
     episode?: number | null;
 }
 
-/**
- * Custom hook to fetch filtered series quotes using tRPC
- * This hook integrates with the Zustand store for filter state management
- */
 export function useSeriesQuotes(filters: SeriesFilters) {
     const utils = trpc.useUtils();
 
@@ -31,34 +27,37 @@ export function useSeriesQuotes(filters: SeriesFilters) {
         }
     );
 
-    /**
-     * Manually update a quote in the cache (useful for vote updates)
-     */
-    const updateQuoteInCache = (quoteId: string, updates: Partial<Quote>) => {
-        utils.quotes.getFiltered.setData(
-            {
-                region: filters.region,
-                series: filters.series || undefined,
-                season: filters.season || undefined,
-                episode: filters.episode || undefined,
-            },
-            (oldData) => {
-                if (!oldData?.quotes) return oldData;
+    // Listen for vote updates and update cache
+    useEffect(() => {
+        const handleVoteUpdate = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            const { quoteId, newVoteCount } = customEvent.detail;
 
-                return {
-                    ...oldData,
-                    quotes: oldData.quotes.map((quote) =>
-                        quote.id === quoteId
-                            ? { ...quote, ...updates }
-                            : quote
-                    )
-                };
-            }
-        );
-    };
+            utils.quotes.getFiltered.setData(
+                {
+                    region: filters.region,
+                    series: filters.series || undefined,
+                    season: filters.season || undefined,
+                    episode: filters.episode || undefined,
+                },
+                (oldData) => {
+                    if (!oldData?.quotes) return oldData;
 
-    return {
-        ...query,
-        updateQuoteInCache,
-    };
+                    return {
+                        ...oldData,
+                        quotes: oldData.quotes.map((quote) =>
+                            quote.id === quoteId
+                                ? { ...quote, vote_count: newVoteCount }
+                                : quote
+                        )
+                    };
+                }
+            );
+        };
+
+        window.addEventListener('voteUpdated', handleVoteUpdate);
+        return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
+    }, [filters.region, filters.series, filters.season, filters.episode, utils]);
+
+    return query;
 }

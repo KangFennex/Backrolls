@@ -44,33 +44,32 @@ function Nav({ toggleDropdownMenu, isVisible, isMenuOpen }: NavProps) {
 
                     <div className="flex-shrink-0">
                         <nav className="flex flex-row gap-2 sm:gap-3 items-center justify-center">
-                            <Link href="/submit" aria-label="Submit a quote">
-                                <FaPlus size={35} className="pink-fill text-2xl sm:text-3xl md:text-4xl" />
+                            <Link href="/submit" className="nav-icon-btn" aria-label="Submit a quote">
+                                <FaPlus size={20} />
                             </Link>
-                            <Link href="/coffee" aria-label="Buy me a coffee">
+                            <Link href="/tea-room" className="nav-icon-btn" aria-label="Buy me a coffee">
                                 {isAuthenticated ?
-                                    <BsCupHotFill size={30} className="pink-fill text-3xl sm:text-4xl mb-1" /> :
-                                    <BsCupHot size={30} className="pink-fill text-3xl sm:text-4xl mb-1" />}
+                                    <BsCupHotFill size={18} /> :
+                                    <BsCupHot size={18} />}
                             </Link>
-                            <Link href="/lounge" aria-label="Lounge">
+                            <Link href="/lounge" className="nav-icon-btn" aria-label="Lounge">
                                 {isAuthenticated ?
-                                    <RiSofaFill size={35} className="pink-fill text-4xl sm:text-5xl mb-1" /> :
-                                    <RiSofaLine size={35} className="pink-fill text-4xl sm:text-5xl mb-1" />}
+                                    <RiSofaFill size={18} /> :
+                                    <RiSofaLine size={18} />}
                             </Link>
-                            <div 
+                            <div
                                 ref={arrowButtonRef}
                                 onClick={() => {
                                     console.log('Arrow clicked, toggleDropdownMenu:', toggleDropdownMenu);
                                     toggleDropdownMenu?.();
-                                }} 
-                                className="cursor-pointer relative"
+                                }}
+                                className="antique-parchment-text nav-icon-arrow cursor-pointer p-1"
                                 aria-label="Open menu"
                             >
-                                <IoIosArrowDown 
-                                    size={24} 
-                                    className={`pink-fill text-4xl sm:text-5xl mb-1 transition-transform duration-200 ${
-                                        isMenuOpen ? 'rotate-180' : 'rotate-0'
-                                    }`} 
+                                <IoIosArrowDown
+                                    size={24}
+                                    className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : 'rotate-0'
+                                        }`}
                                 />
                             </div>
                         </nav>
