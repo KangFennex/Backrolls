@@ -451,6 +451,7 @@ export interface QuizQuestion {
 
 
 
+// app/lib/definitions.ts
 import "next-auth";
 
 declare module "next-auth" {
@@ -471,11 +472,8 @@ declare module "next-auth" {
         email?: string | null;
         remember?: boolean;
     }
-}
 
-declare module "next-auth/jwt" {
     interface JWT {
-        id?: string;
         username?: string;
         remember?: boolean;
     }

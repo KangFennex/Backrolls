@@ -10,12 +10,6 @@ interface ExtendedUser extends User {
     remember?: boolean;
 }
 
-interface ExtendedToken extends JWT {
-    id?: string;
-    username?: string;
-    remember?: boolean;
-}
-
 interface ExtendedSession extends Session {
     user: {
         id: string;
@@ -27,12 +21,17 @@ interface ExtendedSession extends Session {
     remember?: boolean;
 }
 
+// Create a type for our custom token properties
+type CustomTokenProps = {
+    username?: string;
+    remember?: boolean;
+};
+
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// For NextAuth v4, we don't need to export a typed authOptions - let TypeScript infer it
 export const authOptions = {
     providers: [
         GoogleProvider({
@@ -137,17 +136,18 @@ export const authOptions = {
             return true;
         },
         async jwt({ token, user, account }) {
-            const extendedToken = token as ExtendedToken;
+            // Use type assertion for our custom properties
+            const customToken = token as JWT & CustomTokenProps;
 
             if (user) {
                 console.log('JWT callback - user login detected:', user.email);
-                extendedToken.id = user.id;
-                extendedToken.email = user.email;
+                customToken.id = user.id;
+                customToken.email = user.email;
 
                 // Handle remember me for credentials login
                 const extendedUser = user as ExtendedUser;
                 if (extendedUser.remember) {
-                    extendedToken.remember = true;
+                    customToken.remember = true;
                 }
 
                 // For Google OAuth, get username from profile
@@ -159,29 +159,29 @@ export const authOptions = {
                         .eq("email", user.email ?? "")
                         .single();
 
-                    extendedToken.username = profile?.username || user.email?.split('@')[0];
+                    customToken.username = profile?.username || user.email?.split('@')[0];
                 } else {
                     // For credentials login, username comes from authorize function
-                    extendedToken.username = extendedUser.username;
+                    customToken.username = extendedUser.username;
                 }
             }
 
             // Set dynamic expiration based on remember me
-            if (extendedToken.remember) {
-                extendedToken.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60); // 30 days
+            if (customToken.remember) {
+                customToken.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60); // 30 days
             }
 
-            return extendedToken;
+            return customToken;
         },
         async session({ session, token }) {
             const extendedSession = session as ExtendedSession;
-            const extendedToken = token as ExtendedToken;
+            const customToken = token as JWT & CustomTokenProps;
 
-            if (extendedToken && extendedSession.user) {
-                extendedSession.user.id = extendedToken.id ?? "";
-                extendedSession.user.username = extendedToken.username;
-                extendedSession.user.email = extendedToken.email ?? null;
-                extendedSession.remember = extendedToken.remember;
+            if (customToken && extendedSession.user) {
+                extendedSession.user.id = customToken.id ?? "";
+                extendedSession.user.username = customToken.username;
+                extendedSession.user.email = customToken.email ?? null;
+                extendedSession.remember = customToken.remember;
             }
 
             return extendedSession;
