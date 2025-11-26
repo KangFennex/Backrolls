@@ -6,6 +6,7 @@ import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
 import { Quote } from '../../lib/definitions';
 import { trpc } from '../../lib/trpc';
+import { getMosaicClass } from '../../lib/utils';
 
 export default function BackrollsPageClient() {
     const searchParams = useSearchParams();
@@ -17,6 +18,8 @@ export default function BackrollsPageClient() {
         { query: searchQuery || '' },
         { enabled: !!searchQuery }
     );
+
+    const useMosaic = searchResults && searchResults.length > 8;
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -55,14 +58,15 @@ export default function BackrollsPageClient() {
     }
 
     return (
-        <PageComponentContainer>
+        <PageComponentContainer variant={useMosaic ? 'mosaic' : 'list'}>
             {quotes.map((quote, index) => (
-                <div key={quote.id} className="flex-shrink-0 min-w-[250px]">
+                <div key={quote.id} className={useMosaic ? getMosaicClass(quote.quote_text, index) : ''}>
                     <BackrollCard
                         quote={quote}
                         variant="full"
                         index={index}
                         onClick={() => handleClick(quote)}
+                        mosaic={useMosaic}
                     />
                 </div>
             ))}

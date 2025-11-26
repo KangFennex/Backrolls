@@ -126,6 +126,46 @@ export const commentsRouter = router({
             return commentsWithCounts;
         }),
 
+    // Get commented backrolls by a user
+    getCommentedBackrollsByUser: protectedProcedure
+        .input(z.object({
+            limit: z.number().optional().default(10),
+            cursor: z.string().uuid().optional(),
+        }))
+        .query(async ({ input, ctx }) => {
+            const { limit, cursor } = input;
+            const userId = ctx.session.user.id;
+
+            const baseQuery = db
+                .select({
+                    comment_text: backrollComments.comment_text,
+                    created_at: backrollComments.created_at,
+                    quote_id: backrollComments.quote_id,
+                    parent_comment_id: backrollComments.parent_comment_id,
+                    id: backrollComments.id,
+                })
+                .from(backrollComments)
+                .where(eq(backrollComments.user_id, userId))
+                .orderBy(desc(backrollComments.created_at));
+
+            const comments = await (cursor
+                ? baseQuery.where(lt(backrollComments.id, cursor)).limit(limit)
+                : baseQuery.limit(limit)
+            );
+
+            // Return the next cursor
+            let nextCursor: typeof cursor | undefined = undefined;
+            if (comments.length === limit) {
+                const lastItem = comments[comments.length - 1];
+                nextCursor = lastItem.id;
+            }
+
+            return {
+                comments,
+                nextCursor,
+            };
+        }),
+
     // Create a new comment
     create: protectedProcedure
         .input(z.object({

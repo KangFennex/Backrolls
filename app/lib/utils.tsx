@@ -20,7 +20,7 @@ export default function usePlaceholderLogic() {
     return placeholders[index];
 }
 
-export const selectBackgroundColor = (index: number): string => {
+export const selectBackgroundColor = () => {
     const backgroundColor = [
         "#D1EED3", // Soft mint green
         "#F1E4AC", // Pale gold
@@ -40,7 +40,9 @@ export const selectBackgroundColor = (index: number): string => {
         "#DCEDC1"  // Sage green
     ];
 
-    return backgroundColor[index % backgroundColor.length];
+    // Select a random color from the array
+    const randomColor = backgroundColor[Math.floor(Math.random() * backgroundColor.length)];
+    return randomColor;
 }
 
 // Assign card size based on quote text length with some randomness
@@ -66,9 +68,9 @@ export const getMosaicClass = (quoteText: string, index: number): string => {
     }
 
     // Medium quotes (30-50 chars) - mostly tall, some normal
-    if (textLength > 30) {
-        return variant < 2 ? '' : '';
-    }
+    // if (textLength > 30) {
+    //   return variant < 2 ? '' : '';
+    //}
 
     // Short quotes (< 30 chars) - mostly normal, occasional tall
     return variant === 0 ? 'card-tall' : '';

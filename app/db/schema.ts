@@ -1,7 +1,4 @@
-import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date, unique } from 'drizzle-orm/pg-core'; // Added unique import
-import { PgTable } from 'drizzle-orm/pg-core';
-
-export type BackrollCommentsTable = PgTable;
+import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date, unique } from 'drizzle-orm/pg-core';
 
 export const quotes = pgTable('quotes', {
     id: uuid('id').defaultRandom().primaryKey(),
@@ -15,14 +12,14 @@ export const quotes = pgTable('quotes', {
     episode_title: varchar('episode_title'),
     timestamp: text('timestamp').notNull(),
     speaker: text('speaker').notNull(),
-    type: varchar('type').notNull(),
-    air_date: date('air_date', { mode: 'string' }).notNull(),
-    original_language: text('original_language'),
+    type: text('type').notNull(),
+    air_date: date('air_date', { mode: 'string' }),
+    original_language: text('original_language').default('english'),
+    original_language_text: text('original_language_text'),
     user_id: uuid('user_id').notNull(),
     is_approved: boolean('is_approved').default(false).notNull(),
     vote_count: bigint('vote_count', { mode: 'number' }).default(0).notNull(),
     share_count: bigint('share_count', { mode: 'number' }).default(0).notNull(),
-    category: varchar('category'),
 });
 
 export const users = pgTable('profiles', {
@@ -65,7 +62,7 @@ export const quoteContexts = pgTable('quote_contexts', {
 export const backrollComments = pgTable('backroll_comments', {
     id: uuid('id').defaultRandom().primaryKey(),
     quote_id: uuid('quote_id').notNull().references(() => quotes.id, { onDelete: 'cascade' }),
-    parent_comment_id: uuid('parent_comment_id').references((): AnyPgColumn => backrollComments.id, { onDelete: 'cascade' }),
+    parent_comment_id: uuid('parent_comment_id').references(() => backrollComments.id, { onDelete: 'cascade' }),
     user_id: uuid('user_id').notNull(),
     comment_text: text('comment_text').notNull(),
     created_at: timestamp('created_at').defaultNow().notNull(),

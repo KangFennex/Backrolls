@@ -3,6 +3,7 @@ interface DragRaceSeries {
     name: string;
     type: "main-series" | "spin-off" | "international" | "all-stars";
     region?: "americas" | "asia" | "europe" | "oceania" | "africa" | "global";
+    original_language: string; // Added this field
 }
 
 interface SeriesSeasons {
@@ -14,6 +15,21 @@ interface SeriesEpisodes {
         [seasonNumber: number]: number;
     };
 }
+
+// Language constants for consistency
+const LANGUAGES = {
+    ENGLISH: 'english',
+    TAGALOG: 'tagalog',
+    THAI: 'thai',
+    JAPANESE: 'japanese',
+    SPANISH: 'spanish',
+    FRENCH: 'french',
+    DUTCH: 'dutch',
+    ITALIAN: 'italian',
+    SWEDISH: 'swedish',
+    GERMAN: 'german',
+    PORTUGUESE: 'portuguese',
+} as const;
 
 const codeEquivalence: { [code: string]: string } = {
     "rpdr": "RuPaul's Drag Race",
@@ -45,62 +61,59 @@ const codeEquivalence: { [code: string]: string } = {
     "dr-ph-sr": "Drag Race Philippines: Slaysian Royale",
     "dr-du-vtw": "Drag Race Down Under vs The World",
     "dr-mx-lr": "Drag Race México: Latina Royale",
+    "cdr": "Canada's Drag Race",
+    "dr-mx": "Mexico's Drag Race",
+    "ts-dr": "The Switch Drag Race",
+    "dr-au": "Drag Race Down Under",
 }
 
-
 const series: DragRaceSeries[] = [
+    // Americas - English
+    { code: "rpdr", name: "RuPaul's Drag Race", region: "americas", type: "main-series", original_language: LANGUAGES.ENGLISH },
+    { code: "cdr", name: "Canada's Drag Race", region: "americas", type: "international", original_language: LANGUAGES.ENGLISH },
+    { code: "dr-br", name: "Drag Race Brazil", region: "americas", type: "international", original_language: LANGUAGES.PORTUGUESE },
+    { code: "dr-mx", name: "Mexico's Drag Race", region: "americas", type: "international", original_language: LANGUAGES.SPANISH },
 
-    // Americas
-    // Main Series
-    { code: "rpdr", name: "RuPaul's Drag Race", region: "americas", type: "main-series" },
-    { code: "cdr", name: "Canada's Drag Race", region: "americas", type: "international" },
-    { code: "dr-br", name: "Drag Race Brazil", region: "americas", type: "international" },
-    { code: "dr-mx", name: "Mexico's Drag Race", region: "americas", type: "international" },
+    // Americas - All Stars (English)
+    { code: "rpdr-as", name: "RuPaul's Drag Race All Stars", region: "americas", type: "all-stars", original_language: LANGUAGES.ENGLISH },
+    { code: "ts-dr", name: "The Switch Drag Race", region: "americas", type: "spin-off", original_language: LANGUAGES.SPANISH },
 
-    // All Stars
-    { code: "rpdr-as", name: "RuPaul's Drag Race All Stars", region: "americas", type: "all-stars" },
-    { code: "ts-dr", name: "The Switch Drag Race", region: "americas", type: "spin-off" },
+    // Americas - Spin-Offs (English)
+    { code: "rpdr-ud", name: "RuPaul's Drag Race Untucked", region: "americas", type: "spin-off", original_language: LANGUAGES.ENGLISH },
+    { code: "rpdr-dru", name: "RuPaul's Drag U", region: "americas", type: "spin-off", original_language: LANGUAGES.ENGLISH },
+    { code: "rpdr-vr", name: "RuPaul's Drag Race: Vegas Revue", region: "americas", type: "spin-off", original_language: LANGUAGES.ENGLISH },
+    { code: "rpdr-sc", name: "RuPaul's Secret Celebrity Drag Race", region: "americas", type: "spin-off", original_language: LANGUAGES.ENGLISH },
+    { code: "rpdr-hs", name: "RuPaul's Drag Race: Holi-slay Spectacular", region: "americas", type: "spin-off", original_language: LANGUAGES.ENGLISH },
 
-    // Spin-Offs
-    { code: "rpdr-ud", name: "RuPaul's Drag Race Untucked", region: "americas", type: "spin-off" },
-    { code: "rpdr-dru", name: "RuPaul's Drag U", region: "americas", type: "spin-off" },
-    { code: "rpdr-vr", name: "RuPaul's Drag Race: Vegas Revue", region: "americas", type: "spin-off" },
-    { code: "rpdr-sc", name: "RuPaul's Secret Celebrity Drag Race", region: "americas", type: "spin-off" },
-    { code: "rpdr-hs", name: "RuPaul's Drag Race: Holi-slay Spectacular", region: "americas", type: "spin-off" },
+    // Asia - Local Languages
+    { code: "dr-td", name: "Drag Race Thailand", region: "asia", type: "international", original_language: LANGUAGES.THAI },
+    { code: "dr-ph", name: "Drag Race Philippines", region: "asia", type: "international", original_language: LANGUAGES.TAGALOG },
+    { code: "dr-jp", name: "Drag Race Japan", region: "asia", type: "international", original_language: LANGUAGES.JAPANESE },
 
-    // Asia
-    // Main Series
-    { code: "dr-td", name: "Drag Race Thailand", region: "asia", type: "international" },
-    { code: "dr-ph", name: "Drag Race Philippines", region: "asia", type: "international" },
-    { code: "dr-jp", name: "Drag Race Japan", region: "asia", type: "international" },
+    // Europe - Local Languages
+    { code: "dr-uk", name: "Drag Race UK", region: "europe", type: "international", original_language: LANGUAGES.ENGLISH },
+    { code: "dr-nl", name: "Drag Race Holland", region: "europe", type: "international", original_language: LANGUAGES.DUTCH },
+    { code: "dr-es", name: "Drag Race España", region: "europe", type: "international", original_language: LANGUAGES.SPANISH },
+    { code: "dr-it", name: "Drag Race Italia", region: "europe", type: "international", original_language: LANGUAGES.ITALIAN },
+    { code: "dr-fr", name: "Drag Race France", region: "europe", type: "international", original_language: LANGUAGES.FRENCH },
+    { code: "dr-be", name: "Drag Race Belgique", region: "europe", type: "international", original_language: LANGUAGES.FRENCH },
+    { code: "dr-se", name: "Drag Race Sverige", region: "europe", type: "international", original_language: LANGUAGES.SWEDISH },
+    { code: "dr-de", name: "Drag Race Germany", region: "europe", type: "international", original_language: LANGUAGES.GERMAN },
 
-    // Europe
-    // Main Series
-    { code: "dr-uk", name: "Drag Race UK", region: "europe", type: "international" },
-    { code: "dr-nl", name: "Drag Race Holland", region: "europe", type: "international" },
-    { code: "dr-es", name: "Drag Race España", region: "europe", type: "international" },
-    { code: "dr-it", name: "Drag Race Italia", region: "europe", type: "international" },
-    { code: "dr-mx", name: "Drag Race Mexico", region: "europe", type: "international" },
-    { code: "dr-fr", name: "Drag Race France", region: "europe", type: "international" },
-    { code: "dr-be", name: "Drag Race Belgique", region: "europe", type: "international" },
-    { code: "dr-se", name: "Drag Race Sverige", region: "europe", type: "international" },
-    { code: "dr-de", name: "Drag Race Germany", region: "europe", type: "international" },
+    // Europe - All Stars
+    { code: "dr-es-as", name: "Drag Race España All Stars", region: "europe", type: "all-stars", original_language: LANGUAGES.SPANISH },
+    { code: "dr-fr-as", name: "Drag Race France All Stars", region: "europe", type: "all-stars", original_language: LANGUAGES.FRENCH },
 
-    // All Stars
-    { code: "dr-es-as", name: "Drag Race España All Stars", region: "europe", type: "all-stars" },
-    { code: "dr-fr-as", name: "Drag Race France All Stars", region: "europe", type: "all-stars" },
     // Oceania
-    // Main Series
-    { code: "dr-au", name: "Drag Race Down Under", region: "oceania", type: "international" },
+    { code: "dr-au", name: "Drag Race Down Under", region: "oceania", type: "international", original_language: LANGUAGES.ENGLISH },
 
-    // Global
-    // All Stars
-    { code: "rpdr-uk-vtw", name: "RuPaul's Drag Race UK vs The World", region: "global", type: "all-stars" },
-    { code: "cdr-cvtw", name: "Canada's Drag Race: Canada vs The World", region: "global", type: "all-stars" },
-    { code: "rpdr-gas", name: "RuPaul's Drag Race Global All Stars", region: "global", type: "all-stars" },
-    { code: "dr-ph-sr", name: "Drag Race Philippines: Slaysian Royale", region: "global", type: "all-stars" },
-    { code: "dr-du-vtw", name: "Drag Race Down Under vs The World", region: "global", type: "all-stars" },
-    { code: "dr-mx-lr", name: "Drag Race México: Latina Royale", region: "global", type: "all-stars" },
+    // Global - All Stars (Mostly English with exceptions)
+    { code: "rpdr-uk-vtw", name: "RuPaul's Drag Race UK vs The World", region: "global", type: "all-stars", original_language: LANGUAGES.ENGLISH },
+    { code: "cdr-cvtw", name: "Canada's Drag Race: Canada vs The World", region: "global", type: "all-stars", original_language: LANGUAGES.ENGLISH },
+    { code: "rpdr-gas", name: "RuPaul's Drag Race Global All Stars", region: "global", type: "all-stars", original_language: LANGUAGES.ENGLISH },
+    { code: "dr-ph-sr", name: "Drag Race Philippines: Slaysian Royale", region: "global", type: "all-stars", original_language: LANGUAGES.ENGLISH }, // Special case - in English
+    { code: "dr-du-vtw", name: "Drag Race Down Under vs The World", region: "global", type: "all-stars", original_language: LANGUAGES.ENGLISH },
+    { code: "dr-mx-lr", name: "Drag Race México: Latina Royale", region: "global", type: "all-stars", original_language: LANGUAGES.SPANISH },
 ];
 
 const seriesSeasons: SeriesSeasons = {
@@ -290,5 +303,5 @@ const seriesEpisodes: SeriesEpisodes = {
 ];
 */}
 
-export { series, codeEquivalence, seriesSeasons, seriesEpisodes };
+export { series, codeEquivalence, seriesSeasons, seriesEpisodes, LANGUAGES };
 export type { DragRaceSeries };

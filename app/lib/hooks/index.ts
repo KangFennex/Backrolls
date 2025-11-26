@@ -13,4 +13,8 @@ export { useWorkroomQuotes } from './useWorkroomQuotes';
 export { useSeriesQuotes } from './useSeriesQuotes';
 export { useFavorites, useToggleFavorite } from './useFavoritesQuotes';
 export { useVotes, useToggleVote } from './useVotesQuotes';
+export { useSubmitQuote } from './useSubmitQuote';
 export { useSubmittedQuotes } from './useSubmittedQuotes';
+export { useCommentedQuotes } from './useCommentedQuotes';
+export { useQuoteById } from './useQuoteById';
+export { useQuotesByIds } from './useQuotesByIds';

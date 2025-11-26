@@ -16,7 +16,7 @@ export default function SeriesPageClient(): React.ReactElement {
     const setFilters = useBackrollsStore((state) => state.setFilters);
     const { navigateToBackroll } = useNavigationContext();
     const searchParams = useSearchParams();
-    
+
     console.log('🔄 SeriesPageClient render, filters:', filters);
 
     // Sync filters from URL params on mount and when URL actually changes
@@ -48,28 +48,8 @@ export default function SeriesPageClient(): React.ReactElement {
         episode: filters.selectedEpisode,
     });
 
-    // Debug: Log when filters change
-    useEffect(() => {
-        console.log('🎯 Current filters passed to useSeriesQuotes:', {
-            region: filters.selectedRegion,
-            series: filters.selectedSeries,
-            season: filters.selectedSeason,
-            episode: filters.selectedEpisode,
-        });
-    }, [filters.selectedRegion, filters.selectedSeries, filters.selectedSeason, filters.selectedEpisode]);
-
     const quotes = data?.quotes || [];
     const useMosaic = quotes.length > 8;
-
-    // Debug: Log when data changes
-    useEffect(() => {
-        const currentQuotes = data?.quotes || [];
-        console.log('📦 Data updated, showing', currentQuotes.length, 'quotes');
-        if (currentQuotes.length > 0) {
-            console.log('First quote:', currentQuotes[0].quote_text?.substring(0, 50));
-            console.log('Episode of first quote:', currentQuotes[0].episode);
-        }
-    }, [data]);
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -88,19 +68,34 @@ export default function SeriesPageClient(): React.ReactElement {
 
     const { selectedRegion, selectedSeries, selectedSeason, selectedEpisode } = filters;
 
+    const breadCrumbs = () => {
+        return (
+            selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
+                <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
+                    {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
+                    {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
+                    {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
+                    {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
+                </div>
+            )
+    }
+
+    const displayResultLength = () => {
+        const resultsLength = quotes.length;
+        return (
+            <div>
+                <h2 className="text-xl font-semibold mb-4 text-[#FFFFF0]">
+                    Found {resultsLength} backrolls
+                </h2>
+            </div>
+        );
+    }
+
     // Loading state
     if (isLoading) {
         return (
             <div className="w-full">
-                {/* Breadcrumbs */}
-                {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
-                    <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
-                        {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
-                        {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
-                        {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
-                        {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
-                    </div>
-                )}
+                {breadCrumbs()}
                 <PageComponentContainer variant="list">
                     <div className="text-center py-8 text-gray-400">Loading quotes...</div>
                 </PageComponentContainer>
@@ -113,14 +108,7 @@ export default function SeriesPageClient(): React.ReactElement {
         return (
             <div className="w-full">
                 {/* Breadcrumbs */}
-                {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
-                    <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
-                        {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
-                        {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
-                        {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
-                        {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
-                    </div>
-                )}
+                {breadCrumbs()}
                 <PageComponentContainer variant="list">
                     <div className="text-center py-8 text-red-400">
                         Error loading quotes: {error.message}
@@ -134,15 +122,7 @@ export default function SeriesPageClient(): React.ReactElement {
     if (quotes.length === 0) {
         return (
             <div className="w-full">
-                {/* Breadcrumbs */}
-                {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
-                    <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
-                        {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
-                        {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
-                        {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
-                        {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
-                    </div>
-                )}
+                {breadCrumbs()}
                 <PageComponentContainer variant="list">
                     <div className="text-center py-8 text-gray-500">
                         No quotes found for the selected filters.
@@ -155,19 +135,9 @@ export default function SeriesPageClient(): React.ReactElement {
     // Success state with quotes
     return (
         <div className="w-full">
-            {/* Breadcrumbs */}
-            {(selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
-                <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-5">
-                    {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
-                    {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
-                    {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
-                    {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
-                </div>
-            )}
+            {breadCrumbs()}
+            {displayResultLength()}
             <PageComponentContainer variant={useMosaic ? 'mosaic' : 'list'}>
-                <h2 className="text-xl font-semibold mb-4 text-[#FFFFF0]">
-                    Found {quotes.length} quotes
-                </h2>
                 {quotes.map((quote, index) => (
                     <div key={quote.id} className={useMosaic ? getMosaicClass(quote.quote_text, index) : ''}>
                         <BackrollCard
@@ -175,6 +145,7 @@ export default function SeriesPageClient(): React.ReactElement {
                             variant="full"
                             index={index}
                             onClick={() => handleClick(quote)}
+                            mosaic={useMosaic}
                         />
                     </div>
                 ))}

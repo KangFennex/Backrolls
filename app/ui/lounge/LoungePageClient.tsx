@@ -8,7 +8,8 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import FavoritesTab from './components/FavoritesTab';
 import SubmittedTab from './components/SubmittedTab';
 import CommentedTab from './components/CommentedTab';
-import { useFavorites, useSubmittedQuotes } from '../../lib/hooks';
+import { useFavorites, useSubmittedQuotes, useCommentedQuotes } from '../../lib/hooks';
+import LoungeHeader from './components/LoungeHeader';
 
 type TabType = 'favorites' | 'submitted' | 'commented';
 
@@ -18,6 +19,7 @@ export default function LoungePageClient() {
     const [activeTab, setActiveTab] = useState<TabType>('favorites');
     const { data: favoritesData, isLoading: favoritesLoading, refetch: refetchFavorites } = useFavorites();
     const { data: submittedData, isLoading: submittedLoading, refetch: refetchSubmitted } = useSubmittedQuotes();
+    const { data: commentedData, isLoading: commentedLoading, refetch: refetchCommented } = useCommentedQuotes();
     const nodeRef = useRef(null);
 
     const renderTabContent = (tab: TabType) => {
@@ -27,7 +29,7 @@ export default function LoungePageClient() {
             case 'submitted':
                 return <SubmittedTab data={submittedData?.quotes || []} isLoading={submittedLoading} />;
             case 'commented':
-                return <CommentedTab />;
+                return <CommentedTab data={commentedData?.comments || []} isLoading={commentedLoading} />;
             default:
                 return null;
         }
@@ -47,40 +49,11 @@ export default function LoungePageClient() {
         <PageComponentContainer>
             <div className="w-full max-w-6xl mx-auto px-4 py-8">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold text-center mb-6">{`${user?.username}, let's kiki!`}</h1>
-
-                    {/* Tab Buttons */}
-                    <div className="flex justify-center gap-4">
-                        <button
-                            className={`px-6 py-3 rounded-lg font-semibold transition-all ${activeTab === 'favorites'
-                                    ? 'bg-pink-500 text-white shadow-lg'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                            onClick={() => setActiveTab('favorites')}
-                        >
-                            Favorites
-                        </button>
-                        <button
-                            className={`px-6 py-3 rounded-lg font-semibold transition-all ${activeTab === 'submitted'
-                                    ? 'bg-pink-500 text-white shadow-lg'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                            onClick={() => setActiveTab('submitted')}
-                        >
-                            Submitted
-                        </button>
-                        <button
-                            className={`px-6 py-3 rounded-lg font-semibold transition-all ${activeTab === 'commented'
-                                    ? 'bg-pink-500 text-white shadow-lg'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                            onClick={() => setActiveTab('commented')}
-                        >
-                            Commented
-                        </button>
-                    </div>
-                </div>
+                <LoungeHeader
+                    user={user}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                />
 
                 {/* Tab Content */}
                 <SwitchTransition mode="out-in">

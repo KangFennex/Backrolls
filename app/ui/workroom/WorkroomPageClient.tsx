@@ -5,15 +5,12 @@ import { useWorkroomQuotes } from '../../lib/hooks';
 import { BackrollCard } from '../backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
-import { usePathname } from 'next/navigation';
 import { getMosaicClass } from '../../lib/utils';
 
 export default function WorkroomPageClient() {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: quotes, isLoading } = useWorkroomQuotes(30);
-    const pathname = usePathname();
-
-    const isMainPage = pathname === '/';
+    const { data: workroomQuotes, isLoading } = useWorkroomQuotes(30);
+    const useMosaic = workroomQuotes ? workroomQuotes.length > 8 : false;
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -27,7 +24,7 @@ export default function WorkroomPageClient() {
         );
     }
 
-    if (!quotes || quotes.length === 0) {
+    if (!workroomQuotes || workroomQuotes.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
                 No backrolls for you today
@@ -36,18 +33,17 @@ export default function WorkroomPageClient() {
     }
 
     return (
-        <PageComponentContainer variant={isMainPage ? 'mosaic' : 'list'}>
-            {quotes.map((quote: Quote, index: number) => (
+        <PageComponentContainer variant={useMosaic ? 'mosaic' : 'list'}>
+            {workroomQuotes.map((quote: Quote, index: number) => (
                 <div
                     key={quote.id}
-                    className={isMainPage ? getMosaicClass(quote.quote_text, index) : ''}
+                    className={useMosaic ? getMosaicClass(quote.quote_text, index) : ''}
                 >
                     <BackrollCard
                         quote={quote}
                         variant="full"
                         index={index}
                         onClick={() => handleClick(quote)}
-                        isMainPage={isMainPage}
                     />
                 </div>
             ))}

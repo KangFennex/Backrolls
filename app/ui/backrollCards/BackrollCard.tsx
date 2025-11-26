@@ -15,29 +15,28 @@ export function BackrollCard({
     variant = 'full',
     onRemoveFavorite,
     onClick,
-    index = 0,
-    isMainPage = false
+    mosaic = true
 }: QuoteCardProps
 ) {
     const [expanded, setExpanded] = useState(false);
     const isCompact = variant === 'compact';
 
     // Get subtle background color
-    const backgroundColor = selectBackgroundColor(index);
+    const backgroundColor = selectBackgroundColor();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     return (
-        <div className={`backroll-card ${isMainPage ? 'isMainPage' : ''}`}
+        <div className={`backroll-card${mosaic ? ' mosaic' : ''}`}
             style={{ cursor: onClick ? 'pointer' : 'default' }}
         >
             <Box className="backroll-card--content">
                 <Card sx={{
                     width: '100%',
                     minWidth: '100%',
-                    height: isMainPage ? '100%' : 'auto',
+                    height: '100%',
                     margin: '0 auto',
                     backgroundColor: `${backgroundColor}80`,
                     color: '#FFFFF0',
@@ -45,8 +44,8 @@ export function BackrollCard({
                     borderRadius: '16px',
                     boxShadow: 'none',
                     transition: 'background-color 0.2s ease-in-out',
-                    display: isMainPage ? 'flex' : 'block',
-                    flexDirection: isMainPage ? 'column' : undefined,
+                    display: 'flex',
+                    flexDirection: 'column',
                     '&:hover': {
                         backgroundColor: `${backgroundColor}90`,
                         border: `2px solid ${backgroundColor}80`,

@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { router, publicProcedure } from '../trpc';
+import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { db } from '../../db';
 import { quotes } from '../../db/schema';
-import { eq, and, or, like, desc, sql, asc, SQL } from 'drizzle-orm';
+import { eq, and, or, like, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
 
 export const quotesRouter = router({
     // Search quotes by text or speaker
@@ -41,6 +41,24 @@ export const quotesRouter = router({
                 .limit(1);
 
             return result[0] || null;
+        }),
+
+    // Get quote by IDs
+    getByIds: publicProcedure
+        .input(z.object({
+            ids: z.array(z.string()),
+        }))
+        .query(async ({ input }) => {
+            if (input.ids.length === 0) {
+                return [];
+            }
+
+            const result = await db
+                .select()
+                .from(quotes)
+                .where(inArray(quotes.id, input.ids));
+
+            return result;
         }),
 
     // Get recent quotes
@@ -130,7 +148,6 @@ export const quotesRouter = router({
             limit: z.number().optional().default(1),
         }))
         .query(async ({ input }) => {
-            console.log('✅ getRandom called with limit:', input.limit);
 
             const results = await db
                 .select()
@@ -138,7 +155,7 @@ export const quotesRouter = router({
                 .orderBy(sql`RANDOM()`)
                 .limit(input.limit);
 
-            console.log(`✅ getRandom returning ${results.length} quotes`);
+            console.log(`getRandom returning ${results.length} quotes`);
             return results;
         }),
 
@@ -192,5 +209,101 @@ export const quotesRouter = router({
             });
 
             return quizQuestions;
+        }),
+
+    // Submit a new quote
+    submit: protectedProcedure
+        .input(z.object({
+            region: z.string(),
+            series: z.string(),
+            series_code: z.string(),
+            season: z.number(),
+            episode: z.number(),
+            quote_text: z.string(),
+            speaker: z.string(),
+            timestamp: z.string(),
+            episode_title: z.string().optional(),
+            type: z.string(),
+            air_date: z.string().optional().nullable(),
+            original_language: z.string().optional().default('english'),
+            original_language_text: z.string().optional(),
+            context: z.string().optional(),
+        }))
+        .mutation(async ({ ctx, input }) => {
+            const userId = ctx.session.user.id;
+
+            if (!userId) {
+                throw new Error('User not authenticated');
+            }
+
+            // Use a transaction to ensure both operations succeed or fail together
+            const result = await db.transaction(async (tx) => {
+                // Insert the quote
+                const quoteResult = await tx
+                    .insert(quotes)
+                    .values({
+                        region: input.region,
+                        series: input.series,
+                        series_code: input.series_code,
+                        season: input.season,
+                        episode: input.episode,
+                        quote_text: input.quote_text,
+                        speaker: input.speaker,
+                        timestamp: input.timestamp,
+                        episode_title: input.episode_title || null,
+                        type: input.type,
+                        air_date: null,
+                        original_language: input.original_language,
+                        original_language_text: input.original_language_text || null,
+                        user_id: userId,
+                        is_approved: false,
+                        vote_count: 0,
+                        share_count: 0,
+                        created_at: new Date(),
+                    })
+                    .returning();
+
+                // If context was provided, insert it into quoteContexts
+                if (input.context && input.context.trim()) {
+                    await tx.insert(quoteContexts).values({
+                        quote_id: quoteResult[0].id,
+                        context: input.context,
+                        user_id: userId,
+                        submitted_at: new Date(),
+                        is_verified: false,
+                    });
+                }
+
+                return quoteResult[0];
+            });
+
+            return result;
+        }),
+
+    // Adding context
+    addContext: protectedProcedure
+        .input(z.object({
+            quote_id: z.string(),
+            context: z.string().min(1, "Context cannot be empty"),
+        }))
+        .mutation(async ({ ctx, input }) => {
+            const userId = ctx.session.user.id;
+
+            if (!userId) {
+                throw new Error('User not authenticated');
+            }
+
+            const result = await db
+                .insert(quoteContexts)
+                .values({
+                    quote_id: input.quote_id,
+                    context: input.context,
+                    user_id: userId,
+                    submitted_at: new Date(),
+                    is_verified: false,
+                })
+                .returning();
+
+            return result[0];
         }),
 });

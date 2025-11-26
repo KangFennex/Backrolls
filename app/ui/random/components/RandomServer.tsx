@@ -5,7 +5,7 @@ import RandomClient from './RandomClient';
 import { RandomServerProps, Quote } from '../../../lib/definitions';
 
 export default async function RandomServer({ limit }: RandomServerProps) {
-    // Fetch random quotes directly using Drizzle on the server
+    // Fetch random quotes directly using Drizzle on the server so the component can fetch new quotes on each request without cache issues
     const randomQuotes = await db
         .select()
         .from(quotes)

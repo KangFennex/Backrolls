@@ -1,8 +1,29 @@
 'use client';
 
-import { Quote } from "../../../lib/definitions";
+import { useQuotesByIds } from "../../../lib/hooks";
 
-export default function CommentedTab({ data, isLoading }: { data: Quote[]; isLoading: boolean }) {
+
+interface Comment {
+    id: string;
+    comment_text: string;
+    created_at: Date;
+    quote_id?: string;
+    parent_comment_id?: string;
+    speaker: string;
+}
+
+
+export default function CommentedTab({ data, isLoading }: { data: Comment[]; isLoading: boolean }) {
+
+    const quoteIds = data.map(comment => comment.quote_id).filter(Boolean) as string[];
+    const { data: quotes, isLoading: quotesLoading } = useQuotesByIds(quoteIds);
+    const quotesMap = new Map(quotes?.map(quote => [quote.id, quote]) || [])
+
+
+    if (data && data.length > 0) {
+        console.log('First comment text:', data[0].comment_text);
+    }
+
     if (isLoading) {
         return <div>Loading commented quotes...</div>;
     }
@@ -12,14 +33,23 @@ export default function CommentedTab({ data, isLoading }: { data: Quote[]; isLoa
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4">Commented Quotes</h2>
-            <ul>
-                {data.map((quote: Quote) => (
-                    <li key={quote.id} className="mb-4 p-4 border rounded">
-                        <p className="text-lg italic">{quote.quote_text}</p>
-                        <p className="text-sm text-gray-600">- {quote.speaker}</p>
-                    </li>
-                ))}
+            <h2 className="text-2xl font-bold mb-6 text-purple-600">Comments</h2>
+            <ul className="grid gap-4">
+                {data.map((comment: Comment) => {
+                    const quote = comment.quote_id ? quotesMap.get(comment.quote_id) : null;
+
+                    return (
+                        <li key={comment.id} className="p-5 bg-white border-2 border-purple-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex justify-between items-start mb-2">
+                                <p className="text-lg italic text-gray-800 flex-1">
+                                    &ldquo;{quote ? quote.quote_text : 'Quote not available'}&rdquo;
+                                </p>
+                            </div>
+                            <span className="text-sm text-gray-600">— {quote ? quote.speaker : 'Unknown speaker'}</span>
+                            <p className="text-lg italic">{comment.comment_text}</p>
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );

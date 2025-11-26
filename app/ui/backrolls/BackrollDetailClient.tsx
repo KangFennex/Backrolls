@@ -4,7 +4,7 @@
 import { BackrollCard } from '../backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
-import { trpc } from '../../lib/trpc';
+import { useQuoteById } from '../../lib/hooks';
 import BackrollCommentsContainer from './components/BackrollCommentsContainer';
 
 interface BackrollDetailClientProps {
@@ -13,7 +13,7 @@ interface BackrollDetailClientProps {
 
 export default function BackrollDetailClient({ backrollId }: BackrollDetailClientProps) {
     const { navigateToBackroll } = useNavigationContext();
-    const { data: quote, isLoading, error } = trpc.quotes.getById.useQuery({ id: backrollId });
+    const { data: quote, isLoading, error } = useQuoteById(backrollId);
 
     if (isLoading) {
         return (
@@ -37,14 +37,13 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
 
     return (
         <PageComponentContainer>
-            <div className="flex-shrink-0 min-w-[250px]">
-                <BackrollCard
-                    quote={quote}
-                    variant="full"
-                    index={0}
-                    onClick={() => navigateToBackroll(quote)}
-                />
-            </div>
+            <BackrollCard
+                quote={quote}
+                variant="full"
+                index={0}
+                onClick={() => navigateToBackroll(quote)}
+                mosaic={false}
+            />
             {/* Pass the quoteId to the comments container */}
             <BackrollCommentsContainer quoteId={backrollId} />
         </PageComponentContainer>

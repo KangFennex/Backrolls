@@ -149,7 +149,7 @@ export interface QuoteCardProps {
     onRemoveFavorite?: (quote_id: string) => void;
     onClick?: () => void;
     index?: number;
-    isMainPage?: boolean;
+    mosaic?: boolean;
 }
 
 // =============================================================================
