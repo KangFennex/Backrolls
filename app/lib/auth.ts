@@ -1,17 +1,15 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth-options';
-import { ExtendedUser } from './definitions';
 
 export async function verifyToken() {
     try {
         const session = await getServerSession(authOptions);
 
         if (session?.user) {
-            const user = session.user as ExtendedUser;
             return {
-                id: user.id,
-                email: user.email,
-                username: user.username
+                id: session.user.id,
+                email: session.user.email,
+                username: session.user.username
             };
         }
 
@@ -25,10 +23,7 @@ export async function verifyToken() {
 export async function getUserFromRequest(): Promise<string | null> {
     try {
         const session = await getServerSession(authOptions);
-        const user = session?.user as ExtendedUser;
-
-        return user?.id || null;
-
+        return session?.user?.id || null;
     } catch (error) {
         console.error('Error getting user from session:', error);
         return null;

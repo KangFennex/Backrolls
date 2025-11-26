@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import type { AuthOptions, User, Session } from "next-auth";
+import type { User, Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
 // Extended interfaces for custom properties
@@ -20,7 +20,6 @@ interface ExtendedSession extends Session {
     user: {
         id: string;
         username?: string;
-        remember?: boolean;
         email?: string | null;
         name?: string | null;
         image?: string | null;
@@ -33,7 +32,8 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions: AuthOptions = {
+// For NextAuth v4, we don't need to export a typed authOptions - let TypeScript infer it
+export const authOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -91,7 +91,7 @@ export const authOptions: AuthOptions = {
         }),
     ],
     session: {
-        strategy: "jwt",
+        strategy: "jwt" as const,
         maxAge: 24 * 60 * 60, // Default: 1 day
     },
     callbacks: {

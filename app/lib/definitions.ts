@@ -449,20 +449,26 @@ export interface QuizQuestion {
     options: string[];  // Array of speaker names (shuffled, includes correct answer)
 }
 
-// app/lib/definitions.ts
-import { DefaultSession } from "next-auth";
+
+
+import "next-auth";
 
 declare module "next-auth" {
     interface Session {
         user: {
             id: string;
             username?: string;
-        } & DefaultSession["user"];
+            email?: string | null;
+            name?: string | null;
+            image?: string | null;
+        };
         remember?: boolean;
     }
 
     interface User {
+        id: string;
         username?: string;
+        email?: string | null;
         remember?: boolean;
     }
 }
