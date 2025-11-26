@@ -1,6 +1,4 @@
-import { pgTable, pgTableCreator, text, boolean, timestamp, varchar, uuid, bigint, date, unique } from 'drizzle-orm/pg-core';
-
-const createTable = pgTableCreator((name) => name);
+import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date, unique } from 'drizzle-orm/pg-core';
 
 export const quotes = pgTable('quotes', {
     id: uuid('id').defaultRandom().primaryKey(),
@@ -61,10 +59,13 @@ export const quoteContexts = pgTable('quote_contexts', {
 });
 
 // Backroll comments schema
+
+const backrollCommentsSelfRef = () => backrollComments;
+
 export const backrollComments = createTable('backroll_comments', {
     id: uuid('id').defaultRandom().primaryKey(),
     quote_id: uuid('quote_id').notNull().references(() => quotes.id, { onDelete: 'cascade' }),
-    parent_comment_id: uuid('parent_comment_id').references(() => backrollComments.id, { onDelete: 'cascade' }),
+    parent_comment_id: uuid('parent_comment_id').references(backrollCommentsSelfRef, { onDelete: 'cascade' }),
     user_id: uuid('user_id').notNull(),
     comment_text: text('comment_text').notNull(),
     created_at: timestamp('created_at').defaultNow().notNull(),
