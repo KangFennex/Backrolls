@@ -6,9 +6,9 @@ import { DefaultSession } from 'next-auth';
 // =============================================================================
 
 /**
- * Base user type for authentication
+ * Base user type for authentication (rename to avoid conflict)
  */
-export type User = {
+export type AppUser = {
     id: string;
     username: string;
     email: string;
@@ -24,6 +24,7 @@ export interface ExtendedUser {
     email?: string | null;
     name?: string | null;
     image?: string | null;
+    remember?: boolean;
 }
 
 /**
@@ -281,14 +282,14 @@ export interface SeriesFilterProps {
  */
 export interface FilterDrawerProps {
     open: boolean;
-    onClose: () => void;
+    onClose: void;
 }
 
 /**
  * Filter drawer header component props
  */
 export interface FiltersHeaderProps {
-    onClose: () => void;
+    onClose: void;
 }
 
 export interface FiltersChipProps {
@@ -449,7 +450,9 @@ export interface QuizQuestion {
     options: string[];  // Array of speaker names (shuffled, includes correct answer)
 }
 
-
+// =============================================================================
+// NEXT-AUTH TYPE EXTENSIONS
+// =============================================================================
 
 import "next-auth";
 
@@ -469,6 +472,8 @@ declare module "next-auth" {
         id: string;
         username?: string;
         email?: string | null;
+        name?: string | null;
+        image?: string | null;
         remember?: boolean;
     }
 
@@ -476,11 +481,4 @@ declare module "next-auth" {
         username?: string;
         remember?: boolean;
     }
-}
-
-export interface ExtendedUser {
-    id: string;
-    email?: string | null;
-    username?: string;
-    remember?: boolean;
 }
