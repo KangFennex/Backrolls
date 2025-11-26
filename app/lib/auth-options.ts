@@ -46,12 +46,19 @@ interface SessionCallbackParams {
     token: JWT;
 }
 
-// Create a complete type for our token with all needed properties
-interface CustomToken extends JWT {
-    id?: string;
+// Don't extend JWT - create a complete standalone token type
+interface CustomToken {
+    id: string;
     email?: string | null;
     username?: string;
     remember?: boolean;
+    name?: string | null;
+    picture?: string | null;
+    sub?: string;
+    iat?: number;
+    exp?: number;
+    jti?: string;
+    [key: string]: unknown;
 }
 
 const supabase = createClient(
@@ -167,23 +174,28 @@ export const authOptions = {
         async jwt(params: JWTCallbackParams) {
             const { token, user, account } = params;
 
-            // Use our complete CustomToken type
-            const customToken = token as CustomToken;
+            // Start with the incoming token and cast to our CustomToken
+            let customToken = token as unknown as CustomToken;
 
             if (user) {
                 console.log('JWT callback - user login detected:', user.email);
-                customToken.id = user.id;
-                customToken.email = user.email;
 
-                // Handle remember me for credentials login
-                const extendedUser = user as ExtendedUser;
-                if (extendedUser.remember) {
-                    customToken.remember = true;
-                }
+                // Create a new token object with our custom properties
+                customToken = {
+                    id: user.id,
+                    email: user.email ?? null,
+                    username: (user as ExtendedUser).username,
+                    remember: (user as ExtendedUser).remember,
+                    name: user.name ?? null,
+                    picture: user.image ?? null,
+                    sub: user.id,
+                    iat: token.iat,
+                    exp: token.exp,
+                    jti: token.jti,
+                };
 
-                // For Google OAuth, get username from profile
-                if (account?.provider === "google") {
-                    // Fetch username from Supabase profile
+                // For Google OAuth, get username from profile if not already set
+                if (account?.provider === "google" && !customToken.username) {
                     const { data: profile } = await supabase
                         .from("profiles")
                         .select("username")
@@ -191,9 +203,6 @@ export const authOptions = {
                         .single();
 
                     customToken.username = profile?.username || user.email?.split('@')[0];
-                } else {
-                    // For credentials login, username comes from authorize function
-                    customToken.username = extendedUser.username;
                 }
             }
 
@@ -211,9 +220,11 @@ export const authOptions = {
             const customToken = token as CustomToken;
 
             if (customToken && extendedSession.user) {
-                extendedSession.user.id = customToken.id ?? "";
+                extendedSession.user.id = customToken.id;
                 extendedSession.user.username = customToken.username;
                 extendedSession.user.email = customToken.email ?? null;
+                extendedSession.user.name = customToken.name ?? null;
+                extendedSession.user.image = customToken.picture ?? null;
                 extendedSession.remember = customToken.remember;
             }
 
