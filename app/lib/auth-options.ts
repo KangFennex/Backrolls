@@ -1,8 +1,8 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import { NextAuthOptions, User, Session, TokenSet } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import type { AuthOptions, User, Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
 // Extended interfaces for custom properties
 interface ExtendedUser extends User {
@@ -20,6 +20,7 @@ interface ExtendedSession extends Session {
     user: {
         id: string;
         username?: string;
+        remember?: boolean;
         email?: string | null;
         name?: string | null;
         image?: string | null;
@@ -32,7 +33,7 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -135,7 +136,7 @@ export const authOptions: NextAuthOptions = {
             }
             return true;
         },
-        async jwt({ token, user, account }): Promise<ExtendedToken> {
+        async jwt({ token, user, account }) {
             const extendedToken = token as ExtendedToken;
 
             if (user) {
@@ -172,7 +173,7 @@ export const authOptions: NextAuthOptions = {
 
             return extendedToken;
         },
-        async session({ session, token }): Promise<ExtendedSession> {
+        async session({ session, token }) {
             const extendedSession = session as ExtendedSession;
             const extendedToken = token as ExtendedToken;
 
