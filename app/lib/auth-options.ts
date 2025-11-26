@@ -1,3 +1,4 @@
+import { NextAuthOptions, User, Session, JWT } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
@@ -7,7 +8,7 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -27,7 +28,7 @@ export const authOptions = {
                 password: { label: "Password", type: "password" },
                 remember: { label: "Remember me", type: "checkbox" },
             },
-            async authorize(credentials) {
+            async authorize(credentials): Promise<User | null> {
                 if (!credentials?.email || !credentials?.password) {
                     return null;
                 }
@@ -86,7 +87,7 @@ export const authOptions = {
                             .from("profiles")
                             .insert({
                                 id: user.id,
-                                email: user.email!,
+                                email: user.email! ?? "",
                                 username: username,
                                 created_at: new Date().toISOString(),
                             });
@@ -109,7 +110,7 @@ export const authOptions = {
                 token.id = user.id;
 
                 // Handle remember me
-                if ((user as any).remember) {
+                if ((user as ExtendedUser).remember) {
                     token.remember = true;
                 }
 
@@ -123,7 +124,7 @@ export const authOptions = {
 
                     token.username = profile?.username || user.email?.split('@')[0];
                 } else {
-                    token.username = (user as any).username;
+                    token.username = (user as ExtendedUser).username;
                 }
             }
 
@@ -139,7 +140,7 @@ export const authOptions = {
             if (session.user) {
                 session.user.id = token.id as string;
                 session.user.username = token.username as string;
-                (session as any).remember = token.remember;
+                session.remember = token.remember;
             }
             return session;
         },
