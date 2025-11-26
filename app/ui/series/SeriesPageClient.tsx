@@ -143,7 +143,6 @@ export default function SeriesPageClient(): React.ReactElement {
                         <BackrollCard
                             quote={quote}
                             variant="full"
-                            index={index}
                             onClick={() => handleClick(quote)}
                             mosaic={useMosaic}
                         />

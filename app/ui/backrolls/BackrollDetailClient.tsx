@@ -40,7 +40,6 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
             <BackrollCard
                 quote={quote}
                 variant="full"
-                index={0}
                 onClick={() => navigateToBackroll(quote)}
                 mosaic={false}
             />

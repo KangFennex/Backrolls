@@ -23,7 +23,6 @@ export default function HotPageClient() {
                     <BackrollCard
                         quote={quote}
                         variant="full"
-                        index={index}
                         onClick={() => handleClick(quote)}
                         mosaic={useMosaic}
                     />

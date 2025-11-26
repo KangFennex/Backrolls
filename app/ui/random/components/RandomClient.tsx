@@ -49,12 +49,11 @@ export default function RandomClient({ randomQuotes }: RandomClientProps) {
 
     return (
         <PageComponentContainer>
-            {quotes.map((quote, index) => (
+            {quotes.map((quote) => (
                 <div key={quote.id}>
                     <BackrollCard
                         quote={quote}
                         variant="full"
-                        index={index}
                         onClick={() => handleClick(quote)}
                         mosaic={false}
                     />

@@ -64,7 +64,6 @@ export default function BackrollsPageClient() {
                     <BackrollCard
                         quote={quote}
                         variant="full"
-                        index={index}
                         onClick={() => handleClick(quote)}
                         mosaic={useMosaic}
                     />

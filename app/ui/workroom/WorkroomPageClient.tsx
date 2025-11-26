@@ -42,7 +42,6 @@ export default function WorkroomPageClient() {
                     <BackrollCard
                         quote={quote}
                         variant="full"
-                        index={index}
                         onClick={() => handleClick(quote)}
                     />
                 </div>
