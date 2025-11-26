@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import type { User, Session } from "next-auth";
+import type { User, Session, Account } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
 // Extended interfaces for custom properties
@@ -19,6 +19,23 @@ interface ExtendedSession extends Session {
         image?: string | null;
     };
     remember?: boolean;
+}
+
+// Create types for callback parameters
+interface SignInParams {
+    user: User;
+    account: Account | null;
+}
+
+interface JWTCallbackParams {
+    token: JWT;
+    user?: User;
+    account?: Account | null;
+}
+
+interface SessionCallbackParams {
+    session: Session;
+    token: JWT;
 }
 
 // Create a type for our custom token properties
@@ -94,7 +111,9 @@ export const authOptions = {
         maxAge: 24 * 60 * 60, // Default: 1 day
     },
     callbacks: {
-        async signIn({ user, account }) {
+        async signIn(params: SignInParams) {
+            const { user, account } = params;
+
             // Handle Google OAuth sign-in
             if (account?.provider === "google") {
                 try {
@@ -135,7 +154,9 @@ export const authOptions = {
             }
             return true;
         },
-        async jwt({ token, user, account }) {
+        async jwt(params: JWTCallbackParams) {
+            const { token, user, account } = params;
+
             // Use type assertion for our custom properties
             const customToken = token as JWT & CustomTokenProps;
 
@@ -173,7 +194,9 @@ export const authOptions = {
 
             return customToken;
         },
-        async session({ session, token }) {
+        async session(params: SessionCallbackParams) {
+            const { session, token } = params;
+
             const extendedSession = session as ExtendedSession;
             const customToken = token as JWT & CustomTokenProps;
 
