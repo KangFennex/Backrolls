@@ -62,7 +62,7 @@ export const quoteContexts = pgTable('quote_contexts', {
 
 const backrollCommentsSelfRef = () => backrollComments;
 
-export const backrollComments = createTable('backroll_comments', {
+export const backrollComments = pgTable('backroll_comments', {
     id: uuid('id').defaultRandom().primaryKey(),
     quote_id: uuid('quote_id').notNull().references(() => quotes.id, { onDelete: 'cascade' }),
     parent_comment_id: uuid('parent_comment_id').references(backrollCommentsSelfRef, { onDelete: 'cascade' }),
