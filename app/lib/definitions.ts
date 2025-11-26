@@ -477,4 +477,9 @@ declare module "next-auth" {
         remember?: boolean;
     }
 
+    interface JWT {
+        id?: string;
+        username?: string;
+        remember?: boolean;
+    }
 }

@@ -1,65 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import type { User, Session } from "next-auth";
-import type { JWT } from "next-auth/jwt";
-
-// Extended interfaces for custom properties
-interface ExtendedUser extends User {
-    username?: string;
-    remember?: boolean;
-}
-
-interface ExtendedSession extends Session {
-    user: {
-        id: string;
-        username?: string;
-        email?: string | null;
-        name?: string | null;
-        image?: string | null;
-    };
-    remember?: boolean;
-}
-
-// Create types for callback parameters without using Account type
-interface SignInParams {
-    user: User;
-    account: {
-        provider: string;
-        type: string;
-        [key: string]: unknown;
-    } | null;
-}
-
-interface JWTCallbackParams {
-    token: JWT;
-    user?: User;
-    account?: {
-        provider: string;
-        type: string;
-        [key: string]: unknown;
-    } | null;
-}
-
-interface SessionCallbackParams {
-    session: Session;
-    token: JWT;
-}
-
-// Don't extend JWT - create a complete standalone token type
-interface CustomToken {
-    id: string;
-    email?: string | null;
-    username?: string;
-    remember?: boolean;
-    name?: string | null;
-    picture?: string | null;
-    sub?: string;
-    iat?: number;
-    exp?: number;
-    jti?: string;
-    [key: string]: unknown;
-}
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -91,7 +32,6 @@ export const authOptions = {
                     return null;
                 }
 
-                // Supabase sign in
                 const { data, error } = await supabase.auth.signInWithPassword({
                     email: credentials.email,
                     password: credentials.password,
@@ -101,7 +41,6 @@ export const authOptions = {
                     throw new Error("Invalid email or password");
                 }
 
-                // Get user profile from profiles table
                 const { data: profile, error: profileError } = await supabase
                     .from("profiles")
                     .select("*")
@@ -112,33 +51,27 @@ export const authOptions = {
                     throw new Error("User profile not found");
                 }
 
-                const user: ExtendedUser = {
+                return {
                     id: data.user.id,
                     email: data.user.email,
                     username: profile.username,
                     remember: credentials.remember === "true",
                 };
-
-                return user;
             },
         }),
     ],
     session: {
         strategy: "jwt" as const,
-        maxAge: 24 * 60 * 60, // Default: 1 day
+        maxAge: 24 * 60 * 60,
     },
     callbacks: {
-        async signIn(params: SignInParams) {
-            const { user, account } = params;
-
-            // Handle Google OAuth sign-in
+        async signIn({ user, account }) {
             if (account?.provider === "google") {
                 try {
-                    // Check if user exists in Supabase
                     const { data: existingProfile, error: fetchError } = await supabase
                         .from("profiles")
                         .select("*")
-                        .eq("email", user.email ?? "")
+                        .eq("email", user.email!)
                         .single();
 
                     if (fetchError && fetchError.code !== 'PGRST116') {
@@ -147,14 +80,13 @@ export const authOptions = {
                     }
 
                     if (!existingProfile) {
-                        // Create new profile for Google user
                         const username = user.email?.split('@')[0] || user.name?.replace(/\s/g, '').toLowerCase() || `user_${Date.now()}`;
 
                         const { error: insertError } = await supabase
                             .from("profiles")
                             .insert({
                                 id: user.id,
-                                email: user.email ?? "",
+                                email: user.email!,
                                 username: username,
                                 created_at: new Date().toISOString(),
                             });
@@ -171,64 +103,45 @@ export const authOptions = {
             }
             return true;
         },
-        async jwt(params: JWTCallbackParams) {
-            const { token, user, account } = params;
-
-            // Start with the incoming token and cast to our CustomToken
-            let customToken = token as unknown as CustomToken;
-
+        async jwt({ token, user, account }) {
+            // Add custom properties to token
             if (user) {
-                console.log('JWT callback - user login detected:', user.email);
+                token.id = user.id;
 
-                // Create a new token object with our custom properties
-                customToken = {
-                    id: user.id,
-                    email: user.email ?? null,
-                    username: (user as ExtendedUser).username,
-                    remember: (user as ExtendedUser).remember,
-                    name: user.name ?? null,
-                    picture: user.image ?? null,
-                    sub: user.id,
-                    iat: token.iat,
-                    exp: token.exp,
-                    jti: token.jti,
-                };
+                // Handle remember me
+                if ((user as any).remember) {
+                    token.remember = true;
+                }
 
-                // For Google OAuth, get username from profile if not already set
-                if (account?.provider === "google" && !customToken.username) {
+                // Set username
+                if (account?.provider === "google") {
                     const { data: profile } = await supabase
                         .from("profiles")
                         .select("username")
-                        .eq("email", user.email ?? "")
+                        .eq("email", user.email!)
                         .single();
 
-                    customToken.username = profile?.username || user.email?.split('@')[0];
+                    token.username = profile?.username || user.email?.split('@')[0];
+                } else {
+                    token.username = (user as any).username;
                 }
             }
 
-            // Set dynamic expiration based on remember me
-            if (customToken.remember) {
-                customToken.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60); // 30 days
+            // Set expiration if remember me is enabled
+            if (token.remember) {
+                token.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60);
             }
 
-            return customToken;
+            return token;
         },
-        async session(params: SessionCallbackParams) {
-            const { session, token } = params;
-
-            const extendedSession = session as ExtendedSession;
-            const customToken = token as CustomToken;
-
-            if (customToken && extendedSession.user) {
-                extendedSession.user.id = customToken.id;
-                extendedSession.user.username = customToken.username;
-                extendedSession.user.email = customToken.email ?? null;
-                extendedSession.user.name = customToken.name ?? null;
-                extendedSession.user.image = customToken.picture ?? null;
-                extendedSession.remember = customToken.remember;
+        async session({ session, token }) {
+            // Add custom properties to session
+            if (session.user) {
+                session.user.id = token.id as string;
+                session.user.username = token.username as string;
+                (session as any).remember = token.remember;
             }
-
-            return extendedSession;
+            return session;
         },
     },
     pages: {
