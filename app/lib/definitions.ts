@@ -451,7 +451,6 @@ export interface QuizQuestion {
 
 
 
-// app/lib/definitions.ts
 import "next-auth";
 
 declare module "next-auth" {

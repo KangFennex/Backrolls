@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import type { User, Session, Account } from "next-auth";
+import type { User, Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
 // Extended interfaces for custom properties
@@ -21,16 +21,24 @@ interface ExtendedSession extends Session {
     remember?: boolean;
 }
 
-// Create types for callback parameters
+// Create types for callback parameters without using Account type
 interface SignInParams {
     user: User;
-    account: Account | null;
+    account: {
+        provider: string;
+        type: string;
+        [key: string]: unknown;
+    } | null;
 }
 
 interface JWTCallbackParams {
     token: JWT;
     user?: User;
-    account?: Account | null;
+    account?: {
+        provider: string;
+        type: string;
+        [key: string]: unknown;
+    } | null;
 }
 
 interface SessionCallbackParams {
