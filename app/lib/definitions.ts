@@ -1,4 +1,5 @@
-import { z } from 'zod'
+import { z } from 'zod';
+import { DefaultSession } from 'next-auth';
 
 // =============================================================================
 // AUTHENTICATION & USER TYPES
@@ -446,4 +447,37 @@ export interface QuizQuestion {
     season: number;
     episode: number;
     options: string[];  // Array of speaker names (shuffled, includes correct answer)
+}
+
+// app/lib/definitions.ts
+import { DefaultSession } from "next-auth";
+
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string;
+            username?: string;
+        } & DefaultSession["user"];
+        remember?: boolean;
+    }
+
+    interface User {
+        username?: string;
+        remember?: boolean;
+    }
+}
+
+declare module "next-auth/jwt" {
+    interface JWT {
+        id?: string;
+        username?: string;
+        remember?: boolean;
+    }
+}
+
+export interface ExtendedUser {
+    id: string;
+    email?: string | null;
+    username?: string;
+    remember?: boolean;
 }

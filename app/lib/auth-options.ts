@@ -1,54 +1,30 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
-import { ExtendedUser } from "./definitions";
+import { NextAuthOptions, User, Session, TokenSet } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-// Define basic types for NextAuth callbacks
-interface NextAuthUser {
-    id: string;
-    email?: string | null;
-    name?: string | null;
-    image?: string | null;
-    username?: string | null;
+// Extended interfaces for custom properties
+interface ExtendedUser extends User {
+    username?: string;
     remember?: boolean;
 }
 
-interface NextAuthAccount {
-    provider: string;
-    type: string;
-    [key: string]: unknown;
+interface ExtendedToken extends JWT {
+    id?: string;
+    username?: string;
+    remember?: boolean;
 }
 
-interface NextAuthToken {
-    [key: string]: unknown;
-}
-
-interface NextAuthSession {
+interface ExtendedSession extends Session {
     user: {
-        id?: string;
-        name?: string | null;
+        id: string;
+        username?: string;
         email?: string | null;
+        name?: string | null;
         image?: string | null;
-        username?: string | null;
     };
-    [key: string]: unknown;
-}
-
-// Define the configuration type since NextAuth v4 types aren't resolving properly
-interface AuthConfig {
-    providers: unknown[];
-    secret?: string;
-    session?: unknown;
-    callbacks?: {
-        signIn?: (params: { user: NextAuthUser; account: NextAuthAccount | null }) => boolean | Promise<boolean>;
-        jwt?: (params: { token: NextAuthToken; user?: NextAuthUser; account?: NextAuthAccount | null }) => NextAuthToken | Promise<NextAuthToken>;
-        session?: (params: { session: NextAuthSession; token: NextAuthToken }) => NextAuthSession | Promise<NextAuthSession>;
-    };
-    pages?: {
-        signIn?: string;
-        error?: string;
-        [key: string]: string | undefined;
-    };
+    remember?: boolean;
 }
 
 const supabase = createClient(
@@ -56,7 +32,7 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions: AuthConfig = {
+export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -76,7 +52,7 @@ export const authOptions: AuthConfig = {
                 password: { label: "Password", type: "password" },
                 remember: { label: "Remember me", type: "checkbox" },
             },
-            async authorize(credentials: Record<string, string> | undefined) {
+            async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
                     return null;
                 }
@@ -102,18 +78,20 @@ export const authOptions: AuthConfig = {
                     throw new Error("User profile not found");
                 }
 
-                return {
+                const user: ExtendedUser = {
                     id: data.user.id,
                     email: data.user.email,
                     username: profile.username,
                     remember: credentials.remember === "true",
-                }
+                };
+
+                return user;
             },
         }),
     ],
     session: {
-        strategy: "jwt" as const,
-        maxAge: 24 * 60 * 60, // Default: 1 day (will be extended if "remember me" is checked)
+        strategy: "jwt",
+        maxAge: 24 * 60 * 60, // Default: 1 day
     },
     callbacks: {
         async signIn({ user, account }) {
@@ -124,7 +102,7 @@ export const authOptions: AuthConfig = {
                     const { data: existingProfile, error: fetchError } = await supabase
                         .from("profiles")
                         .select("*")
-                        .eq("email", user.email)
+                        .eq("email", user.email ?? "")
                         .single();
 
                     if (fetchError && fetchError.code !== 'PGRST116') {
@@ -134,13 +112,13 @@ export const authOptions: AuthConfig = {
 
                     if (!existingProfile) {
                         // Create new profile for Google user
-                        const username = user.email?.split('@')[0] || user.name?.replace(/\s/g, '').toLowerCase();
+                        const username = user.email?.split('@')[0] || user.name?.replace(/\s/g, '').toLowerCase() || `user_${Date.now()}`;
 
                         const { error: insertError } = await supabase
                             .from("profiles")
                             .insert({
                                 id: user.id,
-                                email: user.email,
+                                email: user.email ?? "",
                                 username: username,
                                 created_at: new Date().toISOString(),
                             });
@@ -157,17 +135,18 @@ export const authOptions: AuthConfig = {
             }
             return true;
         },
-        async jwt({ token, user, account }) {
+        async jwt({ token, user, account }): Promise<ExtendedToken> {
+            const extendedToken = token as ExtendedToken;
+
             if (user) {
                 console.log('JWT callback - user login detected:', user.email);
-                token.id = user.id;
-                token.email = user.email;
+                extendedToken.id = user.id;
+                extendedToken.email = user.email;
 
                 // Handle remember me for credentials login
-                const remember = (user as NextAuthUser).remember;
-                if (remember) {
-                    // Extend session to 30 days if remember me is checked
-                    token.remember = true;
+                const extendedUser = user as ExtendedUser;
+                if (extendedUser.remember) {
+                    extendedToken.remember = true;
                 }
 
                 // For Google OAuth, get username from profile
@@ -176,34 +155,35 @@ export const authOptions: AuthConfig = {
                     const { data: profile } = await supabase
                         .from("profiles")
                         .select("username")
-                        .eq("email", user.email)
+                        .eq("email", user.email ?? "")
                         .single();
 
-                    token.username = profile?.username || user.email?.split('@')[0];
+                    extendedToken.username = profile?.username || user.email?.split('@')[0];
                 } else {
                     // For credentials login, username comes from authorize function
-                    token.username = (user as NextAuthUser).username;
+                    extendedToken.username = extendedUser.username;
                 }
             }
 
             // Set dynamic expiration based on remember me
-            if (token.remember) {
-                token.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60); // 30 days
+            if (extendedToken.remember) {
+                extendedToken.exp = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60); // 30 days
             }
 
-            return token;
+            return extendedToken;
         },
-        async session({ session, token }) {
-            if (token && session.user) {
-                const extendedUser = session.user as ExtendedUser;
-                extendedUser.id = token.id as string;
-                extendedUser.username = token.username as string;
-                extendedUser.email = token.email as string;
+        async session({ session, token }): Promise<ExtendedSession> {
+            const extendedSession = session as ExtendedSession;
+            const extendedToken = token as ExtendedToken;
 
-                // Add remember flag to session for frontend use
-                (session as typeof session & { remember?: boolean }).remember = typeof token.remember === 'boolean' ? token.remember : undefined;
+            if (extendedToken && extendedSession.user) {
+                extendedSession.user.id = extendedToken.id ?? "";
+                extendedSession.user.username = extendedToken.username;
+                extendedSession.user.email = extendedToken.email ?? null;
+                extendedSession.remember = extendedToken.remember;
             }
-            return session;
+
+            return extendedSession;
         },
     },
     pages: {
