@@ -46,11 +46,13 @@ interface SessionCallbackParams {
     token: JWT;
 }
 
-// Create a type for our custom token properties
-type CustomTokenProps = {
+// Create a complete type for our token with all needed properties
+interface CustomToken extends JWT {
+    id?: string;
+    email?: string | null;
     username?: string;
     remember?: boolean;
-};
+}
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -165,8 +167,8 @@ export const authOptions = {
         async jwt(params: JWTCallbackParams) {
             const { token, user, account } = params;
 
-            // Use type assertion for our custom properties
-            const customToken = token as JWT & CustomTokenProps;
+            // Use our complete CustomToken type
+            const customToken = token as CustomToken;
 
             if (user) {
                 console.log('JWT callback - user login detected:', user.email);
@@ -206,7 +208,7 @@ export const authOptions = {
             const { session, token } = params;
 
             const extendedSession = session as ExtendedSession;
-            const customToken = token as JWT & CustomTokenProps;
+            const customToken = token as CustomToken;
 
             if (customToken && extendedSession.user) {
                 extendedSession.user.id = customToken.id ?? "";
