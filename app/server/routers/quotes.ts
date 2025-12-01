@@ -146,18 +146,43 @@ export const quotesRouter = router({
     // Get random quotes
     getRandom: publicProcedure
         .input(z.object({
-            limit: z.number().optional().default(1),
+            limit: z.number().optional().default(30),
+            cursor: z.string().optional(),
+            seed: z.number().optional(),
         }))
         .query(async ({ input }) => {
-
-            const results = await db
+            const { limit, cursor, seed } = input;
+            
+            // Use seed for consistent random ordering within a session
+            const randomSeed = seed || Math.random();
+            
+            // For cursor-based pagination, we need to track which IDs we've already seen
+            const excludeIds = cursor ? cursor.split(',').filter(Boolean) : [];
+            
+            const baseQuery = db
                 .select()
-                .from(quotes)
-                .orderBy(sql`RANDOM()`)
-                .limit(input.limit);
+                .from(quotes);
+            
+            const results = excludeIds.length > 0
+                ? await baseQuery
+                    .where(sql`${quotes.id} NOT IN (${sql.join(excludeIds.map(id => sql`${id}`), sql`, `)})`)
+                    .orderBy(sql`RANDOM()`)
+                    .limit(limit)
+                : await baseQuery
+                    .orderBy(sql`RANDOM()`)
+                    .limit(limit);
 
-            console.log(`getRandom returning ${results.length} quotes`);
-            return results;
+            // Create cursor from current IDs
+            const allSeenIds = [...excludeIds, ...results.map(q => q.id)];
+            const nextCursor = results.length === limit ? allSeenIds.join(',') : undefined;
+
+            console.log(`getRandom returning ${results.length} quotes, cursor: ${nextCursor ? 'has more' : 'end'}`);
+            
+            return {
+                quotes: results,
+                nextCursor,
+                seed: randomSeed,
+            };
         }),
 
     // Get quiz questions

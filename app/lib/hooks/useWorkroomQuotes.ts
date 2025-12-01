@@ -1,40 +1,27 @@
 'use client';
 
 import { trpc } from '../trpc';
-import { useEffect } from 'react';
 
-export function useWorkroomQuotes(limit: number = 1) {
-    const utils = trpc.useUtils();
-
-    const query = trpc.quotes.getRandom.useQuery(
+/**
+ * Legacy hook for fetching random quotes - kept for backward compatibility
+ * New workroom page uses infinite query with server-side hydration
+ */
+export function useWorkroomQuotes(limit: number = 30) {
+    const query = trpc.quotes.getRandom.useInfiniteQuery(
         { limit },
         {
-            staleTime: 1000 * 30,
-            retry: 2,
-            gcTime: 1000 * 60 * 2,
+            getNextPageParam: (lastPage) => lastPage.nextCursor,
+            staleTime: 1000 * 60 * 5,
             refetchOnWindowFocus: false,
         }
     );
 
-    // Listen for vote updates and update cache
-    useEffect(() => {
-        const handleVoteUpdate = (event: Event) => {
-            const customEvent = event as CustomEvent;
-            const { quoteId, newVoteCount } = customEvent.detail;
-
-            utils.quotes.getRandom.setData({ limit }, (oldData) => {
-                if (!oldData) return oldData;
-                return oldData.map((quote) =>
-                    quote.id === quoteId
-                        ? { ...quote, voteCount: newVoteCount }
-                        : quote
-                );
-            });
-        };
-
-        window.addEventListener('voteUpdated', handleVoteUpdate);
-        return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, [limit, utils]);
-
-    return query;
+    return {
+        data: query.data?.pages.flatMap(page => page.quotes),
+        isLoading: query.isLoading,
+        error: query.error,
+        fetchNextPage: query.fetchNextPage,
+        hasNextPage: query.hasNextPage,
+        isFetchingNextPage: query.isFetchingNextPage,
+    };
 }

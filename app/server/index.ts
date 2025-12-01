@@ -14,3 +14,6 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
+// Create a caller for server-side usage
+export const createCaller = appRouter.createCaller;
