@@ -6,6 +6,9 @@ import { Providers } from "./providers";
 export const metadata: Metadata = {
   title: "Backrolls",
   description: "A repository of queer quotes",
+  icons: {
+    icon: "/favicon.ico",
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

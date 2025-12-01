@@ -2,9 +2,10 @@ import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { db } from '../../db';
 import { quotes } from '../../db/schema';
-import { eq, and, or, like, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
+import { eq, and, or, ilike, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
 
 export const quotesRouter = router({
+
     // Search quotes by text or speaker
     search: publicProcedure
         .input(z.object({
@@ -19,8 +20,8 @@ export const quotesRouter = router({
                 .from(quotes)
                 .where(
                     or(
-                        like(quotes.quote_text, searchPattern),
-                        like(quotes.speaker, searchPattern)
+                        ilike(quotes.quote_text, searchPattern),
+                        ilike(quotes.speaker, searchPattern)
                     )
                 )
                 .orderBy(desc(quotes.created_at));
@@ -169,6 +170,7 @@ export const quotesRouter = router({
             const selectedQuotes = await db
                 .select()
                 .from(quotes)
+                .where(sql`${quotes.speaker} != 'RuPaul'`)
                 .orderBy(sql`RANDOM()`)
                 .limit(input.limit);
 
@@ -179,7 +181,8 @@ export const quotesRouter = router({
             // Get all unique speakers for wrong options
             const allSpeakers = await db
                 .selectDistinct({ speaker: quotes.speaker })
-                .from(quotes);
+                .from(quotes)
+                .where(sql`${quotes.speaker} != 'RuPaul'`);
 
             const uniqueSpeakers = allSpeakers.map(s => s.speaker);
 
@@ -306,4 +309,22 @@ export const quotesRouter = router({
 
             return result[0];
         }),
+
+    // Get quotes by comment count
+    getByCommentCount: publicProcedure
+        .input(z.object({
+            limit: z.number().optional().default(10),
+        }))
+        .query(async ({ input }) => {
+            const results = await db
+                .select()
+                .from(quotes)
+                .orderBy(desc(quotes.comment_count))
+                .limit(input.limit);
+
+            return {
+                quotes: results,
+                count: results.length,
+            };
+        })
 });

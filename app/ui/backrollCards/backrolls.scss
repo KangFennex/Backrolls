@@ -6,7 +6,7 @@
 
     @media (min-width: 768px) {
         height: 100%; // Fill grid cell on tablets and larger
-        width: 60%; // Default width on tablets and larger
+        width: 100%; // Default width on tablets and larger
         margin: auto;
 
         &.mosaic {

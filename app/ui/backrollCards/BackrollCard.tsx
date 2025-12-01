@@ -19,9 +19,8 @@ export function BackrollCard({
 }: QuoteCardProps
 ) {
     const [expanded, setExpanded] = useState(false);
-    const isCompact = variant === 'compact';
+    const isCompact = variant === 'compact'
 
-    // Get subtle background color
     const backgroundColor = selectBackgroundColor();
 
     const handleExpandClick = () => {
@@ -53,14 +52,13 @@ export function BackrollCard({
                 }}>
                     <BackrollHeader quote={quote} />
 
-                    <CardMedia component="div" />
+                    <CardMedia />
 
                     <BackrollContent
                         onClick={onClick}
                         quoteText={quote.quote_text}
                         speaker={quote.speaker}
                     />
-
                     <BackrollActions
                         quoteId={String(quote.id)}
                         quoteText={quote.quote_text}

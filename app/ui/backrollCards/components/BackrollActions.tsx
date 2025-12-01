@@ -21,7 +21,7 @@ export function ShareCopyFavorite({
     onRemoveFavorite
 }: ShareCopyFavoriteProps) {
     return (
-        <div className="flex items-center gap-2 mr-1">
+        <div className="flex items-center justify-between gap-2 mr-1">
             <ShareButton />
             <CopyButton textToCopy={quoteText} />
             <FavoriteButton
@@ -75,16 +75,17 @@ export default function BackrollActions({
             justifyContent: 'space-between',
             borderTop: 'none',
             marginTop: 'auto', // Push to bottom
+            width: '100%',
             padding: 0
         }}>
-            <div className="flex items-center justify-between w-full">
+            <div className="flex items-center justify-baseline w-full gap-2">
                 <div>
                     <VoteButtons
                         quoteId={quoteId}
                         initialVoteCount={initialVoteCount}
                     />
                 </div>
-                <div>
+                <div className="">
                     <CommentButton onClick={onClick} quoteId={quoteId} />
                 </div>
                 <div>

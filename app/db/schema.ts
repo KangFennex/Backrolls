@@ -19,6 +19,7 @@ export const quotes = pgTable('quotes', {
     user_id: uuid('user_id').notNull(),
     is_approved: boolean('is_approved').default(false).notNull(),
     vote_count: bigint('vote_count', { mode: 'number' }).default(0).notNull(),
+    comment_count: bigint('comment_count', { mode: 'number' }).default(0).notNull(),
     share_count: bigint('share_count', { mode: 'number' }).default(0).notNull(),
 });
 

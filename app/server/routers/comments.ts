@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { db } from "../../db";
-import { backrollComments, users, commentVotes } from "../../db/schema";
+import { backrollComments, users, commentVotes, quotes } from "../../db/schema";
 import { eq, and, desc, isNull, count, sql } from "drizzle-orm";
 
 export const commentsRouter = router({
@@ -177,43 +177,45 @@ export const commentsRouter = router({
             const { quoteId, parentCommentId, commentText } = input;
             const userId = ctx.session.user.id;
 
-            const [newComment] = await db
-                .insert(backrollComments)
-                .values({
-                    quote_id: quoteId,
-                    parent_comment_id: parentCommentId || null,
-                    user_id: userId,
-                    comment_text: commentText,
-                })
-                .returning();
+            return await db.transaction(async (tx) => {
+                // Insert the new comment
+                const [newComment] = await tx
+                    .insert(backrollComments)
+                    .values({
+                        quote_id: quoteId,
+                        parent_comment_id: parentCommentId || null,
+                        user_id: userId,
+                        comment_text: commentText,
+                    })
+                    .returning();
 
-            // Get updated count and dispatch event
-            const [countResult] = await db
-                .select({
-                    count: count(backrollComments.id)
-                })
-                .from(backrollComments)
-                .where(
-                    and(
-                        eq(backrollComments.quote_id, quoteId),
-                        eq(backrollComments.status, 'active')
-                    )
-                );
+                // Atomically increment the comment_count
+                await tx
+                    .update(quotes)
+                    .set({
+                        comment_count: sql`${quotes.comment_count} + 1`
+                    })
+                    .where(eq(quotes.id, quoteId));
 
-            const newCommentCount = countResult?.count || 0;
+                // Get the updated count for the response/event
+                const [updatedQuote] = await tx
+                    .select({ comment_count: quotes.comment_count })
+                    .from(quotes)
+                    .where(eq(quotes.id, quoteId));
 
-            // Dispatch event for real-time count update
-            if (typeof window !== 'undefined') {
-                const event = new CustomEvent('commentAdded', {
-                    detail: {
-                        newCommentCount,
-                        quoteId
-                    }
-                });
-                window.dispatchEvent(event);
-            }
+                // Dispatch event for real-time count update
+                if (typeof window !== 'undefined') {
+                    const event = new CustomEvent('commentAdded', {
+                        detail: {
+                            newCommentCount: updatedQuote.comment_count,
+                            quoteId
+                        }
+                    });
+                    window.dispatchEvent(event);
+                }
 
-            return newComment;
+                return newComment;
+            });
         }),
 
     // Update a comment
@@ -264,6 +266,7 @@ export const commentsRouter = router({
 
             return result?.count || 0;
         }),
+    // Refetch comment count for a backroll
     refetchCommentCount: publicProcedure
         .input(z.object({
             quoteId: z.string().uuid(),
@@ -295,56 +298,68 @@ export const commentsRouter = router({
             const { commentId } = input;
             const userId = ctx.session.user.id;
 
-            const [commentToDelete] = await db
-                .select({ quote_id: backrollComments.quote_id })
-                .from(backrollComments)
-                .where(and(
-                    eq(backrollComments.id, commentId),
-                ));
+            return await db.transaction(async (tx) => {
+                // Get the comment and its quote_id first
+                const [commentToDelete] = await tx
+                    .select({
+                        quote_id: backrollComments.quote_id,
+                        status: backrollComments.status
+                    })
+                    .from(backrollComments)
+                    .where(and(
+                        eq(backrollComments.id, commentId),
+                        eq(backrollComments.user_id, userId)
+                    ));
 
-            if (!commentToDelete) {
-                throw new Error("Comment not found or you don't have permission to delete it.");
-            }
+                if (!commentToDelete) {
+                    throw new Error("Comment not found or you don't have permission to delete it.");
+                }
 
-            const [deletedComment] = await db
-                .update(backrollComments)
-                .set({
-                    status: 'deleted',
-                    updated_at: new Date(),
-                })
-                .where(and(
-                    eq(backrollComments.id, commentId),
-                    eq(backrollComments.user_id, userId)
-                ))
-                .returning();
+                // Only decrement if the comment was active
+                const wasActive = commentToDelete.status === 'active';
 
-            // Get updated count and dispatch event
-            const [countResult] = await db
-                .select({
-                    count: count(backrollComments.id)
-                })
-                .from(backrollComments)
-                .where(
-                    and(
-                        eq(backrollComments.quote_id, commentToDelete.quote_id),
-                        eq(backrollComments.status, 'active')
-                    )
-                );
+                // Soft delete the comment
+                const [deletedComment] = await tx
+                    .update(backrollComments)
+                    .set({
+                        status: 'deleted',
+                        updated_at: new Date(),
+                    })
+                    .where(and(
+                        eq(backrollComments.id, commentId),
+                        eq(backrollComments.user_id, userId)
+                    ))
+                    .returning();
 
-            const newCommentCount = countResult?.count || 0;
+                // Atomically decrement the comment_count if it was active
+                if (wasActive) {
+                    await tx
+                        .update(quotes)
+                        .set({
+                            comment_count: sql`${quotes.comment_count} - 1`
+                        })
+                        .where(eq(quotes.id, commentToDelete.quote_id));
 
-            // Dispatch event for real-time count update
-            if (typeof window !== 'undefined') {
-                const event = new CustomEvent('commentAdded', {
-                    detail: {
-                        newCommentCount,
-                        quoteId: commentToDelete.quote_id
+                    // Get the updated count
+                    const [updatedQuote] = await tx
+                        .select({ comment_count: quotes.comment_count })
+                        .from(quotes)
+                        .where(eq(quotes.id, commentToDelete.quote_id));
+
+                    // Dispatch event
+                    if (typeof window !== 'undefined') {
+                        const event = new CustomEvent('commentAdded', {
+                            detail: {
+                                newCommentCount: updatedQuote.comment_count,
+                                quoteId: commentToDelete.quote_id
+                            }
+                        });
+                        window.dispatchEvent(event);
                     }
-                });
-                window.dispatchEvent(event);
-            }
+                }
 
-            return deletedComment;
+                return deletedComment;
+            });
         }),
 
     // Vote on a comment

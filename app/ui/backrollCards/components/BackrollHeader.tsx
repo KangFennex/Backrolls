@@ -12,6 +12,8 @@ export default function BackrollHeader({ quote }: BackrollHeaderProps) {
             title={
                 <div className="text-xs warm-ivory">
                     <Breadcrumb
+                        region={quote.region}
+                        seriesCode={quote.series_code}
                         series={quote.series}
                         season={quote.season}
                         episode={quote.episode}
@@ -19,7 +21,7 @@ export default function BackrollHeader({ quote }: BackrollHeaderProps) {
                 </div>
             }
             sx={{
-                padding: '8px 16px 5px 12px',
+                padding: '8px 8px 5px 12px',
                 '& .MuiCardHeader-avatar': {
                     marginRight: '12px'
                 },
@@ -28,10 +30,10 @@ export default function BackrollHeader({ quote }: BackrollHeaderProps) {
                 }
             }}
             action={
-                <IconButton 
-                    aria-label="settings" 
-                    size="small" 
-                    sx={{ 
+                <IconButton
+                    aria-label="settings"
+                    size="small"
+                    sx={{
                         color: '#FFFFF0 !important',
                         '& .MuiSvgIcon-root': {
                             color: '#FFFFF0 !important'

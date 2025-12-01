@@ -75,6 +75,8 @@
     /* #F8F8FF */
     --antique-parchment: hsl(34, 78%, 94%);
     /* #FAF0E6 */
+    --antique-parchment-dark: hsl(202, 18%, 61%);
+   /* #8BA2AD */
 }
 
 body {
@@ -114,6 +116,13 @@ body {
     font-weight: 500;
     font-style: normal;
     color: var(--antique-parchment);
+}
+
+.atma-font {
+    font-family: 'Atma-Regular', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .pink-fill {
@@ -355,6 +364,11 @@ body {
 .antique-parchment-text {
     color: var(--antique-parchment);
 }
+
+.antique-parchment-text-dark {
+    color: var(--antique-parchment-dark);
+}
+
 
 /* Nav icon buttons */
 .nav-icon-btn {

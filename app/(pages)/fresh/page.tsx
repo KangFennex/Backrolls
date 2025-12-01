@@ -1,7 +1,7 @@
 import PageContainer from '../../ui/pageContainer';
 import FreshPageClient from '../../ui/fresh/FreshPageClient';
 
-export default function freshPage() {
+export default function FreshPage() {
     return (
         <>
             <PageContainer>

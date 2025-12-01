@@ -18,7 +18,7 @@ export default function FreshPageClient() {
 
     return (
         <PageComponentContainer variant={useMosaic ? 'mosaic' : 'list'}>
-            {freshData?.quotes && freshData.quotes.map((quote: Quote) => (
+            {freshData?.quotes && freshData.quotes.map((quote: Quote, index: number) => (
                 <div key={quote.id} className={useMosaic ? getMosaicClass(quote.quote_text, index) : ''}>
                     <BackrollCard
                         quote={quote}

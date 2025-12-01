@@ -5,7 +5,7 @@ import { trpc } from '../trpc';
 
 export function useHotQuotes(limit: number = 10) {
     const utils = trpc.useUtils();
-    
+
     const query = trpc.quotes.getTopRated.useQuery(
         { limit },
         {

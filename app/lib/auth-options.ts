@@ -1,4 +1,4 @@
-import { NextAuthOptions, User, Session, JWT } from "next-auth";
+import type { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
@@ -38,8 +38,19 @@ export const authOptions: NextAuthOptions = {
                     password: credentials.password,
                 });
 
-                if (error || !data.user) {
-                    throw new Error("Invalid email or password");
+                if (error) {
+                    // Return specific error messages based on the error type
+                    if (error.message.includes('Invalid login credentials')) {
+                        throw new Error("Invalid email or password");
+                    } else if (error.message.includes('Email not confirmed')) {
+                        throw new Error("Please verify your email address");
+                    } else {
+                        throw new Error("Login failed. Please try again.");
+                    }
+                }
+
+                if (!data.user) {
+                    throw new Error("User not found");
                 }
 
                 const { data: profile, error: profileError } = await supabase

@@ -15,7 +15,7 @@
 
 .filter-bar-absolute {
     position: absolute;
-    top: 50px; /* Default for larger screens */
+    top: 50px;
     left: 0;
     width: 100vw;
     z-index: 50;
@@ -29,19 +29,16 @@
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     background: transparent;
     
-    // Default state - hidden
     opacity: 0;
     visibility: hidden;
     
-    // Show when nav is visible and at top
     &.visible {
         opacity: 1;
         visibility: visible;
     }
 
-    /* Responsive positioning for smaller screens */
     @media (max-width: 768px) {
-        top: 95px; /* Larger value for mobile when search wraps */
+        top: 95px;
     }
 }
 
@@ -62,11 +59,9 @@
     background: rgba(34, 34, 34, 0.8);
     backdrop-filter: blur(7px);
     
-    // Default state - visible
     opacity: 1;
     visibility: visible;
     
-    // Hide when nav is visible and at top
     &.hidden {
         opacity: 0;
         visibility: hidden;
@@ -81,79 +76,72 @@
     min-height: 50px;
 }
 
-.main-content {
-    width: 95%;
-    max-width: 95%;
-    margin: auto;
-    margin-top: 30px;
-    transition: margin-top 0.3s ease-in-out;
-}
-
-/* Media queries for different screen sizes and aspect ratios */
-
-/* Mobile devices (portrait) */
-@media (min-width: 320px) and (max-width: 639px) {
-    .main-content {
-        width: 95%;
-        max-width: 95%;
-
-        &.isMainPage {
-            max-width: 640px; /* Small mosaic for mobile */
-        }
-    }
-}
-
-/* Tablets (portrait) and large phones (landscape) */
-@media (min-width: 640px) and (max-width: 767px) {
-    .main-content {
-        width: 95%;
-        max-width: 600px;
-
-        &.isMainPage {
-            max-width: 640px; /* Medium mosaic for tablets */
-        }
-    }
-}
-
-/* Tablets (landscape) and small desktops */
-@media (min-width: 768px) and (max-width: 1023px) {
-    .main-content {
-        width: 95%;
-        max-width: 900px;
-
-        &.isMainPage {
-            max-width: 900px; /* Larger mosaic for landscape tablets */
-        }
-    }
-}
-
-/* Standard desktop screens */
-@media (min-width: 1024px) and (max-width: 1399px) {
-    .main-content {
-        width: 95%;
-        max-width: 1000px;
-
-        &.isMainPage {
-            max-width: 1000px; /* Comfortable mosaic for standard desktops */
-        }
-    }
-}
-
-/* Large desktop screens (Full HD and above) */
-@media (min-width: 1400px) {
-    .main-content {
-        width: 95%;
-        max-width: 1200px;
-
-        &.isMainPage {
-            max-width: 1200px; /* Full mosaic for large desktops */
-        }
-    }
-}
-
-// Dropdown menu styles are in the menu.tsx component using Tailwind
-
-.main { 
-    flex: 1;
+.main-layout-grid {
+    display: grid;
+    // Simple centered approach
+    grid-template-columns: 1fr min(60%, 1200px) 1fr;
+    grid-template-rows: 1fr;
+    align-items: start;
+    min-height: calc(100vh - 50px);
+    margin-top: 15px;
+    padding: 1rem 0;
     width: 100%;
+    box-sizing: border-box;
+    
+    // On desktop with sidebar
+    @media (min-width: 1024px) {
+        &:has(.right-side-panel) {
+            // Key change: Make the center content narrower and add sidebar column
+            grid-template-columns: 1fr min(60%, 1000px) 1fr;
+            gap: 2rem;
+            
+            .main-content {
+                grid-column: 2; // Centered content (now 50% instead of 60%)
+            }
+            
+            .right-side-panel {
+                grid-column: 3; // Sidebar in dedicated column
+            }
+        }
+        
+        // Without sidebar - keep original centered layout
+        &:not(:has(.right-side-panel)) {
+            .main-content {
+                grid-column: 2;
+            }
+        }
+    }
+    
+    // Mobile
+    @media (max-width: 1023px) {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        
+        .main-content {
+            grid-column: 1;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        min-height: calc(100vh);
+    }
+}
+
+.main-content {
+    grid-column: 2;
+    width: 100%;
+    
+    @media (max-width: 1023px) {
+        grid-column: 1;
+    }
+}
+
+.right-side-panel {
+    display: none;
+    
+    @media (min-width: 1024px) {
+        display: block;
+        width: 230px;
+        position: sticky;
+    }
 }

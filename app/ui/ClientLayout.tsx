@@ -14,11 +14,12 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { usePathname } from 'next/navigation';
 import FiltersModal from './filters/FiltersModal';
 import { trpc, getBaseUrl } from '../lib/trpc';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpLink } from '@trpc/client';
+import RightSidePanel from './side-panels/RightSidePanel';
+import { usePathname } from 'next/navigation';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(() => new QueryClient({
@@ -74,8 +75,8 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     const { closeSearchModal } = useSearchContext();
     const { isMenuOpen, toggleMenu, closeMenu } = useMenu();
     const menuRef = useRef<HTMLDivElement>(null);
-
-    const isMainPage = usePathname() === '/';
+    const currentPathname = usePathname();
+    const isWorkroomPage = currentPathname === '/';
 
     return (
         <div className="app-layout">
@@ -113,9 +114,17 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 </div>
             </ClickAwayListener>
 
-            {/* Main content area with margin for fixed filter bar */}
-            <div className={`main-content ${isMainPage ? 'isMainPage' : ''}`}>
-                {children}
+
+            {/* Main layout grid */}
+            <div className="main-layout-grid">
+                <div className="main-content">
+                    {children}
+                </div>
+                {isWorkroomPage && (
+                    <div className="right-side-panel">
+                        <RightSidePanel />
+                    </div>
+                )}
             </div>
 
             {/* Filters Modal */}
@@ -124,6 +133,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             <ClickAwayListener onClickAway={closeSearchModal}>
                 <div></div>
             </ClickAwayListener>
-        </div>
+        </div >
     );
 }

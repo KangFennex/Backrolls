@@ -4,9 +4,7 @@ import { useEffect } from 'react';
 import { trpc } from '../trpc';
 
 export function useFreshQuotes(limit: number = 10) {
-    const utils = trpc.useUtils();
-
-    const query = trpc.quotes.getRecent.useQuery(
+    const { data, isLoading, error, ...query } = trpc.quotes.getRecent.useQuery(
         { limit },
         {
             staleTime: 1000 * 60 * 2,
@@ -14,7 +12,8 @@ export function useFreshQuotes(limit: number = 10) {
         }
     );
 
-    // Listen for vote updates and update cache
+    const utils = trpc.useUtils();
+
     useEffect(() => {
         const handleVoteUpdate = (event: Event) => {
             const customEvent = event as CustomEvent;
@@ -25,7 +24,7 @@ export function useFreshQuotes(limit: number = 10) {
                 return {
                     ...oldData,
                     quotes: oldData.quotes.map(quote =>
-                        quote.id = quoteId
+                        quote.id === quoteId
                             ? { ...quote, vote_count: newVoteCount }
                             : quote
                     )
@@ -35,7 +34,7 @@ export function useFreshQuotes(limit: number = 10) {
 
         window.addEventListener('voteUpdated', handleVoteUpdate);
         return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, [limit, utils]);
+    }, [limit, utils.quotes.getRecent]);
 
-    return query;
+    return { data, isLoading, error, ...query };
 }

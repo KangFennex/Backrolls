@@ -18,3 +18,4 @@ export { useSubmittedQuotes } from './useSubmittedQuotes';
 export { useCommentedQuotes } from './useCommentedQuotes';
 export { useQuoteById } from './useQuoteById';
 export { useQuotesByIds } from './useQuotesByIds';
+export { useQuotesByCommentCount } from './useQuotesByCommentCount';

@@ -17,12 +17,14 @@ import { BackrollsLogo } from '../sharedComponents';
 import ForgotPassword from "../forgotPassword";
 import { useRouter } from "next/navigation";
 import { LoginFormSkeleton, LoginSuccessMessage } from './LoginSkeleton';
+import Alert from '@mui/material/Alert'; // Add this import
 
 export default function LoginForm() {
     const [emailError, setEmailError] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [authError, setAuthError] = useState(''); // Add this state for server errors
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -40,23 +42,25 @@ export default function LoginForm() {
         let isValid = true;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        // Clear previous errors
+        setAuthError('');
+        setEmailError(false);
+        setEmailErrorMessage('');
+        setPasswordError(false);
+        setPasswordErrorMessage('');
+
         if (!emailRegex.test(email.value)) {
             setEmailError(true);
             setEmailErrorMessage('Please enter a valid email address.');
             isValid = false;
-        } else {
-            setEmailError(false);
-            setEmailErrorMessage('');
         }
 
         if (!password.value || password.value.length < 8) {
             setPasswordError(true);
             setPasswordErrorMessage('Password must be at least 8 characters long.');
             isValid = false;
-        } else {
-            setPasswordError(false);
-            setPasswordErrorMessage('');
         }
+
         return isValid;
     };
 
@@ -69,6 +73,8 @@ export default function LoginForm() {
         const password = data.get('password') as string;
 
         setIsLoading(true);
+        setAuthError(''); // Clear any previous auth errors
+
         try {
             const result = await signIn("credentials", {
                 redirect: false,
@@ -79,9 +85,10 @@ export default function LoginForm() {
             });
 
             if (result?.error) {
-                throw new Error("Couldn't log you in")
-            }
-            else {
+                // The error message from your backend will be in result.error
+                setAuthError(result.error);
+                setIsLoading(false);
+            } else {
                 // Trigger session refresh to update auth state immediately
                 await getSession();
 
@@ -96,12 +103,14 @@ export default function LoginForm() {
             }
         } catch (error) {
             console.error("Login failed:", error);
+            setAuthError('An unexpected error occurred. Please try again.');
             setIsLoading(false);
         }
     }
 
     const handleGoogleSignIn = async () => {
         setIsLoading(true);
+        setAuthError(''); // Clear auth errors for Google sign-in too
         try {
             const result = await signIn("google", {
                 redirect: false,
@@ -109,7 +118,8 @@ export default function LoginForm() {
             });
 
             if (result?.error) {
-                throw new Error("Google sign-in failed");
+                setAuthError('Google sign-in failed. Please try again.');
+                setIsLoading(false);
             } else if (result?.ok) {
                 // Trigger session refresh
                 await getSession();
@@ -125,6 +135,7 @@ export default function LoginForm() {
             }
         } catch (error) {
             console.error("Google sign-in failed:", error);
+            setAuthError('Google sign-in failed. Please try again.');
             setIsLoading(false);
         }
     }
@@ -174,6 +185,22 @@ export default function LoginForm() {
                     padding: '30px'
                 }}
             >
+                {/* Add Alert component to display server errors */}
+                {authError && (
+                    <Alert
+                        severity="error"
+                        sx={{
+                            width: '100%',
+                            '& .MuiAlert-message': {
+                                width: '100%',
+                                textAlign: 'center'
+                            }
+                        }}
+                    >
+                        {authError}
+                    </Alert>
+                )}
+
                 <FormControl>
                     <FormLabel htmlFor="Email">Email</FormLabel>
                     <TextField

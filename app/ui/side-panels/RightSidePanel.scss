@@ -1,0 +1,99 @@
+.right-side-panel-container {
+    position: fixed;
+    width: auto;
+    min-width: auto;
+    max-width: 350px;
+    height: 100vh;
+    background-color: var(--deep-charcoal);
+    border: 1px solid hsl(0, 0%, 80%, 0.2);
+    margin: auto;
+    border-radius: 10px;
+    padding: 5px;
+    overflow-y: auto;
+    margin: auto;
+    
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.right-side-panel-section {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.05);
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(135, 212, 235, 0.1);
+}
+
+.section-title {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+}
+
+.toggle-icon {
+    font-size: 0.8rem;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.section-content {
+    transition: max-height 0.3s ease;
+    overflow-y: auto;
+
+    // Default state - initial expand (250px)
+    &.initial-expand:not(.expanded):not(.collapsed) {
+        max-height: 250px;
+    }
+    
+    // Collapsed state (0px)
+    &.collapsed:not(.initial-expand) {
+        max-height: 0;
+    }
+    
+    // Expanded state (600px)
+    &.expanded {
+        max-height: 800px;
+    }
+    
+    // Hide scrollbar for the section content
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.quote-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.3rem;
+}
+
+.loading-text,
+.no-data-text {
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin: 0;
+    font-size: 0.9rem;
+}

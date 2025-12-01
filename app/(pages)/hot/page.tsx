@@ -1,7 +1,7 @@
 import PageContainer from '../../ui/pageContainer';
 import HotPageClient from '../../ui/hot/HotPageClient';
 
-export default function hotPage() {
+export default function HotPage() {
     return (
         <>
             <PageContainer>
