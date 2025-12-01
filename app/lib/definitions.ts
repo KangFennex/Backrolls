@@ -62,29 +62,29 @@ export interface SignupFormErrors {
 
 /**
  * Core quote entity representing a memorable line from Drag Race
+ * This should match the Drizzle schema inference from quotes table
  */
 export type Quote = {
-    id: string | number;
+    id: string;
     quote_text: string;
+    created_at: Date;
     region: string;
     series: string;
     series_code: string;
     season: number;
     episode: number;
-    episode_title?: string | null;
+    episode_title: string | null;
+    timestamp: string;
     speaker: string;
     type: string;
-    timestamp: string;
-    air_date: Date | string | null;
+    air_date: string | null;
+    original_language: string | null;
+    original_language_text: string | null;
     user_id: string;
     is_approved: boolean;
     vote_count: number;
     comment_count: number;
     share_count: number;
-    created_at?: Date | string | null;
-    // optional original language quote_text if not in English
-    original_language?: string | null;
-    original_language_text?: string | null;
     // Optional relationship to contexts
     contexts?: QuoteContext[];
 };
