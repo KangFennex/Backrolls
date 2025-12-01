@@ -6,6 +6,7 @@ import { FiltersHeaderProps } from '../../../lib/definitions';
 import { BackrollsLogo } from '../../sharedComponents';
 
 export default function FiltersHeader({ onClose }: FiltersHeaderProps) {
+    const handleClose = () => onClose();
     return (
         <Box
             sx={{
@@ -19,7 +20,7 @@ export default function FiltersHeader({ onClose }: FiltersHeaderProps) {
                 <BackrollsLogo />
             </div>
             <IconButton
-                onClick={onClose}
+                onClick={handleClose}
                 sx={{
                     color: 'var(--dark-pink)',
                     position: 'absolute',

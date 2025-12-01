@@ -3,10 +3,10 @@
 import { trpc } from '../trpc'
 
 export function useQuotesByIds(quoteIds?: string[]) {
-    const uniqueIds = [...new Set(quoteIds.filter(Boolean))];
+    const uniqueIds = [...new Set((quoteIds || []).filter(Boolean))];
 
     return trpc.quotes.getByIds.useQuery(
-        uniqueIds.length > 0 ? { ids: uniqueIds } : undefined,
+        { ids: uniqueIds },
         {
             staleTime: 1000 * 60 * 5,
             refetchOnWindowFocus: false,

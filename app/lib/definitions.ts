@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { DefaultSession } from 'next-auth';
 
 // =============================================================================
 // AUTHENTICATION & USER TYPES
@@ -72,18 +71,18 @@ export type Quote = {
     series_code: string;
     season: number;
     episode: number;
-    episode_title?: string;
+    episode_title?: string | null;
     speaker: string;
     type: string;
     timestamp: string;
-    air_date: string;
+    air_date: string | null;
     user_id: string;
     is_approved: boolean;
     vote_count: number;
     share_count: number;
-    created_at?: string;
+    created_at?: string | null;
     // optional original language quote_text if not in English
-    original_language?: string;
+    original_language?: string | null;
     // Optional relationship to contexts
     contexts?: QuoteContext[];
 };
@@ -186,7 +185,7 @@ export interface BackrollActionsProps {
     expanded: boolean;
     onExpandClick: () => void;
     onRemoveFavorite?: (quote_id: string) => void;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 /**
@@ -289,7 +288,7 @@ export interface FilterDrawerProps {
  * Filter drawer header component props
  */
 export interface FiltersHeaderProps {
-    onClose: void;
+    onClose: () => void;
 }
 
 export interface FiltersChipProps {
@@ -450,36 +449,3 @@ export interface QuizQuestion {
     options: string[];  // Array of speaker names (shuffled, includes correct answer)
 }
 
-// =============================================================================
-// NEXT-AUTH TYPE EXTENSIONS
-// =============================================================================
-
-import "next-auth";
-
-declare module "next-auth" {
-    interface Session {
-        user: {
-            id: string;
-            username?: string;
-            email?: string | null;
-            name?: string | null;
-            image?: string | null;
-        };
-        remember?: boolean;
-    }
-
-    interface User {
-        id: string;
-        username?: string;
-        email?: string | null;
-        name?: string | null;
-        image?: string | null;
-        remember?: boolean;
-    }
-
-    interface JWT {
-        id?: string;
-        username?: string;
-        remember?: boolean;
-    }
-}

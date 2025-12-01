@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { db } from '../../db';
-import { quotes } from '../../db/schema';
+import { quotes, quoteContexts } from '../../db/schema';
 import { eq, and, or, ilike, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
 
 export const quotesRouter = router({
@@ -127,11 +127,11 @@ export const quotesRouter = router({
                 conditions.push(eq(quotes.episode, input.episode));
             }
 
-            let query = db.select().from(quotes);
+            const baseQuery = db.select().from(quotes);
 
-            if (conditions.length > 0) {
-                query = query.where(and(...conditions));
-            }
+            const query = conditions.length > 0
+                ? baseQuery.where(and(...conditions))
+                : baseQuery;
 
             const results = await query
                 .orderBy(asc(quotes.timestamp))

@@ -14,11 +14,12 @@ interface CommentItemProps {
         comment_text: string;
         user_id: string;
         quote_id: string;
-        parent_comment_id?: string;
+        parent_comment_id?: string | null;
         created_at: string;
         is_edited: boolean;
+        vote_count: number;
     };
-    user: { id: string; username: string };
+    user: { id: string; username: string } | null;
     replyCount: number;
     onReply: (commentId: string) => void;
     depth: number;
@@ -37,7 +38,8 @@ export default function CommentItem({
     const { data: session } = useSession();
     const utils = trpc.useContext();
 
-    const isOwner = session?.user?.id === comment.user_id;
+    const userId = (session as { user?: { id?: string } } | null | undefined)?.user?.id;
+    const isOwner = userId === comment.user_id;
     const maxDepth = 4; // Prevent infinite nesting
 
     const deleteComment = trpc.comments.delete.useMutation({
@@ -74,10 +76,10 @@ export default function CommentItem({
                 <div className="flex items-center gap-3">
                     {/* User Avatar - Placeholder for future implementation */}
                     <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-400 to-purple-400 flex items-center justify-center text-white text-sm font-bold">
-                        {user.username?.[0]?.toUpperCase() || 'U'}
+                        {user?.username?.[0]?.toUpperCase() || 'U'}
                     </div>
                     <div>
-                        <span className="font-medium text-white">{user.username}</span>
+                        <span className="font-medium text-white">{user?.username || 'Unknown User'}</span>
                         <span className="text-gray-400 text-sm ml-2">
                             {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
                             {comment.is_edited && ' · edited'}

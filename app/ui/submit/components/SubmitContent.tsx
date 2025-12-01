@@ -11,12 +11,19 @@ import {
     MenuItem,
     Box,
     Alert,
-    CircularProgress,
-    Grid
+    CircularProgress
 } from '@mui/material';
 import { useSeriesFiltering } from '../../../lib/hooks';
 import { useSession } from 'next-auth/react';
 import { useSubmitQuote } from '../../../lib/hooks';
+
+interface DragRaceSeries {
+    code: string;
+    name: string;
+    type: "main-series" | "spin-off" | "international" | "all-stars";
+    region?: "americas" | "asia" | "europe" | "oceania" | "africa" | "global";
+    original_language: string;
+}
 
 export default function SubmitContent() {
     const {
@@ -47,9 +54,9 @@ export default function SubmitContent() {
         context: '',
     });
 
-    const [availableSeries, setAvailableSeries] = useState<string[]>([]);
-    const [availableSeasons, setAvailableSeasons] = useState<number[]>([]);
-    const [availableEpisodes, setAvailableEpisodes] = useState<number[]>([]);
+    const [availableSeries, setAvailableSeries] = useState<DragRaceSeries[]>([]);
+    const [availableSeasons, setAvailableSeasons] = useState<{ value: number; label: string }[]>([]);
+    const [availableEpisodes, setAvailableEpisodes] = useState<{ value: number; label: string }[]>([]);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     // Check if original language is not English
@@ -107,8 +114,8 @@ export default function SubmitContent() {
         }
     }, [formData.series_code, getSeriesOriginalLanguage]);
 
-    const handleRegionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const selectedRegion = event.target.value as string;
+    const handleRegionChange = (event: { target: { value: string } }) => {
+        const selectedRegion = event.target.value;
         const regionSeries = getSeriesByRegion(selectedRegion);
         setAvailableSeries(regionSeries);
         setValidationErrors([]);
@@ -126,8 +133,8 @@ export default function SubmitContent() {
         }));
     };
 
-    const handleSeriesChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const selectedSeriesName = event.target.value as string;
+    const handleSeriesChange = (event: { target: { value: string } }) => {
+        const selectedSeriesName = event.target.value;
         const selectedSeries = availableSeries.find(s => s.name === selectedSeriesName);
         setValidationErrors([]);
 
@@ -143,14 +150,14 @@ export default function SubmitContent() {
         }
     };
 
-    const handleSeasonChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const selectedSeason = event.target.value as string;
+    const handleSeasonChange = (event: { target: { value: string } }) => {
+        const selectedSeason = event.target.value;
         setFormData(prev => ({ ...prev, season: selectedSeason, episode: '' }));
         setValidationErrors([]);
     };
 
-    const handleEpisodeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const selectedEpisode = event.target.value as string;
+    const handleEpisodeChange = (event: { target: { value: string } }) => {
+        const selectedEpisode = event.target.value;
         setFormData(prev => ({ ...prev, episode: selectedEpisode }));
         setValidationErrors([]);
     };
@@ -239,7 +246,7 @@ export default function SubmitContent() {
         }
     };
 
-    const isLoading = submitQuoteMutation.isLoading;
+    const isLoading = submitQuoteMutation.isPending;
 
     return (
         <CardContent sx={{
@@ -274,9 +281,9 @@ export default function SubmitContent() {
             )}
 
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-                <Grid container spacing={3}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                     {/* First Line: Region and Series */}
-                    <Grid item xs={12} sm={6}>
+                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel sx={{ color: 'white' }}>Region</InputLabel>
                             <Select
@@ -304,9 +311,9 @@ export default function SubmitContent() {
                                 <MenuItem value="global">Global</MenuItem>
                             </Select>
                         </FormControl>
-                    </Grid>
+                    </Box>
 
-                    <Grid item xs={12} sm={6}>
+                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel sx={{ color: 'white' }}>Series</InputLabel>
                             <Select
@@ -328,10 +335,10 @@ export default function SubmitContent() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Grid>
+                    </Box>
 
                     {/* Second Line: Season, Episode, and Speaker */}
-                    <Grid item xs={12} sm={4}>
+                    <Box sx={{ flex: '1 1 30%', minWidth: '200px' }}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel sx={{ color: 'white' }}>Season</InputLabel>
                             <Select
@@ -353,9 +360,9 @@ export default function SubmitContent() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Grid>
+                    </Box>
 
-                    <Grid item xs={12} sm={4}>
+                    <Box sx={{ flex: '1 1 30%', minWidth: '200px' }}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel sx={{ color: 'white' }}>Episode</InputLabel>
                             <Select
@@ -377,9 +384,9 @@ export default function SubmitContent() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Grid>
+                    </Box>
 
-                    <Grid item xs={12} sm={4}>
+                    <Box sx={{ flex: '1 1 30%', minWidth: '200px' }}>
                         <TextField
                             fullWidth
                             label="Speaker *"
@@ -397,10 +404,10 @@ export default function SubmitContent() {
                                 },
                             }}
                         />
-                    </Grid>
+                    </Box>
 
                     {/* Third Line: Quote (full width) */}
-                    <Grid item xs={12}>
+                    <Box sx={{ flex: '1 1 100%' }}>
                         <TextField
                             fullWidth
                             label="Quote *"
@@ -420,10 +427,10 @@ export default function SubmitContent() {
                                 },
                             }}
                         />
-                    </Grid>
+                    </Box>
 
                     {/* Fourth Line: Timestamp and Context */}
-                    <Grid item xs={12} sm={6}>
+                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
                         <TextField
                             fullWidth
                             label="Timestamp *"
@@ -442,9 +449,9 @@ export default function SubmitContent() {
                                 },
                             }}
                         />
-                    </Grid>
+                    </Box>
 
-                    <Grid item xs={12} sm={6}>
+                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
                         <TextField
                             fullWidth
                             label="Context (Optional)"
@@ -462,11 +469,11 @@ export default function SubmitContent() {
                                 },
                             }}
                         />
-                    </Grid>
+                    </Box>
 
                     {/* Conditional Original Language Text */}
                     {showOriginalLanguageText && (
-                        <Grid item xs={12}>
+                        <Box sx={{ flex: '1 1 100%' }}>
                             <TextField
                                 fullWidth
                                 label="Original Language Text (Optional)"
@@ -485,11 +492,11 @@ export default function SubmitContent() {
                                     },
                                 }}
                             />
-                        </Grid>
+                        </Box>
                     )}
 
                     {/* Buttons */}
-                    <Grid item xs={12}>
+                    <Box sx={{ flex: '1 1 100%' }}>
                         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
                             <Button
                                 type="submit"
@@ -528,9 +535,9 @@ export default function SubmitContent() {
                                 Clear Fields
                             </Button>
                         </Box>
-                    </Grid>
-                </Grid>
+                    </Box>
+                </Box>
             </Box>
-        </CardContent>
+        </CardContent >
     );
 }

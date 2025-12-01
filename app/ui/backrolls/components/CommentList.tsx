@@ -14,8 +14,9 @@ interface CommentListProps {
             parent_comment_id?: string | null;
             created_at: string;
             is_edited: boolean;
+            vote_count: number;
         }
-        user: { id: string; username: string };
+        user: { id: string; username: string } | null;
         replyCount: number;
     }>;
     onReply: (commentId: string) => void;

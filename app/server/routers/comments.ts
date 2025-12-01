@@ -2,7 +2,7 @@ import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { db } from "../../db";
 import { backrollComments, users, commentVotes, quotes } from "../../db/schema";
-import { eq, and, desc, isNull, count, sql } from "drizzle-orm";
+import { eq, and, desc, isNull, count, sql, lt } from "drizzle-orm";
 
 export const commentsRouter = router({
     // Get top-level comments for a quote
@@ -13,9 +13,9 @@ export const commentsRouter = router({
             cursor: z.string().uuid().optional(),
         }))
         .query(async ({ input }) => {
-            const { id, limit, cursor } = input;
+            const { id, limit } = input;
 
-            const baseQuery = db
+            const commentsWithUsers = await db
                 .select({
                     comment: backrollComments,
                     user: {
@@ -32,16 +32,12 @@ export const commentsRouter = router({
                     )
                 )
                 .leftJoin(users, eq(backrollComments.user_id, users.id))
-                .orderBy(desc(backrollComments.vote_count), desc(backrollComments.created_at));
-
-            const commentsWithUsers = await (cursor
-                ? baseQuery.where(/* cursor logic */).limit(limit)
-                : baseQuery.limit(limit)
-            );
+                .orderBy(desc(backrollComments.vote_count), desc(backrollComments.created_at))
+                .limit(limit);
 
             // Get reply counts for each comment
             const commentIds = commentsWithUsers.map(c => c.comment.id);
-            let replyCounts: { parent_comment_id: string; count: number }[] = [];
+            let replyCounts: { parent_comment_id: string | null; count: number }[] = [];
 
             if (commentIds.length > 0) {
                 replyCounts = await db
@@ -74,9 +70,9 @@ export const commentsRouter = router({
             cursor: z.string().uuid().optional(),
         }))
         .query(async ({ input }) => {
-            const { parentCommentId, limit, cursor } = input;
+            const { parentCommentId, limit } = input;
 
-            const baseQuery = db
+            const commentsWithUsers = await db
                 .select({
                     comment: backrollComments,
                     user: {
@@ -92,16 +88,12 @@ export const commentsRouter = router({
                     )
                 )
                 .leftJoin(users, eq(backrollComments.user_id, users.id))
-                .orderBy(desc(backrollComments.vote_count), desc(backrollComments.created_at));
-
-            const commentsWithUsers = await (cursor
-                ? baseQuery.where(/* cursor logic */).limit(limit)
-                : baseQuery.limit(limit)
-            );
+                .orderBy(desc(backrollComments.vote_count), desc(backrollComments.created_at))
+                .limit(limit);
 
             // Get reply counts for nested replies (if you want multi-level nesting)
             const commentIds = commentsWithUsers.map(c => c.comment.id);
-            let replyCounts: { parent_comment_id: string; count: number }[] = [];
+            let replyCounts: { parent_comment_id: string | null; count: number }[] = [];
 
             if (commentIds.length > 0) {
                 replyCounts = await db
@@ -136,7 +128,7 @@ export const commentsRouter = router({
             const { limit, cursor } = input;
             const userId = ctx.session.user.id;
 
-            const baseQuery = db
+            const comments = await db
                 .select({
                     comment_text: backrollComments.comment_text,
                     created_at: backrollComments.created_at,
@@ -145,13 +137,16 @@ export const commentsRouter = router({
                     id: backrollComments.id,
                 })
                 .from(backrollComments)
-                .where(eq(backrollComments.user_id, userId))
-                .orderBy(desc(backrollComments.created_at));
-
-            const comments = await (cursor
-                ? baseQuery.where(lt(backrollComments.id, cursor)).limit(limit)
-                : baseQuery.limit(limit)
-            );
+                .where(
+                    cursor
+                        ? and(
+                            eq(backrollComments.user_id, userId),
+                            lt(backrollComments.id, cursor)
+                        )
+                        : eq(backrollComments.user_id, userId)
+                )
+                .orderBy(desc(backrollComments.created_at))
+                .limit(limit);
 
             // Return the next cursor
             let nextCursor: typeof cursor | undefined = undefined;

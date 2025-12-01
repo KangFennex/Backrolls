@@ -12,8 +12,10 @@ import { useCommentButton } from "../../../lib/hooks/useCommentButton";
 
 export function FavoriteButton({
     quoteId,
+    onRemoveFavorite,
 }: {
-    quoteId: string,
+    quoteId: string;
+    onRemoveFavorite?: (quote_id: string) => void;
 }) {
     const { isAuthenticated } = useAuth();
 
@@ -47,6 +49,11 @@ export function FavoriteButton({
                 return newSet;
             });
             return;
+        }
+
+        // If removing favorite and callback provided, call it
+        if (isFavorited && onRemoveFavorite) {
+            onRemoveFavorite(quoteId);
         }
 
         // Authenticated user - trigger mutation with optimistic update
@@ -223,7 +230,7 @@ export function CommentButton({
     onClick,
     quoteId
 }: {
-    onClick: () => void,
+    onClick?: () => void,
     quoteId: string,
 }) {
     // Fetch comments for this quote

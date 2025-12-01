@@ -7,7 +7,7 @@ export const submittedRouter = router({
     // Get all submitted quotes for current user
     getUserSubmitted: publicProcedure
         .query(async ({ ctx }) => {
-            const userId = ctx.session.user.id;
+            const userId = ctx.session?.user?.id;
 
             if (!userId) {
                 return { quotes: [], count: 0 };

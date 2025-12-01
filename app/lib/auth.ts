@@ -1,9 +1,11 @@
 import { getServerSession } from 'next-auth/next';
+import type { Session } from 'next-auth';
 import { authOptions } from './auth-options';
 
 export async function verifyToken() {
     try {
-        const session = await getServerSession(authOptions);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const session = await getServerSession(authOptions as any) as Session | null;
 
         if (session?.user) {
             return {
@@ -22,7 +24,8 @@ export async function verifyToken() {
 
 export async function getUserFromRequest(): Promise<string | null> {
     try {
-        const session = await getServerSession(authOptions);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const session = await getServerSession(authOptions as any) as Session | null;
         return session?.user?.id || null;
     } catch (error) {
         console.error('Error getting user from session:', error);

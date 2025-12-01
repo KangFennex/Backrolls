@@ -1,11 +1,9 @@
 'use client'
 
-import { User } from '../../../lib/definitions';
-
 type TabType = 'favorites' | 'submitted' | 'commented';
 
 interface LoungeHeaderProps {
-    user: User | null | undefined;
+    user: { username?: string | null } | null | undefined;
     activeTab: TabType;
     onTabChange: (tab: TabType) => void;
 }

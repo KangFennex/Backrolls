@@ -6,17 +6,16 @@ import { useQuotesByIds } from "../../../lib/hooks";
 interface Comment {
     id: string;
     comment_text: string;
-    created_at: Date;
+    created_at: string;
     quote_id?: string;
-    parent_comment_id?: string;
-    speaker: string;
+    parent_comment_id?: string | null;
 }
 
 
 export default function CommentedTab({ data, isLoading }: { data: Comment[]; isLoading: boolean }) {
 
     const quoteIds = data.map(comment => comment.quote_id).filter(Boolean) as string[];
-    const { data: quotes, isLoading: quotesLoading } = useQuotesByIds(quoteIds);
+    const { data: quotes } = useQuotesByIds(quoteIds);
     const quotesMap = new Map(quotes?.map(quote => [quote.id, quote]) || [])
 
 

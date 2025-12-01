@@ -17,9 +17,9 @@ export default function LoungePageClient() {
     const { user, isLoading: authLoading, isAuthenticated } = useAuth();
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<TabType>('favorites');
-    const { data: favoritesData, isLoading: favoritesLoading, refetch: refetchFavorites } = useFavorites();
-    const { data: submittedData, isLoading: submittedLoading, refetch: refetchSubmitted } = useSubmittedQuotes();
-    const { data: commentedData, isLoading: commentedLoading, refetch: refetchCommented } = useCommentedQuotes();
+    const { data: favoritesData, isLoading: favoritesLoading } = useFavorites();
+    const { data: submittedData, isLoading: submittedLoading } = useSubmittedQuotes();
+    const { data: commentedData, isLoading: commentedLoading } = useCommentedQuotes();
     const nodeRef = useRef(null);
 
     const renderTabContent = (tab: TabType) => {

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../..//lib/hooks';
 import { signOut } from 'next-auth/react';
 
@@ -13,6 +14,7 @@ interface MenuProps {
 const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
     function Menu({ isOpen, onClick }, ref) {
         const { isAuthenticated } = useAuth();
+        const router = useRouter();
 
         const handleLogout = async () => {
             try {

@@ -1,14 +1,59 @@
-import type { NextAuthOptions, User } from "next-auth";
+import type { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { createClient } from "@supabase/supabase-js";
+import { ExtendedUser } from "./definitions";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+
+// Define missing types from next-auth v4 that aren't properly exported
+interface Account {
+    provider: string;
+    type: string;
+    providerAccountId: string;
+    access_token?: string;
+    expires_at?: number;
+    refresh_token?: string;
+    id_token?: string;
+    scope?: string;
+    token_type?: string;
+}
+
+interface Profile {
+    sub?: string;
+    name?: string;
+    email?: string;
+    image?: string;
+}
+
+// ReturnType of provider functions - use ReturnType to infer from actual providers
+type Provider = ReturnType<typeof GoogleProvider> | ReturnType<typeof CredentialsProvider>;
+
+// Define AuthOptions type locally based on next-auth v4 structure
+interface AuthOptions {
+    providers: Provider[];
+    session?: {
+        strategy?: "jwt" | "database";
+        maxAge?: number;
+    };
+    callbacks?: {
+        signIn?: (params: { user: User; account: Account | null; profile?: Profile }) => Promise<boolean> | boolean;
+        jwt?: (params: { token: JWT; user?: User; account?: Account | null }) => Promise<JWT> | JWT;
+        session?: (params: { session: Session; token: JWT }) => Promise<Session> | Session;
+    };
+    pages?: {
+        signIn?: string;
+        error?: string;
+        [key: string]: string | undefined;
+    };
+}
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,

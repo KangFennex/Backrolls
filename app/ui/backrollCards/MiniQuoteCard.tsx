@@ -4,13 +4,14 @@ import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import Image from 'next/image';
 import CardContent from '@mui/material/CardContent';
+import type { Quote } from '../../lib/definitions';
 import './backrolls.scss';
 
 export function MiniQuoteCard({
     quote,
     onClick,
 }: {
-    quote: string;
+    quote: Quote;
     onClick: () => void;
 }) {
     return (
@@ -63,7 +64,7 @@ export function MiniQuoteCard({
                         </p>
                         <div className="flex justify-between items-center">
                             <span className="antique-parchment-text-dark text-[0.6rem] ml-auto pt-1">
-                                {`${quote.vote_count} upvotes · ${quote.comment_count} comments`}
+                                {`${quote.vote_count} upvotes`}
                             </span>
                         </div>
                     </CardContent>

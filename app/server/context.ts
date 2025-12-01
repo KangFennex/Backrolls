@@ -1,21 +1,24 @@
 import { inferAsyncReturnType } from '@trpc/server';
 import { cookies } from 'next/headers';
-import { decode } from 'next-auth/jwt';
+import type { JWT } from 'next-auth/jwt';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { decode } = require('next-auth/jwt');
 
 export async function createContext() {
     try {
         // Get the session cookie
         const cookieStore = await cookies();
-        
+
         // Log all available cookies for debugging
         const allCookies = cookieStore.getAll();
         console.log('Available cookies:', allCookies.map(c => c.name));
-        
-        const sessionToken = cookieStore.get('authjs.session-token') 
+
+        const sessionToken = cookieStore.get('authjs.session-token')
             || cookieStore.get('__Secure-authjs.session-token')
             || cookieStore.get('next-auth.session-token')
             || cookieStore.get('__Secure-next-auth.session-token');
-        
+
         if (!sessionToken) {
             console.log('Context created - No session token found in cookies');
             return { session: null };
@@ -27,7 +30,7 @@ export async function createContext() {
         const decoded = await decode({
             token: sessionToken.value,
             secret: process.env.AUTH_SECRET!,
-        });
+        }) as JWT | null;
 
         console.log('Context created - Session exists:', !!decoded, 'User ID:', decoded?.id || decoded?.sub);
 

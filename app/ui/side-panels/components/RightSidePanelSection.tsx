@@ -6,9 +6,6 @@ import { MiniQuoteCard } from '../../backrollCards/MiniQuoteCard';
 import '../RightSidePanel.scss';
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { NavigationContext } from '../../../context/NavigationContext';
-import { GiConversation } from "react-icons/gi";
-import { FaFire } from "react-icons/fa6";
-import { FaRegClock } from "react-icons/fa";
 
 interface RightSidePanelSectionProps {
     title: string;
@@ -28,7 +25,13 @@ export default function RightSidePanelSection({
     isExpanded,
     onToggle
 }: RightSidePanelSectionProps) {
-    const { navigateToBackroll } = useContext(NavigationContext);
+    const context = useContext(NavigationContext);
+    
+    if (!context) {
+        throw new Error('RightSidePanelSection must be used within a NavigationProvider');
+    }
+    
+    const { navigateToBackroll } = context;
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);

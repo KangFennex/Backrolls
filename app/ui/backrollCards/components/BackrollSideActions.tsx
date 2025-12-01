@@ -21,7 +21,7 @@ export function ShareCopyFavorite({
 interface ShareCopyFavoriteProps {
     quoteId: string;
     quoteText: string;
-    onRemoveFavorite?: () => void;
+    onRemoveFavorite?: (quote_id: string) => void;
 }
 
 export default function BackrollSideActions({

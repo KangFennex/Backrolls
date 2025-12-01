@@ -62,7 +62,7 @@ export function BackrollCard({
                     <BackrollActions
                         quoteId={String(quote.id)}
                         quoteText={quote.quote_text}
-                        initialVoteCount={quote.vote_count}
+                        currentVoteCount={quote.vote_count}
                         isCompact={isCompact}
                         expanded={expanded}
                         onExpandClick={handleExpandClick}

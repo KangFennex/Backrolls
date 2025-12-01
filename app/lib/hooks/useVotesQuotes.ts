@@ -2,12 +2,14 @@
 
 import { trpc } from '../trpc';
 import { useSession } from 'next-auth/react';
+import type { Session } from 'next-auth';
 
 export function useVotes() {
     const { data: session } = useSession();
+    const userId = (session as Session | null)?.user?.id;
 
     return trpc.votes.getUserVotes.useQuery(undefined, {
-        enabled: !!session?.user?.id,
+        enabled: !!userId,
     });
 }
 

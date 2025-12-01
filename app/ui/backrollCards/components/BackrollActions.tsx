@@ -12,7 +12,7 @@ interface ExpandMoreProps extends IconButtonProps {
 interface ShareCopyFavoriteProps {
     quoteId: string;
     quoteText: string;
-    onRemoveFavorite?: () => void;
+    onRemoveFavorite?: (quote_id: string) => void;
 }
 
 export function ShareCopyFavorite({
@@ -62,12 +62,12 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export default function BackrollActions({
     quoteId,
     quoteText,
-    initialVoteCount,
+    currentVoteCount,
     isCompact,
     expanded,
     onExpandClick,
     onRemoveFavorite,
-    onClick
+    onClick,
 }: BackrollActionsProps) {
 
     return (
@@ -82,7 +82,7 @@ export default function BackrollActions({
                 <div>
                     <VoteButtons
                         quoteId={quoteId}
-                        initialVoteCount={initialVoteCount}
+                        initialVoteCount={currentVoteCount}
                     />
                 </div>
                 <div className="">

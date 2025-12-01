@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useFreshQuotes, useHotQuotes, useQuotesByCommentCount } from '../../lib/hooks';
 
 export default function RightSidePanel() {
-    const { data: freshData, isFreshLoading } = useFreshQuotes(10);
+    const { data: freshData, isLoading: isFreshLoading } = useFreshQuotes(10);
     const { data: hotData, isLoading: isHotLoading } = useHotQuotes(10);
     const { data: commentCountData, isLoading: isCommentCountLoading } = useQuotesByCommentCount(10);
 
