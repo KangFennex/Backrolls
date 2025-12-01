@@ -3,7 +3,7 @@ import { pgTable, text, boolean, timestamp, varchar, uuid, bigint, date, unique 
 export const quotes = pgTable('quotes', {
     id: uuid('id').defaultRandom().primaryKey(),
     quote_text: text('quote_text').notNull(),
-    created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    created_at: timestamp('created_at', { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
     region: varchar('region').notNull(),
     series: varchar('series').notNull(),
     series_code: varchar('series_code').notNull(),
