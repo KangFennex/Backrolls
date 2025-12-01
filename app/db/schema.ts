@@ -28,7 +28,7 @@ export const users = pgTable('profiles', {
     email: varchar('email', { length: 255 }).notNull().unique(),
     username: varchar('username', { length: 100 }).notNull().unique(),
     password_hash: text('password_hash').notNull(),
-    created_at: timestamp('created_at').defaultNow().notNull(),
+    created_at: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
     is_verified: boolean('is_verified').default(false).notNull(),
     role: varchar('role', { length: 50 }).default('user').notNull(),
 });
@@ -36,7 +36,7 @@ export const users = pgTable('profiles', {
 export const favorites = pgTable('user_favorites', {
     user_id: uuid('user_id').notNull(),
     quote_id: uuid('quote_id').notNull(),
-    favorited_at: timestamp('favorited_at', { withTimezone: true }).defaultNow(),
+    favorited_at: timestamp('favorited_at', { withTimezone: true, mode: 'string' }).defaultNow(),
 }, (table) => ({
     pk: { primaryKey: [table.user_id, table.quote_id] },
 }));
@@ -45,7 +45,7 @@ export const votes = pgTable('user_votes', {
     user_id: uuid('user_id').notNull(),
     quote_id: uuid('quote_id').notNull(),
     vote_type: varchar('vote_type'), // 'upvote' or 'downvote'
-    voted_at: timestamp('voted_at', { withTimezone: true }).defaultNow(),
+    voted_at: timestamp('voted_at', { withTimezone: true, mode: 'string' }).defaultNow(),
 }, (table) => ({
     pk: { primaryKey: [table.user_id, table.quote_id] },
 }));
@@ -55,7 +55,7 @@ export const quoteContexts = pgTable('quote_contexts', {
     quote_id: uuid('quote_id').notNull(),
     context: text('context').notNull(),
     user_id: uuid('user_id').notNull(),
-    submitted_at: timestamp('submitted_at').defaultNow().notNull(),
+    submitted_at: timestamp('submitted_at', { mode: 'string' }).defaultNow().notNull(),
     is_verified: boolean('is_verified').default(false).notNull(),
 });
 
@@ -69,8 +69,8 @@ export const backrollComments = pgTable('backroll_comments', {
     parent_comment_id: uuid('parent_comment_id').references(backrollCommentsSelfRef, { onDelete: 'cascade' }),
     user_id: uuid('user_id').notNull(),
     comment_text: text('comment_text').notNull(),
-    created_at: timestamp('created_at').defaultNow().notNull(),
-    updated_at: timestamp('updated_at').defaultNow().notNull(),
+    created_at: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+    updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
     is_edited: boolean('is_edited').default(false).notNull(),
     is_flagged: boolean('is_flagged').default(false).notNull(),
     vote_count: bigint('vote_count', { mode: 'number' }).default(0).notNull(),
@@ -82,8 +82,8 @@ export const commentVotes = pgTable('comment_votes', {
     comment_id: uuid('comment_id').notNull().references(() => backrollComments.id, { onDelete: 'cascade' }),
     user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     vote_type: text('vote_type', { enum: ['up', 'down'] }).notNull(),
-    created_at: timestamp('created_at').defaultNow().notNull(),
-    updated_at: timestamp('updated_at').defaultNow().notNull(),
+    created_at: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
+    updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
 }, (table) => ({
     // Prevent duplicate votes
     unq: unique().on(table.user_id, table.comment_id),

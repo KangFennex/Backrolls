@@ -228,7 +228,7 @@ export const commentsRouter = router({
                 .set({
                     comment_text: commentText,
                     is_edited: true,
-                    updated_at: new Date(),
+                    updated_at: new Date().toISOString(),
                 })
                 .where(and(
                     eq(backrollComments.id, commentId),
@@ -318,7 +318,7 @@ export const commentsRouter = router({
                     .update(backrollComments)
                     .set({
                         status: 'deleted',
-                        updated_at: new Date(),
+                        updated_at: new Date().toISOString(),
                     })
                     .where(and(
                         eq(backrollComments.id, commentId),

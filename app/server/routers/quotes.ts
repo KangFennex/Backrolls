@@ -152,17 +152,17 @@ export const quotesRouter = router({
         }))
         .query(async ({ input }) => {
             const { limit, cursor, seed } = input;
-            
+
             // Use seed for consistent random ordering within a session
             const randomSeed = seed || Math.random();
-            
+
             // For cursor-based pagination, we need to track which IDs we've already seen
             const excludeIds = cursor ? cursor.split(',').filter(Boolean) : [];
-            
+
             const baseQuery = db
                 .select()
                 .from(quotes);
-            
+
             const results = excludeIds.length > 0
                 ? await baseQuery
                     .where(sql`${quotes.id} NOT IN (${sql.join(excludeIds.map(id => sql`${id}`), sql`, `)})`)
@@ -177,7 +177,7 @@ export const quotesRouter = router({
             const nextCursor = results.length === limit ? allSeenIds.join(',') : undefined;
 
             console.log(`getRandom returning ${results.length} quotes, cursor: ${nextCursor ? 'has more' : 'end'}`);
-            
+
             return {
                 quotes: results,
                 nextCursor,
@@ -287,7 +287,7 @@ export const quotesRouter = router({
                         is_approved: false,
                         vote_count: 0,
                         share_count: 0,
-                        created_at: new Date(),
+                        created_at: new Date().toISOString(),
                     })
                     .returning();
 
@@ -297,7 +297,7 @@ export const quotesRouter = router({
                         quote_id: quoteResult[0].id,
                         context: input.context,
                         user_id: userId,
-                        submitted_at: new Date(),
+                        submitted_at: new Date().toISOString(),
                         is_verified: false,
                     });
                 }
@@ -327,7 +327,7 @@ export const quotesRouter = router({
                     quote_id: input.quote_id,
                     context: input.context,
                     user_id: userId,
-                    submitted_at: new Date(),
+                    submitted_at: new Date().toISOString(),
                     is_verified: false,
                 })
                 .returning();
