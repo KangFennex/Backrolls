@@ -4,13 +4,13 @@ import { Quote } from '../../lib/definitions';
 import { BackrollCard } from '../backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
-import { getMosaicClass } from '../../lib/utils';
+import { getMosaicClass, convertTRPCQuotes } from '../../lib/utils';
 import { trpc } from '../../lib/trpc';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 
 interface WorkroomPageClientProps {
     initialData: {
-        quotes: Quote[];
+        quotes: any[]; // Serialized from server, will have string dates
         nextCursor?: string;
         seed: number;
     };
@@ -18,7 +18,9 @@ interface WorkroomPageClientProps {
 
 export default function WorkroomPageClient({ initialData }: WorkroomPageClientProps) {
     const { navigateToBackroll } = useNavigationContext();
-    const [allQuotes, setAllQuotes] = useState<Quote[]>(initialData.quotes);
+    // Convert serialized dates from server back to Date objects
+    const convertedInitialQuotes = useMemo(() => convertTRPCQuotes(initialData.quotes), [initialData.quotes]);
+    const [allQuotes, setAllQuotes] = useState<Quote[]>(convertedInitialQuotes);
     const [seed] = useState(initialData.seed);
     const observerTarget = useRef<HTMLDivElement>(null);
     
@@ -26,7 +28,7 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
         { limit: 30, seed },
         {
             initialData: {
-                pages: [initialData],
+                pages: [{ ...initialData, quotes: convertedInitialQuotes }],
                 pageParams: [undefined],
             },
             getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -38,7 +40,7 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
     // Update quotes when new pages are fetched
     useEffect(() => {
         if (data) {
-            const quotes = data.pages.flatMap(page => page.quotes);
+            const quotes = data.pages.flatMap(page => convertTRPCQuotes(page.quotes));
             setAllQuotes(quotes);
         }
     }, [data]);

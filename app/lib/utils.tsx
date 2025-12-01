@@ -75,3 +75,21 @@ export const getMosaicClass = (quoteText: string, index: number): string => {
     // Short quotes (< 30 chars) - mostly normal, occasional tall
     return variant === 0 ? 'card-tall' : '';
 }
+
+/**
+ * Convert tRPC serialized quotes (with ISO string dates) back to Quote type with Date objects
+ * tRPC automatically serializes Date objects to ISO strings during transmission
+ */
+export const convertTRPCQuote = <T extends { created_at: string | Date }>(quote: T): T & { created_at: Date } => {
+    return {
+        ...quote,
+        created_at: typeof quote.created_at === 'string' ? new Date(quote.created_at) : quote.created_at
+    };
+};
+
+/**
+ * Convert array of tRPC serialized quotes back to Quote array with Date objects
+ */
+export const convertTRPCQuotes = <T extends { created_at: string | Date }>(quotes: T[]): (T & { created_at: Date })[] => {
+    return quotes.map(convertTRPCQuote);
+};

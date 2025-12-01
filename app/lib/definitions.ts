@@ -62,7 +62,8 @@ export interface SignupFormErrors {
 
 /**
  * Core quote entity representing a memorable line from Drag Race
- * This should match the Drizzle schema inference from quotes table
+ * This matches the Drizzle schema inference from quotes table
+ * Note: created_at is Date (from timestamp), air_date is string (from date with mode: 'string')
  */
 export type Quote = {
     id: string;

@@ -5,6 +5,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { Quote } from '../lib/definitions';
 import { useNavigationContext } from './NavigationContext';
 import { trpc } from '../lib/trpc';
+import { convertTRPCQuotes } from '../lib/utils';
 
 interface SearchContextType {
     // Search state
@@ -60,7 +61,8 @@ export function SearchProvider({ children }: { children: ReactNode }) {
             console.log('Starting the search with tRPC');
             const results = await utils.quotes.search.fetch({ query: input });
             console.log('Search completed', results);
-            setSearchResults(results as Quote[]);
+            // tRPC serializes Date objects to strings, convert them back
+            setSearchResults(convertTRPCQuotes(results));
         } catch (error) {
             console.error('Search error:', error);
             setSearchResults([]);
