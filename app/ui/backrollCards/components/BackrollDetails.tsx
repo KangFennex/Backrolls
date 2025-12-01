@@ -17,7 +17,7 @@ export default function BackrollDetails({ quote, expanded }: BackrollDetailsProp
                     <div><span className='backrollCard-font text-2xl'>Episode:</span> {quote.episode}</div>
                     <div><span className='backrollCard-font text-2xl'>Episode Title:</span> {quote.episode_title}</div>
                     <div><span className='backrollCard-font text-2xl'>Type:</span> {quote.type}</div>
-                    <div><span className='backrollCard-font text-2xl'>Air Date:</span> {quote.air_date}</div>
+                    <div><span className='backrollCard-font text-2xl'>Air Date:</span> {quote.air_date ? (quote.air_date instanceof Date ? quote.air_date.toLocaleDateString() : quote.air_date) : 'N/A'}</div>
                     <div><span className='backrollCard-font text-2xl'>Timestamp:</span> {quote.timestamp}</div>
                     <div><span className='backrollCard-font text-2xl'>Context:</span></div>
                 </div>
