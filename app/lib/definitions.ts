@@ -84,6 +84,7 @@ export type Quote = {
     created_at?: Date | string | null;
     // optional original language quote_text if not in English
     original_language?: string | null;
+    original_language_text?: string | null;
     // Optional relationship to contexts
     contexts?: QuoteContext[];
 };
