@@ -12,17 +12,7 @@ export default async function RandomServer({ limit }: RandomServerProps) {
         .orderBy(sql`RANDOM()`)
         .limit(limit);
 
-    // Transform Date objects to strings for client component
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const transformedQuotes = randomQuotes.map((quote: any) => ({
-        ...quote,
-        created_at: quote.created_at instanceof Date
-            ? quote.created_at.toISOString()
-            : quote.created_at,
-        air_date: quote.air_date instanceof Date
-            ? quote.air_date.toISOString()
-            : quote.air_date,
-    })); return (
-        <RandomClient randomQuotes={transformedQuotes} />
+    return (
+        <RandomClient randomQuotes={randomQuotes} />
     );
 }

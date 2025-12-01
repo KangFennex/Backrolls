@@ -75,13 +75,13 @@ export type Quote = {
     speaker: string;
     type: string;
     timestamp: string;
-    air_date: string | null;
+    air_date: Date | string | null;
     user_id: string;
     is_approved: boolean;
     vote_count: number;
     comment_count: number;
     share_count: number;
-    created_at?: string | null;
+    created_at?: Date | string | null;
     // optional original language quote_text if not in English
     original_language?: string | null;
     // Optional relationship to contexts
