@@ -79,6 +79,7 @@ export type Quote = {
     user_id: string;
     is_approved: boolean;
     vote_count: number;
+    comment_count: number;
     share_count: number;
     created_at?: string | null;
     // optional original language quote_text if not in English

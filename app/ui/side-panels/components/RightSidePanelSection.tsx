@@ -26,11 +26,11 @@ export default function RightSidePanelSection({
     onToggle
 }: RightSidePanelSectionProps) {
     const context = useContext(NavigationContext);
-    
+
     if (!context) {
         throw new Error('RightSidePanelSection must be used within a NavigationProvider');
     }
-    
+
     const { navigateToBackroll } = context;
 
     const handleClick = (quote: Quote) => {
@@ -81,12 +81,12 @@ export default function RightSidePanelSection({
 
             {/* Clickable header to toggle expansion */}
             <div
-                className="section-header cursor-pointer flex justify-between items-center p-2 gap-2"
+                className="section-header"
                 onClick={onToggle}
             >
                 {/* {selectIcon()} */}
-                <h3 className="section-title mr-auto w-full text-[var(--antique-parchment-dark)]! text-[0.7rem]!">{title}</h3>
-                <span className="toggle-icon rounded-full hover:bg-gray-700 transition-colors duration-300 group">
+                <h3 className="section-title">{title}</h3>
+                <span className="toggle-icon">
                     {isExpanded ? <MdExpandLess size={20} /> : <MdExpandMore size={20} />}
                 </span>
             </div>

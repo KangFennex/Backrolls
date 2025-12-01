@@ -64,7 +64,7 @@ export function MiniQuoteCard({
                         </p>
                         <div className="flex justify-between items-center">
                             <span className="antique-parchment-text-dark text-[0.6rem] ml-auto pt-1">
-                                {`${quote.vote_count} upvotes`}
+                                {`${quote.vote_count} upvotes • ${quote.comment_count} comments`}
                             </span>
                         </div>
                     </CardContent>
