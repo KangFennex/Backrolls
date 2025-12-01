@@ -19,7 +19,6 @@ interface WorkroomPageClientProps {
 export default function WorkroomPageClient({ initialData }: WorkroomPageClientProps) {
     const { navigateToBackroll } = useNavigationContext();
     const [allQuotes, setAllQuotes] = useState<Quote[]>(initialData.quotes);
-    const [cursor, setCursor] = useState<string | undefined>(initialData.nextCursor);
     const [seed] = useState(initialData.seed);
     const observerTarget = useRef<HTMLDivElement>(null);
     
@@ -41,8 +40,6 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
         if (data) {
             const quotes = data.pages.flatMap(page => page.quotes);
             setAllQuotes(quotes);
-            const lastPage = data.pages[data.pages.length - 1];
-            setCursor(lastPage.nextCursor);
         }
     }, [data]);
 
@@ -109,7 +106,7 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
                     </div>
                 )}
                 {!hasNextPage && allQuotes.length > 0 && (
-                    <p className="text-sm text-gray-500 italic">You've reached the end! 🎭</p>
+                    <p className="text-sm text-gray-500 italic">You&apos;ve reached the end! 🎭</p>
                 )}
             </div>
         </>
