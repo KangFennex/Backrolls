@@ -164,13 +164,14 @@ export const authOptions: AuthOptions = {
             // Add custom properties to token
             if (user) {
                 token.id = user.id;
+                token.sub = user.id;
 
                 // Handle remember me
                 if ((user as ExtendedUser).remember) {
                     token.remember = true;
                 }
 
-                // Set username
+                // Set username and name
                 if (account?.provider === "google") {
                     const { data: profile } = await supabase
                         .from("profiles")
@@ -179,9 +180,13 @@ export const authOptions: AuthOptions = {
                         .single();
 
                     token.username = profile?.username || user.email?.split('@')[0];
+                    token.name = token.username;
                 } else {
                     token.username = (user as ExtendedUser).username;
+                    token.name = token.username;
                 }
+                
+                token.email = user.email;
             }
 
             // Set expiration if remember me is enabled
@@ -194,8 +199,10 @@ export const authOptions: AuthOptions = {
         async session({ session, token }) {
             // Add custom properties to session
             if (session.user) {
-                session.user.id = token.id as string;
+                session.user.id = (token.id || token.sub) as string;
                 session.user.username = token.username as string;
+                session.user.name = token.username as string;
+                session.user.email = token.email as string;
                 session.remember = token.remember;
             }
             return session;

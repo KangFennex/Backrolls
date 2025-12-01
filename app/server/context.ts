@@ -39,8 +39,8 @@ export async function createContext() {
                 user: {
                     id: (decoded.id || decoded.sub) as string,
                     email: decoded.email as string,
-                    name: decoded.name as string,
                     username: decoded.username as string,
+                    name: decoded.username as string,
                 }
             } : null,
         };
