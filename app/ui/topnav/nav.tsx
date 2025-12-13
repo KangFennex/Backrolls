@@ -4,81 +4,113 @@ import Search from '../search/Search';
 import { BsCupHot, BsCupHotFill } from "react-icons/bs";
 import { RiSofaLine, RiSofaFill } from "react-icons/ri";
 import { IoIosArrowDown } from "react-icons/io";
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaSearch } from 'react-icons/fa';
+import { RiCloseLargeFill } from "react-icons/ri";
 import Link from 'next/link';
 import { useAuth } from "../../lib/hooks";
-import { useScrollDirection } from "../../lib/hooks";
 import { NavLogo } from '../sharedComponents';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
+import { FilterSelectors } from '../filters/FilterSelectors';
 
 interface NavProps {
     toggleDropdownMenu?: () => void;
-    isVisible?: boolean;
     isMenuOpen?: boolean;
 }
 
-function Nav({ toggleDropdownMenu, isVisible, isMenuOpen }: NavProps) {
+function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
     const { isAuthenticated } = useAuth();
-    const { isNavVisible } = useScrollDirection();
     const arrowButtonRef = useRef<HTMLDivElement>(null);
-
-    // Use the prop if provided, otherwise use the hook
-    const shouldShow = isVisible !== undefined ? isVisible : isNavVisible;
+    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
     return (
-        <div className={`w-full px-3 transition-transform duration-300 ease-in-out ${shouldShow ? 'translate-y-0' : '-translate-y-full'
-            }`}>
-            {/* Main nav container - responsive height */}
+        <div className="w-full px-3">
+            {/* Main nav container */}
             <nav className="relative w-full mx-auto md:px-3">
+                {/* Top row - logo, filters (center), search (right on desktop), and icons */}
+                <div className="h-14 flex items-center gap-3">
+                    {/* Logo - hidden when mobile search is open */}
+                    {!isMobileSearchOpen && (
+                        <div className="flex-shrink-0 w-10 md:w-12 md:mt-2">
+                            <NavLogo />
+                        </div>
+                    )}
 
-                {/* Top row - logo and icons */}
-                <div className="h-14 flex items-center justify-between">
-                    <div className="flex-shrink-0 w-10 md:w-12 md:mt-2">
-                        <NavLogo />
-                    </div>
+                    {/* Mobile Search - Full width when open */}
+                    {isMobileSearchOpen && (
+                        <div className="flex-1 md:hidden">
+                            <Search />
+                        </div>
+                    )}
 
-                    {/* Search bar for md+ screens */}
-                    <div className="hidden md:flex flex-1 ml-0 mr-0 min-w-[350px] max-w-[400px] lg:min-w-[500px] lg:max-w-[650px] absolute left-1/2 transform -translate-x-1/2">
-                        <Search />
-                    </div>
+                    {/* Filters - centered on all screens, hidden when mobile search open */}
+                    {!isMobileSearchOpen && (
+                        <div className="flex-1 flex justify-start ml-3 md:ml-40">
+                            <FilterSelectors />
+                        </div>
+                    )}
 
+                    {/* Search bar - desktop only, right side before icons */}
+                    {!isMobileSearchOpen && (
+                        <div className="hidden md:block w-[200px] lg:w-[250px] flex-shrink-0">
+                            <Search />
+                        </div>
+                    )}
+
+                    {/* Right side icons */}
                     <div className="flex-shrink-0">
                         <nav className="flex flex-row gap-2 sm:gap-3 items-center justify-center">
-                            <Link href="/submit" className="nav-icon-btn" aria-label="Submit a quote">
-                                <FaPlus size={20} />
-                            </Link>
-                            <Link href="/tea-room" className="nav-icon-btn" aria-label="Buy me a coffee">
-                                {isAuthenticated ?
-                                    <BsCupHotFill size={18} /> :
-                                    <BsCupHot size={18} />}
-                            </Link>
-                            <Link href="/lounge" className="nav-icon-btn" aria-label="Lounge">
-                                {isAuthenticated ?
-                                    <RiSofaFill size={18} /> :
-                                    <RiSofaLine size={18} />}
-                            </Link>
-                            <div
-                                ref={arrowButtonRef}
-                                onClick={() => {
-                                    console.log('Arrow clicked, toggleDropdownMenu:', toggleDropdownMenu);
-                                    toggleDropdownMenu?.();
-                                }}
-                                className="antique-parchment-text nav-icon-arrow cursor-pointer p-1"
-                                aria-label="Open menu"
-                            >
-                                <IoIosArrowDown
-                                    size={24}
-                                    className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : 'rotate-0'
-                                        }`}
-                                />
-                            </div>
+                            {/* Mobile search toggle - close button when open */}
+                            {isMobileSearchOpen ? (
+                                <button
+                                    onClick={() => setIsMobileSearchOpen(false)}
+                                    className="nav-icon-btn md:hidden"
+                                    aria-label="Close search"
+                                >
+                                    <RiCloseLargeFill size={20} />
+                                </button>
+                            ) : (
+                                <>
+                                    {/* Mobile search icon - only show on mobile when search is closed */}
+                                    <button
+                                        onClick={() => setIsMobileSearchOpen(true)}
+                                        className="nav-icon-btn md:hidden"
+                                        aria-label="Search"
+                                    >
+                                        <FaSearch size={18} />
+                                    </button>
+                                    {/* Other icons */}
+                                    <Link href="/submit" className="nav-icon-btn hidden md:flex" aria-label="Submit a quote">
+                                        <FaPlus size={20} />
+                                    </Link>
+                                    <Link href="/tea-room" className="nav-icon-btn hidden md:flex" aria-label="Buy me a coffee">
+                                        {isAuthenticated ?
+                                            <BsCupHotFill size={18} /> :
+                                            <BsCupHot size={18} />}
+                                    </Link>
+                                    <Link href="/lounge" className="nav-icon-btn hidden md:flex" aria-label="Lounge">
+                                        {isAuthenticated ?
+                                            <RiSofaFill size={18} /> :
+                                            <RiSofaLine size={18} />}
+                                    </Link>
+                                    <div
+                                        ref={arrowButtonRef}
+                                        onClick={() => {
+                                            console.log('Arrow clicked, toggleDropdownMenu:', toggleDropdownMenu);
+                                            toggleDropdownMenu?.();
+                                        }}
+                                        className="antique-parchment-text nav-icon-arrow cursor-pointer p-1"
+                                        aria-label="Open menu"
+                                    >
+                                        <IoIosArrowDown
+                                            size={24}
+                                            className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : 'rotate-0'
+                                                }`}
+                                        />
+                                    </div>
+                                </>
+                            )}
                         </nav>
                     </div>
-                </div>
-
-                {/* Search bar for mobile/tablet screens - below the main row */}
-                <div className="md:hidden pb-3 px-2">
-                    <Search />
                 </div>
             </nav>
         </div>

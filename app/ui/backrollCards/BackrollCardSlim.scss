@@ -1,0 +1,103 @@
+/* BackrollCardSlim styles */
+.mini-quote-card {
+    cursor: pointer;
+    border-radius: 15px;
+    overflow: hidden;
+
+    &:hover {
+        box-shadow: 0 4px 10px rgba(141, 52, 134, 0.3);
+    }
+}
+
+.mini-quote-card--content {
+    display: flex;
+    width: 100%;
+}
+
+.bcs-card {
+    width: 450px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* prevent spilling past viewport */
+}
+
+.bcs-image {
+    width: 33.33%;
+    height: 150px;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    align-self: center;
+    /* keep image centered when content grows */
+}
+
+.bcs-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.bcs-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
+    word-break: break-word;
+    /* wrap long quotes */
+}
+
+.bcs-quote {
+    margin-bottom: 0.5rem;
+}
+
+.bcs-speaker {
+    font-style: italic;
+}
+
+.bcs-actions {
+    width: 100%;
+}
+
+.bcs-actions-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.5rem;
+    /* default gap reduced slightly */
+}
+
+/* Responsive: ensure card fits mobile screens */
+@media (max-width: 640px) {
+    .bcs-card {
+        width: 100%;
+    }
+
+    .bcs-image {
+        height: 110px;
+        /* slightly smaller image on mobile */
+    }
+
+    .bcs-content {
+        padding: 0.6rem;
+        /* tighter padding for small screens */
+    }
+
+    .bcs-quote {
+        font-size: 0.95rem;
+        /* reduce font-size to avoid overflow */
+    }
+
+    .bcs-actions-container {
+        gap: 0.25rem;
+        /* smaller gap between action buttons on mobile */
+    }
+}

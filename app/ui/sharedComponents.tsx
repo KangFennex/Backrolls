@@ -2,8 +2,6 @@ import Link from 'next/link';
 // import { useRainbowColors } from '../lib/hooks/useRainbowColors';
 
 export const NavLogo = () => {
-    // const { getColorForIcon, transitionDuration } = useRainbowColors(10000); // 10 seconds
-
     return (
         <Link
             href="/"
@@ -11,8 +9,8 @@ export const NavLogo = () => {
             <span style={{
                 color: 'var(--dark-pink)',
             }}>
-                Backrolls
-
+                <span className="md:hidden">B.</span>
+                <span className="hidden md:inline">Backrolls</span>
             </span>
         </Link>
     );

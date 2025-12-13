@@ -1,0 +1,325 @@
+.iconic-section {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    max-width: 100vw;
+    min-height: 60vh;
+    padding: 4rem 2rem;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    background: linear-gradient(
+        135deg,
+        rgba(20, 20, 25, 0.95) 0%,
+        rgba(30, 25, 35, 0.95) 100%
+    );
+    overflow: visible;
+
+    @media (max-width: 1024px) {
+        min-height: 50vh;
+        padding: 3rem 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        min-height: 40vh;
+        padding: 2rem 1rem;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.iconic-quote-container {
+    position: relative;
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 1;
+    padding: 2rem;
+    
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        max-height: 50vh;
+        padding: 1rem;
+    }
+}
+
+.quote-mark {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 4rem;
+    color: rgba(255, 182, 193, 0.15);
+    font-family: Georgia, serif;
+    font-weight: bold;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+
+    @media (max-width: 1024px) {
+        font-size: 3rem;
+        top: 0.75rem;
+        left: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 2.5rem;
+        top: 0.5rem;
+        left: 0.5rem;
+    }
+}
+
+.iconic-quote-text {
+    font-size: 2.5rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.95);
+    text-align: center;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.6s ease-in;
+
+    @media (max-width: 1024px) {
+        font-size: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.25rem;
+    }
+}
+
+.iconic-quote-attribution {
+    font-size: 1.25rem;
+    color: rgba(255, 182, 193, 0.9);
+    text-align: center;
+    font-style: normal;
+    animation: fadeIn 0.6s ease-in 0.2s both;
+
+    @media (max-width: 1024px) {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
+}
+
+.card-deck {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+
+    @media (max-width: 1200px) {
+        height: 340px;
+    }
+
+    @media (max-width: 1024px) {
+        height: 280px;
+    }
+
+    @media (max-width: 768px) {
+        height: 200px;
+    }
+
+    @media (max-width: 480px) {
+        height: 180px;
+    }
+}
+
+.deck-card {
+    position: absolute;
+    width: 180px;
+    height: 250px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.4),
+        0 0 0 2px rgba(255, 255, 255, 0.1);
+
+    @media (max-width: 1200px) {
+        width: 150px;
+        height: 210px;
+    }
+
+    @media (max-width: 1024px) {
+        width: 130px;
+        height: 180px;
+    }
+
+    @media (max-width: 768px) {
+        width: 100px;
+        height: 140px;
+    }
+
+    @media (max-width: 480px) {
+        width: 80px;
+        height: 110px;
+    }
+
+    &:nth-child(1) {
+        top: 0;
+        right: 0;
+        transform: rotate(-12deg);
+        z-index: 4;
+
+        @media (max-width: 768px) {
+            top: 0;
+            right: 10px;
+        }
+    }
+
+    &:nth-child(2) {
+        top: 20px;
+        right: 40px;
+        transform: rotate(-7deg);
+        z-index: 3;
+
+        @media (max-width: 768px) {
+            top: 10px;
+            right: 30px;
+        }
+    }
+
+    &:nth-child(3) {
+        top: 40px;
+        right: 80px;
+        transform: rotate(-2deg);
+        z-index: 2;
+
+        @media (max-width: 768px) {
+            top: 20px;
+            right: 50px;
+        }
+    }
+
+    &:nth-child(4) {
+        top: 60px;
+        right: 120px;
+        transform: rotate(3deg);
+        z-index: 1;
+
+        @media (max-width: 768px) {
+            top: 30px;
+            right: 70px;
+        }
+    }
+
+    &:hover {
+        transform: scale(1.15) translateY(-20px) rotate(0deg);
+        z-index: 10 !important;
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.6),
+            0 0 0 3px rgba(255, 182, 193, 0.4);
+
+        .card-overlay {
+            opacity: 1;
+        }
+
+        .card-number {
+            transform: scale(1.2);
+        }
+    }
+
+    &.removing {
+        animation: cardRemove 0.6s ease-out forwards;
+    }
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-number {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 182, 193, 0.95) 0%,
+        rgba(221, 160, 221, 0.95) 100%
+    );
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+    z-index: 1;
+
+    @media (max-width: 1024px) {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+        top: 8px;
+        right: 8px;
+    }
+
+    @media (max-width: 768px) {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+        top: 6px;
+        right: 6px;
+    }
+
+    @media (max-width: 480px) {
+        width: 25px;
+        height: 25px;
+        font-size: 0.9rem;
+        top: 5px;
+        right: 5px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardRemove {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8) translateY(-50px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) translateY(-100px);
+    }
+}

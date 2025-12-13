@@ -2,14 +2,13 @@
 
 import './ClientLayout.scss';
 import { useRef, useState } from "react";
-import { useAuth, useScrollDirection } from '../lib/hooks';
+import { useAuth } from '../lib/hooks';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
 import { FiltersProvider } from '../context/FiltersModalContext';
 import { MenuProvider, useMenu } from '../context/MenuContext';
 import Nav from "./topnav/nav";
 import Menu from "./menu/menu"
-import { FilterSelectors } from './filters/FilterSelectors';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
@@ -18,8 +17,7 @@ import FiltersModal from './filters/FiltersModal';
 import { trpc, getBaseUrl } from '../lib/trpc';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpLink } from '@trpc/client';
-import RightSidePanel from './side-panels/RightSidePanel';
-import { usePathname } from 'next/navigation';
+import Footer from './footer/Footer';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(() => new QueryClient({
@@ -71,34 +69,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
 function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     useAuth();
-    const { isNavVisible, isAtTop } = useScrollDirection();
     const { closeSearchModal } = useSearchContext();
     const { isMenuOpen, toggleMenu, closeMenu } = useMenu();
     const menuRef = useRef<HTMLDivElement>(null);
-    const currentPathname = usePathname();
-    const isWorkroomPage = currentPathname === '/';
 
     return (
         <div className="app-layout">
-            {/* Filter Bar - Absolute positioned (moves with nav when at top) */}
-            <div className={`filter-bar-absolute ${isNavVisible && isAtTop ? 'visible' : ''}`}>
-                <div className="filter-selectors-container">
-                    <FilterSelectors />
-                </div>
-            </div>
 
-            {/* Filter Bar - Fixed positioned (always at top when nav is hidden) */}
-            <div className={`filter-bar-fixed ${isNavVisible && isAtTop ? 'hidden' : ''}`}>
-                <div className="filter-selectors-container">
-                    <FilterSelectors />
-                </div>
-            </div>
-
-            {/* Fixed Nav Header - Slides above filter bar */}
+            {/* Sticky Nav Header */}
             <header className="header">
                 <Nav
                     toggleDropdownMenu={toggleMenu}
-                    isVisible={isNavVisible}
                     isMenuOpen={isMenuOpen}
                 />
             </header>
@@ -120,11 +101,11 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 <div className="main-content">
                     {children}
                 </div>
-                {isWorkroomPage && (
+                {/*                 {isWorkroomPage && (
                     <div className="right-side-panel">
                         <RightSidePanel />
                     </div>
-                )}
+                )} */}
             </div>
 
             {/* Filters Modal */}
@@ -133,6 +114,9 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             <ClickAwayListener onClickAway={closeSearchModal}>
                 <div></div>
             </ClickAwayListener>
+
+            {/* Footer */}
+            <Footer />
         </div >
     );
 }

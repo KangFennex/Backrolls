@@ -5,7 +5,7 @@ import { favorites, quotes } from '../../db/schema';
 import { eq, and, inArray } from 'drizzle-orm';
 
 export const favoritesRouter = router({
-    // Get all favorites for current user (returns full quote data)
+    // Get all favorites for current user
     getUserFavorites: publicProcedure
         .query(async ({ ctx }) => {
 

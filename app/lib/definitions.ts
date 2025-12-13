@@ -433,6 +433,8 @@ export interface PageContainerProps {
 export interface PageComponentContainerProps {
     children: React.ReactNode;
     variant?: 'mosaic' | 'list';
+    title?: string;
+    subtitle?: string;
 }
 
 // =============================================================================

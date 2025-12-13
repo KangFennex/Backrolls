@@ -345,10 +345,17 @@ body {
     color: var(--warm-ivory);
 }
 
+.poppins-bold {
+    font-family: "Poppins", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
 .roboto-condensed {
     font-family: "Roboto Condensed", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 700;
+    font-weight: 900;
     font-style: normal;
 }
 
@@ -379,6 +386,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .nav-icon-btn.md\:hidden {
+        display: none !important;
+    }
+
+    .nav-icon-btn.md\:flex {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-icon-btn.hidden {
+        display: none !important;
+    }
 }
 
 .nav-icon-btn:hover {

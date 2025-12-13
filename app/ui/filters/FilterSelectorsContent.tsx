@@ -43,11 +43,12 @@ export const FilterSelectorsContent = () => {
             <div className="flex flex-row items-center gap-2 justify-center py-2">
                 <IoFilterSharp
                     title="Filter Backrolls"
-                    size={pathnameState === '/series' ? 35 : 32}
+                    size={pathnameState === '/series' ? 35 : 30}
                     onClick={() => toggleFilters()}
                     style={{ color: getColorForIcon(0) }}
                     className={`filter-icon filter-icon-pulse transition-transform duration-800 ease-in-out ${isFiltersModalVisible ? 'rotate-180' : ''
                         }`} />
+                {/*  
                 <Link href="/hot">
                     <FaFire
                         title="Hot Backrolls"
@@ -63,30 +64,30 @@ export const FilterSelectorsContent = () => {
                         style={{ color: getColorForIcon(2) }}
                         className="filter-icon filter-icon-pulse"
                     />
-                </Link>
+                </Link> */}
                 <GiPerspectiveDiceSixFacesRandom
                     title="Random Backroll"
-                    size={pathnameState === '/random' && randomLimit === '1' ? 37 : 32}
+                    size={pathnameState === '/random' && randomLimit === '1' ? 37 : 30}
                     onClick={() => pushRandomBackroll(1)}
                     style={{ color: getColorForIcon(3) }}
                     className="random-icon" />
                 <TbArrowsRandom
                     title="Random Backrolls"
-                    size={pathnameState === '/random' && randomLimit === '3' ? 35 : 32}
+                    size={pathnameState === '/random' && randomLimit === '3' ? 35 : 30}
                     onClick={() => pushRandomBackroll(3)}
                     style={{ color: getColorForIcon(4) }}
                     className="random-icon" />
                 <Link href="/quiz">
                     <PiGameControllerBold
                         title="Backroll Quiz"
-                        size={pathnameState === '/quiz' ? 35 : 28}
+                        size={pathnameState === '/quiz' ? 35 : 26}
                         style={{ color: getColorForIcon(6) }}
                         className="filter-icon filter-icon-pulse" />
                 </Link>
                 <Link href="">
                     <BsChatQuote
                         title="Have a kiki"
-                        size={28}
+                        size={26}
                         style={{ color: getColorForIcon(5) }}
                         className="filter-icon filter-icon-pulse" />
                 </Link>

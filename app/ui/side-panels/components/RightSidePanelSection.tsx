@@ -53,25 +53,6 @@ export default function RightSidePanelSection({
         return 'collapsed';
     };
 
-    /*     const selectIcon = () => {
-            if (title === "Talk of the Town") {
-                return (
-                    <GiConversation size={24} color="white" />
-                );
-            }
-            if (title === "Hot Backrolls") {
-                return (
-                    <FaFire size={24} color="red" />
-                );
-            }
-            if (title === "Fresh Backrolls") {
-                return (
-                    <FaRegClock size={24} color="green" />
-                );
-            }
-            return null;
-        };
-     */
     return (
         <div className={`
             right-side-panel-section

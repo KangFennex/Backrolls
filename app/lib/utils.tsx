@@ -75,3 +75,40 @@ export const getMosaicClass = (quoteText: string, index: number): string => {
     // Short quotes (< 30 chars) - mostly normal, occasional tall
     return variant === 0 ? 'card-tall' : '';
 }
+
+export const contestantImages: Record<string, string> = {
+    // RuPaul
+    'RuPaul': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/RuPaul.jpg',
+    // rpdr - S01
+    'Akashia': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Akashia-rpdr-S1.jpg',
+    'Bebe Zahara Benet': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/BeBeZaharaBenet-rpdr-S1.jpg',
+    'Nina Flowers': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/NinaFlowers-rpdr-S1.jpg',
+    'Jade Sotomayor': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/JadeSotomayor-rpdr-S1.jpg',
+    'Ongina': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Ongina-rpdr-S1.jpg',
+    'Rebecca Glasscock': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/RebeccaGlasscock-rpdr-S1.jpg',
+    'Shannel': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shannel-rpdr-S1.jpg',
+    'Tammie Brown': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/TammieBrown-rpdr-S1.jpg',
+    'Victoria Porkchop Parker': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/VictoriaParker-rpdr-S1.jpg',
+};
+
+/**
+ * Get the speaker's image URL from Supabase storage
+ * @param speakerName - The name of the speaker/contestant
+ * @returns The image URL or undefined if not found
+ */
+export const getSpeakerImage = (speakerName: string): string | undefined => {
+    return contestantImages[speakerName];
+};
+
+/**
+ * Get the speaker's image URL with a fallback to a default avatar
+ * @param speakerName - The name of the speaker/contestant
+ * @param fallbackUrl - Optional fallback URL (defaults to a placeholder)
+ * @returns The image URL or fallback
+ */
+export const getSpeakerImageWithFallback = (
+    speakerName: string,
+    fallbackUrl: string = '/media/rupaul.jpg'
+): string => {
+    return contestantImages[speakerName] || fallbackUrl;
+};

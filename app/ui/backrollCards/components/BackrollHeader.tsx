@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Breadcrumb from "../../breadcrumbs";
 import { BackrollHeaderProps } from '../../../lib/definitions';
+import { getSpeakerImageWithFallback } from '../../../lib/utils';
 
 export default function BackrollHeader({ quote }: BackrollHeaderProps) {
     return (
@@ -45,7 +46,7 @@ export default function BackrollHeader({ quote }: BackrollHeaderProps) {
             }
             avatar={
                 <Avatar aria-label="avatar" sx={{ width: 30, height: 30 }}>
-                    <Image src="/media/rupaul.jpg" alt="RuPaul" width={30} height={30} />
+                    <Image src={getSpeakerImageWithFallback(quote.speaker)} alt={quote.speaker} width={30} height={30} />
                 </Avatar>
             }
         />
