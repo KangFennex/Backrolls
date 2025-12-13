@@ -35,6 +35,16 @@ export function BackrollCardSlim({
     onClick: () => void;
 }) {
     const speakerImage = getSpeakerImageWithFallback(quote.speaker);
+    const quoteLength = quote.quote_text.trim().length;
+
+    const getDynamicFontSize = (length: number) => {
+        if (length <= 15) return '2.8rem';
+        if (length <= 20) return '2.4rem';
+        if (length <= 30) return '1.8rem';
+        if (length <= 50) return '1.5rem';
+        if (length <= 80) return '1.3rem';
+        return '1.2rem';
+    };
 
     return (
         <div className="mini-quote-card" onClick={onClick}>
@@ -43,7 +53,7 @@ export function BackrollCardSlim({
                     className="bcs-card"
                     sx={{
                         backgroundColor: 'transparent',
-
+                        padding: '0',
                     }}
                 >
                     {/* Contestant Image - Left Side */}
@@ -54,18 +64,21 @@ export function BackrollCardSlim({
 
                     <Card
                         className="bcs-inner"
-                        sx={{ backgroundColor: 'transparent' }}
+                        sx={{ backgroundColor: 'transparent', padding: '0' }}
                     >
                         {/* Quote Content - Right Side */}
-                        <CardContent className="bcs-content">
-                            <p className="mini-quote-card__quote-text mini-quote-card-font backrollCard-font text-xl bcs-quote">
-                                {quote.quote_text}
-                            </p>
-                            <span className="text-[0.8rem] ml-auto pink-fill bcs-speaker">
+                        <CardContent sx={{ padding: '0' }} className="bcs-content">
+                            <div className={`bcs-quote-wrapper ${quoteLength > 80 ? 'bcs-quote-wrapper--long' : ''}`}>
+                                <p
+                                    className="mini-quote-card__quote-text mini-quote-card-font backrollCard-font bcs-quote"
+                                    style={{ fontSize: getDynamicFontSize(quoteLength) }}
+                                >
+                                    {quote.quote_text}
+                                </p>
+                            </div>
+                            <span className="text-[0.8rem] pink-fill bcs-speaker">
                                 — {quote.speaker}
                             </span>
-                            <div className="flex justify-between items-center bcs-actions">
-                            </div>
                         </CardContent>
                         <CardActions
                             sx={{

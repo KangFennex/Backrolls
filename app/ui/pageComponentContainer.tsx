@@ -3,7 +3,7 @@ import './pageComponentContainer.scss';
 
 export default function PageComponentContainer({ children, title, subtitle }: PageComponentContainerProps) {
     return (
-        <div className="PageComponentContainer w-full mt-12 pb-5">
+        <div className="PageComponentContainer w-full pb-5">
             {(title || subtitle) && (
                 <div className="page-component-container--header mb-4">
                     {title && <h2 className="text-2xl font-bold antique-parchment-text-dark">{title}</h2>}

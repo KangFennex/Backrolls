@@ -101,11 +101,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 <div className="main-content">
                     {children}
                 </div>
-                {/*                 {isWorkroomPage && (
-                    <div className="right-side-panel">
-                        <RightSidePanel />
-                    </div>
-                )} */}
             </div>
 
             {/* Filters Modal */}

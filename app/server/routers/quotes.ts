@@ -351,5 +351,31 @@ export const quotesRouter = router({
                 quotes: results,
                 count: results.length,
             };
+        }),
+
+    // Get quotes by speaker
+    getBySpeaker: publicProcedure
+        .input(z.object({
+            speaker: z.string(),
+            excludeId: z.string().optional(),
+            limit: z.number().optional().default(10),
+        }))
+        .query(async ({ input }) => {
+            const conditions: SQL[] = [
+                eq(quotes.speaker, input.speaker)
+            ];
+
+            if (input.excludeId) {
+                conditions.push(sql`${quotes.id} != ${input.excludeId}`);
+            }
+
+            const results = await db
+                .select()
+                .from(quotes)
+                .where(and(...conditions))
+                .orderBy(desc(quotes.vote_count))
+                .limit(input.limit);
+
+            return results;
         })
 });
