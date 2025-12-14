@@ -4,6 +4,7 @@ import { BackrollCardSlim } from '..//backrollCards/BackrollCardSlim';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useFreshQuotes } from '../../lib/hooks';
 import PageComponentContainer from '../pageComponentContainer';
+import type { Quote } from '../../lib/definitions';
 
 export default function FreshPageClient() {
     const { navigateToBackroll } = useNavigationContext();

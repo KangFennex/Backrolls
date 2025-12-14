@@ -4,6 +4,7 @@ import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useHotQuotes } from '../../lib/hooks';
 import PageComponentContainer from '../pageComponentContainer';
+import type { Quote } from '../../lib/definitions';
 
 export default function HotPageClient() {
     const { navigateToBackroll } = useNavigationContext();
