@@ -46,7 +46,7 @@ export const FilterSelectorsContent = () => {
                     size={pathnameState === '/series' ? 35 : 30}
                     onClick={() => toggleFilters()}
                     style={{ color: getColorForIcon(0) }}
-                    className={`filter-icon filter-icon-pulse transition-transform duration-800 ease-in-out ${isFiltersModalVisible ? 'rotate-180' : ''
+                    className={`filter-icon filter-icon-pulse transform transition-all duration-700 ease-in-out ${isFiltersModalVisible ? 'rotate-180' : ''
                         }`} />
                 {/*  
                 <Link href="/hot">

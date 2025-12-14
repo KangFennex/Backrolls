@@ -3,14 +3,15 @@
 import Search from '../search/Search';
 import { BsCupHot, BsCupHotFill } from "react-icons/bs";
 import { RiSofaLine, RiSofaFill } from "react-icons/ri";
-import { IoIosArrowDown } from "react-icons/io";
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { RiCloseLargeFill } from "react-icons/ri";
+import { LuPanelLeft } from "react-icons/lu";
 import Link from 'next/link';
 import { useAuth } from "../../lib/hooks";
 import { NavLogo } from '../sharedComponents';
 import { useState, useRef } from 'react';
 import { FilterSelectors } from '../filters/FilterSelectors';
+
 
 interface NavProps {
     toggleDropdownMenu?: () => void;
@@ -28,6 +29,9 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
             <nav className="relative w-full mx-auto md:px-3">
                 {/* Top row - logo, filters (center), search (right on desktop), and icons */}
                 <div className="h-14 flex items-center gap-3">
+
+                    {/* Removed left-side panel icon to avoid redundancy */}
+
                     {/* Logo - hidden when mobile search is open */}
                     {!isMobileSearchOpen && (
                         <div className="flex-shrink-0 w-10 md:w-12 md:mt-2">
@@ -44,14 +48,14 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
 
                     {/* Filters - centered on all screens, hidden when mobile search open */}
                     {!isMobileSearchOpen && (
-                        <div className="flex-1 flex justify-start ml-3 md:ml-40">
+                        <div className="flex-1 flex justify-start ml-3 md:ml-30">
                             <FilterSelectors />
                         </div>
                     )}
 
                     {/* Search bar - desktop only, right side before icons */}
                     {!isMobileSearchOpen && (
-                        <div className="hidden md:block w-[200px] lg:w-[250px] flex-shrink-0">
+                        <div className="hidden md:block w-[200px] lg:w-[350px] flex-shrink-0">
                             <Search />
                         </div>
                     )}
@@ -95,16 +99,14 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                     <div
                                         ref={arrowButtonRef}
                                         onClick={() => {
-                                            console.log('Arrow clicked, toggleDropdownMenu:', toggleDropdownMenu);
                                             toggleDropdownMenu?.();
                                         }}
                                         className="antique-parchment-text nav-icon-arrow cursor-pointer p-1"
                                         aria-label="Open menu"
                                     >
-                                        <IoIosArrowDown
-                                            size={24}
-                                            className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : 'rotate-0'
-                                                }`}
+                                        <LuPanelLeft
+                                            size={22}
+                                            className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : 'rotate-0'}`}
                                         />
                                     </div>
                                 </>

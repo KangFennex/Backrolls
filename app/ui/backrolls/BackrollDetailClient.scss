@@ -1,14 +1,16 @@
 .backroll-detail-layout {
-    display: grid;
-    grid-template-columns: 1fr 350px;
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
+    width: 95vw;
     max-width: 1400px;
-    margin: 0 auto;
     padding: 2rem 1rem;
+    margin: auto;
 }
 
 .backroll-detail-main {
-    display: flex;
+    display: grid;
+    grid-template-columns: 200px 1fr 300px;
     gap: 2rem;
     background: rgba(31, 31, 31, 0.8);
     border-radius: 15px;
@@ -17,9 +19,8 @@
 }
 
 .backroll-detail-image {
-    width: 200px;
+    width: 100%;
     height: 280px;
-    flex-shrink: 0;
     background-size: cover;
     background-position: center;
     border-radius: 10px;
@@ -81,9 +82,10 @@
     border-radius: 12px;
     border: 1px solid rgba(236, 72, 153, 0.2);
     margin: 1rem 0;
+    text-align: center;
 
     .quote-text {
-        font-size: 1.5rem;
+        font-size: 2rem;
         line-height: 1.6;
         color: #FFFFF0;
         margin-bottom: 1rem;
@@ -106,40 +108,70 @@
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 240, 0.05);
+    align-self: start;
 
     .info-row {
         display: flex;
-        gap: 1rem;
+        flex-direction: column;
+        gap: 0.25rem;
 
         .info-label {
             color: rgba(255, 255, 240, 0.6);
             font-weight: 500;
-            min-width: 100px;
+            font-size: 0.85rem;
         }
 
         .info-value {
             color: #FFFFF0;
             font-weight: 600;
+            font-size: 0.95rem;
         }
     }
 }
 
-.backroll-detail-sidebar {
+.backroll-detail-horizontal-section {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 
-    .sidebar-title {
+    .horizontal-section-title {
         font-size: 1.5rem;
         font-weight: 700;
         color: #FFFFF0;
         margin: 0;
+        padding: 0 0.5rem;
     }
 
-    .sidebar-quotes {
+    .horizontal-quotes-container {
         display: flex;
-        flex-direction: column;
         gap: 1rem;
+        overflow-x: auto;
+        padding: 0.5rem;
+        scroll-behavior: smooth;
+        
+        /* Custom scrollbar styling */
+        &::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: rgba(236, 72, 153, 0.5);
+            border-radius: 4px;
+            
+            &:hover {
+                background: rgba(236, 72, 153, 0.7);
+            }
+        }
+    }
+
+    .horizontal-quote-item {
+        flex: 0 0 350px;
+        min-width: 350px;
     }
 
     .no-quotes-message {
@@ -148,50 +180,233 @@
         padding: 2rem;
         background: rgba(0, 0, 0, 0.2);
         border-radius: 10px;
+        width: 100%;
     }
 }
 
 /* Responsive Design */
+
+/* Large tablets and square screens */
 @media (max-width: 1200px) {
     .backroll-detail-layout {
-        grid-template-columns: 1fr;
+        max-width: 100%;
+        padding: 1.5rem 1rem;
     }
 
-    .backroll-detail-sidebar {
-        order: -1;
+    .backroll-detail-main {
+        grid-template-columns: 180px 1fr 280px;
+        gap: 1.5rem;
+    }
+
+    .backroll-detail-image {
+        height: 250px;
+    }
+
+    .backroll-detail-quote {
+        padding: 1.5rem;
+
+        .quote-text {
+            font-size: 1.3rem;
+        }
     }
 }
 
-@media (max-width: 768px) {
+/* Medium tablets - Stack details below */
+@media (max-width: 900px) {
     .backroll-detail-main {
-        flex-direction: column;
+        grid-template-columns: 160px 1fr;
+        grid-template-rows: auto auto;
+        gap: 1.5rem;
+    }
+
+    .backroll-detail-image {
+        height: 220px;
+    }
+
+    .backroll-detail-info {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .backroll-detail-quote {
         padding: 1.5rem;
+        margin: 0.5rem 0;
+
+        .quote-text {
+            font-size: 1.2rem;
+        }
+    }
+
+    .horizontal-quote-item {
+        flex: 0 0 320px;
+        min-width: 320px;
+    }
+}
+
+/* Small tablets */
+@media (max-width: 768px) {
+    .backroll-detail-layout {
+        padding: 1rem 0.75rem;
+        gap: 1.5rem;
+    }
+
+    .backroll-detail-main {
+        grid-template-columns: 140px 1fr;
+        padding: 1.25rem;
+        gap: 1.25rem;
+    }
+
+    .backroll-detail-image {
+        height: 200px;
+    }
+
+    .backroll-detail-quote {
+        padding: 1.25rem;
+
+        .quote-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .quote-speaker {
+            font-size: 0.95rem;
+        }
+    }
+
+    .backroll-detail-stats {
+        gap: 1.25rem;
+
+        .stat-item {
+            font-size: 0.9rem;
+
+            .stat-icon {
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    .backroll-detail-info {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 1.25rem;
+    }
+
+    .horizontal-section-title {
+        font-size: 1.3rem;
+    }
+
+    .horizontal-quote-item {
+        flex: 0 0 280px;
+        min-width: 280px;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 600px) {
+    .backroll-detail-layout {
+        padding: 0.75rem 0.5rem;
+        gap: 1.25rem;
+    }
+
+    .backroll-detail-main {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
     }
 
     .backroll-detail-image {
         width: 100%;
-        height: 350px;
+        max-width: 300px;
+        height: 180px;
+        margin: 0 auto;
     }
 
-    .backroll-detail-quote {
-        .quote-text {
-            font-size: 1.2rem;
-        }
-
-        .quote-speaker {
-            font-size: 1rem;
-        }
+    .backroll-detail-content {
+        gap: 1rem;
     }
 
     .backroll-detail-stats {
         flex-wrap: wrap;
         gap: 1rem;
+        justify-content: center;
+    }
+
+    .backroll-detail-quote {
+        padding: 1rem;
+        margin: 0;
+
+        .quote-text {
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+
+        .quote-speaker {
+            font-size: 0.9rem;
+        }
     }
 
     .backroll-detail-info {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 0.75rem;
+
         .info-row {
-            flex-direction: column;
-            gap: 0.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 240, 0.05);
+
+            &:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
         }
+    }
+
+    .backroll-detail-air-date {
+        font-size: 0.85rem;
+    }
+
+    .horizontal-section-title {
+        font-size: 1.2rem;
+        padding: 0 0.25rem;
+    }
+
+    .horizontal-quote-item {
+        flex: 0 0 260px;
+        min-width: 260px;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 400px) {
+    .backroll-detail-layout {
+        padding: 0.5rem 0.25rem;
+    }
+
+    .backroll-detail-main {
+        padding: 0.75rem;
+    }
+
+    .backroll-detail-image {
+        max-width: 250px;
+        height: 150px;
+    }
+
+    .backroll-detail-quote {
+        padding: 0.75rem;
+
+        .quote-text {
+            font-size: 0.95rem;
+        }
+
+        .quote-speaker {
+            font-size: 0.85rem;
+        }
+    }
+
+    .horizontal-quote-item {
+        flex: 0 0 240px;
+        min-width: 240px;
     }
 }

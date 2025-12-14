@@ -85,7 +85,7 @@
     justify-content: center;
     max-height: 120px;
     overflow-y: auto;
-    padding-right: 0.25rem;
+    padding: 0 0.5rem;
     
     /* Hide scrollbar for Chrome, Safari and Opera */
     &::-webkit-scrollbar {
@@ -105,8 +105,14 @@
 
 /* Responsive: ensure card fits mobile screens */
 @media (max-width: 640px) {
+
+    .mini-quote-card {
+        width: 100%;
+    }
+
     .bcs-card {
         width: 100%;
+        min-width: 100%;
         min-height: 190px;
     }
 

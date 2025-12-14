@@ -5,7 +5,7 @@ export const NavLogo = () => {
     return (
         <Link
             href="/"
-            className="logo text-5xl items-center h-full">
+            className="logo text-[2.5rem] items-center h-full">
             <span style={{
                 color: 'var(--dark-pink)',
             }}>

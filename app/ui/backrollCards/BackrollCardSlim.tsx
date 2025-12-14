@@ -43,7 +43,8 @@ export function BackrollCardSlim({
         if (length <= 30) return '1.8rem';
         if (length <= 50) return '1.5rem';
         if (length <= 80) return '1.3rem';
-        return '1.2rem';
+        if (length <= 100) return '1.1rem';
+        return '0.9rem';
     };
 
     return (

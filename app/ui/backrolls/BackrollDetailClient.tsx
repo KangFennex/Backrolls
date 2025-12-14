@@ -48,9 +48,9 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
     const speakerImage = getSpeakerImageWithFallback(quote.speaker);
 
     return (
-        <PageComponentContainer>
+        <>
             <div className="backroll-detail-layout">
-                {/* Left Column - Main Content */}
+                {/* Main Section - Image, Quote, and Details */}
                 <div className="backroll-detail-main">
                     {/* Contestant Image */}
                     <div
@@ -58,7 +58,7 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                         style={{ backgroundImage: `url(${speakerImage})` }}
                     />
 
-                    {/* Main Content Area */}
+                    {/* Middle Content - Quote */}
                     <div className="backroll-detail-content">
                         {/* Breadcrumb */}
                         <div className="backroll-detail-breadcrumb">
@@ -89,67 +89,68 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
 
                         {/* Quote Text */}
                         <div className="backroll-detail-quote">
-                            <p className="quote-text">{quote.quote_text}</p>
+                            <p className="quote-text backrollCard-font">{quote.quote_text}</p>
                             <p className="quote-speaker">— {quote.speaker}</p>
                         </div>
+                    </div>
 
-                        {/* Quote Details */}
-                        <div className="backroll-detail-info">
-                            <div className="info-row">
-                                <span className="info-label">Series:</span>
-                                <span className="info-value">{quote.series}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Season:</span>
-                                <span className="info-value">{quote.season}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Episode:</span>
-                                <span className="info-value">{quote.episode}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Episode Title:</span>
-                                <span className="info-value">{quote.episode_title || `S${quote.season}E${quote.episode}`}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Timestamp:</span>
-                                <span className="info-value">{quote.timestamp}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Air Date:</span>
-                                <span className="info-value">{quote.air_date}</span>
-                            </div>
-                            {quote.original_language !== 'english' && quote.original_language_text && (
-                                <div className="info-row">
-                                    <span className="info-label">Original:</span>
-                                    <span className="info-value">{quote.original_language_text}</span>
-                                </div>
-                            )}
+                    {/* Right Column - Details */}
+                    <div className="backroll-detail-info">
+                        <div className="info-row">
+                            <span className="info-label">Series:</span>
+                            <span className="info-value">{quote.series}</span>
                         </div>
-
-                        {/* Comments Section */}
-                        <BackrollCommentsContainer quoteId={backrollId} />
+                        <div className="info-row">
+                            <span className="info-label">Season:</span>
+                            <span className="info-value">{quote.season}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="info-label">Episode:</span>
+                            <span className="info-value">{quote.episode}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="info-label">Episode Title:</span>
+                            <span className="info-value">{quote.episode_title || `S${quote.season}E${quote.episode}`}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="info-label">Timestamp:</span>
+                            <span className="info-value">{quote.timestamp}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="info-label">Air Date:</span>
+                            <span className="info-value">{quote.air_date}</span>
+                        </div>
+                        {quote.original_language !== 'english' && quote.original_language_text && (
+                            <div className="info-row">
+                                <span className="info-label">Original:</span>
+                                <span className="info-value">{quote.original_language_text}</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Right Column - Similar Quotes */}
-                <div className="backroll-detail-sidebar">
-                    <h3 className="sidebar-title">More Backrolls</h3>
-                    <div className="sidebar-quotes">
+                {/* Horizontal Scrollable Section - Similar Quotes */}
+                <div className="backroll-detail-horizontal-section">
+                    <h3 className="horizontal-section-title">More from {quote.speaker}</h3>
+                    <div className="horizontal-quotes-container">
                         {speakerQuotes && speakerQuotes.length > 0 ? (
                             speakerQuotes.map((speakerQuote) => (
-                                <BackrollCardSlim
-                                    key={speakerQuote.id}
-                                    quote={speakerQuote}
-                                    onClick={() => navigateToBackroll(speakerQuote)}
-                                />
+                                <div key={speakerQuote.id} className="horizontal-quote-item">
+                                    <BackrollCardSlim
+                                        quote={speakerQuote}
+                                        onClick={() => navigateToBackroll(speakerQuote)}
+                                    />
+                                </div>
                             ))
                         ) : (
                             <p className="no-quotes-message">No other quotes from this speaker</p>
                         )}
                     </div>
                 </div>
+
+                {/* Comments Section */}
+                <BackrollCommentsContainer quoteId={backrollId} />
             </div>
-        </PageComponentContainer>
+        </>
     );
 }

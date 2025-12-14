@@ -4,13 +4,10 @@ import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useHotQuotes } from '../../lib/hooks';
 import PageComponentContainer from '../pageComponentContainer';
-import { Quote } from '../../lib/definitions';
-import { getMosaicClass } from '../../lib/utils';
 
 export default function HotPageClient() {
     const { navigateToBackroll } = useNavigationContext();
     const { data: hotData } = useHotQuotes(20);
-    const useMosaic = hotData?.quotes && hotData.quotes.length >= 8;
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -26,7 +23,7 @@ export default function HotPageClient() {
     }
 
     return (
-        <PageComponentContainer variant="list" title="Hot Backrolls" subtitle="Those backrolls are backrolling!">
+        <PageComponentContainer title="Hot Backrolls" subtitle="Those backrolls are backrolling!">
             {hotData?.quotes && hotData.quotes.map((quote: Quote, index: number) => (
                 <div key={quote.id}>
                     <IndexWrapper index={index}>

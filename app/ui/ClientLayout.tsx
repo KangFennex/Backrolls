@@ -1,14 +1,14 @@
 'use client';
 
 import './ClientLayout.scss';
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useAuth } from '../lib/hooks';
 import { NavigationProvider } from '../context/NavigationContext';
 import { SearchProvider, useSearchContext } from '../context/SearchContext';
 import { FiltersProvider } from '../context/FiltersModalContext';
 import { MenuProvider, useMenu } from '../context/MenuContext';
 import Nav from "./topnav/nav";
-import Menu from "./menu/menu"
+// Removed old small menu in favor of unified drawer
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
@@ -18,6 +18,7 @@ import { trpc, getBaseUrl } from '../lib/trpc';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpLink } from '@trpc/client';
 import Footer from './footer/Footer';
+import SidePanel from './panel/SidePanel';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(() => new QueryClient({
@@ -71,7 +72,10 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     useAuth();
     const { closeSearchModal } = useSearchContext();
     const { isMenuOpen, toggleMenu, closeMenu } = useMenu();
-    const menuRef = useRef<HTMLDivElement>(null);
+    // Removed old menu ref
+
+    // Use MenuContext for unified right-side panel
+    const closeSidePanel = closeMenu;
 
     return (
         <div className="app-layout">
@@ -84,16 +88,10 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
                 />
             </header>
 
-            {/* Dropdown Menu */}
-            <ClickAwayListener
-                onClickAway={closeMenu}
-                mouseEvent={isMenuOpen ? 'onMouseDown' : false}
-                touchEvent={isMenuOpen ? 'onTouchStart' : false}
-            >
-                <div>
-                    <Menu isOpen={isMenuOpen} ref={menuRef} onClick={closeMenu} />
-                </div>
-            </ClickAwayListener>
+            {/* Right Side Panel Component (combined menu) */}
+            <SidePanel open={isMenuOpen} onClose={closeSidePanel} anchor="right" />
+
+            {/* Removed small dropdown menu in favor of right-side drawer */}
 
 
             {/* Main layout grid */}
