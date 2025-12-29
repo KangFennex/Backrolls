@@ -6,6 +6,7 @@ import { useFreshQuotes, useHotQuotes, useQuotesByCommentCount } from '../../../
 import { BackrollCardSlim } from '../../backrollCards/BackrollCardSlim';
 import Link from 'next/link';
 import './WorkroomVerticalColumns.scss';
+import WorkroomVerticalColumnsSkeleton from './WorkroomVerticalColumnsSkeleton';
 
 interface ColumnProps {
     title: string;
@@ -59,28 +60,34 @@ export default function WorkroomVerticalColumns() {
     const { data: freshData, isLoading: isFreshLoading } = useFreshQuotes(10);
     const { data: hotData, isLoading: isHotLoading } = useHotQuotes(10);
 
+    const isAnyLoading = isFreshLoading || isCommentCountLoading || isHotLoading;
+
     return (
         <section className="workroom-vertical-columns">
-            <div className="vertical-columns-container">
-                <Column
-                    title="Fresh Backrolls"
-                    data={freshData?.quotes || []}
-                    isLoading={isFreshLoading}
-                    link="/fresh"
-                />
-                <Column
-                    title="Talk of the Town"
-                    data={commentCountData?.quotes || []}
-                    isLoading={isCommentCountLoading}
-                    link="/kiki"
-                />
-                <Column
-                    title="Hot Backrolls"
-                    data={hotData?.quotes || []}
-                    isLoading={isHotLoading}
-                    link="/hot"
-                />
-            </div>
+            {isAnyLoading ? (
+                <WorkroomVerticalColumnsSkeleton />
+            ) : (
+                <div className="vertical-columns-container">
+                    <Column
+                        title="Fresh Backrolls"
+                        data={freshData?.quotes || []}
+                        isLoading={false}
+                        link="/fresh"
+                    />
+                    <Column
+                        title="Talk of the Town"
+                        data={commentCountData?.quotes || []}
+                        isLoading={false}
+                        link="/kiki"
+                    />
+                    <Column
+                        title="Hot Backrolls"
+                        data={hotData?.quotes || []}
+                        isLoading={false}
+                        link="/hot"
+                    />
+                </div>
+            )}
         </section>
     );
 }

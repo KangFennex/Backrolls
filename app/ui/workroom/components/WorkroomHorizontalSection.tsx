@@ -8,6 +8,7 @@ import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
 import './WorkroomHorizontalSection.scss';
 import { MdChevronRight } from 'react-icons/md';
 import { BackrollCardVertical } from '../../backrollCards/BackrollCardVertical';
+import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
 
 interface WorkroomHorizontalSectionProps {
     initialData: {
@@ -112,9 +113,12 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                     {/* Loading indicator and infinite scroll trigger */}
                     <div ref={observerTarget} className="whs-loading-trigger">
                         {isFetchingNextPage && (
-                            <div className="whs-loading">
-                                <div className="whs-spinner"></div>
-                                <p className="whs-loading-text">Loading...</p>
+                            <div className="whs-loading" style={{ display: 'flex', gap: '1rem' }}>
+                                {Array.from({ length: 3 }).map((_, i) => (
+                                    <div key={i} className="whs-card-wrapper">
+                                        <BackrollCardVerticalSkeleton />
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </div>

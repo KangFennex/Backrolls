@@ -8,6 +8,7 @@ import { useBackrollsStore } from '../../store/backrollsStore';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useSeriesQuotes } from '../../lib/hooks';
 import PageComponentContainer from '../pageComponentContainer';
+import { SectionSkeleton } from '../skeletons';
 import { getMosaicClass } from '../../lib/utils';
 
 export default function SeriesPageClient(): React.ReactElement {
@@ -97,7 +98,7 @@ export default function SeriesPageClient(): React.ReactElement {
             <div className="w-full">
                 {breadCrumbs()}
                 <PageComponentContainer variant="list">
-                    <div className="text-center py-8 text-gray-400">Loading quotes...</div>
+                    <SectionSkeleton />
                 </PageComponentContainer>
             </div>
         );

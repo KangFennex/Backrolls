@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { trpc } from '../../../lib/trpc';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import '../../shared/Skeleton.scss';
 
 interface BackrollCommentsContainerProps {
     children?: React.ReactNode;
@@ -57,9 +58,14 @@ export default function BackrollCommentsContainer({
 
             {/* Comments List */}
             {isLoading ? (
-                <div className="text-center py-8">
-                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-pink-400"></div>
-                    <p className="text-gray-400 mt-2">Loading comments...</p>
+                <div className="space-y-4">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <div key={i} className="sk-card" style={{ padding: '0.75rem' }}>
+                            <div className="sk sk--text-lg" style={{ width: '30%', marginBottom: '0.5rem' }} />
+                            <div className="sk sk--text" style={{ width: '90%', marginBottom: '0.25rem' }} />
+                            <div className="sk sk--text" style={{ width: '70%' }} />
+                        </div>
+                    ))}
                 </div>
             ) : error ? (
                 <div className="text-center py-8 text-red-400">

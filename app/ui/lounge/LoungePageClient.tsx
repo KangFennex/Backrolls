@@ -10,6 +10,7 @@ import SubmittedTab from './components/SubmittedTab';
 import CommentedTab from './components/CommentedTab';
 import { useFavorites, useSubmittedQuotes, useCommentedQuotes } from '../../lib/hooks';
 import LoungeHeader from './components/LoungeHeader';
+import '../shared/Skeleton.scss';
 
 type TabType = 'favorites' | 'submitted' | 'commented';
 
@@ -42,7 +43,13 @@ export default function LoungePageClient() {
     }, [authLoading, isAuthenticated, router]);
 
     if (authLoading) {
-        return <div className="text-center text-gray-600">Loading...</div>;
+        return (
+            <div className="flex flex-col gap-4 w-full">
+                {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="sk sk--text" style={{ width: `${50 + i * 10}%`, height: 20 }} />
+                ))}
+            </div>
+        );
     }
 
     return (

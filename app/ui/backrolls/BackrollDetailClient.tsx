@@ -28,8 +28,11 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
     if (isLoading) {
         return (
             <PageComponentContainer>
-                <div className="text-center py-8 text-gray-500">
-                    Loading...
+                <div className="w-full flex flex-col gap-4">
+                    <div className="sk sk--image" style={{ width: '100%', borderRadius: 12 }} />
+                    <div className="sk sk--text-lg" style={{ width: '70%' }} />
+                    <div className="sk sk--text-lg" style={{ width: '55%' }} />
+                    <div className="sk sk--text" style={{ width: 100 }} />
                 </div>
             </PageComponentContainer>
         );

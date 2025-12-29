@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { BackrollCard } from '..//backrollCards/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
+import { SectionSkeleton } from '../skeletons';
 import { Quote } from '../../lib/definitions';
 import { trpc } from '../../lib/trpc';
 import { getMosaicClass } from '../../lib/utils';
@@ -38,9 +39,7 @@ export default function BackrollsPageClient() {
     if (isLoading) {
         return (
             <PageComponentContainer>
-                <div className="text-center py-8 text-gray-500">
-                    Loading search results...
-                </div>
+                <SectionSkeleton />
             </PageComponentContainer>
         );
     }

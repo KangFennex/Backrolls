@@ -1,10 +1,20 @@
 'use client';
 
 import { Quote } from "../../../lib/definitions";
+import '../../shared/Skeleton.scss';
+import BackrollCardSlimSkeleton from '../../backrollCards/BackrollCardSlimSkeleton';
 
 export default function FavoritesTab({ data, isLoading }: { data: Quote[]; isLoading: boolean }) {
     if (isLoading) {
-        return <div className="text-center text-gray-600 py-8">Loading favorited backrolls...</div>;
+        return (
+            <div className="w-full">
+                <div className="grid gap-4">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <BackrollCardSlimSkeleton key={i} />
+                    ))}
+                </div>
+            </div>
+        );
     }
 
     if (!data || data.length === 0) {

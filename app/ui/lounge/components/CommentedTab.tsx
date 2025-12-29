@@ -1,6 +1,8 @@
 'use client';
 
 import { useQuotesByIds } from "../../../lib/hooks";
+import '../../shared/Skeleton.scss';
+import BackrollCardSlimSkeleton from '../../backrollCards/BackrollCardSlimSkeleton';
 
 
 interface Comment {
@@ -24,7 +26,15 @@ export default function CommentedTab({ data, isLoading }: { data: Comment[]; isL
     }
 
     if (isLoading) {
-        return <div>Loading commented quotes...</div>;
+        return (
+            <div className="w-full">
+                <div className="grid gap-4">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <BackrollCardSlimSkeleton key={i} />
+                    ))}
+                </div>
+            </div>
+        );
     }
     if (!data || data.length === 0) {
         return <div>No commented quotes found.</div>;
