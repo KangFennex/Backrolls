@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
 import './WorkroomHorizontalSection.scss';
 import { MdChevronRight } from 'react-icons/md';
+import { BackrollCardVertical } from '../../backrollCards/BackrollCardVertical';
 
 interface WorkroomHorizontalSectionProps {
     initialData: {
@@ -101,7 +102,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                 <div className="whs-cards-row">
                     {allQuotes.map((quote: Quote) => (
                         <div key={quote.id} className="whs-card-wrapper">
-                            <BackrollCardPicture
+                            <BackrollCardVertical
                                 quote={quote}
                                 onClick={() => handleClick(quote)}
                             />

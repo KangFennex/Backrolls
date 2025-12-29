@@ -48,7 +48,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
 
                     {/* Filters - centered on all screens, hidden when mobile search open */}
                     {!isMobileSearchOpen && (
-                        <div className="flex-1 flex justify-start ml-3 md:ml-30">
+                        <div className="flex-1 flex justify-start w-full">
                             <FilterSelectors />
                         </div>
                     )}

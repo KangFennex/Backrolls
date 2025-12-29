@@ -9,7 +9,7 @@ export default function PageComponentContainer({ children, title, subtitle }: Pa
                     {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
                 </div>
             )}
-            <div className="page-component-container--content w-full flex flex-col md:flex-row md:flex-wrap gap-4 md:justify-around">
+            <div className="page-component-container--content w-[90%] m-auto md:w-full flex flex-col md:flex-row md:flex-wrap gap-4 md:justify-around">
                 {children}
             </div>
         </div>

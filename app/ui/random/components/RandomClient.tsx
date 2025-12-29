@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Quote } from '../../../lib/definitions';
-import { BackrollCard } from '../../backrollCards/BackrollCard';
+import { BackrollCardSlim } from '../../backrollCards/BackrollCardSlim';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import { RandomClientProps } from '../../../lib/definitions';
 import PageComponentContainer from '../../pageComponentContainer';
@@ -51,11 +51,9 @@ export default function RandomClient({ randomQuotes }: RandomClientProps) {
         <PageComponentContainer>
             {quotes.map((quote) => (
                 <div key={quote.id}>
-                    <BackrollCard
+                    <BackrollCardSlim
                         quote={quote}
-                        variant="full"
                         onClick={() => handleClick(quote)}
-                        mosaic={false}
                     />
                 </div>
             ))}

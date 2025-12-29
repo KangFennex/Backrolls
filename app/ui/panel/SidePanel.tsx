@@ -27,7 +27,7 @@ const panelLinks = [
     { label: 'WorkRoom', href: '/', icon: <TbHomeSpark /> },
     { label: 'Hot Backrolls', href: '/hot', icon: <FaFire /> },
     { label: 'Fresh Backrolls', href: '/fresh', icon: <FaRegClock /> },
-    { label: 'Most discussed', href: '/', icon: <FaRegCommentDots /> },
+    { label: 'Have a kiki', href: '/kiki', icon: <FaRegCommentDots /> },
     { label: 'Tea Room', href: '/tea-room', icon: <BsCupHot /> },
     { label: 'Lounge', href: '/lounge', icon: <RiSofaLine /> },
     { label: 'Submit Backroll', href: '/submit', icon: <FaPlus /> },

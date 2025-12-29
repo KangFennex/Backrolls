@@ -24,11 +24,11 @@ function Column({ title, data, isLoading, link }: ColumnProps) {
     return (
         <div className="vertical-column">
             {link ? (
-                <Link href={link} className="mr-auto pl-2 md:pl-0">
-                    <h3 className="vertical-column-title">{title}</h3>
+                <Link href={link} className="mr-auto pl-2 hover:text-pink-500 transition-all duration-300 ease-in-out md:pl-0">
+                    <h3 className="vertical-column-title hover:text-pink-500 transition-all duration-300 ease-in-out">{title}</h3>
                 </Link>
             ) : (
-                <h3 className="vertical-column-title mr-auto pl-2 md:pl-0">{title}</h3>
+                <h3 className="vertical-column-title mr-auto hover:text-pink-500 transition-all duration-300 ease-in-out pl-2 md:pl-0">{title}</h3>
             )}
 
             <div className="vertical-column-content">
@@ -72,6 +72,7 @@ export default function WorkroomVerticalColumns() {
                     title="Talk of the Town"
                     data={commentCountData?.quotes || []}
                     isLoading={isCommentCountLoading}
+                    link="/kiki"
                 />
                 <Column
                     title="Hot Backrolls"
