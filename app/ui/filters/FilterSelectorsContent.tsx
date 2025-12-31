@@ -21,15 +21,13 @@ export const FilterSelectorsContent = () => {
 
     const [pathnameState, setPathnameState] = useState<string>(pathname);
 
-    const randomLimit = searchParams.get('limit');
-
     useEffect(() => {
         setPathnameState(pathname);
     }, [pathname]);
 
-    const pushRandomBackroll = async (limit = 1) => {
+    const pushRandomBackroll = async () => {
         // Navigate to random page with limit parameter
-        router.push(`/random?limit=${limit}`);
+        router.push(`/random?limit=1`);
     }
 
     const pushHotBackroll = async () => {
@@ -67,15 +65,9 @@ export const FilterSelectorsContent = () => {
                 </Link> */}
                 <GiPerspectiveDiceSixFacesRandom
                     title="Random Backroll"
-                    size={pathnameState === '/random' && randomLimit === '1' ? 37 : 30}
-                    onClick={() => pushRandomBackroll(1)}
+                    size={pathnameState === '/random' ? 37 : 30}
+                    onClick={() => pushRandomBackroll()}
                     style={{ color: getColorForIcon(3) }}
-                    className="random-icon" />
-                <TbArrowsRandom
-                    title="Random Backrolls"
-                    size={pathnameState === '/random' && randomLimit === '3' ? 35 : 30}
-                    onClick={() => pushRandomBackroll(3)}
-                    style={{ color: getColorForIcon(4) }}
                     className="random-icon" />
                 <Link href="/quiz">
                     <PiGameControllerBold

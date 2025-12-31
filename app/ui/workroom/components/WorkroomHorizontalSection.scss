@@ -1,16 +1,16 @@
 .workroom-horizontal-section {
-    width: 100%;
-    max-width: 100vw; /* constrain to viewport to enable horizontal scroll */
+    width: 95%;
+    max-width: 100vw;
     position: relative;
     min-height: 320px;
     padding-left: 8px;
-    overflow: visible; /* let inner container manage overflow */
+    overflow: visible;
 }
 
 .whs-scroll-container {
     position: relative;
     width: 100%;
-    max-width: 100vw; /* ensure container doesn't exceed viewport width */
+    max-width: 100vw;
     overflow-x: auto;
     overflow-y: hidden;
     -ms-overflow-style: none;

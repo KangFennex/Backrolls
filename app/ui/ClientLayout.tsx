@@ -8,7 +8,7 @@ import { SearchProvider, useSearchContext } from '../context/SearchContext';
 import { FiltersProvider } from '../context/FiltersModalContext';
 import { MenuProvider, useMenu } from '../context/MenuContext';
 import Nav from "./topnav/nav";
-// Removed old small menu in favor of unified drawer
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { MainPageSkeleton } from './skeletons';
 import SuspenseWrapper from './SuspenseWrapper';
@@ -49,6 +49,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     return (
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
             <QueryClientProvider client={queryClient}>
+                {/* Loading Progress Bar */}
+                <ProgressBar
+                    height="5px"
+                    color="#ff1493"
+                    options={{ showSpinner: false, easing: 'ease', speed: 200 }}
+                    shallowRouting
+                />
                 <NavigationProvider>
                     <SearchProvider>
                         <FiltersProvider>
@@ -90,9 +97,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
             {/* Right Side Panel Component (combined menu) */}
             <SidePanel open={isMenuOpen} onClose={closeSidePanel} anchor="right" />
-
-            {/* Removed small dropdown menu in favor of right-side drawer */}
-
 
             {/* Main layout grid */}
             <div className="main-layout-grid">

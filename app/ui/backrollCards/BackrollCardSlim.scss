@@ -3,6 +3,7 @@
     cursor: pointer;
     border-radius: 15px;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 
     &:hover {
         box-shadow: 0 4px 10px rgba(141, 52, 134, 0.3);
