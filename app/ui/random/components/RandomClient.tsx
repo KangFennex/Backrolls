@@ -8,6 +8,7 @@ import { RandomClientProps } from '../../../lib/definitions';
 import { useRouter } from 'next/navigation';
 import { TbArrowsRandom } from "react-icons/tb";
 import { useRainbowColors } from '../../../lib/hooks';
+import { PageSectionHeader } from '../../shared/PageSectionHeader';
 
 // Quote count options
 const QUOTE_LIMIT_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -97,6 +98,7 @@ export default function RandomClient({ randomQuotes }: RandomClientProps) {
 
     return (
         <div className="w-full h-screen md:w-[80%] md:mx-auto pb-5">
+            <PageSectionHeader title="Random Backrolls" />
             <div className="flex items-center justify-center gap-3 mb-6 pt-4">
                 <select
                     id="quote-limit"

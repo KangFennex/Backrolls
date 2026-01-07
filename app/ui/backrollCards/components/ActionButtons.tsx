@@ -68,9 +68,9 @@ export function FavoriteButton({
             disabled={toggleFavoriteMutation.isPending} // Prevent double-clicks
         >
             {isFavorited ? (
-                <FaHeart className="favorite-icon text-1xl filled text-pink-500 hover:scale-110 transition-all duration-300" />
+                <FaHeart size={18} className="favorite-icon filled text-pink-500 hover:scale-110 transition-all duration-300" />
             ) : (
-                <FaRegHeart className="favorite-icon text-1xl hover:text-pink-500 hover:scale-110 transition-all duration-300" />
+                <FaRegHeart size={18} className="favorite-icon text-[#8a8a8a] hover:text-pink-500 hover:scale-110 transition-all duration-300" />
             )}
         </button>
     );
@@ -160,8 +160,8 @@ export function VoteButtons({
                 aria-label="Upvote"
             >
                 <AiOutlineLike
-                    size={20}
-                    className={`upvote-icon hover:text-pink-500 hover:scale-110 transition-all duration-300 ${userHasUpvoted ? 'text-pink-500' : ''}`}
+                    size={18}
+                    className={`upvote-icon hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 ${userHasUpvoted ? 'text-pink-500' : 'text-[#8a8a8a]'}`}
                 />
             </button>
 
@@ -176,8 +176,8 @@ export function VoteButtons({
                 aria-label="Downvote"
             >
                 <AiOutlineDislike
-                    size={20}
-                    className={`downvote-icon hover:text-pink-500 hover:scale-110 transition-all duration-300 ${userHasDownvoted ? 'text-pink-500' : ''}`}
+                    size={18}
+                    className={`downvote-icon hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 ${userHasDownvoted ? 'text-pink-500' : 'text-[#8a8a8a]'}`}
                 />
             </button>
         </div>
@@ -203,7 +203,7 @@ export function ShareButton() {
 
     return (
         <div className="share-btn" aria-label="Share quote">
-            <IoShareSocialSharp size={20} className="hover:text-pink-500 hover:scale-110 transition-all duration-300" />
+            <IoShareSocialSharp size={18} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
         </div>
     );
 }
@@ -221,7 +221,7 @@ export function CopyButton({ textToCopy }: { textToCopy: string }) {
 
     return (
         <div className="copy-btn pb-1" aria-label="Copy quote to clipboard" onClick={handleCopy}>
-            <FaRegCopy size={17} className="hover:text-pink-500 hover:scale-110 transition-all duration-300" />
+            <FaRegCopy size={18} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
         </div>
     );
 }
@@ -243,7 +243,7 @@ export function CommentButton({
             onClick={onClick}
         >
             <div className="flex rounded-full py-1 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300">
-                <FaRegComment size={20} className="group-hover:text-pink-500 transition-colors duration-300" />
+                <FaRegComment size={18} className="group-hover:text-pink-500 group-hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
                 <span className="text-md h-5 w-5 flex items-center justify-center font-medium group-hover:text-pink-500 transition-colors duration-300">
                     {commentCount > 99 ? '99+' : commentCount}
                 </span>

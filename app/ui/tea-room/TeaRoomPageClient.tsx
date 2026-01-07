@@ -1,7 +1,7 @@
 'use client';
 
 import './TeaRoomPageClient.scss';
-import { PageSectionHeader } from "../sharedComponents";
+import { PageSectionHeader } from "../shared/PageSectionHeader";
 
 export default function TeaRoomPageClient() {
     return (

@@ -3,7 +3,7 @@
 import { Box, IconButton } from '@mui/material';
 import { IoClose } from "react-icons/io5";
 import { FiltersHeaderProps } from '../../../lib/definitions';
-import { BackrollsLogo } from '../../sharedComponents';
+import { BackrollsLogo } from '../../shared/BackrollsLogo';
 
 export default function FiltersHeader({ onClose }: FiltersHeaderProps) {
     const handleClose = () => onClose();

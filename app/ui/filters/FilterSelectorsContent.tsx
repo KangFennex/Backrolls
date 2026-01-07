@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
-import { TbArrowsRandom } from "react-icons/tb";
 import { IoFilterSharp } from "react-icons/io5";
 import { BsChatQuote } from "react-icons/bs";
-import { FaFire } from "react-icons/fa6";
-import { FaRegClock } from "react-icons/fa";
 import { useFiltersContext } from '../../context/FiltersModalContext';
 import { useRainbowColors } from '../../lib/hooks';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { PiGameControllerBold } from "react-icons/pi";
 import Link from "next/link";
 
@@ -17,7 +14,6 @@ export const FilterSelectorsContent = () => {
     const { getColorForIcon } = useRainbowColors();
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
 
     const [pathnameState, setPathnameState] = useState<string>(pathname);
 

@@ -1,4 +1,4 @@
-import './shared/PageSectionHeader.scss';
+import './PageSectionHeader.scss';
 // import { useRainbowColors } from '../lib/hooks/useRainbowColors';
 
 
@@ -20,4 +20,3 @@ export const PageSectionHeader = ({ title, subtitle, badge }: PageSectionHeaderP
         </div>
     );
 };
-

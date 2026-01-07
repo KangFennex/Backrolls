@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import './Footer.scss';
 import { FaTwitter, FaGithub, FaTelegram, FaTiktok, FaDiscord } from 'react-icons/fa';
+import { BackrollsLogo } from '../shared/BackrollsLogo';
 
 export default function Footer() {
     return (
@@ -10,12 +11,12 @@ export default function Footer() {
             <div className="footer-content">
                 {/* Logo and Description Section */}
                 <div className="footer-section footer-logo-section">
-                    <div>
-                        <span className="logo-text">Backrolls</span>
+                    <div className="flex items-center">
+                        <BackrollsLogo />
                         <span className="beta-badge">beta</span>
                     </div>
                     <p className="footer-description">
-                        Your ultimate destination for memorable quotes from your favorite shows. 
+                        Your ultimate destination for memorable quotes from your favorite shows.
                         Browse, submit, and celebrate the most iconic moments with fellow fans.
                     </p>
                 </div>

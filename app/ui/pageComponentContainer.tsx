@@ -1,5 +1,5 @@
 import { PageComponentContainerProps } from '../lib/definitions';
-import { PageSectionHeader } from './sharedComponents';
+import { PageSectionHeader } from './shared/PageSectionHeader';
 
 export default function PageComponentContainer({ children, title, subtitle }: PageComponentContainerProps) {
     return (
@@ -10,8 +10,8 @@ export default function PageComponentContainer({ children, title, subtitle }: Pa
                     subtitle={subtitle}
                 />
             )}
-            <div className="PageComponentContainer w-full md:w-[80%] md:m-auto pb-5">
-                <div className="page-component-container--content w-[90%] m-auto md:w-full flex flex-col md:flex-row md:flex-wrap gap-4 md:justify-around">
+            <div className="PageComponentContainer w-full md:m-auto">
+                <div className="page-component-container--content m-auto w-full flex flex-col md:flex-row md:flex-wrap md:justify-around">
                     {children}
                 </div>
             </div>

@@ -57,56 +57,55 @@ export function BackrollCardSlim({
                         padding: '0',
                     }}
                 >
-                    {/* Contestant Image - Left Side */}
+                    {/* Quote Content */}
+                    <CardContent sx={{ padding: '0', backgroundColor: 'transparent' }} className="bcs-content">
+                        <div className={`bcs-quote-wrapper ${quoteLength > 80 ? 'bcs-quote-wrapper--long' : ''}`}>
+                            <p
+                                className="mini-quote-card__quote-text mini-quote-card-font backrollCard-font bcs-quote"
+                                style={{ fontSize: getDynamicFontSize(quoteLength) }}
+                            >
+                                {quote.quote_text}
+                            </p>
+                        </div>
+                        <span className="text-[0.8rem] pink-fill bcs-speaker">
+                            — {quote.speaker}
+                        </span>
+                    </CardContent>
+
+                    {/* Contestant Image */}
                     <Box
                         className="bcs-image"
                         sx={{ backgroundImage: `url(${speakerImage})` }}
                     />
 
-                    <Card
-                        className="bcs-inner"
-                        sx={{ backgroundColor: 'transparent', padding: '0' }}
+                    {/* Actions */}
+                    <CardActions
+                        sx={{
+                            color: '#FFFFF0',
+                            backgroundColor: 'transparent',
+                        }}
+                        className="bcs-actions"
                     >
-                        {/* Quote Content - Right Side */}
-                        <CardContent sx={{ padding: '0' }} className="bcs-content">
-                            <div className={`bcs-quote-wrapper ${quoteLength > 80 ? 'bcs-quote-wrapper--long' : ''}`}>
-                                <p
-                                    className="mini-quote-card__quote-text mini-quote-card-font backrollCard-font bcs-quote"
-                                    style={{ fontSize: getDynamicFontSize(quoteLength) }}
-                                >
-                                    {quote.quote_text}
-                                </p>
+                        <div className="bcs-actions-container">
+                            <div className="bcs-actions-item">
+                                <VoteButtons
+                                    quoteId={quote.id}
+                                    initialVoteCount={quote.vote_count}
+                                />
                             </div>
-                            <span className="text-[0.8rem] pink-fill bcs-speaker">
-                                — {quote.speaker}
-                            </span>
-                        </CardContent>
-                        <CardActions
-                            sx={{
-                                color: '#FFFFF0',
-                            }}
-                        >
-                            <div className="bcs-actions-container">
-                                <div>
-                                    <VoteButtons
-                                        quoteId={quote.id}
-                                        initialVoteCount={quote.vote_count}
-                                    />
-                                </div>
-                                <div>
-                                    <CommentButton onClick={onClick} quoteId={quote.id} />
-                                </div>
-                                <div>
-                                    <ShareCopyFavorite
-                                        quoteId={quote.id}
-                                        quoteText={quote.quote_text}
-                                    />
-                                </div>
+                            <div className="bcs-actions-item">
+                                <CommentButton onClick={onClick} quoteId={quote.id} />
                             </div>
-                        </CardActions>
-                    </Card>
+                            <div className="bcs-actions-item">
+                                <ShareCopyFavorite
+                                    quoteId={quote.id}
+                                    quoteText={quote.quote_text}
+                                />
+                            </div>
+                        </div>
+                    </CardActions>
                 </Card>
             </Box>
-        </div>
+        </div >
     );
 }

@@ -8,6 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+
+// Menu Icons
 import { RiCloseLargeFill } from "react-icons/ri";
 import { BsCupHot, BsCupHotFill } from "react-icons/bs";
 import { RiSofaLine, RiSofaFill } from "react-icons/ri";
