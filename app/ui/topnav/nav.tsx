@@ -31,7 +31,7 @@ const navItems: NavItem[] = [
     { title: ' Hot Backrolls', href: '/hot', icon: <FaFire /> },
     { title: 'Have a kiki', href: '/kiki', icon: <FaRegCommentDots /> },
     { title: 'Random Backrolls', href: '/random', icon: <GiPerspectiveDiceSixFacesRandom /> },
-    { title: 'Quizzes', href: '/quiz', icon: <PiGameControllerBold /> },
+    { title: 'Quiz', href: '/quiz', icon: <PiGameControllerBold /> },
     { title: 'Tea Room', href: '/tea-room', icon: <BsCupHotFill /> },
 ];
 
@@ -60,7 +60,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
         <div className="flex flex-col w-full pt-2">
 
             {/* Top nav container */}
-            <nav className="flex items-center relative w-full px-2 sm:px-3 border-b border-[var(--light-border)]">
+            <nav className="flex items-center relative w-full min-h-[55px] px-2 sm:px-3 border-b border-[var(--light-border)]">
 
                 {/* Logo - hidden when mobile search is open */}
                 {!isMobileSearchOpen && (
@@ -90,7 +90,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                             // Close button when mobile search is open
                             <button
                                 onClick={() => setIsMobileSearchOpen(false)}
-                                className="nav-icon-btn md:hidden"
+                                className="nav-icon-btn ml-2 mr-2 md:hidden"
                                 aria-label="Close search"
                             >
                                 <RiCloseLargeFill

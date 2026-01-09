@@ -16,10 +16,13 @@ interface WorkroomPageClientProps {
 }
 
 const images = [
-    { src: '/media/1.png', alt: 'Workroom Banner Img1' },
-    { src: '/media/2.png', alt: 'Workroom Banner Img2' },
-    { src: '/media/3.png', alt: 'Workroom Banner Img3' },
-    { src: '/media/4.png', alt: 'Workroom Banner Img4' },
+    { src: '/media/banner-imgs/1.jpg', alt: 'Workroom Banner Img1' },
+    { src: '/media/banner-imgs/2.jpg', alt: 'Workroom Banner Img2' },
+    { src: '/media/banner-imgs/3.jpg', alt: 'Workroom Banner Img3' },
+    { src: '/media/banner-imgs/4.jpg', alt: 'Workroom Banner Img4' },
+    { src: '/media/banner-imgs/5.png', alt: 'Workroom Banner Img5' },
+    { src: '/media/banner-imgs/6.jpg', alt: 'Workroom Banner Img6' },
+    { src: '/media/banner-imgs/7.jpg', alt: 'Workroom Banner Img7' },
 ];
 
 export default function WorkroomPageClient({ initialData }: WorkroomPageClientProps) {
@@ -46,7 +49,7 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
 
     return (
         <main className="flex flex-col mt-2 pb-12">
-            <span className="w-full flex justify-center gap-2 mb-4">
+            <span className="w-full flex mb-4">
                 {images.map((image, index) => (
                     <div
                         key={index}
@@ -55,10 +58,9 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
                     >
                         <Image
                             width={200}
-                            height={200}
+                            height={400}
                             src={image.src}
-                            alt={image.alt}
-                        />
+                            alt={image.alt} className="w-[120px] h-[200px] object-cover" />
                     </div>
                 ))}
             </span>
