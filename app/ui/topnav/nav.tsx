@@ -42,7 +42,7 @@ interface NavProps {
 
 function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
     const { isAuthenticated } = useAuth();
-    const arrowButtonRef = useRef<HTMLDivElement>(null);
+    const arrowButtonRef = useRef<HTMLButtonElement>(null);
     const { isFiltersModalVisible, toggleFilters } = useFiltersContext();
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const { getColorForIcon } = useRainbowColors();
@@ -150,7 +150,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                             key={index}
                             href={item.href}
                             onMouseEnter={() => handleIconMouseEnter(index)}
-                            onMouseLeave={() => handleIconMouseLeave(index)}
+                            onMouseLeave={() => handleIconMouseLeave()}
                         >
                             <div
                                 className="low-nav-icon-btn group relative flex flex-col items-center justify-center rounded-md p-3 md:p-4 transition-all duration-300">
