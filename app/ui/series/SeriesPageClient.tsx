@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Quote } from '../../lib/definitions';
-import { BackrollCard } from '../backrollCards/BackrollCard';
+import { BackrollCard } from '../old components/BackrollCard';
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useSeriesQuotes } from '../../lib/hooks';

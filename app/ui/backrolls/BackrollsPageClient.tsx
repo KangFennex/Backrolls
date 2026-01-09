@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation';
-import { BackrollCard } from '..//backrollCards/BackrollCard';
+import { BackrollCard } from '../old components/BackrollCard';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
 import { SectionSkeleton } from '../skeletons';

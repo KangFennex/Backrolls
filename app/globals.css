@@ -9,6 +9,23 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Tektur';
+    src: url('/fonts/Tektur.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Logo */
+@font-face {
+    font-family: 'Bitcount Prop Single';
+    src: url('/fonts/BitcountPropSingle.ttf') format('truetype-variations');
+    font-weight: 100 300 400 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --background: #ffffff;
     --grey-background: #282828;
@@ -55,6 +72,7 @@
     /* #BCE5E2 */
 
     /* Dark Colors */
+    --neutral-bg: #0E1113;
     --rich-charcoal: #2C2C2C;
     --deep-charcoal: #1A1A1A;
     --dark-slate: #242424;
@@ -85,7 +103,7 @@
 body {
     height: 100vh;
     width: 100vw;
-    background-color: var(--deep-charcoal);
+    background-color: var(--neutral-bg);
     color: var(--foreground);
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -118,7 +136,7 @@ body {
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
-    color: var(--antique-parchment);
+    color: var(--cool-ghost-white);
 }
 
 .atma-font {
@@ -318,15 +336,6 @@ body {
     }
 }
 
-/* Logo */
-@font-face {
-    font-family: 'Bitcount Prop Single';
-    src: url('/fonts/BitcountPropSingle.ttf') format('truetype-variations');
-    font-weight: 100 300 400 900;
-    font-style: normal;
-    font-display: swap;
-}
-
 .logo {
     font-family: 'Bitcount Prop Single', sans-serif;
     font-optical-sizing: auto;
@@ -379,6 +388,9 @@ body {
     color: var(--antique-parchment-dark);
 }
 
+.tektur {
+    font-family: 'Tektur', sans-serif;
+}
 
 /* Nav icon buttons */
 .nav-icon-btn {
@@ -391,10 +403,12 @@ body {
 		cursor: pointer;
 		transition: all 0.3s ease;
 		flex-shrink: 0;
+        color: #8a8a8a
 }
 
 .nav-icon-btn:hover {
     background-color: rgba(128, 128, 128, 0.2);
+            color: var(--cool-ghost-white);
 }
 
 @media (min-width: 768px) {

@@ -7,6 +7,7 @@ import usePlaceholderLogic from "../../lib/utils";
 import { useSearchContext } from "../../context/SearchContext";
 import SearchModal from "./SearchModal";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { createPortal } from 'react-dom';
 
 export default function Search() {
   const {
@@ -56,39 +57,44 @@ export default function Search() {
 
 
   return (
-    <div className="search-container relative">
-      <div className="search">
-        <div className="search__input-container">
-          {searchModal ?
-            <RiCloseLargeFill
-              onClick={clearSearchInput}
-              size={20} className="search__closeIcon"
-            /> :
-            <FaSearch size={20} className="search__icon" />}
-          <input
-            className="search__input"
-            id="search-input"
-            placeholder={placeholder}
-            type="text"
-            value={searchInput || ''}
-            onChange={handleInput}
-            onKeyDown={handleSearchSubmit}
-            aria-label="Search"
-          />
-          <div className="search__border flex justify-center"></div>
-          <button
-            aria-label="Voice search"
-            className={`search__micButton ${listening ? 'listening' : ''}`}
-            onClick={toggleListening}
-          >
-            <FaMicrophone
-              size={20}
-              className="search__micIcon"
+    <>
+      <div className="search-container relative">
+        <div className="search">
+          <div className="search__input-container">
+            {searchModal ?
+              <RiCloseLargeFill
+                onClick={clearSearchInput}
+                size={20} className="search__closeIcon"
+              /> :
+              <FaSearch size={20} className="search__icon" />}
+            <input
+              className="search__input"
+              id="search-input"
+              placeholder={placeholder}
+              type="text"
+              value={searchInput || ''}
+              onChange={handleInput}
+              onKeyDown={handleSearchSubmit}
+              aria-label="Search"
             />
-          </button>
+            <div className="search__border flex justify-center"></div>
+            <button
+              aria-label="Voice search"
+              className={`search__micButton ${listening ? 'listening' : ''}`}
+              onClick={toggleListening}
+            >
+              <FaMicrophone
+                size={20}
+                className="search__micIcon"
+              />
+            </button>
+          </div>
         </div>
       </div>
-      {searchModal && <SearchModal />}
-    </div>
+      {searchModal && typeof document !== 'undefined' && createPortal(
+        <SearchModal />,
+        document.body
+      )}
+    </>
   );
 }

@@ -1,13 +1,12 @@
 .search-modal {
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 50px;
         left: 50%;
         transform: translateX(-50%);
-        width: 90%;
+        width: 100%;
         max-width: 600px;
         height: auto;
-        min-height: 16rem;
-        max-height: 70vh;
+        max-height: 500px;
         background-color: white;
         border: 1px solid #e5e7eb;
         border-radius: 12px;
@@ -17,6 +16,7 @@
         padding: 1rem;
         margin-top: 0.5rem;
         animation: dropdownFadeIn 0.15s ease-out;
+        z-index: 10000 !important;
 
 	&::-webkit-scrollbar {
 		width: 8px;

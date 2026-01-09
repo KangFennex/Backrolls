@@ -1,13 +1,17 @@
 .workroom-horizontal-section {
-    width: 95%;
+    width: 100%;
     max-width: 100vw;
     position: relative;
-    min-height: 320px;
-    padding-left: 8px;
+    padding: 1rem;
     overflow: visible;
 }
 
+.whs-title {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .whs-scroll-container {
+    margin-top: 1rem;
     position: relative;
     width: 100%;
     max-width: 100vw;
@@ -34,7 +38,27 @@
 }
 
 .whs-scroll-arrow {
-
+    position: absolute;
+    margin-top: 1rem;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.28) 0%, rgba(221, 160, 221, 0.28) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    cursor: pointer;
+    z-index: 10;
+    /* ensure visible above scroll area */
 }
 
 .whs-card-wrapper {

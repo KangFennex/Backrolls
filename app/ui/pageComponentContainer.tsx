@@ -10,8 +10,8 @@ export default function PageComponentContainer({ children, title, subtitle }: Pa
                     subtitle={subtitle}
                 />
             )}
-            <div className="PageComponentContainer w-full md:m-auto">
-                <div className="page-component-container--content m-auto w-full flex flex-col md:flex-row md:flex-wrap md:justify-around">
+            <div className="PageComponentContainer w-full">
+                <div className="page-component-container--content w-full flex flex-col px-4">
                     {children}
                 </div>
             </div>

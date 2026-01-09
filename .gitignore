@@ -12,6 +12,7 @@
 
 # old files - work in progress, not ready for build
 app/ui/filter/SeriesFilter(old).tsx
+app/ui/old components/
 
 # testing
 /coverage

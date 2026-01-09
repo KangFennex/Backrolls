@@ -4,11 +4,12 @@ import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import { trpc } from '../../../lib/trpc';
 import { useEffect, useRef, useState } from 'react';
-import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
+import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture2';
 import './WorkroomHorizontalSection.scss';
 import { MdChevronRight } from 'react-icons/md';
-import { BackrollCardVertical } from '../../backrollCards/BackrollCardVertical';
+import { BackrollCardVertical } from '../../old components/BackrollCardVertical';
 import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
+import { BackrollsLogoSmall } from '../../shared/BackrollsLogo';
 
 interface WorkroomHorizontalSectionProps {
     initialData: {
@@ -80,11 +81,20 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
     const handleScrollRight = () => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollBy({
-                left: 800,
+                left: 400,
                 behavior: 'smooth'
             });
         }
     };
+
+    const SectionTitle = ({ title }: { title: string }) => {
+        return (
+            <div className="whs-title flex items-center gap-2">
+                <BackrollsLogoSmall />
+                <h3 className="tektur vertical-column-title mr-auto hover:text-pink-500 transition-all duration-300 ease-in-out pl-2 md:pl-0">{title}</h3>
+            </div>
+        )
+    }
 
     if (allQuotes.length === 0) {
         return (
@@ -96,6 +106,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
 
     return (
         <section className="workroom-horizontal-section">
+            <SectionTitle title="Say what?" />
             <div
                 ref={scrollContainerRef}
                 className="whs-scroll-container"
@@ -103,13 +114,14 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                 <div className="whs-cards-row">
                     {allQuotes.map((quote: Quote) => (
                         <div key={quote.id} className="whs-card-wrapper">
-                            <BackrollCardVertical
+                            <BackrollCardPicture2
                                 quote={quote}
                                 onClick={() => handleClick(quote)}
                             />
                         </div>
                     ))}
 
+                    {/* Must change the skeleton below to adjust to new picture card */}
                     {/* Loading indicator and infinite scroll trigger */}
                     <div ref={observerTarget} className="whs-loading-trigger">
                         {isFetchingNextPage && (

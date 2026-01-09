@@ -1,0 +1,126 @@
+.backroll-picture-card {
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.backroll-picture-card__root {
+    width: 240px;
+    height: 260px;
+    background-color: transparent;
+    position: relative;
+    overflow: visible;
+    transition: background-color 0.25s ease;
+
+    &.revealed {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+.backroll-picture-card__image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.revealed {
+        filter: blur(0);
+    }
+}
+
+.backroll-picture-card__overlay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem !important;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(40px);
+    border-radius: 10px;
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+        transform: translateY(100%);
+        transition: transform 0.6s ease;
+    }
+
+    &.revealed {
+        height: 20%;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.75);
+        border-radius: 0 0 10px 10px;
+
+        &::before {
+            transform: translateY(-100%);
+        }
+
+        .backroll-picture-card__quote {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+        }
+
+        .backroll-picture-card__speaker {
+            max-height: 100px;
+            opacity: 1;
+        }
+    }
+}
+
+.backroll-picture-card__quote {
+    margin-bottom: 0.5rem;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    color: #ffffff;
+    font-size: 1.5rem;
+    max-height: 500px;
+    opacity: 1;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.backroll-picture-card__speaker {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.backroll-picture-card__link {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}

@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import type { Quote } from '../../lib/definitions';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { CardActions } from '@mui/material';
-import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from './components/ActionButtons';
+import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from '../old components/components/ActionButtons';
 import './BackrollCardSlim.scss';
 
 interface ShareCopyFavoriteProps {
@@ -36,46 +36,55 @@ export function BackrollCardSlim({
 }) {
     const speakerImage = getSpeakerImageWithFallback(quote.speaker);
     const quoteLength = quote.quote_text.trim().length;
+    const quoteMaxLength = 120;
+    const isQuoteLong = quoteLength > quoteMaxLength;
+
+    const handleQuoteLong = (quote: Quote) => {
+        return quote.quote_text.length > quoteMaxLength
+            ? quote.quote_text.slice(0, quoteMaxLength) + '...'
+            : quote.quote_text;
+    }
 
     const getDynamicFontSize = (length: number) => {
-        if (length <= 15) return '2.8rem';
-        if (length <= 20) return '2.4rem';
-        if (length <= 30) return '1.8rem';
-        if (length <= 50) return '1.5rem';
-        if (length <= 80) return '1.3rem';
-        if (length <= 100) return '1.1rem';
-        return '0.9rem';
+        if (length <= 15) return '3rem';
+        if (length <= 20) return '2.9rem';
+        if (length <= 30) return '2.8rem';
+        if (length <= 50) return '2rem';
+        if (length <= 80) return '1.8rem';
+        if (length <= 100) return '1.9rem';
+        return '1.5rem';
     };
 
     return (
         <div className="mini-quote-card" onClick={onClick}>
-            <Box className="mini-quote-card--content">
+            <Box className="mini-quote-card--content" sx={{ boxShadow: 'none' }}>
                 <Card
                     className="bcs-card"
                     sx={{
                         backgroundColor: 'transparent',
                         padding: '0',
+                        boxShadow: 'none',
                     }}
                 >
                     {/* Quote Content */}
-                    <CardContent sx={{ padding: '0', backgroundColor: 'transparent' }} className="bcs-content">
-                        <div className={`bcs-quote-wrapper ${quoteLength > 80 ? 'bcs-quote-wrapper--long' : ''}`}>
+                    <CardContent sx={{ padding: '0', backgroundColor: 'transparent', boxShadow: 'none' }} className="bcs-content">
+                        <div className={`bcs-quote-wrapper flex flex-col ${quoteLength > 80 ? 'bcs-quote-wrapper--long' : ''}`}>
                             <p
-                                className="mini-quote-card__quote-text mini-quote-card-font backrollCard-font bcs-quote"
+                                className="backrollCard-font bcs-quote"
                                 style={{ fontSize: getDynamicFontSize(quoteLength) }}
                             >
-                                {quote.quote_text}
+                                {isQuoteLong ? handleQuoteLong(quote) : quote.quote_text}
                             </p>
+                            <span className="text-[0.8rem] pink-fill bcs-speaker">
+                                — {quote.speaker}
+                            </span>
                         </div>
-                        <span className="text-[0.8rem] pink-fill bcs-speaker">
-                            — {quote.speaker}
-                        </span>
                     </CardContent>
 
                     {/* Contestant Image */}
                     <Box
                         className="bcs-image"
-                        sx={{ backgroundImage: `url(${speakerImage})` }}
+                        sx={{ backgroundImage: `url(${speakerImage})`, boxShadow: 'none' }}
                     />
 
                     {/* Actions */}
@@ -83,6 +92,7 @@ export function BackrollCardSlim({
                         sx={{
                             color: '#FFFFF0',
                             backgroundColor: 'transparent',
+                            boxShadow: 'none', padding: '0',
                         }}
                         className="bcs-actions"
                     >

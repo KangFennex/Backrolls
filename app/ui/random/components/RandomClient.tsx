@@ -97,7 +97,7 @@ export default function RandomClient({ randomQuotes }: RandomClientProps) {
     }
 
     return (
-        <div className="w-full h-screen md:w-[80%] md:mx-auto pb-5">
+        <div className="w-full min-w-full h-screen">
             <PageSectionHeader title="Random Backrolls" />
             <div className="flex items-center justify-center gap-3 mb-6 pt-4">
                 <select
@@ -133,7 +133,7 @@ export default function RandomClient({ randomQuotes }: RandomClientProps) {
                     className="random-icon"
                 />
             </div>
-            <div className="w-[90%] mx-auto md:w-full flex flex-col md:flex-row md:flex-wrap gap-4 md:justify-around">
+            <div className="w-full flex flex-col px-4">
                 {quotes.map((quote) => (
                     <div key={quote.id}>
                         <BackrollCardSlim

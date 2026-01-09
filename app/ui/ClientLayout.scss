@@ -4,7 +4,6 @@
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-    max-width: 800px;
     overflow-x: clip;
     position: relative;
     margin: 0 auto;
@@ -32,6 +31,7 @@
     max-width: 800px;
     box-sizing: border-box;
     overflow: visible;
+    margin: 0 auto;
 }
 
 .main-content {
@@ -39,6 +39,7 @@
     width: 100%;
     max-width: 100%;
     overflow: visible;
+    margin: 0 auto;
 }
 
 /* Tablets and up: centered content with max-width */
@@ -50,27 +51,27 @@
 /* Laptops and up: centered with wider max-width */
 @media (min-width: 1024px) {
     .app-layout {
-        max-width: 800px;
-        border-left: 1px solid var(--light-border);
-        border-right: 1px solid var(--light-border);
     }
 
     .main-layout-grid {
-        grid-template-columns: 1fr minmax(auto, 800px) 1fr;
+        grid-template-columns: 1fr minmax(auto) 1fr;
     }
     
     .main-content {
         grid-column: 2;
-        margin: auto;
+        margin: 0 auto;
         width: 100%;
         max-width: 800px;
+        border-left: 1px solid var(--light-border);
+        border-right: 1px solid var(--light-border);
+        padding-bottom: 5rem;
     }
 }
 
 /* Wide screens: even more spacious */
 @media (min-width: 1440px) {
     .main-layout-grid {
-        grid-template-columns: 1fr minmax(auto, 800px) 1fr;
+        grid-template-columns: 1fr minmax(auto) 1fr;
     }
     
     .main-content {

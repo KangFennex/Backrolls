@@ -1,0 +1,58 @@
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import type { Quote } from '../../lib/definitions';
+import { getSpeakerImageWithFallback } from '../../lib/utils';
+import './BackrollCardPicture2.scss';
+import { FiExternalLink } from "react-icons/fi";
+import { useState } from 'react';
+
+export function BackrollCardPicture2({
+    quote,
+    onClick,
+}: {
+    quote: Quote;
+    onClick: () => void;
+}) {
+    const speakerImage = getSpeakerImageWithFallback(quote.speaker);
+
+    const [isRevealed, setIsRevealed] = useState(false);
+
+    const handleToggle = () => {
+        setIsRevealed(!isRevealed);
+    };
+
+    const handleLinkClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onClick();
+    };
+
+    return (
+        <div className="backroll-picture-card">
+            <Box>
+                <Card className="backroll-picture-card__root" sx={{ backgroundColor: 'transparent' }} onClick={handleToggle}>
+
+                    {/* Quote Content */}
+                    <CardContent className={`backroll-picture-card__overlay${isRevealed ? ' revealed' : ''}`}>
+                        <p className="backrollCard-font backroll-picture-card__quote">
+                            {quote.quote_text}
+                        </p>
+                        <Box className="backroll-picture-card__speaker">
+                            <h4 className="mini-quote-card__speaker-text mini-quote-card-font backrollCard-font text-md pink-fill">
+                                - {quote.speaker}
+                            </h4>
+                            <div>
+                                <FiExternalLink size={20} color="#FF61A6"
+                                    onClick={handleLinkClick}
+                                    className="backroll-picture-card__link" />
+                            </div>
+                        </Box>
+                    </CardContent>
+
+                    {/* Contestant Image */}
+                    <Box className={`backroll-picture-card__image${isRevealed ? ' revealed' : ''}`} sx={{ backgroundImage: `url(${speakerImage})` }} />
+                </Card>
+            </Box>
+        </div>
+    );
+}

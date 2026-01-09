@@ -18,7 +18,7 @@ import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
-import { BsChatQuote } from "react-icons/bs";
+import { PiGameControllerBold } from "react-icons/pi";
 
 type NavItem = {
     title: string;
@@ -31,7 +31,7 @@ const navItems: NavItem[] = [
     { title: ' Hot Backrolls', href: '/hot', icon: <FaFire /> },
     { title: 'Have a kiki', href: '/kiki', icon: <FaRegCommentDots /> },
     { title: 'Random Backrolls', href: '/random', icon: <GiPerspectiveDiceSixFacesRandom /> },
-    { title: 'Quizzes', href: '/quizzes', icon: <BsChatQuote /> },
+    { title: 'Quizzes', href: '/quiz', icon: <PiGameControllerBold /> },
     { title: 'Tea Room', href: '/tea-room', icon: <BsCupHotFill /> },
 ];
 
@@ -60,7 +60,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
         <div className="flex flex-col w-full pt-2">
 
             {/* Top nav container */}
-            <nav className="flex items-center relative w-full px-2 sm:px-3">
+            <nav className="flex items-center relative w-full px-2 sm:px-3 border-b border-[var(--light-border)]">
 
                 {/* Logo - hidden when mobile search is open */}
                 {!isMobileSearchOpen && (
@@ -84,7 +84,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                 )}
 
                 {/* Right side icons */}
-                <div className="flex flex-shrink-0 justify-end ml-auto">
+                <div className="flex flex-shrink-0 justify-end ml-auto pr-0 md:pr-2">
                     <nav className="flex gap-1 sm:gap-2 items-center">
                         {isMobileSearchOpen ? (
                             // Close button when mobile search is open
@@ -96,7 +96,6 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                 <RiCloseLargeFill
                                     size={22}
                                     className="nav-icon-btn__icon"
-                                    color="#8a8a8a"
                                 />
                             </button>
                         ) : (
@@ -110,7 +109,6 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                     <FaSearch
                                         size={18}
                                         className="nav-icon-btn__icon"
-                                        color="#8a8a8a"
                                     />
                                 </button>
                                 {/* Filter Button */}
@@ -123,7 +121,6 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                         title="Filter Backrolls"
                                         size={26}
                                         className="nav-icon-btn__icon"
-                                        color="#8a8a8a"
                                     />
                                 </button>
                                 <button
@@ -137,7 +134,6 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                     <LuPanelLeft
                                         size={22}
                                         className="nav-icon-btn__icon"
-                                        color="#8a8a8a"
                                     />
                                 </button>
                             </>
@@ -147,8 +143,8 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
             </nav>
 
             {/* Bottom Nav Component */}
-            <nav className="mt-2">
-                <div className="flex justify-around md:justify-center gap-1 md:gap-2">
+            <nav className="w-full">
+                <div className="w-full max-w-[800px] mx-auto lg:border-x lg:border-[var(--light-border)] flex justify-around pt-2 md:justify-center gap-1 md:gap-2">
                     {navItems.map((item, index) => (
                         <Link
                             key={index}
@@ -164,7 +160,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                 >
                                     {item.icon}
                                 </span>
-                                <span className="absolute bottom-[-45px] mb-2 text-sm font-medium bg-black/60 text-[var(--antique-parchment)] opacity-0 p-1 rounded-md group-hover:opacity-100 transition-opacity whitespace-nowrap delay-300 duration-300">
+                                <span className="absolute bottom-[-45px] mb-2 text-sm font-medium bg-black/60 text-[var(--antique-parchment)] opacity-0 p-1 rounded-md group-hover:opacity-100 transition-opacity whitespace-nowrap delay-500 duration-300">
                                     {item.title}
                                 </span>
                             </div>
