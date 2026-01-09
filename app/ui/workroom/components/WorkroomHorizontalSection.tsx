@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture2';
 import './WorkroomHorizontalSection.scss';
 import { MdChevronRight } from 'react-icons/md';
-import { BackrollCardVertical } from '../../old components/BackrollCardVertical';
 import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
 import { BackrollsLogoSmall } from '../../shared/BackrollsLogo';
 
