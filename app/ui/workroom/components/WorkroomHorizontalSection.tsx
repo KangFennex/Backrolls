@@ -105,7 +105,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
 
     return (
         <section className="workroom-horizontal-section">
-            <SectionTitle title="Say what?" />
+            <SectionTitle title="Guess the Queen" />
             <div
                 ref={scrollContainerRef}
                 className="whs-scroll-container"
