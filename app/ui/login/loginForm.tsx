@@ -13,7 +13,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
-import { BackrollsLogo } from '../sharedComponents';
+import { BackrollsLogo } from '../shared/BackrollsLogo';
 import ForgotPassword from "../forgotPassword";
 import { useRouter } from "next/navigation";
 import { LoginFormSkeleton, LoginSuccessMessage } from './LoginSkeleton';
