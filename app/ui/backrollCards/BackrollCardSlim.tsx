@@ -17,7 +17,7 @@ export function ShareCopyFavorite({
     quoteText,
 }: ShareCopyFavoriteProps) {
     return (
-        <div className="flex items-center justify-between gap-2 mr-1">
+        <div className="flex items-center justify-between gap-2 py-1 px-3">
             <ShareButton />
             <CopyButton textToCopy={quoteText} />
             <FavoriteButton

@@ -242,7 +242,7 @@ export function CommentButton({
             aria-label={`${commentCount} comments - Click to view and comment`}
             onClick={onClick}
         >
-            <div className="flex rounded-full py-1 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300">
+            <div className="flex rounded-full py-1 px-3 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300">
                 <FaRegComment size={18} className="group-hover:text-pink-500 group-hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
                 <span className="text-md h-5 w-5 flex items-center justify-center font-medium group-hover:text-pink-500 transition-colors duration-300">
                     {commentCount > 99 ? '99+' : commentCount}
