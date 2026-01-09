@@ -29,14 +29,14 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
         const runAnimation = () => {
             // Reset to 0
             setVisibleCount(0);
-            
+
             // Show images one by one
             images.forEach((_, index) => {
                 setTimeout(() => {
                     setVisibleCount(index + 1);
                 }, (index + 1) * 1000);
             });
-            
+
             // After all images are shown (4 seconds) + 1 second wait, restart
             setTimeout(runAnimation, (images.length + 1) * 1000);
         };
@@ -48,11 +48,10 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
         <main className="flex flex-col mt-2 pb-12">
             <span className="w-full flex justify-center gap-2 mb-4">
                 {images.map((image, index) => (
-                    <div 
+                    <div
                         key={index}
-                        className={`transition-opacity duration-300 ${
-                            index < visibleCount ? 'opacity-100' : 'opacity-0'
-                        }`}
+                        className={`transition-opacity duration-300 ${index < visibleCount ? 'opacity-100' : 'opacity-0'
+                            }`}
                     >
                         <Image
                             width={200}

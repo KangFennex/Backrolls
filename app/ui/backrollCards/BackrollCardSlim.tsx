@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import type { Quote } from '../../lib/definitions';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { CardActions } from '@mui/material';
-import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from '../old components/components/ActionButtons';
+import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from './components/ActionButtons';
 import './BackrollCardSlim.scss';
 
 interface ShareCopyFavoriteProps {

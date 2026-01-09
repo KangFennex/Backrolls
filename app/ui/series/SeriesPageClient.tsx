@@ -3,13 +3,12 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Quote } from '../../lib/definitions';
-import { BackrollCard } from '../old components/BackrollCard';
+import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useSeriesQuotes } from '../../lib/hooks';
 import PageComponentContainer from '../pageComponentContainer';
 import { SectionSkeleton } from '../skeletons';
-import { getMosaicClass } from '../../lib/utils';
 
 export default function SeriesPageClient(): React.ReactElement {
     // Use selector to ensure component re-renders when filters change
@@ -50,7 +49,6 @@ export default function SeriesPageClient(): React.ReactElement {
     });
 
     const quotes = data?.quotes || [];
-    const useMosaic = quotes.length > 8;
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
@@ -138,14 +136,12 @@ export default function SeriesPageClient(): React.ReactElement {
         <div className="w-full">
             {breadCrumbs()}
             {displayResultLength()}
-            <PageComponentContainer variant={useMosaic ? 'mosaic' : 'list'}>
-                {quotes.map((quote, index) => (
-                    <div key={quote.id} className={useMosaic ? getMosaicClass(quote.quote_text, index) : ''}>
-                        <BackrollCard
+            <PageComponentContainer>
+                {quotes.map((quote) => (
+                    <div key={quote.id}>
+                        <BackrollCardSlim
                             quote={quote}
-                            variant="full"
                             onClick={() => handleClick(quote)}
-                            mosaic={useMosaic}
                         />
                     </div>
                 ))}
