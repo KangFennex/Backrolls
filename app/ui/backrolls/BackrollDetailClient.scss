@@ -3,14 +3,14 @@
     flex-direction: column;
     gap: 2rem;
     width: 95vw;
-    max-width: 1400px;
+    max-width: 800px;
     padding: 2rem 1rem;
     margin: auto;
 }
 
 .backroll-detail-main {
     display: grid;
-    grid-template-columns: 200px 1fr 300px;
+    grid-template-columns: 1fr;
     gap: 2rem;
     background: rgba(31, 31, 31, 0.8);
     border-radius: 15px;
@@ -20,6 +20,7 @@
 
 .backroll-detail-image {
     width: 100%;
+    max-width: 300px;
     height: 280px;
     background-size: cover;
     background-position: center;
@@ -102,9 +103,9 @@
 }
 
 .backroll-detail-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
     padding: 1.5rem;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -185,18 +186,11 @@
     }
 }
 
-/* Responsive Design */
-
 /* Large tablets and square screens */
 @media (max-width: 1200px) {
     .backroll-detail-layout {
-        max-width: 100%;
+        max-width: 800px;
         padding: 1.5rem 1rem;
-    }
-
-    .backroll-detail-main {
-        grid-template-columns: 180px 1fr 280px;
-        gap: 1.5rem;
     }
 
     .backroll-detail-image {
@@ -212,23 +206,10 @@
     }
 }
 
-/* Medium tablets - Stack details below */
+/* Medium tablets */
 @media (max-width: 900px) {
-    .backroll-detail-main {
-        grid-template-columns: 160px 1fr;
-        grid-template-rows: auto auto;
-        gap: 1.5rem;
-    }
-
     .backroll-detail-image {
         height: 220px;
-    }
-
-    .backroll-detail-info {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
     }
 
     .backroll-detail-quote {
@@ -254,7 +235,6 @@
     }
 
     .backroll-detail-main {
-        grid-template-columns: 140px 1fr;
         padding: 1.25rem;
         gap: 1.25rem;
     }
@@ -311,16 +291,13 @@
     }
 
     .backroll-detail-main {
-        grid-template-columns: 1fr;
         padding: 1rem;
         gap: 1rem;
     }
 
     .backroll-detail-image {
-        width: 100%;
         max-width: 300px;
         height: 180px;
-        margin: 0 auto;
     }
 
     .backroll-detail-content {
