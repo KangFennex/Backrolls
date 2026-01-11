@@ -41,7 +41,7 @@ export default function WorkroomPageClient({ initialData }: WorkroomPageClientPr
             });
 
             // After all images are shown (4 seconds) + 0.5 second wait, restart
-            setTimeout(runAnimation, (images.length + 1) * 500);
+            setTimeout(runAnimation, (images.length + 1) * 1000);
         };
 
         runAnimation();

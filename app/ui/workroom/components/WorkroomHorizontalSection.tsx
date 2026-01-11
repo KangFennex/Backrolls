@@ -6,7 +6,8 @@ import { trpc } from '../../../lib/trpc';
 import { useEffect, useRef, useState } from 'react';
 import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture2';
 import './WorkroomHorizontalSection.scss';
-import { MdChevronRight } from 'react-icons/md';
+import { MdChevronRight, MdChevronLeft, MdClose } from 'react-icons/md';
+import { FaExpandAlt } from "react-icons/fa";
 import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
 import { BackrollsLogoSmall } from '../../shared/BackrollsLogo';
 
@@ -24,6 +25,8 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
     const [seed] = useState(initialData.seed);
     const observerTarget = useRef<HTMLDivElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = trpc.quotes.getRandom.useInfiniteQuery(
         { limit: 15, seed },
@@ -86,11 +89,60 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
         }
     };
 
+    const handleExpandClick = () => {
+        setIsFullscreen(true);
+        setCurrentCardIndex(0);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const handleCloseFullscreen = () => {
+        setIsFullscreen(false);
+        document.body.style.overflow = 'auto';
+    };
+
+    const handleNextCard = () => {
+        if (currentCardIndex < allQuotes.length - 1) {
+            setCurrentCardIndex(prev => prev + 1);
+        } else if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+            setCurrentCardIndex(prev => prev + 1);
+        }
+    };
+
+    const handlePrevCard = () => {
+        if (currentCardIndex > 0) {
+            setCurrentCardIndex(prev => prev - 1);
+        }
+    };
+
+    // Keyboard navigation in fullscreen
+    useEffect(() => {
+        if (!isFullscreen) return;
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleCloseFullscreen();
+            } else if (e.key === 'ArrowRight') {
+                handleNextCard();
+            } else if (e.key === 'ArrowLeft') {
+                handlePrevCard();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen, currentCardIndex, allQuotes.length, hasNextPage, isFetchingNextPage]);
+
     const SectionTitle = ({ title }: { title: string }) => {
         return (
-            <div className="whs-title flex items-center gap-2">
+            <div className="whs-title flex justify-start items-center gap-2">
                 <BackrollsLogoSmall />
-                <h3 className="tektur vertical-column-title mr-auto hover:text-pink-500 transition-all duration-300 ease-in-out pl-2 md:pl-0">{title}</h3>
+                <h3 className="tektur vertical-column-title hover:text-pink-500 transition-all duration-300 ease-in-out pl-2 md:pl-0">{title}</h3>
+                <FaExpandAlt 
+                    size={20} 
+                    className="text-[#8a8a8a] cursor-pointer transition-transform duration-300 hover:scale-[1.1] hover:text-pink-400" 
+                    onClick={handleExpandClick}
+                />
             </div>
         )
     }
@@ -104,6 +156,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
     }
 
     return (
+        <>
         <section className="workroom-horizontal-section">
             <SectionTitle title="Guess the Queen" />
             <div
@@ -145,5 +198,62 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                 <MdChevronRight size={32} />
             </button>
         </section>
+
+        {/* Fullscreen Modal */}
+        {isFullscreen && (
+            <div className="whs-fullscreen-overlay">
+                <div className="whs-fullscreen-content">
+                    {/* Close Button */}
+                    <button
+                        onClick={handleCloseFullscreen}
+                        className="whs-fullscreen-close"
+                        aria-label="Close fullscreen"
+                    >
+                        <MdClose size={28} />
+                    </button>
+
+                    {/* Previous Button */}
+                    {currentCardIndex > 0 && (
+                        <button
+                            onClick={handlePrevCard}
+                            className="whs-fullscreen-nav whs-fullscreen-nav-left"
+                            aria-label="Previous card"
+                        >
+                            <MdChevronLeft size={40} />
+                        </button>
+                    )}
+
+                    {/* Card Display */}
+                    <div className="whs-fullscreen-card-container">
+                        {allQuotes[currentCardIndex] && (
+                            <div className="whs-fullscreen-card">
+                                <BackrollCardPicture2
+                                    quote={allQuotes[currentCardIndex]}
+                                    onClick={() => handleClick(allQuotes[currentCardIndex])}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Next Button */}
+                    {(currentCardIndex < allQuotes.length - 1 || hasNextPage) && (
+                        <button
+                            onClick={handleNextCard}
+                            className="whs-fullscreen-nav whs-fullscreen-nav-right"
+                            aria-label="Next card"
+                            disabled={isFetchingNextPage && currentCardIndex >= allQuotes.length - 1}
+                        >
+                            <MdChevronRight size={40} />
+                        </button>
+                    )}
+
+                    {/* Card Counter */}
+                    <div className="whs-fullscreen-counter">
+                        {currentCardIndex + 1} / {allQuotes.length}{hasNextPage ? '+' : ''}
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 }

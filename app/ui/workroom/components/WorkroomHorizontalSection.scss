@@ -227,3 +227,269 @@
         height: 40px;
     }
 }
+
+/* Fullscreen Modal Styles */
+.whs-fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: whs-fadeIn 0.3s ease-out;
+}
+
+@keyframes whs-fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.whs-fullscreen-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.whs-fullscreen-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    max-height: 90dvh;
+    animation: whs-slideIn 0.4s ease-out;
+}
+
+@keyframes whs-slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.whs-fullscreen-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Close Button */
+.whs-fullscreen-close {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    z-index: 10001;
+    transition: all 0.25s ease;
+}
+
+.whs-fullscreen-close:hover {
+    background: rgba(255, 182, 193, 0.3);
+    transform: scale(1.08);
+    box-shadow: 0 4px 20px rgba(255, 182, 193, 0.4);
+}
+
+/* Navigation Buttons */
+.whs-fullscreen-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(221, 160, 221, 0.3) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    z-index: 10001;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.whs-fullscreen-nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.whs-fullscreen-nav:not(:disabled):hover {
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.5) 0%, rgba(221, 160, 221, 0.5) 100%);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 24px rgba(255, 182, 193, 0.5);
+}
+
+.whs-fullscreen-nav-left {
+    left: 1rem;
+}
+
+.whs-fullscreen-nav-right {
+    right: 1rem;
+}
+
+/* Card Counter */
+.whs-fullscreen-counter {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1.25rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    font-weight: 500;
+    z-index: 10001;
+    white-space: nowrap;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+    .whs-fullscreen-content {
+        padding: 0.5rem;
+    }
+
+    .whs-fullscreen-card-container {
+        max-width: 100%;
+        max-height: 85vh;
+        max-height: 85dvh;
+        padding: 0 3rem;
+    }
+
+    .whs-fullscreen-close {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 44px;
+        height: 44px;
+    }
+
+    .whs-fullscreen-nav {
+        width: 48px;
+        height: 48px;
+    }
+
+    .whs-fullscreen-nav-left {
+        left: 0.5rem;
+    }
+
+    .whs-fullscreen-nav-right {
+        right: 0.5rem;
+    }
+
+    .whs-fullscreen-counter {
+        bottom: 1.5rem;
+        padding: 0.4rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .whs-fullscreen-card-container {
+        max-width: 500px;
+        max-height: 88vh;
+        max-height: 88dvh;
+    }
+
+    .whs-fullscreen-close {
+        width: 50px;
+        height: 50px;
+    }
+
+    .whs-fullscreen-nav {
+        width: 52px;
+        height: 52px;
+    }
+
+    .whs-fullscreen-nav-left {
+        left: 0.75rem;
+    }
+
+    .whs-fullscreen-nav-right {
+        right: 0.75rem;
+    }
+}
+
+/* Large Desktop Optimizations */
+@media (min-width: 1280px) {
+    .whs-fullscreen-card-container {
+        max-width: 700px;
+    }
+
+    .whs-fullscreen-close {
+        width: 52px;
+        height: 52px;
+    }
+
+    .whs-fullscreen-nav {
+        width: 60px;
+        height: 60px;
+    }
+
+    .whs-fullscreen-nav-left {
+        left: 2rem;
+    }
+
+    .whs-fullscreen-nav-right {
+        right: 2rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .whs-fullscreen-nav,
+    .whs-fullscreen-close {
+        /* Larger touch targets on touch devices */
+        min-width: 48px;
+        min-height: 48px;
+    }
+
+    .whs-fullscreen-nav:not(:disabled):active {
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    .whs-fullscreen-close:active {
+        transform: scale(0.95);
+    }
+}
