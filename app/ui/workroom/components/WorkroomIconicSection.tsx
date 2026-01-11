@@ -3,7 +3,7 @@
 import { Quote } from '../../../lib/definitions';
 import { useState, useEffect } from 'react';
 import { getSpeakerImageWithFallback } from '../../../lib/utils';
-import './WorkroomIconicSection.scss';
+import '@/app/scss/pages/WorkroomIconicSection.scss';
 
 interface WorkroomIconicSectionProps {
     initialData: {

@@ -4,6 +4,7 @@ import { favoritesRouter } from './routers/favorites';
 import { votesRouter } from './routers/votes';
 import { submittedRouter } from './routers/submitted';
 import { commentsRouter } from './routers/comments';
+import { userRouter } from './routers/user';
 
 export const appRouter = router({
     quotes: quotesRouter,
@@ -11,6 +12,7 @@ export const appRouter = router({
     votes: votesRouter,
     submitted: submittedRouter,
     comments: commentsRouter,
+    user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;

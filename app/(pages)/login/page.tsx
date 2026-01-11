@@ -5,7 +5,7 @@ export default function Login() {
         return (
                 <>
                         <PageContainer>
-                                <div className="flex flex-col items-center pt-5">
+                                <div className="flex flex-col items-center pt-5 w-full">
                                         <LoginForm />
                                 </div>
                         </PageContainer>

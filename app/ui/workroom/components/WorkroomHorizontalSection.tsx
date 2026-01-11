@@ -3,9 +3,10 @@
 import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import { trpc } from '../../../lib/trpc';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture2';
-import './WorkroomHorizontalSection.scss';
+import '@/app/scss/pages/WorkroomHorizontalSection.scss';
 import { MdChevronRight, MdChevronLeft, MdClose } from 'react-icons/md';
 import { FaExpandAlt } from "react-icons/fa";
 import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
@@ -137,7 +138,9 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
         return (
             <div className="whs-title flex justify-start items-center gap-2">
                 <BackrollsLogoSmall />
-                <h3 className="tektur vertical-column-title hover:text-pink-500 transition-all duration-300 ease-in-out pl-2 md:pl-0">{title}</h3>
+                <Link href="/guess" className="no-underline">
+                    <h3 className="tektur vertical-column-title hover:text-pink-500 transition-all duration-300 ease-in-out pl-2 md:pl-0">{title}</h3>
+                </Link>
                 <FaExpandAlt
                     size={20}
                     className="text-[#8a8a8a] cursor-pointer transition-transform duration-300 hover:scale-[1.1] hover:text-pink-400"

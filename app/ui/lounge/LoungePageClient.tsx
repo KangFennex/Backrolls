@@ -8,16 +8,18 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import FavoritesTab from './components/FavoritesTab';
 import SubmittedTab from './components/SubmittedTab';
 import CommentedTab from './components/CommentedTab';
+import ProfileSection from './components/ProfileSection';
+import MetricsSection from './components/MetricsSection';
 import { useFavorites, useSubmittedQuotes, useCommentedQuotes } from '../../lib/hooks';
 import LoungeHeader from './components/LoungeHeader';
-import '../shared/Skeleton.scss';
+import '@/app/scss/components/Skeleton.scss';
 
-type TabType = 'favorites' | 'submitted' | 'commented';
+type TabType = 'profile' | 'favorites' | 'submitted' | 'commented';
 
 export default function LoungePageClient() {
     const { user, isLoading: authLoading, isAuthenticated } = useAuth();
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState<TabType>('favorites');
+    const [activeTab, setActiveTab] = useState<TabType>('profile');
     const { data: favoritesData, isLoading: favoritesLoading } = useFavorites();
     const { data: submittedData, isLoading: submittedLoading } = useSubmittedQuotes();
     const { data: commentedData, isLoading: commentedLoading } = useCommentedQuotes();
@@ -25,6 +27,21 @@ export default function LoungePageClient() {
 
     const renderTabContent = (tab: TabType) => {
         switch (tab) {
+            case 'profile':
+                return (
+                    <div className="space-y-6">
+                        <MetricsSection />
+                        {user && user.email && user.username && user.id && (
+                            <ProfileSection
+                                user={{
+                                    email: user.email,
+                                    username: user.username,
+                                    id: user.id
+                                }}
+                            />
+                        )}
+                    </div>
+                );
             case 'favorites':
                 return <FavoritesTab data={favoritesData?.quotes || []} isLoading={favoritesLoading} />;
             case 'submitted':

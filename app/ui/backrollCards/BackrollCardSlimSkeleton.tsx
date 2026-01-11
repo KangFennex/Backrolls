@@ -1,5 +1,5 @@
-import './BackrollCardSlim.scss';
-import '../shared/Skeleton.scss';
+import '@/app/scss/backrolls/BackrollCardSlim.scss';
+import '@/app/scss/components/Skeleton.scss';
 
 export default function BackrollCardSlimSkeleton() {
   return (

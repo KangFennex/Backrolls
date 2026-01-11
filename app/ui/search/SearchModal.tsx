@@ -1,6 +1,6 @@
 'use client';
 
-import "./searchModal.scss";
+import "@/app/scss/search/searchModal.scss";
 import SearchResults from "./searchCards";
 import { SearchCardsSkeleton } from "../skeletons";
 import { useSearchContext } from "../../context/SearchContext";

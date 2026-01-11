@@ -403,12 +403,12 @@ body {
 		cursor: pointer;
 		transition: all 0.3s ease;
 		flex-shrink: 0;
-        color: #8a8a8a
+        color: #8a8a8a;
 }
 
 .nav-icon-btn:hover {
     background-color: rgba(128, 128, 128, 0.2);
-            color: var(--cool-ghost-white);
+    color: var(--cool-ghost-white);
 }
 
 @media (min-width: 768px) {

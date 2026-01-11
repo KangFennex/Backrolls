@@ -1,18 +1,18 @@
 'use client';
 
-import Search from '../search/Search';
-import { useFiltersContext } from '../../context/FiltersModalContext';
-import { FaSearch } from 'react-icons/fa';
-import { RiCloseLargeFill } from "react-icons/ri";
-import { LuPanelLeft } from "react-icons/lu";
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Search from '../search/Search';
 import { useAuth } from "../../lib/hooks";
 import { NavLogo } from '../shared/NavLogo';
-import { useState, useRef } from 'react';
-import { IoFilterSharp } from "react-icons/io5";
+import { useFiltersContext } from '../../context/FiltersModalContext';
 import { useRainbowColors } from '../../lib/hooks/useRainbowColors';
 
 // Nav Icons
+import { FaSearch } from 'react-icons/fa';
+import { RiCloseLargeFill } from "react-icons/ri";
+import { LuPanelLeft } from "react-icons/lu";
+import { IoFilterSharp } from "react-icons/io5";
 import { BsCupHotFill } from "react-icons/bs";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { FaFire } from "react-icons/fa6";
@@ -47,6 +47,19 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const { getColorForIcon } = useRainbowColors();
     const [hoveredIconIndex, setHoveredIconIndex] = useState<number | null>(null);
+    const [screenSize, setScreenSize] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+    useEffect(() => {
+        const handleResize = () => setScreenSize(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        if (screenSize >= 768 && isMobileSearchOpen) {
+            setIsMobileSearchOpen(false);
+        }
+    }, [screenSize, isMobileSearchOpen]);
 
     const handleIconMouseEnter = (index: number) => {
         setHoveredIconIndex(index);
@@ -55,6 +68,8 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
     const handleIconMouseLeave = () => {
         setHoveredIconIndex(null);
     };
+
+
 
     return (
         <div className="flex flex-col w-full pt-2">

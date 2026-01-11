@@ -1,6 +1,6 @@
 'use client';
 
-import "./search.scss";
+import "@/app/scss/search/search.scss";
 import { FaSearch, FaMicrophone } from "react-icons/fa";
 import { RiCloseLargeFill } from "react-icons/ri";
 import usePlaceholderLogic from "../../lib/utils";

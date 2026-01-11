@@ -1,7 +1,7 @@
 'use client';
 
 import { Quote } from "../../../lib/definitions";
-import '../../shared/Skeleton.scss';
+import '@/app/scss/components/Skeleton.scss';
 import BackrollCardSlimSkeleton from '../../backrollCards/BackrollCardSlimSkeleton';
 
 export default function FavoritesTab({ data, isLoading }: { data: Quote[]; isLoading: boolean }) {

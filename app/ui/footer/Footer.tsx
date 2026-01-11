@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import './Footer.scss';
+import '@/app/scss/layout/Footer.scss';
 import { FaTwitter, FaGithub, FaTelegram, FaTiktok, FaDiscord } from 'react-icons/fa';
 import { BackrollsLogo } from '../shared/BackrollsLogo';
 

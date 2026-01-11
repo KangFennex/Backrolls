@@ -5,7 +5,7 @@ import type { Quote } from '../../lib/definitions';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { CardActions } from '@mui/material';
 import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from './components/ActionButtons';
-import './BackrollCardSlim.scss';
+import '@/app/scss/backrolls/BackrollCardSlim.scss';
 
 interface ShareCopyFavoriteProps {
     quoteId: string;

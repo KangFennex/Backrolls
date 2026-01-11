@@ -1,4 +1,4 @@
-import './shared/Skeleton.scss';
+import '@/app/scss/components/Skeleton.scss';
 import BackrollCardSlimSkeleton from './backrollCards/BackrollCardSlimSkeleton';
 
 export function SearchCardsSkeleton() {

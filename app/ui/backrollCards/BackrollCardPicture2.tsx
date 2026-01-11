@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import type { Quote } from '../../lib/definitions';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
-import './BackrollCardPicture2.scss';
+import '@/app/scss/backrolls/BackrollCardPicture2.scss';
 import { FiExternalLink } from "react-icons/fi";
 import { useState } from 'react';
 

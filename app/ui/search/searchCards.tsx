@@ -58,7 +58,7 @@ function SearchResult({
             className="search-result-item cursor-pointer
            transition-all duration-150 ease-out"
         >
-            <p className="text-gray-800 hover:bg-blue-100 font-medium leading-relaxed transition-colors duration-150 p-2 pl-5">
+            <p className="text-[var(--cool-ghost-white)] hover:bg-blue-400/20 font-medium leading-relaxed transition-colors duration-150 p-2 pl-5">
                 {truncatedQuote}
             </p>
         </div >

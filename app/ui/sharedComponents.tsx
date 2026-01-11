@@ -1,4 +1,4 @@
-import './shared/PageSectionHeader.scss';
+import '@/app/scss/components/PageSectionHeader.scss';
 // import { useRainbowColors } from '../lib/hooks/useRainbowColors';
 
 

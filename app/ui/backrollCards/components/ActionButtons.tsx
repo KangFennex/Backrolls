@@ -221,7 +221,7 @@ export function CopyButton({ textToCopy }: { textToCopy: string }) {
 
     return (
         <div className="copy-btn pb-1" aria-label="Copy quote to clipboard" onClick={handleCopy}>
-            <FaRegCopy size={18} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
+            <FaRegCopy size={16} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
         </div>
     );
 }

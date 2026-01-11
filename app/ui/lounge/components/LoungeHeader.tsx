@@ -1,6 +1,6 @@
 'use client'
 
-type TabType = 'favorites' | 'submitted' | 'commented';
+type TabType = 'profile' | 'favorites' | 'submitted' | 'commented';
 
 interface LoungeHeaderProps {
     user: { username?: string | null } | null | undefined;
@@ -14,7 +14,16 @@ export default function LoungeHeader({ user, activeTab, onTabChange }: LoungeHea
             <h1 className="text-4xl font-bold text-left mb-6 text-pink-500">{`${user?.username}, let's kiki!`}</h1>
 
             {/* Tab Buttons */}
-            <div className="flex justify-baseline gap-4">
+            <div className="flex justify-baseline gap-4 flex-wrap">
+                <button
+                    className={`px-6 py-3 rounded-lg font-semibold transition-all ${activeTab === 'profile'
+                        ? 'bg-pink-500 text-white shadow-lg'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                    onClick={() => onTabChange('profile')}
+                >
+                    Profile
+                </button>
                 <button
                     className={`px-6 py-3 rounded-lg font-semibold transition-all ${activeTab === 'favorites'
                         ? 'bg-pink-500 text-white shadow-lg'

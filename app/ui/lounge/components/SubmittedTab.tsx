@@ -1,7 +1,7 @@
 'use client';
 
 import { Quote } from "../../../lib/definitions";
-import '../../shared/Skeleton.scss';
+import '@/app/scss/components/Skeleton.scss';
 import BackrollCardSlimSkeleton from '../../backrollCards/BackrollCardSlimSkeleton';
 
 export default function SubmittedTab({ data, isLoading }: { data: Quote[]; isLoading: boolean }) {
@@ -29,8 +29,8 @@ export default function SubmittedTab({ data, isLoading }: { data: Quote[]; isLoa
                         <div className="flex justify-between items-start mb-2">
                             <p className="text-lg italic text-gray-800 flex-1">&ldquo;{quote.quote_text}&rdquo;</p>
                             <span className={`ml-4 px-3 py-1 text-xs rounded-full ${quote.is_approved
-                                    ? 'bg-green-100 text-green-700'
-                                    : 'bg-yellow-100 text-yellow-700'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-yellow-100 text-yellow-700'
                                 }`}>
                                 {quote.is_approved ? 'Approved' : 'Pending'}
                             </span>

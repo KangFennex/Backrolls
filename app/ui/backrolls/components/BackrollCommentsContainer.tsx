@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { trpc } from '../../../lib/trpc';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
-import '../../shared/Skeleton.scss';
+import '@/app/scss/components/Skeleton.scss';
 
 interface BackrollCommentsContainerProps {
     children?: React.ReactNode;

@@ -6,7 +6,7 @@ import { useFreshQuotes, useHotQuotes, useQuotesByCommentCount } from '../../../
 import { BackrollCardSlim } from '../../backrollCards/BackrollCardSlim';
 import { BackrollsLogoSmall } from '../../shared/BackrollsLogo';
 import Link from 'next/link';
-import './WorkroomVerticalColumns.scss';
+import '@/app/scss/pages/WorkroomVerticalColumns.scss';
 import WorkroomVerticalColumnsSkeleton from './WorkroomVerticalColumnsSkeleton';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';

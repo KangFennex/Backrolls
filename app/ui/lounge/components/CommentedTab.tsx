@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuotesByIds } from "../../../lib/hooks";
-import '../../shared/Skeleton.scss';
+import '@/app/scss/components/Skeleton.scss';
 import BackrollCardSlimSkeleton from '../../backrollCards/BackrollCardSlimSkeleton';
 
 

@@ -8,6 +8,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../lib/hooks';
 
 // Menu Icons
 import { RiCloseLargeFill } from "react-icons/ri";
@@ -18,6 +22,7 @@ import { TbHomeSpark } from "react-icons/tb";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
+import { FiLogIn, FiLogOut } from "react-icons/fi";
 
 interface SidePanelProps {
     open: boolean;
@@ -36,6 +41,21 @@ const panelLinks = [
 ]
 
 export default function SidePanel({ open, onClose, anchor = 'left' }: SidePanelProps) {
+    const { isAuthenticated, isLoading } = useAuth();
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        await signOut({ redirect: false });
+        onClose();
+        router.push('/');
+        router.refresh();
+    };
+
+    const handleLogin = () => {
+        onClose();
+        router.push('/login');
+    };
+
     return (
         <Drawer
             anchor={anchor}
@@ -62,17 +82,90 @@ export default function SidePanel({ open, onClose, anchor = 'left' }: SidePanelP
             </Box>
 
             {/* Panel Links */}
-            <Box sx={{ flex: 1, overflowY: 'auto' }}>
+            <Box sx={{ flex: 1, overflowY: 'hidden' }}>
                 <List>
                     {panelLinks.map(({ label, href, icon }) => (
-                        <Link key={label} href={href} onClick={onClose} className="no-underline">
-                            <ListItemButton sx={{ borderRadius: 1, mx: 1, mb: 0.5, transition: 'background-color 0.3s', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } }}>
-                                {icon && <Box sx={{ mr: 2 }}>{icon}</Box>}
-                                <ListItemText primary={label} />
-                            </ListItemButton>
-                        </Link>
+                        <Box key={label}>
+                            {/* Divider before Lounge */}
+                            {label === 'Lounge' && (
+                                <Box sx={{
+                                    width: '80%',
+                                    height: '1px',
+                                    my: 2,
+                                    mx: 'auto',
+                                    background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15) 50%, transparent)',
+                                }} />
+                            )}
+                            <Link href={href} onClick={onClose} className="no-underline">
+                                <ListItemButton sx={{ borderRadius: 1, mx: 1, mb: 0.5, transition: 'background-color 0.3s', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } }}>
+                                    {icon && <Box sx={{ mr: 2 }}>{icon}</Box>}
+                                    <ListItemText primary={label} />
+                                </ListItemButton>
+                            </Link>
+                        </Box>
                     ))}
                 </List>
+            </Box>
+
+            {/* Auth Button at Bottom */}
+            <Box sx={{
+                p: 2,
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                mt: 'auto'
+            }}>
+                {!isLoading && (
+                    isAuthenticated ? (
+                        <Button
+                            fullWidth
+                            onClick={handleLogout}
+                            startIcon={<FiLogOut />}
+                            sx={{
+                                bgcolor: 'rgba(238, 91, 172, 0.15)',
+                                color: '#EE5BAC',
+                                border: '1px solid rgba(238, 91, 172, 0.3)',
+                                borderRadius: '12px',
+                                py: 1.5,
+                                textTransform: 'none',
+                                fontSize: '1rem',
+                                fontWeight: 600,
+                                transition: 'all 0.3s ease',
+                                '&:hover': {
+                                    bgcolor: 'rgba(238, 91, 172, 0.25)',
+                                    borderColor: 'rgba(238, 91, 172, 0.5)',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 4px 12px rgba(238, 91, 172, 0.2)',
+                                }
+                            }}
+                        >
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button
+                            fullWidth
+                            onClick={handleLogin}
+                            startIcon={<FiLogIn />}
+                            sx={{
+                                background: 'linear-gradient(135deg, rgba(238, 91, 172, 0.9) 0%, rgba(233, 144, 193, 0.9) 100%)',
+                                color: 'white',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                borderRadius: '12px',
+                                py: 1.5,
+                                textTransform: 'none',
+                                fontSize: '1rem',
+                                fontWeight: 600,
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 4px 12px rgba(238, 91, 172, 0.3)',
+                                '&:hover': {
+                                    background: 'linear-gradient(135deg, rgba(238, 91, 172, 1) 0%, rgba(233, 144, 193, 1) 100%)',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 6px 16px rgba(238, 91, 172, 0.4)',
+                                }
+                            }}
+                        >
+                            Login
+                        </Button>
+                    )
+                )}
             </Box>
 
         </Drawer >

@@ -1,6 +1,6 @@
 'use client';
 
-import './ClientLayout.scss';
+import '@/app/scss/layout/ClientLayout.scss';
 import { useState } from "react";
 import { useAuth } from '../lib/hooks';
 import { NavigationProvider } from '../context/NavigationContext';

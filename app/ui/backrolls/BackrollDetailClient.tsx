@@ -10,7 +10,7 @@ import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import { FaComment, FaEye } from "react-icons/fa";
-import './BackrollDetailClient.scss';
+import '@/app/scss/backrolls/BackrollDetailClient.scss';
 
 interface BackrollDetailClientProps {
     backrollId: string;
