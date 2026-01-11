@@ -169,7 +169,6 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                                 <BackrollCardPicture2
                                     quote={quote}
                                     onClick={() => handleClick(quote)}
-                                    isFullscreen={isFullscreen}
                                 />
                             </div>
                         ))}
