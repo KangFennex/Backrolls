@@ -2,6 +2,13 @@
     cursor: pointer;
     border-radius: 10px;
     overflow: hidden;
+    
+    &.fullscreen {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+    }
 }
 
 .backroll-picture-card__root {
@@ -14,6 +21,22 @@
 
     &.revealed {
         background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .backroll-picture-card.fullscreen & {
+        width: auto;
+        height: 85vh;
+        height: 85dvh;
+        max-width: 90vw;
+        aspect-ratio: auto;
+    }
+
+    @media (max-width: 640px) {
+        .backroll-picture-card.fullscreen & {
+            height: 80vh;
+            height: 80dvh;
+            max-width: 95vw;
+        }
     }
 }
 
@@ -30,6 +53,16 @@
 
     &.revealed {
         filter: blur(0);
+    }
+
+    .backroll-picture-card.fullscreen & {
+        background-size: cover;
+        background-position: center;
+        filter: blur(10px);
+        
+        &.revealed {
+            filter: blur(0);
+        }
     }
 }
 
@@ -52,6 +85,10 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
 
+    .backroll-picture-card.fullscreen & {
+        padding: 1.5rem !important;
+    }
+
     &::before {
         content: "";
         position: absolute;
@@ -69,6 +106,10 @@
         justify-content: center;
         background-color: rgba(0, 0, 0, 0.75);
         border-radius: 0 0 10px 10px;
+
+        .backroll-picture-card.fullscreen & {
+            height: 15%;
+        }
 
         &::before {
             transform: translateY(-100%);
@@ -102,6 +143,19 @@
     &::-webkit-scrollbar {
         display: none;
     }
+
+    .backroll-picture-card.fullscreen & {
+        font-size: 2rem;
+        max-height: 70vh;
+        padding: 1rem;
+    }
+
+    @media (max-width: 640px) {
+        .backroll-picture-card.fullscreen & {
+            font-size: 1.75rem;
+            padding: 0.75rem;
+        }
+    }
 }
 
 .backroll-picture-card__speaker {
@@ -114,6 +168,30 @@
     justify-content: center;
     gap: 0.5rem;
     width: 100%;
+
+    .backroll-picture-card.fullscreen & {
+        h4 {
+            font-size: 1.5rem;
+        }
+        
+        svg {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .backroll-picture-card.fullscreen & {
+            h4 {
+                font-size: 1.25rem;
+            }
+            
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
 }
 
 .backroll-picture-card__link {

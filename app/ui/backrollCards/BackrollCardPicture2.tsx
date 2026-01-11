@@ -7,13 +7,17 @@ import './BackrollCardPicture2.scss';
 import { FiExternalLink } from "react-icons/fi";
 import { useState } from 'react';
 
+type BackrollCardPicture2Props = {
+    quote: Quote;
+    onClick: () => void;
+    isFullScreen?: boolean;
+};
+
 export function BackrollCardPicture2({
     quote,
     onClick,
-}: {
-    quote: Quote;
-    onClick: () => void;
-}) {
+    isFullScreen,
+}: BackrollCardPicture2Props) {
     const speakerImage = getSpeakerImageWithFallback(quote.speaker);
 
     const [isRevealed, setIsRevealed] = useState(false);
@@ -28,7 +32,7 @@ export function BackrollCardPicture2({
     };
 
     return (
-        <div className="backroll-picture-card">
+        <div className={`backroll-picture-card${isFullScreen ? ' fullscreen' : ''}`}>
             <Box>
                 <Card className="backroll-picture-card__root" sx={{ backgroundColor: 'transparent' }} onClick={handleToggle}>
 

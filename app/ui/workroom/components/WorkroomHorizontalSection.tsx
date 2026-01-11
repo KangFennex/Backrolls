@@ -138,9 +138,9 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
             <div className="whs-title flex justify-start items-center gap-2">
                 <BackrollsLogoSmall />
                 <h3 className="tektur vertical-column-title hover:text-pink-500 transition-all duration-300 ease-in-out pl-2 md:pl-0">{title}</h3>
-                <FaExpandAlt 
-                    size={20} 
-                    className="text-[#8a8a8a] cursor-pointer transition-transform duration-300 hover:scale-[1.1] hover:text-pink-400" 
+                <FaExpandAlt
+                    size={20}
+                    className="text-[#8a8a8a] cursor-pointer transition-transform duration-300 hover:scale-[1.1] hover:text-pink-400"
                     onClick={handleExpandClick}
                 />
             </div>
@@ -157,103 +157,105 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
 
     return (
         <>
-        <section className="workroom-horizontal-section">
-            <SectionTitle title="Guess the Queen" />
-            <div
-                ref={scrollContainerRef}
-                className="whs-scroll-container"
-            >
-                <div className="whs-cards-row">
-                    {allQuotes.map((quote: Quote) => (
-                        <div key={quote.id} className="whs-card-wrapper">
-                            <BackrollCardPicture2
-                                quote={quote}
-                                onClick={() => handleClick(quote)}
-                            />
-                        </div>
-                    ))}
-
-                    {/* Must change the skeleton below to adjust to new picture card */}
-                    {/* Loading indicator and infinite scroll trigger */}
-                    <div ref={observerTarget} className="whs-loading-trigger">
-                        {isFetchingNextPage && (
-                            <div className="whs-loading" style={{ display: 'flex', gap: '1rem' }}>
-                                {Array.from({ length: 3 }).map((_, i) => (
-                                    <div key={i} className="whs-card-wrapper">
-                                        <BackrollCardVerticalSkeleton />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            {/* Scroll Right Arrow */}
-            <button
-                onClick={handleScrollRight}
-                className="whs-scroll-arrow"
-                aria-label="Scroll right"
-            >
-                <MdChevronRight size={32} />
-            </button>
-        </section>
-
-        {/* Fullscreen Modal */}
-        {isFullscreen && (
-            <div className="whs-fullscreen-overlay">
-                <div className="whs-fullscreen-content">
-                    {/* Close Button */}
-                    <button
-                        onClick={handleCloseFullscreen}
-                        className="whs-fullscreen-close"
-                        aria-label="Close fullscreen"
-                    >
-                        <MdClose size={28} />
-                    </button>
-
-                    {/* Previous Button */}
-                    {currentCardIndex > 0 && (
-                        <button
-                            onClick={handlePrevCard}
-                            className="whs-fullscreen-nav whs-fullscreen-nav-left"
-                            aria-label="Previous card"
-                        >
-                            <MdChevronLeft size={40} />
-                        </button>
-                    )}
-
-                    {/* Card Display */}
-                    <div className="whs-fullscreen-card-container">
-                        {allQuotes[currentCardIndex] && (
-                            <div className="whs-fullscreen-card">
+            <section className="workroom-horizontal-section">
+                <SectionTitle title="Guess the Queen" />
+                <div
+                    ref={scrollContainerRef}
+                    className="whs-scroll-container"
+                >
+                    <div className="whs-cards-row">
+                        {allQuotes.map((quote: Quote) => (
+                            <div key={quote.id} className="whs-card-wrapper">
                                 <BackrollCardPicture2
-                                    quote={allQuotes[currentCardIndex]}
-                                    onClick={() => handleClick(allQuotes[currentCardIndex])}
+                                    quote={quote}
+                                    onClick={() => handleClick(quote)}
+                                    isFullscreen={isFullscreen}
                                 />
                             </div>
-                        )}
-                    </div>
+                        ))}
 
-                    {/* Next Button */}
-                    {(currentCardIndex < allQuotes.length - 1 || hasNextPage) && (
-                        <button
-                            onClick={handleNextCard}
-                            className="whs-fullscreen-nav whs-fullscreen-nav-right"
-                            aria-label="Next card"
-                            disabled={isFetchingNextPage && currentCardIndex >= allQuotes.length - 1}
-                        >
-                            <MdChevronRight size={40} />
-                        </button>
-                    )}
-
-                    {/* Card Counter */}
-                    <div className="whs-fullscreen-counter">
-                        {currentCardIndex + 1} / {allQuotes.length}{hasNextPage ? '+' : ''}
+                        {/* Must change the skeleton below to adjust to new picture card */}
+                        {/* Loading indicator and infinite scroll trigger */}
+                        <div ref={observerTarget} className="whs-loading-trigger">
+                            {isFetchingNextPage && (
+                                <div className="whs-loading" style={{ display: 'flex', gap: '1rem' }}>
+                                    {Array.from({ length: 3 }).map((_, i) => (
+                                        <div key={i} className="whs-card-wrapper">
+                                            <BackrollCardVerticalSkeleton />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-        )}
+
+                {/* Scroll Right Arrow */}
+                <button
+                    onClick={handleScrollRight}
+                    className="whs-scroll-arrow"
+                    aria-label="Scroll right"
+                >
+                    <MdChevronRight size={32} />
+                </button>
+            </section>
+
+            {/* Fullscreen Modal */}
+            {isFullscreen && (
+                <div className="whs-fullscreen-overlay">
+                    <div className="whs-fullscreen-content">
+                        {/* Close Button */}
+                        <button
+                            onClick={handleCloseFullscreen}
+                            className="whs-fullscreen-close"
+                            aria-label="Close fullscreen"
+                        >
+                            <MdClose size={28} />
+                        </button>
+
+                        {/* Previous Button */}
+                        {currentCardIndex > 0 && (
+                            <button
+                                onClick={handlePrevCard}
+                                className="whs-fullscreen-nav whs-fullscreen-nav-left"
+                                aria-label="Previous card"
+                            >
+                                <MdChevronLeft size={40} />
+                            </button>
+                        )}
+
+                        {/* Card Display */}
+                        <div className="whs-fullscreen-card-container">
+                            {allQuotes[currentCardIndex] && (
+                                <div className="whs-fullscreen-card">
+                                    <BackrollCardPicture2
+                                        quote={allQuotes[currentCardIndex]}
+                                        onClick={() => handleClick(allQuotes[currentCardIndex])}
+                                        isFullScreen={true}
+                                    />
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Next Button */}
+                        {(currentCardIndex < allQuotes.length - 1 || hasNextPage) && (
+                            <button
+                                onClick={handleNextCard}
+                                className="whs-fullscreen-nav whs-fullscreen-nav-right"
+                                aria-label="Next card"
+                                disabled={isFetchingNextPage && currentCardIndex >= allQuotes.length - 1}
+                            >
+                                <MdChevronRight size={40} />
+                            </button>
+                        )}
+
+                        {/* Card Counter */}
+                        <div className="whs-fullscreen-counter">
+                            {currentCardIndex + 1} / {allQuotes.length}{hasNextPage ? '+' : ''}
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
