@@ -20,10 +20,10 @@ export function BackrollCardPicture2({
 }: BackrollCardPicture2Props) {
     const speakerImage = getSpeakerImageWithFallback(quote.speaker);
 
-    const [isRevealed, setIsRevealed] = useState(false);
+    const [isCardRevealed, setIsCardRevealed] = useState(false);
 
-    const handleToggle = () => {
-        setIsRevealed(!isRevealed);
+    const handleToggleCard = () => {
+        setIsCardRevealed(!isCardRevealed);
     };
 
     const handleLinkClick = (e: React.MouseEvent) => {
@@ -32,12 +32,12 @@ export function BackrollCardPicture2({
     };
 
     return (
-        <div className={`backroll-picture-card${isFullScreen ? ' fullscreen' : ''}`}>
+        <div className={`backroll-picture-card ${isFullScreen ? ' fullscreen' : ''}`}>
             <Box>
-                <Card className="backroll-picture-card__root" sx={{ backgroundColor: 'transparent' }} onClick={handleToggle}>
+                <Card className="backroll-picture-card__root" sx={{ backgroundColor: 'transparent' }} onClick={handleToggleCard}>
 
                     {/* Quote Content */}
-                    <CardContent className={`backroll-picture-card__overlay${isRevealed ? ' revealed' : ''}`}>
+                    <CardContent className={`backroll-picture-card__overlay${isCardRevealed ? ' revealed' : ''}`}>
                         <p className="backrollCard-font backroll-picture-card__quote">
                             {quote.quote_text}
                         </p>
@@ -54,7 +54,7 @@ export function BackrollCardPicture2({
                     </CardContent>
 
                     {/* Contestant Image */}
-                    <Box className={`backroll-picture-card__image${isRevealed ? ' revealed' : ''}`} sx={{ backgroundImage: `url(${speakerImage})` }} />
+                    <Box className={`backroll-picture-card__image${isCardRevealed ? ' revealed' : ''}`} sx={{ backgroundImage: `url(${speakerImage})` }} />
                 </Card>
             </Box>
         </div>

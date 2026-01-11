@@ -212,22 +212,12 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                             <MdClose size={28} />
                         </button>
 
-                        {/* Previous Button */}
-                        {currentCardIndex > 0 && (
-                            <button
-                                onClick={handlePrevCard}
-                                className="whs-fullscreen-nav whs-fullscreen-nav-left"
-                                aria-label="Previous card"
-                            >
-                                <MdChevronLeft size={40} />
-                            </button>
-                        )}
-
                         {/* Card Display */}
                         <div className="whs-fullscreen-card-container">
                             {allQuotes[currentCardIndex] && (
                                 <div className="whs-fullscreen-card">
                                     <BackrollCardPicture2
+                                        key={allQuotes[currentCardIndex].id}
                                         quote={allQuotes[currentCardIndex]}
                                         onClick={() => handleClick(allQuotes[currentCardIndex])}
                                         isFullScreen={true}
@@ -236,21 +226,32 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                             )}
                         </div>
 
-                        {/* Next Button */}
-                        {(currentCardIndex < allQuotes.length - 1 || hasNextPage) && (
+                        {/* Bottom Controls */}
+                        <div className="whs-fullscreen-controls">
+                            {/* Previous Button */}
+                            <button
+                                onClick={handlePrevCard}
+                                className="whs-fullscreen-nav whs-fullscreen-nav-left"
+                                aria-label="Previous card"
+                                disabled={currentCardIndex === 0}
+                            >
+                                <MdChevronLeft size={24} />
+                            </button>
+
+                            {/* Card Counter */}
+                            <div className="whs-fullscreen-counter">
+                                {currentCardIndex + 1} / {allQuotes.length}{hasNextPage ? '+' : ''}
+                            </div>
+
+                            {/* Next Button */}
                             <button
                                 onClick={handleNextCard}
                                 className="whs-fullscreen-nav whs-fullscreen-nav-right"
                                 aria-label="Next card"
                                 disabled={isFetchingNextPage && currentCardIndex >= allQuotes.length - 1}
                             >
-                                <MdChevronRight size={40} />
+                                <MdChevronRight size={24} />
                             </button>
-                        )}
-
-                        {/* Card Counter */}
-                        <div className="whs-fullscreen-counter">
-                            {currentCardIndex + 1} / {allQuotes.length}{hasNextPage ? '+' : ''}
                         </div>
                     </div>
                 </div>

@@ -26,7 +26,7 @@
     .backroll-picture-card.fullscreen & {
         width: auto;
         height: 85vh;
-        height: 85dvh;
+        height: 80dvh;
         max-width: 90vw;
         aspect-ratio: auto;
     }
@@ -108,7 +108,8 @@
         border-radius: 0 0 10px 10px;
 
         .backroll-picture-card.fullscreen & {
-            height: 15%;
+            height: 22%;
+            min-height: 100px;
         }
 
         &::before {
@@ -117,7 +118,7 @@
 
         .backroll-picture-card__quote {
             max-height: 0;
-            opacity: 0;
+            display: none;
             margin: 0;
         }
 
