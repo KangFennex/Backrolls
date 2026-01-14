@@ -279,7 +279,7 @@ export const communityRouter = router({
 
                 // Add slug to updates
                 const updatedValues = { ...updates, slug: uniqueSlug };
-                
+
                 // Update community
                 const [updatedCommunity] = await db
                     .update(communities)
@@ -344,7 +344,14 @@ export const communityRouter = router({
         .query(async ({ input }) => {
             const { communityId, sortBy, limit, cursor } = input;
 
-            let query = db
+            // Determine order by clause based on sortBy
+            const orderByClause = sortBy === 'hot'
+                ? [desc(posts.hot_score), desc(posts.created_at)]
+                : sortBy === 'new'
+                    ? [desc(posts.created_at)]
+                    : [desc(posts.vote_count), desc(posts.created_at)];
+
+            const results = await db
                 .select()
                 .from(posts)
                 .where(
@@ -354,18 +361,9 @@ export const communityRouter = router({
                             lt(posts.id, cursor)
                         )
                         : eq(posts.community_id, communityId)
-                );
-
-            // Apply sorting
-            if (sortBy === 'hot') {
-                query = query.orderBy(desc(posts.hot_score), desc(posts.created_at));
-            } else if (sortBy === 'new') {
-                query = query.orderBy(desc(posts.created_at));
-            } else if (sortBy === 'top') {
-                query = query.orderBy(desc(posts.vote_count), desc(posts.created_at));
-            }
-
-            const results = await query.limit(limit + 1);
+                )
+                .orderBy(...orderByClause)
+                .limit(limit + 1);
 
             const hasMore = results.length > limit;
             const items = hasMore ? results.slice(0, limit) : results;
