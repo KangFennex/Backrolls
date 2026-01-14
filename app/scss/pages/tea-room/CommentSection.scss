@@ -1,0 +1,223 @@
+.comment-section {
+    background: linear-gradient(135deg, rgba(#1a1a2e, 0.6) 0%, rgba(#16213e, 0.6) 100%);
+    border: 1px solid rgba(#EE5BAC, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.comment-section__title {
+    font-family: 'Atma-Regular', sans-serif;
+    font-size: 1.3rem;
+    color: #EE5BAC;
+    margin: 0 0 1.5rem 0;
+}
+
+.comment-section__form {
+    margin-bottom: 2rem;
+}
+
+.comment-section__login-prompt {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(#EE5BAC, 0.05);
+    border: 1px solid rgba(#EE5BAC, 0.1);
+    border-radius: 8px;
+    color: rgba(#FFFFF0, 0.7);
+    font-family: 'Tektur', monospace;
+    margin-bottom: 2rem;
+}
+
+.comment-section__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment-section__empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: rgba(#FFFFF0, 0.5);
+    font-family: 'Tektur', monospace;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    textarea {
+        width: 100%;
+        background: rgba(#EE5BAC, 0.05);
+        border: 1px solid rgba(#EE5BAC, 0.2);
+        color: #FFFFF0;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-family: 'Tektur', monospace;
+        font-size: 0.95rem;
+        resize: vertical;
+        min-height: 80px;
+        transition: all 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: #EE5BAC;
+            background: rgba(#EE5BAC, 0.08);
+        }
+
+        &::placeholder {
+            color: rgba(#FFFFF0, 0.4);
+        }
+    }
+}
+
+.comment-form__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-card {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(#EE5BAC, 0.02);
+    border: 1px solid rgba(#EE5BAC, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba(#EE5BAC, 0.04);
+    }
+
+    @for $i from 1 through 5 {
+        &--depth-#{$i} {
+            margin-left: #{$i * 1.5}rem;
+
+            @media (max-width: 768px) {
+                margin-left: #{$i * 0.75}rem;
+            }
+        }
+    }
+}
+
+.comment-card__vote-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0;
+}
+
+.comment-card__content {
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-family: 'Tektur', monospace;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.comment-card__author {
+    font-weight: 600;
+    color: #EE5BAC;
+}
+
+.comment-card__date {
+    color: rgba(#FFFFF0, 0.5);
+}
+
+.comment-card__edited {
+    color: rgba(#FFFFF0, 0.4);
+    font-style: italic;
+}
+
+.comment-card__body {
+    color: #FFFFF0;
+    font-family: 'Tektur', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-bottom: 0.75rem;
+
+    &--deleted {
+        color: rgba(#FFFFF0, 0.5);
+        font-style: italic;
+    }
+}
+
+.comment-card__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: rgba(#FFFFF0, 0.6);
+    font-family: 'Tektur', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.3s ease;
+
+    &:hover:not(:disabled) {
+        color: #EE5BAC;
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    &--danger {
+        &:hover:not(:disabled) {
+            color: #ff4444;
+        }
+    }
+}
+
+.comment-card__edit {
+    margin: 0.5rem 0;
+
+    textarea {
+        width: 100%;
+        background: rgba(#EE5BAC, 0.05);
+        border: 1px solid rgba(#EE5BAC, 0.2);
+        color: #FFFFF0;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-family: 'Tektur', monospace;
+        font-size: 0.95rem;
+        resize: vertical;
+        min-height: 80px;
+        margin-bottom: 0.5rem;
+
+        &:focus {
+            outline: none;
+            border-color: #EE5BAC;
+            background: rgba(#EE5BAC, 0.08);
+        }
+    }
+}
+
+.comment-card__reply-form {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(#EE5BAC, 0.1);
+}
+
+.comment-card__replies {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

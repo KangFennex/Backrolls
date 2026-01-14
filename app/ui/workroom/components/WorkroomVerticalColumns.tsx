@@ -118,10 +118,10 @@ export default function WorkroomVerticalColumns() {
                         initialLimit={10}
                     />
                     <Column
-                        title="Talk of the Town"
+                        title="Popular Backrolls"
                         data={commentCountData?.quotes || []}
                         isLoading={false}
-                        link="/kiki"
+                        link="/popular"
                         initialLimit={10}
                     />
                     <Column

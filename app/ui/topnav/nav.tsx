@@ -19,6 +19,7 @@ import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
 import { PiGameControllerBold } from "react-icons/pi";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 type NavItem = {
     title: string;
@@ -27,10 +28,10 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-    { title: 'Fresh Backrolls', href: '/fresh', icon: <FaRegClock /> },
-    { title: ' Hot Backrolls', href: '/hot', icon: <FaFire /> },
-    { title: 'Have a kiki', href: '/kiki', icon: <FaRegCommentDots /> },
+    { title: 'Hot Backrolls', href: '/hot', icon: <FaFire /> },
+    { title: 'Popular Backrolls', href: '/popular', icon: <FaRegCommentDots /> },
     { title: 'Random Backrolls', href: '/random', icon: <GiPerspectiveDiceSixFacesRandom /> },
+    { label: 'Guess', href: '/guess', icon: <FaRegQuestionCircle /> },
     { title: 'Quiz', href: '/quiz', icon: <PiGameControllerBold /> },
     { title: 'Tea Room', href: '/tea-room', icon: <BsCupHotFill /> },
 ];

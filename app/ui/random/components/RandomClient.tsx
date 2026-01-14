@@ -97,7 +97,7 @@ export default function RandomClient({ randomQuotes }: RandomClientProps) {
     }
 
     return (
-        <div className="w-full min-w-full h-screen">
+        <div className="w-full min-w-full">
             <PageSectionHeader title="Random Backrolls" />
             <div className="flex items-center justify-center gap-3 mb-6 pt-4">
                 <select

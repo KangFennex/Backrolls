@@ -32,6 +32,7 @@
     box-sizing: border-box;
     overflow: visible;
     margin: 0 auto;
+    flex: 1; /* Allow content to grow and push footer down */
 }
 
 .main-content {

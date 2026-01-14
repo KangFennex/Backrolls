@@ -23,6 +23,7 @@ import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 interface SidePanelProps {
     open: boolean;
@@ -34,6 +35,7 @@ const panelLinks = [
     { label: 'WorkRoom', href: '/', icon: <TbHomeSpark /> },
     { label: 'Hot Backrolls', href: '/hot', icon: <FaFire /> },
     { label: 'Fresh Backrolls', href: '/fresh', icon: <FaRegClock /> },
+    { label: 'Guess', href: '/guess', icon: <FaRegQuestionCircle /> },
     { label: 'Have a kiki', href: '/kiki', icon: <FaRegCommentDots /> },
     { label: 'Tea Room', href: '/tea-room', icon: <BsCupHot /> },
     { label: 'Lounge', href: '/lounge', icon: <RiSofaLine /> },

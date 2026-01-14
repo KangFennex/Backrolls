@@ -242,7 +242,7 @@ export default function GuessPageClient({ initialData }: GuessPageClientProps) {
 
             {/* Loading State */}
             {isFilteredLoading && (
-                <div className="flex gap-4 px-4 overflow-x-auto">
+                <div className="flex gap-2 px-4 overflow-x-hidden">
                     {Array.from({ length: 3 }).map((_, i) => (
                         <div key={i} style={{ minWidth: '300px' }}>
                             <BackrollCardVerticalSkeleton />

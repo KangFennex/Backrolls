@@ -97,19 +97,29 @@ export const communities = pgTable('communities', {
     slug: varchar('slug', { length: 100 }).notNull().unique(),
     description: text('description'),
     info_content: text('info_content'),
+
+    // Media
     icon_url: text('icon_url'),
     banner_url: text('banner_url'),
+
+    // Ownership and timestamps
     creator_id: uuid('creator_id').notNull().references(() => users.id, { onDelete: 'restrict' }),
     created_at: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
     updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
+
+    // Settings
     privacy: text('privacy', { enum: ['public', 'private', 'restricted'] }).default('public').notNull(),
     allow_text_posts: boolean('allow_text_posts').default(true).notNull(),
     allow_link_posts: boolean('allow_link_posts').default(true).notNull(),
     allow_image_posts: boolean('allow_image_posts').default(true).notNull(),
     allow_video_posts: boolean('allow_video_posts').default(true).notNull(),
     require_post_approval: boolean('require_post_approval').default(false).notNull(),
+
+    // Stats (denormalized for performance)
     member_count: bigint('member_count', { mode: 'number' }).default(0).notNull(),
     post_count: bigint('post_count', { mode: 'number' }).default(0).notNull(),
+
+    // Status
     is_archived: boolean('is_archived').default(false).notNull(),
     archived_at: timestamp('archived_at', { mode: 'string' }),
 });
@@ -119,10 +129,18 @@ export const communityMembers = pgTable('community_members', {
     id: uuid('id').defaultRandom().primaryKey(),
     community_id: uuid('community_id').notNull().references(() => communities.id, { onDelete: 'cascade' }),
     user_id: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+
+    // Role & permissions
     role: text('role', { enum: ['member', 'moderator', 'admin'] }).default('member').notNull(),
+
+    // Timestamps
     joined_at: timestamp('joined_at', { mode: 'string' }).defaultNow().notNull(),
+
+    // Preferences
     notifications_enabled: boolean('notifications_enabled').default(true).notNull(),
-    show_in_feed: boolean('show_in_feed').default(true).notNull(),
+    show_in_feed: boolean('show_in_feed').default(true).notNull(), // Hide community from personal feed
+
+    // Moderation
     is_banned: boolean('is_banned').default(false).notNull(),
     banned_at: timestamp('banned_at', { mode: 'string' }),
     banned_by: uuid('banned_by'),
@@ -134,35 +152,33 @@ export const communityMembers = pgTable('community_members', {
 export const posts = pgTable('posts', {
     id: uuid('id').defaultRandom().primaryKey(),
     community_id: uuid('community_id').notNull().references(() => communities.id, { onDelete: 'cascade' }),
-    community_slug: varchar('community_slug', { length: 100 }).notNull(), // Denormalized for performance
     user_id: uuid('user_id').references(() => users.id, { onDelete: 'set null' }), // Keep post if user deleted
-    username: varchar('username', { length: 100 }), // Denormalized for performance, nullable if user deleted
-
+    
     // Content
     title: varchar('title', { length: 300 }).notNull(),
     body: text('body'), // Markdown content for text posts
     post_type: text('post_type', { enum: ['text', 'link', 'image', 'video'] }).notNull(),
-
+    
     // For link/media posts
     url: text('url'), // External link or uploaded media URL
     thumbnail_url: text('thumbnail_url'),
-
+    
     // Metadata
     created_at: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
     updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
     edited_at: timestamp('edited_at', { mode: 'string' }),
-
+    
     // Stats (denormalized)
     vote_count: bigint('vote_count', { mode: 'number' }).default(0).notNull(),
     upvote_count: bigint('upvote_count', { mode: 'number' }).default(0).notNull(),
     downvote_count: bigint('downvote_count', { mode: 'number' }).default(0).notNull(),
     comment_count: bigint('comment_count', { mode: 'number' }).default(0).notNull(),
     view_count: bigint('view_count', { mode: 'number' }).default(0).notNull(),
-
+    
     // Ranking (for hot algorithm)
     hot_score: bigint('hot_score', { mode: 'number' }).default(0).notNull(),
     controversy_score: bigint('controversy_score', { mode: 'number' }).default(0).notNull(),
-
+    
     // Moderation
     is_pinned: boolean('is_pinned').default(false).notNull(),
     is_locked: boolean('is_locked').default(false).notNull(), // Prevent new comments
@@ -171,11 +187,11 @@ export const posts = pgTable('posts', {
     removed_at: timestamp('removed_at', { mode: 'string' }),
     removed_by: uuid('removed_by'),
     removal_reason: text('removal_reason'),
-
+    
     // Filtering
     is_nsfw: boolean('is_nsfw').default(false).notNull(),
     is_spoiler: boolean('is_spoiler').default(false).notNull(),
-
+    
     // Flair
     flair_id: uuid('flair_id'), // Optional, link to community flair
     flair_text: varchar('flair_text', { length: 64 }), // Custom text override
@@ -185,6 +201,7 @@ export const posts = pgTable('posts', {
     createdAtIdx: index('posts_created_at_idx').on(table.created_at),
     hotScoreIdx: index('posts_hot_score_idx').on(table.hot_score),
     voteCountIdx: index('posts_vote_count_idx').on(table.vote_count),
+    // Composite for community feed queries
     communityHotIdx: index('posts_community_hot_idx').on(table.community_id, table.hot_score),
     communityNewIdx: index('posts_community_new_idx').on(table.community_id, table.created_at),
 }));
@@ -209,30 +226,30 @@ export const postComments = pgTable('post_comments', {
     post_id: uuid('post_id').notNull().references(() => posts.id, { onDelete: 'cascade' }),
     parent_comment_id: uuid('parent_comment_id').references(postCommentsSelfRef, { onDelete: 'cascade' }),
     user_id: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
-
+    
     comment_text: text('comment_text').notNull(),
-
+    
     created_at: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
     updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
     edited_at: timestamp('edited_at', { mode: 'string' }),
-
+    
     is_edited: boolean('is_edited').default(false).notNull(),
-
+    
     // Stats
     vote_count: bigint('vote_count', { mode: 'number' }).default(0).notNull(),
     upvote_count: bigint('upvote_count', { mode: 'number' }).default(0).notNull(),
     downvote_count: bigint('downvote_count', { mode: 'number' }).default(0).notNull(),
     reply_count: bigint('reply_count', { mode: 'number' }).default(0).notNull(),
-
+    
     // Depth tracking (optimization for nested comments)
     depth: bigint('depth', { mode: 'number' }).default(0).notNull(),
-
+    
     // Moderation
     is_removed: boolean('is_removed').default(false).notNull(),
     removed_at: timestamp('removed_at', { mode: 'string' }),
     removed_by: uuid('removed_by'),
     removal_reason: text('removal_reason'),
-
+    
     status: text('status', { enum: ['active', 'deleted', 'removed'] }).default('active'),
 }, (table) => ({
     postIdx: index('post_comments_post_id_idx').on(table.post_id),
@@ -255,7 +272,7 @@ export const communityFlairs = pgTable('community_flairs', {
     id: uuid('id').defaultRandom().primaryKey(),
     community_id: uuid('community_id').notNull().references(() => communities.id, { onDelete: 'cascade' }),
     text: varchar('text', { length: 64 }).notNull(),
-    background_color: varchar('background_color', { length: 7 }),
+    background_color: varchar('background_color', { length: 7 }), // Hex color
     text_color: varchar('text_color', { length: 7 }),
     created_at: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
 }, (table) => ({

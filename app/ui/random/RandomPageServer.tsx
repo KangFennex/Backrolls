@@ -6,7 +6,7 @@ export default async function RandomPageServer({ searchParams }: RandomPageServe
     const limit = params.limit ? parseInt(params.limit, 10) : 3; // Default to 3 quotes
 
     return (
-        <div key={limit}>
+        <div key={limit} className="w-full">
             <RandomServer limit={limit} />
         </div>
     )
