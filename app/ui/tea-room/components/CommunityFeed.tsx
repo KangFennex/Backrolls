@@ -37,8 +37,14 @@ export function CommunityFeed({ communityId, sortBy }: CommunityFeedProps) {
     }, [communityId, sortBy]);
 
     const handleLoadMore = () => {
-        if (data?.nextOffset !== undefined) {
+        // Check if it's the popular feed with nextOffset
+        if (data && 'nextOffset' in data && data.nextOffset !== undefined) {
             setOffset(data.nextOffset);
+        }
+        // For community posts with nextCursor, we need to refactor to use infinite query
+        // For now, just log a warning
+        else if (data && 'nextCursor' in data && data.nextCursor !== undefined) {
+            console.warn('Load more for community posts requires cursor-based pagination refactor');
         }
     };
 
@@ -80,7 +86,7 @@ export function CommunityFeed({ communityId, sortBy }: CommunityFeedProps) {
                 <PostCard key={post.id} post={post} />
             ))}
 
-            {data.hasMore && (
+            {(('hasMore' in data && data.hasMore) || ('nextCursor' in data && data.nextCursor)) && (
                 <button
                     className="tea-room__load-more"
                     onClick={handleLoadMore}

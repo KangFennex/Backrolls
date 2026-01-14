@@ -9,8 +9,8 @@ import '@/app/scss/pages/WorkroomHorizontalSection.scss';
 
 interface GuessCardsSectionProps {
     allQuotes: Quote[];
-    scrollContainerRef: RefObject<HTMLDivElement>;
-    observerTarget: RefObject<HTMLDivElement>;
+    scrollContainerRef: RefObject<HTMLDivElement | null>;
+    observerTarget: RefObject<HTMLDivElement | null>;
     useFilters: boolean;
     isFetchingRandom: boolean;
     onQuoteClick: (quote: Quote) => void;

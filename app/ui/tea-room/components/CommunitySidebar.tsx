@@ -221,9 +221,9 @@ function CreateCommunityModal({ onClose }: { onClose: () => void }) {
                         <button
                             type="submit"
                             className="community-sidebar__btn-primary"
-                            disabled={createMutation.isLoading || name.length < 4 || description.length < 20}
+                            disabled={createMutation.isPending || name.length < 4 || description.length < 20}
                         >
-                            {createMutation.isLoading ? 'Creating...' : 'Create Community'}
+                            {createMutation.isPending ? 'Creating...' : 'Create Community'}
                         </button>
                     </div>
 

@@ -20,7 +20,7 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
         onSuccess: () => {
             utils.postComment.getPostComments.invalidate({ postId });
             if (parentCommentId) {
-                utils.postComment.getCommentReplies.invalidate({ parentCommentId });
+                utils.postComment.getCommentReplies.invalidate({ commentId: parentCommentId });
             }
             utils.post.getPost.invalidate({ postId });
             setBody('');
@@ -48,7 +48,7 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
 
         createComment.mutate({
             postId,
-            body: body.trim(),
+            commentText: body.trim(),
             parentCommentId,
         });
     };
@@ -56,7 +56,7 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
     return (
         <form onSubmit={handleSubmit} className="comment-form">
             {error && <div className="form-error">{error}</div>}
-            
+
             <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}

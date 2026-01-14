@@ -31,7 +31,7 @@ const navItems: NavItem[] = [
     { title: 'Hot Backrolls', href: '/hot', icon: <FaFire /> },
     { title: 'Popular Backrolls', href: '/popular', icon: <FaRegCommentDots /> },
     { title: 'Random Backrolls', href: '/random', icon: <GiPerspectiveDiceSixFacesRandom /> },
-    { label: 'Guess', href: '/guess', icon: <FaRegQuestionCircle /> },
+    { title: 'Guess', href: '/guess', icon: <FaRegQuestionCircle /> },
     { title: 'Quiz', href: '/quiz', icon: <PiGameControllerBold /> },
     { title: 'Tea Room', href: '/tea-room', icon: <BsCupHotFill /> },
 ];

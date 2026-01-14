@@ -96,7 +96,14 @@ export const postCommentRouter = router({
         .query(async ({ input }) => {
             const { postId, sortBy, limit } = input;
 
-            let query = db
+            // Determine order by clause based on sortBy
+            const orderByClause = sortBy === 'hot'
+                ? [desc(postComments.vote_count), desc(postComments.created_at)]
+                : sortBy === 'new'
+                    ? [desc(postComments.created_at)]
+                    : [desc(postComments.vote_count)];
+
+            const results = await db
                 .select()
                 .from(postComments)
                 .where(
@@ -104,18 +111,10 @@ export const postCommentRouter = router({
                         eq(postComments.post_id, postId),
                         eq(postComments.status, 'active')
                     )
-                );
+                )
+                .orderBy(...orderByClause)
+                .limit(limit);
 
-            // Apply sorting
-            if (sortBy === 'hot') {
-                query = query.orderBy(desc(postComments.vote_count), desc(postComments.created_at));
-            } else if (sortBy === 'new') {
-                query = query.orderBy(desc(postComments.created_at));
-            } else if (sortBy === 'top') {
-                query = query.orderBy(desc(postComments.vote_count));
-            }
-
-            const results = await query.limit(limit);
             return results;
         }),
 
@@ -323,7 +322,14 @@ export const postCommentRouter = router({
         .query(async ({ input }) => {
             const { commentId, sortBy, limit } = input;
 
-            let query = db
+            // Determine order by clause based on sortBy
+            const orderByClause = sortBy === 'hot'
+                ? [desc(postComments.vote_count), desc(postComments.created_at)]
+                : sortBy === 'new'
+                    ? [desc(postComments.created_at)]
+                    : [desc(postComments.vote_count)];
+
+            const results = await db
                 .select()
                 .from(postComments)
                 .where(
@@ -331,18 +337,10 @@ export const postCommentRouter = router({
                         eq(postComments.parent_comment_id, commentId),
                         eq(postComments.status, 'active')
                     )
-                );
+                )
+                .orderBy(...orderByClause)
+                .limit(limit);
 
-            // Apply sorting
-            if (sortBy === 'hot') {
-                query = query.orderBy(desc(postComments.vote_count), desc(postComments.created_at));
-            } else if (sortBy === 'new') {
-                query = query.orderBy(desc(postComments.created_at));
-            } else if (sortBy === 'top') {
-                query = query.orderBy(desc(postComments.vote_count));
-            }
-
-            const results = await query.limit(limit);
             return results;
         }),
 });

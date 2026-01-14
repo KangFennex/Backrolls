@@ -20,7 +20,7 @@ export function CreatePostModal({ onClose, communityId }: CreatePostModalProps) 
     const [error, setError] = useState('');
 
     const utils = trpc.useUtils();
-    const { data: communities } = trpc.community.listCommunities.useQuery();
+    const { data: communities } = trpc.community.listCommunities.useQuery({ limit: 50 });
     const createPost = trpc.post.createPost.useMutation({
         onSuccess: () => {
             utils.feed.getPopularFeed.invalidate();
@@ -85,8 +85,8 @@ export function CreatePostModal({ onClose, communityId }: CreatePostModalProps) 
             title: title.trim(),
             body: body.trim() || undefined,
             postType,
-            imageUrl: postType === 'image' ? imageUrl.trim() : undefined,
-            linkUrl: postType === 'link' ? linkUrl.trim() : undefined,
+            url: postType === 'link' ? linkUrl.trim() : postType === 'image' ? imageUrl.trim() : undefined,
+            thumbnailUrl: postType === 'image' ? imageUrl.trim() : undefined,
             isNsfw,
             isSpoiler,
         });
@@ -117,7 +117,7 @@ export function CreatePostModal({ onClose, communityId }: CreatePostModalProps) 
                                 required
                             >
                                 <option value="">Select a community</option>
-                                {communities?.map((community) => (
+                                {communities?.items.map((community) => (
                                     <option key={community.id} value={community.id}>
                                         {community.name}
                                     </option>

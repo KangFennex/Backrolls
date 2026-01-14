@@ -4,16 +4,6 @@ import { db } from "../../db";
 import { communities, communityMembers, posts } from "../../db/schema";
 import { desc, lt, eq, and, sql } from "drizzle-orm";
 
-// Community Router
-// - `createCommunity` - Create new community DONE
-// - `getCommunity` - Get single community details DONE
-// - `listCommunities` - Get all/filtered communities DONE
-// - `joinCommunity` - Subscribe to a community 
-// - `leaveCommunity` - Unsubscribe
-// - `updateCommunity` - Edit settings (mods only)
-// - `getCommunityMembers` - List members
-// - `getCommunityPosts` - Get posts in a community
-
 export const communityRouter = router({
     // Create a new community
     createCommunity: protectedProcedure

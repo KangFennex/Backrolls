@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { db } from "../../db";
-import { posts, postVotes, communityMembers } from "../../db/schema";
+import { posts, postVotes, communityMembers, communities } from "../../db/schema";
 import { desc, lt, eq, and } from "drizzle-orm";
 
 export const postRouter = router({
@@ -43,11 +43,23 @@ export const postRouter = router({
                 throw new Error("You are banned from this community");
             }
 
+            // Get community slug
+            const [community] = await db
+                .select({ slug: communities.slug })
+                .from(communities)
+                .where(eq(communities.id, communityId))
+                .limit(1);
+
+            if (!community) {
+                throw new Error("Community not found");
+            }
+
             // Create post
             const [newPost] = await db
                 .insert(posts)
                 .values({
                     community_id: communityId,
+                    community_slug: community.slug,
                     user_id: userId,
                     title,
                     body,
@@ -218,7 +230,7 @@ export const postRouter = router({
                     // Change vote
                     const [updatedVote] = await db
                         .update(postVotes)
-                        .set({ 
+                        .set({
                             vote_type: voteType,
                             updated_at: new Date().toISOString(),
                         })

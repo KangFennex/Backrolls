@@ -25,7 +25,7 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
             const previousPost = utils.post.getPost.getData({ postId });
 
             if (previousPost) {
-                const currentVote = userVote?.voteType;
+                const currentVote = userVote?.vote_type;
                 let voteDelta = 0;
 
                 if (currentVote === voteType) {
@@ -38,7 +38,7 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
 
                 utils.post.getPost.setData({ postId }, {
                     ...previousPost,
-                    voteCount: previousPost.voteCount + voteDelta,
+                    vote_count: previousPost.vote_count + voteDelta,
                 });
             }
 
@@ -59,7 +59,7 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
         votePost.mutate({ postId, voteType });
     };
 
-    const formatDate = (date: Date) => {
+    const formatDate = (date: string | Date) => {
         const now = new Date();
         const diffInMinutes = Math.floor((now.getTime() - new Date(date).getTime()) / (1000 * 60));
 
@@ -96,22 +96,22 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
             <div className="post-detail__breadcrumb">
                 <Link href="/tea-room">Tea Room</Link>
                 <span className="separator">/</span>
-                <Link href={`/tea-room?community=${post.communityId}`}>{post.community_slug}</Link>
+                <Link href={`/tea-room?community=${post.community_id}`}>{post.community_slug}</Link>
             </div>
 
             <div className="post-detail__container">
                 <div className="post-detail__votes">
                     <button
-                        className={`vote-btn vote-btn--up ${userVote?.voteType === 'up' ? 'vote-btn--active' : ''}`}
+                        className={`vote-btn vote-btn--up ${userVote?.vote_type === 'up' ? 'vote-btn--active' : ''}`}
                         onClick={() => handleVote('up')}
                         disabled={!user?.id || votePost.isPending}
                         aria-label="Upvote"
                     >
                         ▲
                     </button>
-                    <span className="vote-count">{post.voteCount}</span>
+                    <span className="vote-count">{post.vote_count}</span>
                     <button
-                        className={`vote-btn vote-btn--down ${userVote?.voteType === 'down' ? 'vote-btn--active' : ''}`}
+                        className={`vote-btn vote-btn--down ${userVote?.vote_type === 'down' ? 'vote-btn--active' : ''}`}
                         onClick={() => handleVote('down')}
                         disabled={!user?.id || votePost.isPending}
                         aria-label="Downvote"
@@ -123,8 +123,8 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
                 <div className="post-detail__content">
                     <div className="post-detail__header">
                         <div className="post-detail__meta">
-                            <Link href={`/tea-room?community=${post.communityId}`} className="community-link">
-                                {post.communityName}
+                            <Link href={`/tea-room?community=${post.community_id}`} className="community-link">
+                                {post.community_slug}
                             </Link>
                             <span className="separator">•</span>
                             <span className="author">Posted by {post.username || '[unknown]'}</span>

@@ -6,14 +6,24 @@ import { CommentForm } from './CommentForm';
 
 interface Comment {
     id: string;
-    body: string | null;
-    authorId: string | null;
-    authorName: string | null;
-    createdAt: Date;
-    updatedAt: Date;
-    voteCount: number;
-    replyCount: number;
-    isDeleted: boolean;
+    comment_text: string;
+    user_id: string | null;
+    created_at: string;
+    updated_at: string;
+    vote_count: number;
+    reply_count: number;
+    status: 'active' | 'deleted' | 'removed' | null;
+    is_edited: boolean;
+    edited_at: string | null;
+    post_id: string;
+    parent_comment_id: string | null;
+    depth: number;
+    is_removed: boolean;
+    removed_at: string | null;
+    removed_by: string | null;
+    removal_reason: string | null;
+    upvote_count: number;
+    downvote_count: number;
 }
 
 interface CommentCardProps {
@@ -27,7 +37,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
     const [showReplyForm, setShowReplyForm] = useState(false);
     const [showReplies, setShowReplies] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [editBody, setEditBody] = useState(comment.body || '');
+    const [editBody, setEditBody] = useState(comment.comment_text || '');
 
     const utils = trpc.useUtils();
 
@@ -37,8 +47,8 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
     );
 
     const { data: replies, isLoading: repliesLoading } = trpc.postComment.getCommentReplies.useQuery(
-        { parentCommentId: comment.id },
-        { enabled: showReplies && comment.replyCount > 0 }
+        { commentId: comment.id },
+        { enabled: showReplies && comment.reply_count > 0 }
     );
 
     const voteComment = trpc.postComment.voteComment.useMutation({
@@ -72,7 +82,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
         if (!editBody.trim()) return;
         updateComment.mutate({
             commentId: comment.id,
-            body: editBody.trim(),
+            commentText: editBody.trim(),
         });
     };
 
@@ -82,7 +92,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
         }
     };
 
-    const formatDate = (date: Date) => {
+    const formatDate = (date: string) => {
         const now = new Date();
         const diffInMinutes = Math.floor((now.getTime() - new Date(date).getTime()) / (1000 * 60));
 
@@ -93,23 +103,23 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
         return new Date(date).toLocaleDateString();
     };
 
-    const isAuthor = currentUserId === comment.authorId;
+    const isAuthor = currentUserId === comment.user_id;
     const canReply = depth < 10;
 
     return (
         <div className={`comment-card comment-card--depth-${Math.min(depth, 5)}`}>
             <div className="comment-card__vote-bar">
                 <button
-                    className={`vote-btn vote-btn--up ${userVote?.voteType === 'up' ? 'vote-btn--active' : ''}`}
+                    className={`vote-btn vote-btn--up ${userVote?.vote_type === 'up' ? 'vote-btn--active' : ''}`}
                     onClick={() => handleVote('up')}
                     disabled={!currentUserId || voteComment.isPending}
                     aria-label="Upvote"
                 >
                     ▲
                 </button>
-                <span className="vote-count">{comment.voteCount}</span>
+                <span className="vote-count">{comment.vote_count}</span>
                 <button
-                    className={`vote-btn vote-btn--down ${userVote?.voteType === 'down' ? 'vote-btn--active' : ''}`}
+                    className={`vote-btn vote-btn--down ${userVote?.vote_type === 'down' ? 'vote-btn--active' : ''}`}
                     onClick={() => handleVote('down')}
                     disabled={!currentUserId || voteComment.isPending}
                     aria-label="Downvote"
@@ -121,15 +131,15 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
             <div className="comment-card__content">
                 <div className="comment-card__meta">
                     <span className="comment-card__author">
-                        {comment.isDeleted ? '[deleted]' : comment.authorName || '[unknown]'}
+                        {comment.status === 'deleted' ? '[deleted]' : '[user]'}
                     </span>
-                    <span className="comment-card__date">{formatDate(comment.createdAt)}</span>
-                    {comment.updatedAt.getTime() !== comment.createdAt.getTime() && (
+                    <span className="comment-card__date">{formatDate(comment.created_at)}</span>
+                    {comment.is_edited && (
                         <span className="comment-card__edited">(edited)</span>
                     )}
                 </div>
 
-                {comment.isDeleted ? (
+                {comment.status === 'deleted' ? (
                     <div className="comment-card__body comment-card__body--deleted">
                         [This comment has been deleted]
                     </div>
@@ -146,7 +156,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                                 className="btn btn--secondary btn--sm"
                                 onClick={() => {
                                     setIsEditing(false);
-                                    setEditBody(comment.body || '');
+                                    setEditBody(comment.comment_text || '');
                                 }}
                             >
                                 Cancel
@@ -161,10 +171,10 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                         </div>
                     </div>
                 ) : (
-                    <div className="comment-card__body">{comment.body}</div>
+                    <div className="comment-card__body">{comment.comment_text}</div>
                 )}
 
-                {!comment.isDeleted && (
+                {comment.status !== 'deleted' && (
                     <div className="comment-card__actions">
                         {canReply && currentUserId && (
                             <button
@@ -191,12 +201,12 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                                 </button>
                             </>
                         )}
-                        {comment.replyCount > 0 && (
+                        {comment.reply_count > 0 && (
                             <button
                                 className="action-btn"
                                 onClick={() => setShowReplies(!showReplies)}
                             >
-                                {showReplies ? 'Hide' : 'Show'} {comment.replyCount} {comment.replyCount === 1 ? 'reply' : 'replies'}
+                                {showReplies ? 'Hide' : 'Show'} {comment.reply_count} {comment.reply_count === 1 ? 'reply' : 'replies'}
                             </button>
                         )}
                     </div>
@@ -214,7 +224,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                     </div>
                 )}
 
-                {showReplies && comment.replyCount > 0 && (
+                {showReplies && comment.reply_count > 0 && (
                     <div className="comment-card__replies">
                         {repliesLoading ? (
                             <div className="loading-spinner">Loading replies...</div>

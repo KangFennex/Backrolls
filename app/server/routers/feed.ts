@@ -36,8 +36,14 @@ export const feedRouter = router({
 
             const communityIds = subscriptions.map(s => s.communityId);
 
-            // Build query based on sort type
-            let query = db
+            // Determine order by clause based on sortBy
+            const orderByClause = sortBy === 'hot'
+                ? [desc(posts.hot_score), desc(posts.created_at)]
+                : sortBy === 'new'
+                    ? [desc(posts.created_at)]
+                    : [desc(posts.vote_count), desc(posts.created_at)];
+
+            const results = await db
                 .select()
                 .from(posts)
                 .where(
@@ -46,18 +52,8 @@ export const feedRouter = router({
                         eq(posts.is_removed, false),
                         eq(posts.is_archived, false)
                     )
-                );
-
-            // Apply sorting
-            if (sortBy === 'hot') {
-                query = query.orderBy(desc(posts.hot_score), desc(posts.created_at));
-            } else if (sortBy === 'new') {
-                query = query.orderBy(desc(posts.created_at));
-            } else if (sortBy === 'top') {
-                query = query.orderBy(desc(posts.vote_count), desc(posts.created_at));
-            }
-
-            const results = await query
+                )
+                .orderBy(...orderByClause)
                 .offset(offset)
                 .limit(limit + 1);
 
@@ -120,8 +116,14 @@ export const feedRouter = router({
 
             const communityIds = publicCommunities.map(c => c.id);
 
-            // Build base query
-            let query = db
+            // Determine order by clause based on sortBy
+            const orderByClause = sortBy === 'hot'
+                ? [desc(posts.hot_score), desc(posts.created_at)]
+                : sortBy === 'new'
+                    ? [desc(posts.created_at)]
+                    : [desc(posts.vote_count), desc(posts.created_at)];
+
+            const results = await db
                 .select()
                 .from(posts)
                 .where(
@@ -130,29 +132,8 @@ export const feedRouter = router({
                         eq(posts.is_removed, false),
                         eq(posts.is_archived, false)
                     )
-                );
-
-            // Apply time filter for top posts
-            if (timeThreshold) {
-                query = query.where(
-                    and(
-                        inArray(posts.community_id, communityIds),
-                        eq(posts.is_removed, false),
-                        eq(posts.is_archived, false)
-                    )
-                );
-            }
-
-            // Apply sorting
-            if (sortBy === 'hot') {
-                query = query.orderBy(desc(posts.hot_score), desc(posts.created_at));
-            } else if (sortBy === 'new') {
-                query = query.orderBy(desc(posts.created_at));
-            } else if (sortBy === 'top') {
-                query = query.orderBy(desc(posts.vote_count), desc(posts.created_at));
-            }
-
-            const results = await query
+                )
+                .orderBy(...orderByClause)
                 .offset(offset)
                 .limit(limit + 1);
 
@@ -206,42 +187,32 @@ export const feedRouter = router({
         .query(async ({ input }) => {
             const { query: searchQuery, communityId, sortBy, limit, offset } = input;
 
-            // Build base query with text search
-            // Note: This uses PostgreSQL's ILIKE. For production, consider using full-text search
-            let queryBuilder = db
+            // Determine where conditions based on communityId
+            const whereConditions = communityId
+                ? and(
+                    eq(posts.community_id, communityId),
+                    eq(posts.is_removed, false),
+                    eq(posts.is_archived, false)
+                )
+                : and(
+                    eq(posts.is_removed, false),
+                    eq(posts.is_archived, false)
+                );
+
+            // Determine order by clause based on sortBy
+            const orderByClause = sortBy === 'hot'
+                ? [desc(posts.hot_score), desc(posts.created_at)]
+                : sortBy === 'new'
+                    ? [desc(posts.created_at)]
+                    : sortBy === 'top'
+                        ? [desc(posts.vote_count), desc(posts.created_at)]
+                        : [desc(posts.created_at)]; // relevance - prioritize recent posts
+
+            const results = await db
                 .select()
                 .from(posts)
-                .where(
-                    and(
-                        eq(posts.is_removed, false),
-                        eq(posts.is_archived, false)
-                    )
-                );
-
-            // Filter by community if specified
-            if (communityId) {
-                queryBuilder = queryBuilder.where(
-                    and(
-                        eq(posts.community_id, communityId),
-                        eq(posts.is_removed, false),
-                        eq(posts.is_archived, false)
-                    )
-                );
-            }
-
-            // Apply sorting
-            if (sortBy === 'hot') {
-                queryBuilder = queryBuilder.orderBy(desc(posts.hot_score), desc(posts.created_at));
-            } else if (sortBy === 'new') {
-                queryBuilder = queryBuilder.orderBy(desc(posts.created_at));
-            } else if (sortBy === 'top') {
-                queryBuilder = queryBuilder.orderBy(desc(posts.vote_count), desc(posts.created_at));
-            } else {
-                // Relevance - prioritize title matches, then recent posts
-                queryBuilder = queryBuilder.orderBy(desc(posts.created_at));
-            }
-
-            const results = await queryBuilder
+                .where(whereConditions)
+                .orderBy(...orderByClause)
                 .offset(offset)
                 .limit(limit + 1);
 
