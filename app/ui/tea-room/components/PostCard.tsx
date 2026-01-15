@@ -76,7 +76,7 @@ export function PostCard({ post }: PostCardProps) {
         <div className="post-card">
             <div className="post-card__wrapper">
 
-                {/* Meta - spans full width */}
+                {/* Meta */}
                 <div className="post-card__meta">
                     <div>
                         <span className="post-card__community">
@@ -127,9 +127,9 @@ export function PostCard({ post }: PostCardProps) {
                     )}
                 </div>
 
-                {/* Thumbnail for image/video posts - centered between content and actions */}
+                {/* Thumbnail for image/video posts */}
                 {(post.post_type === 'image' || post.post_type === 'video') && post.thumbnail_url && (
-                    <div className="post-card__thumbnail">
+                    <div className={`post-card__thumbnail ${post.is_nsfw ? 'post-card__thumbnail--nsfw' : ''} ${post.is_spoiler ? 'post-card__thumbnail--spoiler' : ''}`}>
                         <img src={post.thumbnail_url} alt="" />
                     </div>
                 )}

@@ -211,6 +211,12 @@
         border-radius: 10px;
         margin: auto;
     }
+
+    &--nsfw,
+    &--spoiler {
+        filter: blur(50px);
+        position: relative;
+    }
 }
 
 .post-card__actions {
