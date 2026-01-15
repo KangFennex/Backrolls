@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { trpc } from '@/app/lib/trpc';
+import { FaRegComment } from "react-icons/fa6";
+import { IoShareSocialSharp } from "react-icons/io5";
+import { BsThreeDots } from "react-icons/bs";
 import '@/app/scss/pages/tea-room/PostCard.scss';
 
 interface PostCardProps {
@@ -71,99 +74,105 @@ export function PostCard({ post }: PostCardProps) {
 
     return (
         <div className="post-card">
-            {/* Vote buttons */}
-            <div className="post-card__votes">
-                <button
-                    className={`post-card__vote ${voteState === 'up' ? 'post-card__vote--active' : ''}`}
-                    onClick={() => handleVote('up')}
-                >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 5l5 7H5z" />
-                    </svg>
-                </button>
-                <span className="post-card__vote-count">{localVoteCount}</span>
-                <button
-                    className={`post-card__vote ${voteState === 'down' ? 'post-card__vote--active' : ''}`}
-                    onClick={() => handleVote('down')}
-                >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 15l-5-7h10z" />
-                    </svg>
-                </button>
-            </div>
+            <div className="post-card__wrapper">
 
-            {/* Thumbnail for image/video posts */}
-            {(post.post_type === 'image' || post.post_type === 'video') && post.thumbnail_url && (
-                <div className="post-card__thumbnail">
-                    <img src={post.thumbnail_url} alt="" />
-                </div>
-            )}
-
-            {/* Content */}
-            <div className="post-card__content">
+                {/* Meta - spans full width */}
                 <div className="post-card__meta">
-                    <span className="post-card__community">
-                        c/{post.community_slug}
-                    </span>
-                    <span className="post-card__separator">•</span>
-                    <span className="post-card__time">{formatDate(post.created_at)}</span>
-                    {post.flair_text && (
-                        <>
-                            <span className="post-card__separator">•</span>
-                            <span className="post-card__flair">{post.flair_text}</span>
-                        </>
-                    )}
+                    <div>
+                        <span className="post-card__community">
+                            c/{post.community_slug}
+                        </span>
+                        <span className="post-card__separator">•</span>
+                        <span className="post-card__time">{formatDate(post.created_at)}</span>
+                        {post.flair_text && (
+                            <>
+                                <span className="post-card__separator">•</span>
+                                <span className="post-card__flair">{post.flair_text}</span>
+                            </>
+                        )}
+                    </div>
+                    <div className="post-card__menu">
+                        <BsThreeDots size={18} />
+                    </div>
                 </div>
 
-                <Link href={`/tea-room/${post.id}`} className="post-card__title-link">
-                    <h3 className="post-card__title">
-                        {post.is_nsfw && <span className="post-card__nsfw">NSFW</span>}
-                        {post.is_spoiler && <span className="post-card__spoiler">Spoiler</span>}
-                        {post.title}
-                    </h3>
-                </Link>
-
-                {post.body && (
-                    <p className="post-card__body">
-                        {post.body.length > 300
-                            ? `${post.body.substring(0, 300)}...`
-                            : post.body
-                        }
-                    </p>
-                )}
-
-                {post.post_type === 'link' && post.url && (
-                    <a
-                        href={post.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="post-card__link"
-                    >
-                        {new URL(post.url).hostname} ↗
-                    </a>
-                )}
-
-                <div className="post-card__actions">
-                    <Link href={`/tea-room/${post.id}`} className="post-card__action">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M2 2h12v9H5l-3 3V2z" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                        </svg>
-                        {post.comment_count} Comments
+                {/* Content */}
+                <div className="post-card__content">
+                    <Link href={`/tea-room/${post.id}`} className="post-card__title-link">
+                        <h3 className="post-card__title">
+                            {post.is_nsfw && <span className="post-card__nsfw">NSFW</span>}
+                            {post.is_spoiler && <span className="post-card__spoiler">Spoiler</span>}
+                            {post.title}
+                        </h3>
                     </Link>
-                    <button className="post-card__action">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M11 2h3v3M13 2L8 7M7 3H3v10h10V9" />
+
+                    {post.body && (
+                        <p className="post-card__body">
+                            {post.body.length > 300
+                                ? `${post.body.substring(0, 300)}...`
+                                : post.body
+                            }
+                        </p>
+                    )}
+
+                    {post.post_type === 'link' && post.url && (
+                        <a
+                            href={post.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="post-card__link"
+                        >
+                            {new URL(post.url).hostname} ↗
+                        </a>
+                    )}
+
+                    <div className="post-card__actions">
+                        <Link href={`/tea-room/${post.id}`} className="post-card__action-btn">
+                            <div className="post-card__action-content">
+                                <FaRegComment size={18} />
+                                <span className="post-card__action-count">
+                                    {post.comment_count > 99 ? '99+' : post.comment_count}
+                                </span>
+                            </div>
+                        </Link>
+                        <button className="post-card__action-btn">
+                            <div className="post-card__action-content">
+                                <IoShareSocialSharp size={18} />
+                                <span className="post-card__action-text">
+                                    Share
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Vote buttons */}
+                <div className="post-card__votes">
+                    <button
+                        className={`post-card__vote ${voteState === 'up' ? 'post-card__vote--active' : ''}`}
+                        onClick={() => handleVote('up')}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 5l5 7H5z" />
                         </svg>
-                        Share
                     </button>
-                    <button className="post-card__action">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <circle cx="8" cy="8" r="1.5" />
-                            <circle cx="8" cy="3" r="1.5" />
-                            <circle cx="8" cy="13" r="1.5" />
+                    <span className="post-card__vote-count">{localVoteCount}</span>
+                    <button
+                        className={`post-card__vote ${voteState === 'down' ? 'post-card__vote--active' : ''}`}
+                        onClick={() => handleVote('down')}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 15l-5-7h10z" />
                         </svg>
                     </button>
                 </div>
+
+                {/* Thumbnail for image/video posts */}
+                {(post.post_type === 'image' || post.post_type === 'video') && post.thumbnail_url && (
+                    <div className="post-card__thumbnail">
+                        <img src={post.thumbnail_url} alt="" />
+                    </div>
+                )}
             </div>
         </div>
     );
