@@ -38,7 +38,7 @@ export default function QuizClient() {
 
     if (isLoading) {
         return (
-            <PageComponentContainer variant="list">
+            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
                 <QuizLoading />
             </PageComponentContainer>
         );
@@ -46,7 +46,7 @@ export default function QuizClient() {
 
     if (error) {
         return (
-            <PageComponentContainer variant="list">
+            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
                 <QuizError message={error.message} onRetry={() => refetch()} />
             </PageComponentContainer>
         );
@@ -54,7 +54,7 @@ export default function QuizClient() {
 
     if (!questions || questions.length === 0) {
         return (
-            <PageComponentContainer variant="list">
+            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
                 <QuizEmpty onRetry={() => refetch()} />
             </PageComponentContainer>
         );
@@ -124,7 +124,7 @@ export default function QuizClient() {
 
     if (displayLead) {
         return (
-            <PageComponentContainer variant="list">
+            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
                 <QuizLead onStartQuiz={handleLeadToggle} />
             </PageComponentContainer>
         );
@@ -132,7 +132,7 @@ export default function QuizClient() {
 
     if (showResult) {
         return (
-            <PageComponentContainer variant="list">
+            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
                 <QuizResults
                     score={score}
                     totalQuestions={questions.length}
@@ -144,7 +144,7 @@ export default function QuizClient() {
     }
 
     return (
-        <PageComponentContainer variant="list">
+        <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
             <Container
                 maxWidth="md"
                 className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
