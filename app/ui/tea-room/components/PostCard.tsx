@@ -125,54 +125,63 @@ export function PostCard({ post }: PostCardProps) {
                             {new URL(post.url).hostname} ↗
                         </a>
                     )}
-
-                    <div className="post-card__actions">
-                        <Link href={`/tea-room/${post.id}`} className="post-card__action-btn">
-                            <div className="post-card__action-content">
-                                <FaRegComment size={18} />
-                                <span className="post-card__action-count">
-                                    {post.comment_count > 99 ? '99+' : post.comment_count}
-                                </span>
-                            </div>
-                        </Link>
-                        <button className="post-card__action-btn">
-                            <div className="post-card__action-content">
-                                <IoShareSocialSharp size={18} />
-                                <span className="post-card__action-text">
-                                    Share
-                                </span>
-                            </div>
-                        </button>
-                    </div>
                 </div>
 
-                {/* Vote buttons */}
-                <div className="post-card__votes">
-                    <button
-                        className={`post-card__vote ${voteState === 'up' ? 'post-card__vote--active' : ''}`}
-                        onClick={() => handleVote('up')}
-                    >
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10 5l5 7H5z" />
-                        </svg>
-                    </button>
-                    <span className="post-card__vote-count">{localVoteCount}</span>
-                    <button
-                        className={`post-card__vote ${voteState === 'down' ? 'post-card__vote--active' : ''}`}
-                        onClick={() => handleVote('down')}
-                    >
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10 15l-5-7h10z" />
-                        </svg>
-                    </button>
-                </div>
-
-                {/* Thumbnail for image/video posts */}
+                {/* Thumbnail for image/video posts - centered between content and actions */}
                 {(post.post_type === 'image' || post.post_type === 'video') && post.thumbnail_url && (
                     <div className="post-card__thumbnail">
                         <img src={post.thumbnail_url} alt="" />
                     </div>
                 )}
+
+                {/* Actions with vote buttons */}
+                <div className="post-card__actions">
+                    <div className="post-card__action-btn">
+                        <div className="post-card__action-content post-card__action-content--votes">
+                            <button
+                                className={`post-card__vote-btn ${voteState === 'up' ? 'post-card__vote-btn--active' : ''}`}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleVote('up');
+                                }}
+                                disabled={voteMutation.isPending}
+                            >
+                                <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 5l5 7H5z" />
+                                </svg>
+                            </button>
+                            <span className="post-card__vote-count">{localVoteCount}</span>
+                            <button
+                                className={`post-card__vote-btn ${voteState === 'down' ? 'post-card__vote-btn--active' : ''}`}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleVote('down');
+                                }}
+                                disabled={voteMutation.isPending}
+                            >
+                                <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 15l-5-7h10z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <Link href={`/tea-room/${post.id}`} className="post-card__action-btn">
+                        <div className="post-card__action-content">
+                            <FaRegComment size={18} />
+                            <span className="post-card__action-count">
+                                {post.comment_count > 99 ? '99+' : post.comment_count}
+                            </span>
+                        </div>
+                    </Link>
+                    <button className="post-card__action-btn">
+                        <div className="post-card__action-content">
+                            <IoShareSocialSharp size={18} />
+                            <span className="post-card__action-text">
+                                Share
+                            </span>
+                        </div>
+                    </button>
+                </div>
             </div>
         </div>
     );

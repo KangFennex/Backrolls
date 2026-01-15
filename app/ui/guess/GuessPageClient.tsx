@@ -220,7 +220,7 @@ export default function GuessPageClient({ initialData }: GuessPageClientProps) {
     }, [isFullscreen, currentCardIndex, allQuotes.length, hasNextRandom, isFetchingRandom, useFilters]);
 
     return (
-        <main className="flex flex-col mt-2 pb-12">
+        <main className="flex flex-col pb-12">
             <PageSectionHeader title="Guess the Queen" />
 
             <GuessFilters
