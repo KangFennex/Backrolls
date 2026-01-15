@@ -93,9 +93,13 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     text-align: left;
     word-break: break-word;
+
+    @media (min-width: 769px) {
+        padding: 0.5rem;
+    }
 }
 
 .post-card__meta {
@@ -108,7 +112,11 @@
     font-size: 0.85rem;
     color: rgba(#FFFFF0, 0.7);
     font-family: 'Google Sans', sans-serif;
-    padding: 0 0.5rem;
+    padding: 0.5rem 1rem;
+
+    @media (min-width: 769px) {
+        padding: 0.5rem;
+    }
 
     & div {
         display: flex;
@@ -270,10 +278,10 @@
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;
-    padding: 0 0.5rem 0.5rem 0.5rem;
+    padding: 0 1rem 0.5rem 0;
 
     @media (min-width: 768px) {
-        grid-column: 1 / 2;
+        padding: 0 0.5rem 0.5rem 0.5rem;
     }
 }   
 
