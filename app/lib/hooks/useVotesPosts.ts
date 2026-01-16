@@ -1,5 +1,3 @@
-'use client';
-
 import { trpc } from '../trpc';
 import { useSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
@@ -28,7 +26,7 @@ export function useTogglePostVote() {
             // Optimistically update user's vote status
             utils.postVotes.getPostUserVotes.setData(undefined, (old) => {
                 const votes = old?.votes || [];
-                const existingVoteIndex = votes.findIndex(v => v.post_id === variables.postId);
+                const existingVoteIndex = votes.findIndex(v => v.post_id === variables.post_id);
 
                 let newVotes;
                 if (existingVoteIndex >= 0) {
@@ -67,9 +65,7 @@ export function useTogglePostVote() {
         onSettled: (data, error, variables) => {
             // Sync user's vote status with server
             utils.postVotes.getPostUserVotes.invalidate();
-            
-            // Update the post's vote count (if you have post queries, invalidate them here)
-            // utils.posts.getPost.invalidate({ postId: variables.postId });
+            utils.posts.getPost.invalidate({ post_id: variables.post_id });
         },
     });
 }
