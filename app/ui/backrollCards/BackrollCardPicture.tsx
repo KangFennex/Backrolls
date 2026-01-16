@@ -13,7 +13,7 @@ type BackrollCardPicture2Props = {
     isFullScreen?: boolean;
 };
 
-export function BackrollCardPicture2({
+export function BackrollCardPicture({
     quote,
     onClick,
     isFullScreen,

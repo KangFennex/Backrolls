@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation';
-import { BackrollCardSlim2 } from '../backrollCards/BackrollCardSlim2';
+import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../pageComponentContainer';
 import { SectionSkeleton } from '../skeletons';
@@ -57,7 +57,7 @@ export default function BackrollsPageClient() {
         <PageComponentContainer>
             {quotes.map((quote) => (
                 <div key={quote.id}>
-                    <BackrollCardSlim2
+                    <BackrollCardSlim
                         quote={quote}
                         onClick={() => handleClick(quote)}
                     />

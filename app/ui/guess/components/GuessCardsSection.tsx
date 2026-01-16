@@ -2,7 +2,7 @@
 
 import { RefObject } from 'react';
 import { Quote } from '@/app/lib/definitions';
-import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture2';
+import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture';
 import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
 import { MdChevronRight } from 'react-icons/md';
 import '@/app/scss/pages/WorkroomHorizontalSection.scss';

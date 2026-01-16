@@ -5,7 +5,7 @@ import { useNavigationContext } from '../../../context/NavigationContext';
 import { trpc } from '../../../lib/trpc';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture2';
+import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
 import '@/app/scss/pages/WorkroomHorizontalSection.scss';
 import { MdChevronRight, MdChevronLeft, MdClose } from 'react-icons/md';
 import { FaExpandAlt } from "react-icons/fa";
@@ -169,7 +169,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                     <div className="whs-cards-row">
                         {allQuotes.map((quote: Quote) => (
                             <div key={quote.id} className="whs-card-wrapper">
-                                <BackrollCardPicture2
+                                <BackrollCardPicture
                                     quote={quote}
                                     onClick={() => handleClick(quote)}
                                 />
@@ -219,7 +219,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                         <div className="whs-fullscreen-card-container">
                             {allQuotes[currentCardIndex] && (
                                 <div className="whs-fullscreen-card">
-                                    <BackrollCardPicture2
+                                    <BackrollCardPicture
                                         key={allQuotes[currentCardIndex].id}
                                         quote={allQuotes[currentCardIndex]}
                                         onClick={() => handleClick(allQuotes[currentCardIndex])}

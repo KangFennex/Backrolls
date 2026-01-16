@@ -1,7 +1,7 @@
 'use client'
 
 import { Quote } from '@/app/lib/definitions';
-import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture2';
+import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture';
 import { MdChevronLeft, MdChevronRight, MdClose } from 'react-icons/md';
 import '@/app/scss/pages/WorkroomHorizontalSection.scss';
 
