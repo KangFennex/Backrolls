@@ -31,20 +31,20 @@ export function useTogglePostVote() {
                 let newVotes;
                 if (existingVoteIndex >= 0) {
                     const existingVote = votes[existingVoteIndex];
-                    if (existingVote.vote_type === variables.voteType) {
+                    if (existingVote.vote_type === variables.vote_type) {
                         // Remove vote
-                        newVotes = votes.filter(v => v.post_id !== variables.postId);
+                        newVotes = votes.filter(v => v.post_id !== variables.post_id);
                     } else {
                         // Switch vote
                         newVotes = [
                             ...votes.slice(0, existingVoteIndex),
-                            { post_id: variables.postId, vote_type: variables.voteType },
+                            { post_id: variables.post_id, vote_type: variables.vote_type },
                             ...votes.slice(existingVoteIndex + 1)
                         ];
                     }
                 } else {
                     // Add new vote
-                    newVotes = [...votes, { post_id: variables.postId, vote_type: variables.voteType }];
+                    newVotes = [...votes, { post_id: variables.post_id, vote_type: variables.vote_type }];
                 }
 
                 return { votes: newVotes };
@@ -65,7 +65,9 @@ export function useTogglePostVote() {
         onSettled: (data, error, variables) => {
             // Sync user's vote status with server
             utils.postVotes.getPostUserVotes.invalidate();
-            utils.posts.getPost.invalidate({ post_id: variables.post_id });
+            utils.post.getPost.invalidate({ postId: variables.post_id });
         },
     });
 }
+
+

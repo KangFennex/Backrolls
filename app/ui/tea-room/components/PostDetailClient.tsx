@@ -1,7 +1,7 @@
 'use client';
 
 import { trpc } from '@/app/lib/trpc';
-import { useAuth } from '../../../lib/hooks';
+import { useAuth, useVotesPosts, useTogglePostVote } from '../../../lib/hooks';
 import { CommentSection } from '@/app/ui/tea-room/components/CommentSection';
 import Link from 'next/link';
 import '@/app/scss/pages/tea-room/PostDetailPage.scss';
@@ -13,50 +13,13 @@ interface PostDetailClientProps {
 export function PostDetailClient({ postId }: PostDetailClientProps) {
     const { user, isLoading: authLoading, isAuthenticated } = useAuth();
     const { data: post, isLoading, error } = trpc.post.getPost.useQuery({ postId });
-    const { data: userVote } = trpc.post.getUserVote.useQuery(
-        { postId },
-        { enabled: !!user?.id }
-    );
+    const { data: votesData } = useVotesPosts();
+    const toggleVoteMutation = useTogglePostVote();
 
-    const utils = trpc.useUtils();
-    const votePost = trpc.post.votePost.useMutation({
-        onMutate: async ({ voteType }) => {
-            await utils.post.getPost.cancel({ postId });
-            const previousPost = utils.post.getPost.getData({ postId });
-
-            if (previousPost) {
-                const currentVote = userVote?.vote_type;
-                let voteDelta = 0;
-
-                if (currentVote === voteType) {
-                    voteDelta = voteType === 'up' ? -1 : 1;
-                } else if (currentVote) {
-                    voteDelta = voteType === 'up' ? 2 : -2;
-                } else {
-                    voteDelta = voteType === 'up' ? 1 : -1;
-                }
-
-                utils.post.getPost.setData({ postId }, {
-                    ...previousPost,
-                    vote_count: previousPost.vote_count + voteDelta,
-                });
-            }
-
-            return { previousPost };
-        },
-        onError: (err, variables, context) => {
-            if (context?.previousPost) {
-                utils.post.getPost.setData({ postId }, context.previousPost);
-            }
-        },
-        onSettled: () => {
-            utils.post.getPost.invalidate({ postId });
-            utils.post.getUserVote.invalidate({ postId });
-        }
-    });
+    const userVote = votesData?.votes.find(v => v.post_id === postId);
 
     const handleVote = (voteType: 'up' | 'down') => {
-        votePost.mutate({ postId, voteType });
+        toggleVoteMutation.mutate({ post_id: postId, vote_type: voteType });
     };
 
     const formatDate = (date: string | Date) => {
@@ -104,7 +67,7 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
                     <button
                         className={`vote-btn vote-btn--up ${userVote?.vote_type === 'up' ? 'vote-btn--active' : ''}`}
                         onClick={() => handleVote('up')}
-                        disabled={!user?.id || votePost.isPending}
+                        disabled={!user?.id || toggleVoteMutation.isPending}
                         aria-label="Upvote"
                     >
                         ▲
@@ -113,7 +76,7 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
                     <button
                         className={`vote-btn vote-btn--down ${userVote?.vote_type === 'down' ? 'vote-btn--active' : ''}`}
                         onClick={() => handleVote('down')}
-                        disabled={!user?.id || votePost.isPending}
+                        disabled={!user?.id || toggleVoteMutation.isPending}
                         aria-label="Downvote"
                     >
                         ▼
