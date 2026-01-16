@@ -8,9 +8,9 @@ import BackrollCommentsContainer from './components/BackrollCommentsContainer';
 import Breadcrumb from '../breadcrumbs';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
-import { FaComment, FaEye } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 import '@/app/scss/backrolls/BackrollDetailClient.scss';
+import { QuoteActionButtons } from '../shared/ActionButtons';
 
 interface BackrollDetailClientProps {
     backrollId: string;
@@ -53,82 +53,82 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
     return (
         <>
             <div className="backroll-detail-layout">
-                {/* Main Section - Image, Quote, and Details */}
+
+                {/* Main Section - Breadcrumb, Quote, and Details */}
                 <div className="backroll-detail-main">
+
+                    {/* Breadcrumb */}
+                    <div className="backroll-detail-breadcrumb">
+                        <Breadcrumb
+                            region={quote.region}
+                            seriesCode={quote.series_code}
+                            series={quote.series}
+                            season={quote.season}
+                            episode={quote.episode}
+                        />
+                    </div>
+
+                    {/* Quote Text */}
+                    <div className="backroll-detail-quote">
+                        <p className="quote-text backrollCard-font">{quote.quote_text}</p>
+                        <p className="quote-speaker">— {quote.speaker}</p>
+                    </div>
+
+
                     {/* Contestant Image */}
                     <div
                         className="backroll-detail-image"
                         style={{ backgroundImage: `url(${speakerImage})` }}
                     />
 
-                    {/* Middle Content - Quote */}
-                    <div className="backroll-detail-content">
-                        {/* Breadcrumb */}
-                        <div className="backroll-detail-breadcrumb">
-                            <Breadcrumb
-                                region={quote.region}
-                                seriesCode={quote.series_code}
-                                series={quote.series}
-                                season={quote.season}
-                                episode={quote.episode}
-                            />
-                        </div>
-
-                        {/* Stats Row */}
-                        <div className="backroll-detail-stats">
-                            <div className="stat-item">
-                                <AiOutlineLike className="stat-icon" />
-                                <span>{quote.vote_count}</span>
-                            </div>
-                            <div className="stat-item">
-                                <FaComment className="stat-icon" />
-                                <span>{quote.comment_count}</span>
-                            </div>
-                            <div className="stat-item">
-                                <FaEye className="stat-icon" />
-                                <span>313K</span>
-                            </div>
-                        </div>
-
-                        {/* Quote Text */}
-                        <div className="backroll-detail-quote">
-                            <p className="quote-text backrollCard-font">{quote.quote_text}</p>
-                            <p className="quote-speaker">— {quote.speaker}</p>
+                    {/* Action Buttons */}
+                    <div className="backroll-detail-stats">
+                        <QuoteActionButtons
+                            quoteId={backrollId}
+                            quoteText={quote.quote_text}
+                            initialVoteCount={quote.vote_count}
+                        />
+                        <div className="stat-item">
+                            <FaEye className="stat-icon" />
+                            <span>313K</span>
                         </div>
                     </div>
 
-                    {/* Right Column - Details */}
-                    <div className="backroll-detail-info">
-                        <div className="info-row">
-                            <span className="info-label">Series:</span>
-                            <span className="info-value">{quote.series}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="info-label">Season:</span>
-                            <span className="info-value">{quote.season}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="info-label">Episode:</span>
-                            <span className="info-value">{quote.episode}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="info-label">Episode Title:</span>
-                            <span className="info-value">{quote.episode_title || `S${quote.season}E${quote.episode}`}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="info-label">Timestamp:</span>
-                            <span className="info-value">{quote.timestamp}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="info-label">Air Date:</span>
-                            <span className="info-value">{quote.air_date}</span>
-                        </div>
-                        {quote.original_language !== 'english' && quote.original_language_text && (
+                    {/* Middle Content - Stats */}
+                    <div className="backroll-detail-content">
+                        {/* Details */}
+                        <div className="backroll-detail-info">
                             <div className="info-row">
-                                <span className="info-label">Original:</span>
-                                <span className="info-value">{quote.original_language_text}</span>
+                                <span className="info-label">Series:</span>
+                                <span className="info-value">{quote.series}</span>
                             </div>
-                        )}
+                            <div className="info-row">
+                                <span className="info-label">Season:</span>
+                                <span className="info-value">{quote.season}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Episode:</span>
+                                <span className="info-value">{quote.episode}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Episode Title:</span>
+                                <span className="info-value">{quote.episode_title || `S${quote.season}E${quote.episode}`}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Timestamp:</span>
+                                <span className="info-value">{quote.timestamp}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="info-label">Air Date:</span>
+                                <span className="info-value">{quote.air_date}</span>
+                            </div>
+                            {quote.original_language !== 'english' && quote.original_language_text && (
+                                <div className="info-row">
+                                    <span className="info-label">Original:</span>
+                                    <span className="info-value">{quote.original_language_text}</span>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 

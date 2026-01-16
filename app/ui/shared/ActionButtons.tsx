@@ -6,8 +6,8 @@ import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import { FaRegCopy } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa6";
 import { IoShareSocialSharp } from "react-icons/io5";
-import { useAuth } from '../../../lib/hooks';
-import { useFavorites, useToggleFavorite, useVotes, useToggleVote, useCommentButton } from '../../../lib/hooks';
+import { useAuth } from '../../lib/hooks';
+import { useFavorites, useToggleFavorite, useVotes, useToggleVote, useCommentButton } from '../../lib/hooks';
 
 export function FavoriteButton({
     quoteId,
@@ -32,9 +32,6 @@ export function FavoriteButton({
 
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-
-        console.log('quoteId value:', quoteId); // Add this
-        console.log('quoteId type:', typeof quoteId); // Add this
 
         if (!isAuthenticated) {
             // Guest user - just toggle local state (instant, no server call)
@@ -64,7 +61,7 @@ export function FavoriteButton({
             onClick={handleClick}
             className="favorite-btn"
             aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
-            disabled={toggleFavoriteMutation.isPending} // Prevent double-clicks
+            disabled={toggleFavoriteMutation.isPending}
         >
             {isFavorited ? (
                 <FaHeart size={18} className="favorite-icon filled text-pink-500 hover:scale-110 transition-all duration-300" />
@@ -73,7 +70,7 @@ export function FavoriteButton({
             )}
         </button>
     );
-};
+}
 
 export function VoteButtons({
     quoteId,
@@ -181,35 +178,19 @@ export function VoteButtons({
             </button>
         </div>
     );
-};
+}
 
 export function ShareButton() {
-    /*     const handleShare = async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Check out this quote on Backrolls!',
-                        url: window.location.href,
-                    });
-                    console.log('Quote shared successfully');
-                } catch (error) {
-                    console.error('Error sharing quote:', error);
-                }
-            } else {
-                console.warn('Web Share API not supported in this browser.');
-            }
-        }; */
-
     return (
-        <div className="share-btn" aria-label="Share quote">
+        <button className="share-btn" aria-label="Share quote">
             <IoShareSocialSharp size={18} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
-        </div>
+        </button>
     );
 }
 
 export function CopyButton({ textToCopy }: { textToCopy: string }) {
-
-    const handleCopy = async () => {
+    const handleCopy = async (e: React.MouseEvent) => {
+        e.stopPropagation();
         try {
             await navigator.clipboard.writeText(textToCopy);
             console.log('Quote copied to clipboard');
@@ -219,9 +200,9 @@ export function CopyButton({ textToCopy }: { textToCopy: string }) {
     };
 
     return (
-        <div className="copy-btn pb-1" aria-label="Copy quote to clipboard" onClick={handleCopy}>
+        <button className="copy-btn pb-1" aria-label="Copy quote to clipboard" onClick={handleCopy}>
             <FaRegCopy size={16} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
-        </div>
+        </button>
     );
 }
 
@@ -232,8 +213,7 @@ export function CommentButton({
     onClick?: () => void,
     quoteId: string,
 }) {
-    // Fetch comments for this quote
-    const { data: commentCount = 0 } = useCommentButton(quoteId)
+    const { data: commentCount = 0 } = useCommentButton(quoteId);
 
     return (
         <button
@@ -248,5 +228,60 @@ export function CommentButton({
                 </span>
             </div>
         </button>
+    );
+}
+
+// Combined component for Share, Copy, and Favorite actions
+export function ShareCopyFavoriteActions({
+    quoteId,
+    quoteText,
+    onRemoveFavorite,
+}: {
+    quoteId: string;
+    quoteText: string;
+    onRemoveFavorite?: (quote_id: string) => void;
+}) {
+    return (
+        <div className="flex items-center justify-between gap-2 py-1 px-3">
+            <ShareButton />
+            <CopyButton textToCopy={quoteText} />
+            <FavoriteButton
+                quoteId={quoteId}
+                onRemoveFavorite={onRemoveFavorite}
+            />
+        </div>
+    );
+}
+
+// Complete action buttons group for cards
+export function QuoteActionButtons({
+    quoteId,
+    quoteText,
+    initialVoteCount = 0,
+    onCommentClick,
+    onRemoveFavorite,
+}: {
+    quoteId: string;
+    quoteText: string;
+    initialVoteCount?: number;
+    onCommentClick?: () => void;
+    onRemoveFavorite?: (quote_id: string) => void;
+}) {
+    return (
+        <div className="flex items-center justify-start w-full gap-2">
+            <div className="py-[0.1rem] px-[0.2rem] bg-[hsl(0,0%,15%,0.6)] rounded-[15px]">
+                <VoteButtons quoteId={quoteId} initialVoteCount={initialVoteCount} />
+            </div>
+            <div className="py-[0.1rem] px-[0.2rem] bg-[hsl(0,0%,15%,0.6)] rounded-[15px]">
+                <CommentButton onClick={onCommentClick} quoteId={quoteId} />
+            </div>
+            <div className="py-[0.1rem] px-[0.2rem] bg-[hsl(0,0%,15%,0.6)] rounded-[15px]">
+                <ShareCopyFavoriteActions
+                    quoteId={quoteId}
+                    quoteText={quoteText}
+                    onRemoveFavorite={onRemoveFavorite}
+                />
+            </div>
+        </div>
     );
 }

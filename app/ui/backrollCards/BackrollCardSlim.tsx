@@ -4,28 +4,8 @@ import CardContent from '@mui/material/CardContent';
 import type { Quote } from '../../lib/definitions';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { CardActions } from '@mui/material';
-import { FavoriteButton, VoteButtons, ShareButton, CopyButton, CommentButton } from './components/ActionButtons';
+import { QuoteActionButtons } from '../shared/ActionButtons';
 import '@/app/scss/backrolls/BackrollCardSlim.scss';
-
-interface ShareCopyFavoriteProps {
-    quoteId: string;
-    quoteText: string;
-}
-
-export function ShareCopyFavorite({
-    quoteId,
-    quoteText,
-}: ShareCopyFavoriteProps) {
-    return (
-        <div className="flex items-center justify-between gap-2 py-1 px-3">
-            <ShareButton />
-            <CopyButton textToCopy={quoteText} />
-            <FavoriteButton
-                quoteId={quoteId}
-            />
-        </div>
-    );
-}
 
 export function BackrollCardSlim({
     quote,
@@ -92,27 +72,18 @@ export function BackrollCardSlim({
                         sx={{
                             color: '#FFFFF0',
                             backgroundColor: 'transparent',
-                            boxShadow: 'none', padding: '0',
+                            boxShadow: 'none',
+                            padding: '0',
+                            marginLeft: '0.5rem',
                         }}
                         className="bcs-actions"
                     >
-                        <div className="bcs-actions-container">
-                            <div className="bcs-actions-item">
-                                <VoteButtons
-                                    quoteId={quote.id}
-                                    initialVoteCount={quote.vote_count}
-                                />
-                            </div>
-                            <div className="bcs-actions-item">
-                                <CommentButton onClick={onClick} quoteId={quote.id} />
-                            </div>
-                            <div className="bcs-actions-item">
-                                <ShareCopyFavorite
-                                    quoteId={quote.id}
-                                    quoteText={quote.quote_text}
-                                />
-                            </div>
-                        </div>
+                        <QuoteActionButtons
+                            quoteId={quote.id}
+                            quoteText={quote.quote_text}
+                            initialVoteCount={quote.vote_count}
+                            onCommentClick={onClick}
+                        />
                     </CardActions>
                 </Card>
             </Box>

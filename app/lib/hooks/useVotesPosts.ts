@@ -65,9 +65,7 @@ export function useTogglePostVote() {
         onSettled: (data, error, variables) => {
             // Sync user's vote status with server
             utils.postVotes.getPostUserVotes.invalidate();
-            utils.post.getPost.invalidate({ postId: variables.post_id });
+            utils.posts.getPost.invalidate({ post_id: variables.post_id });
         },
     });
 }
-
-
