@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import '@/app/scss/pages/tea-room/PostCard.scss';
 import Link from 'next/link';
-import { trpc } from '@/app/lib/trpc';
+import { VoteButtons } from './ActionButtons';
+
+// Action icons
 import { FaRegComment } from "react-icons/fa6";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
-import '@/app/scss/pages/tea-room/PostCard.scss';
+
 
 interface PostCardProps {
     post: {
@@ -28,35 +30,31 @@ interface PostCardProps {
     };
 }
 
+const Actions = ({ post }: { post: PostCardProps['post'] }) => {
+    return (
+        <div className="post-card__actions">
+            <VoteButtons post_id={post.id} initialVoteCount={post.vote_count} />
+            <Link href={`/tea-room/${post.id}`} className="post-card__action-btn">
+                <div className="post-card__action-content">
+                    <FaRegComment size={18} />
+                    <span className="post-card__action-count">
+                        {post.comment_count > 99 ? '99+' : post.comment_count}
+                    </span>
+                </div>
+            </Link>
+            <button className="post-card__action-btn">
+                <div className="post-card__action-content">
+                    <IoShareSocialSharp size={18} />
+                    <span className="post-card__action-text">
+                        Share
+                    </span>
+                </div>
+            </button>
+        </div>
+    )
+};
+
 export function PostCard({ post }: PostCardProps) {
-    const [voteState, setVoteState] = useState<'up' | 'down' | null>(null);
-    const [localVoteCount, setLocalVoteCount] = useState(post.vote_count);
-
-    const voteMutation = trpc.post.votePost.useMutation({
-        onSuccess: (data) => {
-            if (data.action === 'removed') {
-                setVoteState(null);
-            } else {
-                setVoteState(data.voteType as 'up' | 'down');
-            }
-        },
-    });
-
-    const handleVote = (type: 'up' | 'down') => {
-        // Optimistic update
-        if (voteState === type) {
-            setVoteState(null);
-            setLocalVoteCount(prev => prev + (type === 'up' ? -1 : 1));
-        } else if (voteState) {
-            setVoteState(type);
-            setLocalVoteCount(prev => prev + (type === 'up' ? 2 : -2));
-        } else {
-            setVoteState(type);
-            setLocalVoteCount(prev => prev + (type === 'up' ? 1 : -1));
-        }
-
-        voteMutation.mutate({ postId: post.id, voteType: type });
-    };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -135,53 +133,7 @@ export function PostCard({ post }: PostCardProps) {
                 )}
 
                 {/* Actions with vote buttons */}
-                <div className="post-card__actions">
-                    <div className="post-card__action-btn">
-                        <div className="post-card__action-content post-card__action-content--votes">
-                            <button
-                                className={`post-card__vote-btn ${voteState === 'up' ? 'post-card__vote-btn--active' : ''}`}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleVote('up');
-                                }}
-                                disabled={voteMutation.isPending}
-                            >
-                                <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M10 5l5 7H5z" />
-                                </svg>
-                            </button>
-                            <span className="post-card__vote-count">{localVoteCount}</span>
-                            <button
-                                className={`post-card__vote-btn ${voteState === 'down' ? 'post-card__vote-btn--active' : ''}`}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleVote('down');
-                                }}
-                                disabled={voteMutation.isPending}
-                            >
-                                <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M10 15l-5-7h10z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <Link href={`/tea-room/${post.id}`} className="post-card__action-btn">
-                        <div className="post-card__action-content">
-                            <FaRegComment size={18} />
-                            <span className="post-card__action-count">
-                                {post.comment_count > 99 ? '99+' : post.comment_count}
-                            </span>
-                        </div>
-                    </Link>
-                    <button className="post-card__action-btn">
-                        <div className="post-card__action-content">
-                            <IoShareSocialSharp size={18} />
-                            <span className="post-card__action-text">
-                                Share
-                            </span>
-                        </div>
-                    </button>
-                </div>
+                <Actions post={post} />
             </div>
         </div>
     );

@@ -4,48 +4,49 @@ import { trpc } from '../trpc';
 import { useSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
 
-export function useVotes() {
+export function useVotesPosts() {
     const { data: session } = useSession();
     const userId = (session as Session | null)?.user?.id;
 
-    return trpc.votes.getUserVotes.useQuery(undefined, {
+    return trpc.postVotes.getPostUserVotes.useQuery(undefined, {
         enabled: !!userId,
     });
 }
 
-export function useToggleVote() {
+export function useTogglePostVote() {
     const utils = trpc.useUtils();
 
-    return trpc.votes.toggleVote.useMutation({
+    return trpc.postVotes.togglePostVote.useMutation({
+        // Cancel outgoing refetches
         onMutate: async (variables) => {
             // Cancel outgoing refetches
-            await utils.votes.getUserVotes.cancel();
+            await utils.postVotes.getPostUserVotes.cancel();
 
             // Snapshot previous state for rollback
-            const previousVotes = utils.votes.getUserVotes.getData();
+            const previousVotes = utils.postVotes.getPostUserVotes.getData();
 
             // Optimistically update user's vote status
-            utils.votes.getUserVotes.setData(undefined, (old) => {
+            utils.postVotes.getPostUserVotes.setData(undefined, (old) => {
                 const votes = old?.votes || [];
-                const existingVoteIndex = votes.findIndex(v => v.quote_id === variables.quoteId);
+                const existingVoteIndex = votes.findIndex(v => v.post_id === variables.postId);
 
                 let newVotes;
                 if (existingVoteIndex >= 0) {
                     const existingVote = votes[existingVoteIndex];
                     if (existingVote.vote_type === variables.voteType) {
                         // Remove vote
-                        newVotes = votes.filter(v => v.quote_id !== variables.quoteId);
+                        newVotes = votes.filter(v => v.post_id !== variables.postId);
                     } else {
                         // Switch vote
                         newVotes = [
                             ...votes.slice(0, existingVoteIndex),
-                            { quote_id: variables.quoteId, vote_type: variables.voteType },
+                            { post_id: variables.postId, vote_type: variables.voteType },
                             ...votes.slice(existingVoteIndex + 1)
                         ];
                     }
                 } else {
                     // Add new vote
-                    newVotes = [...votes, { quote_id: variables.quoteId, vote_type: variables.voteType }];
+                    newVotes = [...votes, { post_id: variables.postId, vote_type: variables.voteType }];
                 }
 
                 return { votes: newVotes };
@@ -56,17 +57,19 @@ export function useToggleVote() {
         },
 
         onError: (err, variables, context) => {
-            console.error('Failed to toggle vote:', err);
+            console.error('Failed to toggle post vote:', err);
             // Rollback on error
             if (context?.previousVotes) {
-                utils.votes.getUserVotes.setData(undefined, context.previousVotes);
+                utils.postVotes.getPostUserVotes.setData(undefined, context.previousVotes);
             }
         },
 
-        onSettled: () => {
-            // Sync with server
-            utils.votes.getUserVotes.invalidate();
-            utils.quotes.getRecent.invalidate();
+        onSettled: (data, error, variables) => {
+            // Sync user's vote status with server
+            utils.postVotes.getPostUserVotes.invalidate();
+            
+            // Update the post's vote count (if you have post queries, invalidate them here)
+            // utils.posts.getPost.invalidate({ postId: variables.postId });
         },
     });
 }

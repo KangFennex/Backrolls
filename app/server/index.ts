@@ -9,6 +9,7 @@ import { communityRouter } from './routers/community';
 import { postRouter } from './routers/post';
 import { feedRouter } from './routers/feed';
 import { postCommentRouter } from './routers/postComment';
+import { postVotesRouter } from './routers/post_votes';
 
 export const appRouter = router({
     quotes: quotesRouter,
@@ -21,6 +22,7 @@ export const appRouter = router({
     post: postRouter,
     feed: feedRouter,
     postComment: postCommentRouter,
+    postVotes: postVotesRouter,
 });
 
 export type AppRouter = typeof appRouter;

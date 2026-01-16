@@ -39,13 +39,10 @@
     align-items: center;
     margin-bottom: 1.5rem;
     gap: 1rem;
+    padding: 0 1rem;
 
-    @media (min-width: 769px) {
-        padding: 0 2rem;
-    }
-
-    @media (max-width: 768px) {
-        padding: 0 1rem;
+    @media (min-width: 768px) {
+        padding: 0;
     }
 }
 

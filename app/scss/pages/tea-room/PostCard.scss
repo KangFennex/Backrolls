@@ -285,12 +285,10 @@
 .post-card__vote-btn {
     background: transparent;
     border: none;
-    color: #8a8a8a;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
     padding: 0;
 
     svg {
@@ -298,18 +296,13 @@
         height: 18px;
     }
 
-    &:hover:not(:disabled) {
-        color: #EE5BAC;
-        transform: scale(1.1);
-    }
-
     &:disabled {
         opacity: 0.3;
         cursor: not-allowed;
-    }
-
-    &--active {
-        color: #EE5BAC;
+        
+        svg {
+            pointer-events: none;
+        }
     }
 }
 

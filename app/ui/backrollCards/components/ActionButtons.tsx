@@ -7,8 +7,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa6";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { useAuth } from '../../../lib/hooks';
-import { useFavorites, useToggleFavorite, useVotes, useToggleVote } from '../../../lib/hooks';
-import { useCommentButton } from "../../../lib/hooks/useCommentButton";
+import { useFavorites, useToggleFavorite, useVotes, useToggleVote, useCommentButton } from '../../../lib/hooks';
 
 export function FavoriteButton({
     quoteId,
@@ -89,7 +88,7 @@ export function VoteButtons({
     const { data: votesData } = useVotes();
     const toggleVoteMutation = useToggleVote();
 
-    // Local state for vote count (starts with quote's vote_count, updates from server)
+    // Local state for vote count
     const [displayVoteCount, setDisplayVoteCount] = useState(initialVoteCount);
 
     // Local state for guest users (not persisted)

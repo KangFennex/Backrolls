@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { trpc } from '../trpc';
 
 export function useFreshQuotes(limit: number = 10) {
@@ -11,30 +10,6 @@ export function useFreshQuotes(limit: number = 10) {
             refetchOnWindowFocus: true,
         }
     );
-
-    const utils = trpc.useUtils();
-
-    useEffect(() => {
-        const handleVoteUpdate = (event: Event) => {
-            const customEvent = event as CustomEvent;
-            const { quoteId, newVoteCount } = customEvent.detail;
-
-            utils.quotes.getRecent.setData({ limit }, (oldData) => {
-                if (!oldData) return oldData;
-                return {
-                    ...oldData,
-                    quotes: oldData.quotes.map(quote =>
-                        quote.id === quoteId
-                            ? { ...quote, vote_count: newVoteCount }
-                            : quote
-                    )
-                };
-            });
-        };
-
-        window.addEventListener('voteUpdated', handleVoteUpdate);
-        return () => window.removeEventListener('voteUpdated', handleVoteUpdate);
-    }, [limit, utils.quotes.getRecent]);
 
     return { data, isLoading, error, ...query };
 }
