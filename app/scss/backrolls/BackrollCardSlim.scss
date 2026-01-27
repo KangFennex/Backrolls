@@ -1,13 +1,12 @@
 /* BackrollCardSlim styles */
-.mini-quote-card {
+.bcs {
     width: 100%;
     margin: 0 auto;
     cursor: pointer;
-    overflow: hidden;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.mini-quote-card--content {
+.bcs--wrapper {
     display: flex;
     width: 100%;
     margin: 0.5rem 0;
@@ -26,13 +25,12 @@
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
     box-sizing: border-box;
-    overflow: hidden;
     gap: 0.5rem;
 
     @media (min-width: 768px) {
         grid-template-columns: 1fr auto;
         grid-template-rows: auto auto;
-        height: 150px;
+        min-height: 150px;
         gap: 0;
     }
 }
@@ -43,14 +41,14 @@
     background-size: cover;
     background-position: center;
     border-radius: 10px;
-    align-self: center;
+    align-self: flex-start;
     grid-column: 2 / 3;
     grid-row: 1 / 2;
+    margin-top: 1rem;
 
     @media (min-width: 768px) {
-        width: auto;
-        height: 90%;
-        aspect-ratio: 1;
+        width: 130px;
+        height: 130px;
         grid-row: 1 / -1;
     }
 }

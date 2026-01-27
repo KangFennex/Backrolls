@@ -115,9 +115,17 @@
     }
 }
 
+.tea-room__actions {
+    display: flex;
+    background: rgba(#EE5BAC, 0.05);
+    padding: 0.25rem;
+    border-radius: 8px;
+    border: 1px solid rgba(#EE5BAC, 0.2);
+    margin-left: auto;
+}
+
 .tea-room__create-btn {
     background: linear-gradient(135deg, #EE5BAC 0%, #f287c3 100%);
-    margin-left: auto;
     color: #FFFFF0;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -130,7 +138,6 @@
     white-space: nowrap;
 
     &:hover {
-        transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(#EE5BAC, 0.3);
     }
 

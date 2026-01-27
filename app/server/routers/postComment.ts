@@ -2,7 +2,7 @@ import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { db } from "../../db";
 import { postComments, postCommentVotes, communityMembers, posts } from "../../db/schema";
-import { desc, eq, and } from "drizzle-orm";
+import { desc, eq, and, isNull } from "drizzle-orm";
 
 export const postCommentRouter = router({
     // Create a comment on a post
@@ -78,6 +78,7 @@ export const postCommentRouter = router({
                     post_id: postId,
                     parent_comment_id: parentCommentId,
                     user_id: userId,
+                    username: ctx.session.user.username,
                     comment_text: commentText,
                     depth: depth,
                 })
@@ -86,7 +87,7 @@ export const postCommentRouter = router({
             return newComment;
         }),
 
-    // Get comments for a post
+    // Get comments for a post (top-level only)
     getPostComments: publicProcedure
         .input(z.object({
             postId: z.string().uuid(),
@@ -109,7 +110,9 @@ export const postCommentRouter = router({
                 .where(
                     and(
                         eq(postComments.post_id, postId),
-                        eq(postComments.status, 'active')
+                        eq(postComments.status, 'active'),
+                        // Only get top-level comments (no parent)
+                        isNull(postComments.parent_comment_id)
                     )
                 )
                 .orderBy(...orderByClause)

@@ -7,7 +7,7 @@ import { useQuoteById, useQuotesBySpeaker } from '../../lib/hooks';
 import BackrollCommentsContainer from './components/BackrollCommentsContainer';
 import Breadcrumb from '../breadcrumbs';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
-import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
+import { BackrollCardMinimal } from '../backrollCards/BackrollCardMinimal';
 import { FaEye } from "react-icons/fa";
 import '@/app/scss/backrolls/BackrollDetailClient.scss';
 import { QuoteActionButtons } from '../shared/ActionButtons';
@@ -139,7 +139,7 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                         {speakerQuotes && speakerQuotes.length > 0 ? (
                             speakerQuotes.map((speakerQuote) => (
                                 <div key={speakerQuote.id} className="horizontal-quote-item">
-                                    <BackrollCardSlim
+                                    <BackrollCardMinimal
                                         quote={speakerQuote}
                                         onClick={() => navigateToBackroll(speakerQuote)}
                                     />

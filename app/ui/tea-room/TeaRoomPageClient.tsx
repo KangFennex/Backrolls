@@ -13,6 +13,15 @@ export default function TeaRoomPageClient() {
     const [showCreatePost, setShowCreatePost] = useState(false);
     const [showSidebarMobile, setShowSidebarMobile] = useState(false);
 
+    const Tab = ({ title, active, value }: { title: string; active: boolean; value: 'hot' | 'new' | 'top' }) => (
+        <button
+            className={`tea-room__tab ${active ? 'tea-room__tab--active' : ''}`}
+            onClick={setSortBy.bind(null, value)}
+        >
+            {title}
+        </button>
+    );
+
     return (
         <section className="tea-room">
             <PageSectionHeader
@@ -43,34 +52,34 @@ export default function TeaRoomPageClient() {
                         </button>
 
                         <div className="tea-room__tabs">
-                            <button
-                                className={`tea-room__tab ${sortBy === 'hot' ? 'tea-room__tab--active' : ''}`}
-                                onClick={() => setSortBy('hot')}
-                            >
-                                Hot
-                            </button>
-                            <button
-                                className={`tea-room__tab ${sortBy === 'new' ? 'tea-room__tab--active' : ''}`}
-                                onClick={() => setSortBy('new')}
-                            >
-                                New
-                            </button>
-                            <button
-                                className={`tea-room__tab ${sortBy === 'top' ? 'tea-room__tab--active' : ''}`}
-                                onClick={() => setSortBy('top')}
-                            >
-                                Top
-                            </button>
+
+                            <Tab
+                                title="New"
+                                value="new"
+                                active={sortBy === 'new'}
+                            />
+                            <Tab
+                                title="Hot"
+                                value="hot"
+                                active={sortBy === 'hot'}
+                            />
+                            <Tab
+                                title="Top"
+                                value="top"
+                                active={sortBy === 'top'}
+                            />
                         </div>
 
-                        <button
-                            className="tea-room__create-btn"
-                            onClick={() => setShowCreatePost(true)}
-                        >
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M8 2a.5.5 0 01.5.5v5h5a.5.5 0 010 1h-5v5a.5.5 0 01-1 0v-5h-5a.5.5 0 010-1h5v-5A.5.5 0 018 2z" />
-                            </svg>
-                        </button>
+                        <div className="tea-room__actions">
+                            <button
+                                className="tea-room__create-btn"
+                                onClick={() => setShowCreatePost(true)}
+                            >
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M8 2a.5.5 0 01.5.5v5h5a.5.5 0 010 1h-5v5a.5.5 0 01-1 0v-5h-5a.5.5 0 010-1h5v-5A.5.5 0 018 2z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <CommunityFeed

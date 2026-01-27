@@ -13,7 +13,7 @@ export const PageSectionHeader = ({ title, subtitle, badge }: PageSectionHeaderP
     return (
         <div className="page-section-header">
             {badge && <span className="page-section-header__badge">{badge}</span>}
-            <h1 className="page-section-header__title backrollCard-font">{title}</h1>
+            <h1 className="page-section-header__title tektur">{title}</h1>
             {subtitle && (
                 <p className="page-section-header__subtitle">{subtitle}</p>
             )}

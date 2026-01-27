@@ -38,12 +38,9 @@ export default function BackrollCommentsContainer({
         <div className="comments-container mt-8">
             {/* Header */}
             <div className="comments-header mb-6">
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-xl font-bold text-white">
                     Comments {comments && `(${comments.length})`}
                 </h2>
-                <p className="text-gray-400 mt-2">
-                    Join the discussion about this quote
-                </p>
             </div>
 
             {/* Comment Form */}

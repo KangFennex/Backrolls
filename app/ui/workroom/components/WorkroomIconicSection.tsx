@@ -64,7 +64,7 @@ export default function WorkroomIconicSection({ initialData }: WorkroomIconicSec
             <span className="quote-mark">&ldquo;</span>
 
             <div className="iconic-quote-container">
-                <p className="iconic-quote-text">
+                <p className="iconic-quote-text backrollCard-font">
                     {currentQuote.quote_text}
                 </p>
                 <p className="iconic-quote-attribution">

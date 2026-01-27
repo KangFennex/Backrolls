@@ -192,6 +192,13 @@ export function CreatePostModal({ onClose, communityId }: CreatePostModalProps) 
                                 required
                                 placeholder="https://example.com/image.jpg"
                             />
+                            <textarea
+                                id="body"
+                                value={body}
+                                onChange={(e) => setBody(e.target.value)}
+                                rows={8}
+                                placeholder="What's on your mind?"
+                            />
                         </div>
                     )}
 

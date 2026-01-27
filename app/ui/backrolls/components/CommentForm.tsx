@@ -62,7 +62,7 @@ export default function CommentForm({
                 <textarea
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
-                    placeholder={parentCommentId ? "Write your reply..." : "What are your thoughts about this quote?"}
+                    placeholder={parentCommentId ? "Write your reply..." : "What are your thoughts about this backroll?"}
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400 focus:ring-opacity-20 transition-all duration-200 resize-none"
                     rows={parentCommentId ? 3 : 4}
                     maxLength={1000}

@@ -116,11 +116,18 @@
 .comment-card__meta {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
     flex-wrap: wrap;
     font-family: 'Tektur', monospace;
     font-size: 0.85rem;
     margin-bottom: 0.5rem;
+
+    & > div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
 }
 
 .comment-card__author {
@@ -152,13 +159,28 @@
     }
 }
 
-.comment-card__actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+.comment-card__menu-container {
+    margin-left: auto;
 }
 
-.action-btn {
+.comment-card__menu {
+    padding: 0.5rem;
+    cursor: pointer;
+    color: rgba(#FFFFF0, 0.6);
+    transition: color 0.3s ease;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        color: #EE5BAC;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.comment-card__show-replies {
+    margin-top: 0.5rem;
     background: none;
     border: none;
     color: rgba(#FFFFF0, 0.6);
@@ -169,19 +191,8 @@
     padding: 0;
     transition: color 0.3s ease;
 
-    &:hover:not(:disabled) {
+    &:hover {
         color: #EE5BAC;
-    }
-
-    &:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-    }
-
-    &--danger {
-        &:hover:not(:disabled) {
-            color: #ff4444;
-        }
     }
 }
 

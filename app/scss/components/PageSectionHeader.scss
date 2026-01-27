@@ -1,7 +1,6 @@
-/* Shared page section header styles (Tea Room look) */
+/* Shared page section header styles */
 
-.page-section-header,
-.tea-room__hero {
+.page-section-header {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -11,8 +10,7 @@
     padding: 1.25rem 0.5rem 0.5rem;
 }
 
-.page-section-header__badge,
-.tea-room__badge {
+.page-section-header__badge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -26,9 +24,8 @@
     text-transform: uppercase;
 }
 
-.page-section-header__title,
-.tea-room__title {
-    font-size: clamp(1.75rem, 3.5vw, 3rem);
+.page-section-header__title {
+    font-size: clamp(1rem, 2.5vw, 2rem);
     line-height: 1.05;
     background: linear-gradient(90deg, var(--light-pink, #e990c1), var(--dark-pink, #EE5BAC));
     -webkit-background-clip: text;
@@ -37,8 +34,7 @@
     text-shadow: 0 0 18px rgba(238, 91, 172, 0.25);
 }
 
-.page-section-header__subtitle,
-.tea-room__subtitle {
+.page-section-header__subtitle {
     max-width: 56ch;
     color: rgba(255,255,255,0.75);
     font-size: 0.95rem;

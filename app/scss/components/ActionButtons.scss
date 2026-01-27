@@ -1,0 +1,127 @@
+.actions-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+}
+
+.buttons-group {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 20px;
+    color: rgba(#FFFFF0, 0.6);
+    font-family: 'Tektur', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease;
+
+    &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.1);
+
+        .action-btn__icon {
+            color: #EE5BAC;
+        }
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 20px;
+    color: rgba(#FFFFF0, 0.6);
+    font-family: 'Tektur', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+
+    &:hover:not(:disabled) {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #EE5BAC;
+
+        svg {
+            color: #EE5BAC;
+        }
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    &--vote {
+    }
+}
+
+.action-btn__content {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.action-btn__vote-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: rgba(#FFFFF0, 0.6);
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+        color: #EE5BAC;
+        transform: scale(1.1);
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    svg.active {
+        color: #EE5BAC;
+    }
+}
+
+.action-btn__vote-count {
+    min-width: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(#FFFFF0, 0.6);
+    user-select: none;
+}
+
+.action-btn__icon {
+    color: rgba(#FFFFF0, 0.6);
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.action-btn__text {
+    font-size: 0.85rem;
+    color: inherit;
+}
+
+.action-btn__count {
+    font-size: 0.85rem;
+    color: rgba(#FFFFF0, 0.6);
+}

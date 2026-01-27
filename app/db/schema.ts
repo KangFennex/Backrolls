@@ -209,6 +209,7 @@ export const postComments = pgTable('post_comments', {
     post_id: uuid('post_id').notNull().references(() => posts.id, { onDelete: 'cascade' }),
     parent_comment_id: uuid('parent_comment_id').references(postCommentsSelfRef, { onDelete: 'cascade' }),
     user_id: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
+    username: varchar('username', { length: 100 }), // Denormalized for performance, nullable if user deleted
 
     comment_text: text('comment_text').notNull(),
 

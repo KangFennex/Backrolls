@@ -45,36 +45,19 @@ export const selectBackgroundColor = () => {
     return randomColor;
 }
 
-// Assign card size based on quote text length with some randomness
-export const getMosaicClass = (quoteText: string, index: number): string => {
-    const textLength = quoteText.length;
+export const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const hours = Math.floor(diff / (1000 * 60 * 60));
 
-    // Use index for pseudo-random distribution while keeping consistency
-    const variant = index % 5;
-
-    // Very long quotes (100+ chars) - always get large or wide
-    if (textLength > 100) {
-        return variant === 0 ? 'card-large' : 'card-wide';
-    }
-
-    // Long quotes (70-100 chars) - mostly wide, some large
-    if (textLength > 70) {
-        return variant < 2 ? 'card-wide' : variant === 2 ? 'card-large' : 'card-tall';
-    }
-
-    // Medium-long quotes (50-70 chars) - mix of wide and tall
-    if (textLength > 50) {
-        return variant === 0 ? 'card-wide' : variant < 3 ? 'card-tall' : '';
-    }
-
-    // Medium quotes (30-50 chars) - mostly tall, some normal
-    // if (textLength > 30) {
-    //   return variant < 2 ? '' : '';
-    //}
-
-    // Short quotes (< 30 chars) - mostly normal, occasional tall
-    return variant === 0 ? 'card-tall' : '';
-}
+    if (hours < 1) return 'just now';
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days}d ago`;
+    const months = Math.floor(days / 30);
+    return `${months}mo ago`;
+};
 
 export const contestantImages: Record<string, string> = {
     // RuPaul

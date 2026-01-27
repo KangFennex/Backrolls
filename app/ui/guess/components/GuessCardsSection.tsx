@@ -2,7 +2,7 @@
 
 import { RefObject } from 'react';
 import { Quote } from '@/app/lib/definitions';
-import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture';
+import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
 import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
 import { MdChevronRight } from 'react-icons/md';
 import '@/app/scss/pages/WorkroomHorizontalSection.scss';
@@ -35,7 +35,7 @@ export default function GuessCardsSection({
                 <div className="whs-cards-row">
                     {allQuotes.map((quote: Quote) => (
                         <div key={quote.id} className="whs-card-wrapper">
-                            <BackrollCardPicture2
+                            <BackrollCardPicture
                                 quote={quote}
                                 onClick={() => onQuoteClick(quote)}
                             />

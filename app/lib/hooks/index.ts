@@ -17,6 +17,7 @@ export { useSubmitQuote } from './useSubmitQuote';
 export { useSubmittedQuotes } from './useSubmittedQuotes';
 export { useCommentedQuotes } from './useCommentedQuotes';
 export { useCommentButton } from './useCommentButton';
+export { useCommentVote } from './useCommentVote';
 export { useQuoteById } from './useQuoteById';
 export { useQuotesByIds } from './useQuotesByIds';
 export { useQuotesByCommentCount } from './useQuotesByCommentCount';

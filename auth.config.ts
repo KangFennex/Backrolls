@@ -40,6 +40,8 @@ export const authConfig: AuthConfig = {
         async jwt({ token, user, account }: { token: Record<string, unknown>; user?: Record<string, unknown>; account?: Record<string, unknown> }) {
             if (user) {
                 token.id = user.id;
+                token.username = user.username;
+                token.email = user.email;
             }
             if (account?.provider === 'google') {
                 // Handle Google user data here

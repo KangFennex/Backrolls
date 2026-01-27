@@ -357,6 +357,35 @@ export const commentsRouter = router({
             });
         }),
 
+    // Get user's vote on a comment
+    getUserCommentVote: publicProcedure
+        .input(z.object({
+            commentId: z.string().uuid(),
+        }))
+        .query(async ({ ctx, input }) => {
+            if (!ctx.session?.user?.id) {
+                return null;
+            }
+
+            const { commentId } = input;
+            const userId = ctx.session.user.id;
+
+            const existingVote = await db
+                .select()
+                .from(commentVotes)
+                .where(and(
+                    eq(commentVotes.comment_id, commentId),
+                    eq(commentVotes.user_id, userId)
+                ))
+                .limit(1);
+
+            if (existingVote.length === 0) {
+                return null;
+            }
+
+            return existingVote[0].vote_type as 'up' | 'down';
+        }),
+
     // Vote on a comment
     vote: protectedProcedure
         .input(z.object({

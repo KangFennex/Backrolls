@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import type { Quote } from '../../lib/definitions';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
-import '@/app/scss/backrolls/BackrollCardPicture2.scss';
+import '@/app/scss/backrolls/BackrollCardPicture.scss';
 import { FiExternalLink } from "react-icons/fi";
 import { useState } from 'react';
 
@@ -19,6 +19,15 @@ export function BackrollCardPicture({
     isFullScreen,
 }: BackrollCardPicture2Props) {
     const speakerImage = getSpeakerImageWithFallback(quote.speaker);
+    const quoteLength = quote.quote_text.trim().length;
+    const quoteMaxLength = 100;
+    const isQuoteLong = quoteLength > quoteMaxLength;
+
+    const handleQuoteLong = (quote: Quote) => {
+        return quote.quote_text.length > quoteMaxLength
+            ? quote.quote_text.slice(0, quoteMaxLength) + '...'
+            : quote.quote_text;
+    }
 
     const [isCardRevealed, setIsCardRevealed] = useState(false);
 
@@ -39,7 +48,7 @@ export function BackrollCardPicture({
                     {/* Quote Content */}
                     <CardContent className={`backroll-picture-card__overlay${isCardRevealed ? ' revealed' : ''}`}>
                         <p className="backrollCard-font backroll-picture-card__quote">
-                            {quote.quote_text}
+                            {isQuoteLong ? handleQuoteLong(quote) : quote.quote_text}
                         </p>
                         <Box className="backroll-picture-card__speaker">
                             <h4 className="mini-quote-card__speaker-text mini-quote-card-font backrollCard-font text-md pink-fill">

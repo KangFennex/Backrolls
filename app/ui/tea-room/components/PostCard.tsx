@@ -2,12 +2,20 @@
 
 import '@/app/scss/pages/tea-room/PostCard.scss';
 import Link from 'next/link';
-import { VoteButtons } from './ActionButtons';
+import { useState, useRef, useEffect } from 'react';
+import { PostVoteButtons, CommentButton, ShareButton, ActionsContainer } from './ActionButtons';
+import { createPortal } from 'react-dom';
+import { formatDate } from '@/app/lib/utils';
+import { useAuth } from '../../../lib/hooks/useAuth';
+import { trpc } from '@/app/lib/trpc';
+import { useRouter } from 'next/navigation';
 
 // Action icons
-import { FaRegComment } from "react-icons/fa6";
-import { IoShareSocialSharp } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
+import { MdDataSaverOn } from "react-icons/md";
+import { BiHide } from "react-icons/bi";
+import { MdReportGmailerrorred } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
 
 interface PostCardProps {
@@ -30,44 +38,146 @@ interface PostCardProps {
     };
 }
 
-const Actions = ({ post }: { post: PostCardProps['post'] }) => {
-    return (
-        <div className="post-card__actions">
-            <VoteButtons post_id={post.id} initialVoteCount={post.vote_count} />
-            <Link href={`/tea-room/${post.id}`} className="post-card__action-btn">
-                <div className="post-card__action-content">
-                    <FaRegComment size={18} />
-                    <span className="post-card__action-count">
-                        {post.comment_count > 99 ? '99+' : post.comment_count}
-                    </span>
-                </div>
-            </Link>
-            <button className="post-card__action-btn">
-                <div className="post-card__action-content">
-                    <IoShareSocialSharp size={18} />
-                    <span className="post-card__action-text">
-                        Share
-                    </span>
-                </div>
-            </button>
-        </div>
-    )
-};
-
 export function PostCard({ post }: PostCardProps) {
+    const { user } = useAuth();
+    const router = useRouter();
+    const utils = trpc.useUtils();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+    const menuButtonRef = useRef<HTMLDivElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diff = now.getTime() - date.getTime();
-        const hours = Math.floor(diff / (1000 * 60 * 60));
+    const deletePostMutation = trpc.post.deletePost.useMutation({
+        onSuccess: async () => {
+            // Invalidate all post-related queries to refetch data
+            await utils.community.getCommunityPosts.invalidate();
+            await utils.feed.getPopularFeed.invalidate();
+            router.refresh();
+        },
+        onError: (error) => {
+            alert(`Failed to delete post: ${error.message}`);
+        }
+    });
 
-        if (hours < 1) return 'just now';
-        if (hours < 24) return `${hours}h ago`;
-        const days = Math.floor(hours / 24);
-        if (days < 30) return `${days}d ago`;
-        const months = Math.floor(days / 30);
-        return `${months}mo ago`;
+    const isOwner = user?.id === post.user_id;
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node) &&
+                menuButtonRef.current &&
+                !menuButtonRef.current.contains(event.target as Node)
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isMenuOpen]);
+
+    const handleMenuToggle = (e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        if (!isMenuOpen && menuButtonRef.current) {
+            const rect = menuButtonRef.current.getBoundingClientRect();
+
+            setMenuPosition({
+                top: rect.bottom + 4,
+                left: rect.right - 140, // 140px is the min-width of dropdown
+            });
+        }
+
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    const handleDelete = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        if (!confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
+            return;
+        }
+
+        setIsMenuOpen(false);
+
+        try {
+            await deletePostMutation.mutateAsync({ postId: post.id });
+        } catch (error) {
+            console.error('Error deleting post:', error);
+        }
+    };
+
+    const handleMenuAction = (action: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        console.log(`${action} post:`, post.id);
+        setIsMenuOpen(false);
+    };
+
+    const Menu = () => {
+        if (typeof window === 'undefined') return null;
+
+        return createPortal(
+            <div
+                ref={menuRef}
+                className="post-card__dropdown"
+                style={{
+                    position: 'fixed',
+                    top: `${menuPosition.top}px`,
+                    left: `${menuPosition.left}px`,
+                }}
+            >
+                <span className="post-card__dropdown-item">
+                    <MdDataSaverOn size={18} />
+                    <button
+                        onClick={(e) => handleMenuAction('Save', e)}
+                    >
+                        Save
+                    </button>
+                </span>
+                <span className="post-card__dropdown-item">
+                    <BiHide size={18} />
+                    <button
+                        onClick={(e) => handleMenuAction('Hide', e)}
+                    >
+                        Hide
+                    </button>
+                </span>
+                <span className="post-card__dropdown-item">
+                    <MdReportGmailerrorred size={18} />
+                    <button
+                        onClick={(e) => handleMenuAction('Report', e)}
+                    >
+                        Report
+                    </button>
+                </span>
+                {isOwner && (
+                    <span className="post-card__dropdown-item post-card__dropdown-item--danger">
+                        <MdDelete size={18} />
+                        <button
+                            onClick={handleDelete}
+                            disabled={deletePostMutation.isPending}
+                        >
+                            {deletePostMutation.isPending ? 'Deleting...' : 'Delete'}
+                        </button>
+                    </span>
+                )}
+            </div>,
+            document.body
+        );
+    };
+
+
+
+    const handleExternalLinkClick = (e: React.MouseEvent, url: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     return (
@@ -89,51 +199,61 @@ export function PostCard({ post }: PostCardProps) {
                             </>
                         )}
                     </div>
-                    <div className="post-card__menu">
-                        <BsThreeDots size={18} />
+                    <div className="post-card__menu-container">
+                        <div
+                            ref={menuButtonRef}
+                            className="post-card__menu"
+                            onClick={handleMenuToggle}
+                        >
+                            <BsThreeDots size={18} />
+                        </div>
+                        {isMenuOpen && <Menu />}
                     </div>
+
                 </div>
 
                 {/* Content */}
-                <div className="post-card__content">
-                    <Link href={`/tea-room/${post.id}`} className="post-card__title-link">
+                <Link href={`/tea-room/${post.id}`} className="post-card__content-link">
+                    <div className="post-card__content">
                         <h3 className="post-card__title">
                             {post.is_nsfw && <span className="post-card__nsfw">NSFW</span>}
                             {post.is_spoiler && <span className="post-card__spoiler">Spoiler</span>}
                             {post.title}
                         </h3>
-                    </Link>
 
-                    {post.body && (
-                        <p className="post-card__body">
-                            {post.body.length > 300
-                                ? `${post.body.substring(0, 300)}...`
-                                : post.body
-                            }
-                        </p>
-                    )}
+                        {post.body && (
+                            <p className="post-card__body">
+                                {post.body.length > 300
+                                    ? `${post.body.substring(0, 300)}...`
+                                    : post.body
+                                }
+                            </p>
+                        )}
 
-                    {post.post_type === 'link' && post.url && (
-                        <a
-                            href={post.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="post-card__link"
-                        >
-                            {new URL(post.url).hostname} ↗
-                        </a>
-                    )}
-                </div>
-
-                {/* Thumbnail for image/video posts */}
-                {(post.post_type === 'image' || post.post_type === 'video') && post.thumbnail_url && (
-                    <div className={`post-card__thumbnail ${post.is_nsfw ? 'post-card__thumbnail--nsfw' : ''} ${post.is_spoiler ? 'post-card__thumbnail--spoiler' : ''}`}>
-                        <img src={post.thumbnail_url} alt="" />
+                        {post.post_type === 'link' && post.url && (
+                            <span
+                                className="post-card__link"
+                                onClick={(e) => handleExternalLinkClick(e, post.url!)}
+                            >
+                                {new URL(post.url).hostname} ↗
+                            </span>
+                        )}
                     </div>
-                )}
+
+                    {/* Thumbnail for image/video posts */}
+                    {(post.post_type === 'image' || post.post_type === 'video') && post.thumbnail_url && (
+                        <div className={`post-card__thumbnail ${post.is_nsfw ? 'post-card__thumbnail--nsfw' : ''} ${post.is_spoiler ? 'post-card__thumbnail--spoiler' : ''}`}>
+                            <img src={post.thumbnail_url} alt="" />
+                        </div>
+                    )}
+                </Link>
 
                 {/* Actions with vote buttons */}
-                <Actions post={post} />
+                <ActionsContainer>
+                    <PostVoteButtons post_id={post.id} initialVoteCount={post.vote_count} />
+                    <CommentButton count={post.comment_count} postId={post.id} />
+                    <ShareButton />
+                </ActionsContainer>
             </div>
         </div>
     );

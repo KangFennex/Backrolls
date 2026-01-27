@@ -1,13 +1,7 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* Local font declarations */
-@font-face {
-    font-family: 'Atma-Regular';
-    src: url('/fonts/Atma-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
 
 @font-face {
     font-family: 'Tektur';
@@ -21,6 +15,14 @@
     font-family: 'Google Sans';
     src: url('/fonts/GoogleSans.ttf') format('truetype');
     font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'CairoPlay.ttf';
+    src: url('/fonts/CairoPlay.ttf') format('truetype');
+    font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
@@ -113,7 +115,7 @@ body {
     width: 100vw;
     background-color: var(--neutral-bg);
     color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Google Sans', sans-serif;
 }
 
 .pageContainer {
@@ -139,19 +141,14 @@ body {
     }
 }
 
-.backrollCard-font {
-    font-family: 'Atma-Regular', sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
-    color: var(--cool-ghost-white);
-}
+/* Fonts Styling */
 
-.atma-font {
-    font-family: 'Atma-Regular', sans-serif;
+.backrollCard-font {
+    font-family: 'CairoPlay.ttf', sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    color: var(--cool-ghost-white);
 }
 
 .google-sans {
@@ -160,6 +157,19 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+
+.antique-parchment-text {
+    color: var(--antique-parchment);
+}
+
+.antique-parchment-text-dark {
+    color: var(--antique-parchment-dark);
+}
+
+.tektur {
+    font-family: 'Tektur', sans-serif;
+}
+
 
 .pink-fill {
     fill: var(--dark-pink);
@@ -360,51 +370,6 @@ body {
     "CRSV" 0.5,
     "ELSH" 0,
     "ELXP" 0;
-}
-
-/* Fonts Styling */
-
-.warm-ivory {
-    font-family: "Poppins", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    color: var(--warm-ivory);
-}
-
-.poppins-bold {
-    font-family: "Poppins", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-style: normal;
-}
-
-.roboto-condensed {
-    font-family: "Roboto Condensed", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 900;
-    font-style: normal;
-}
-
-.noto-sans {
-    font-family: "Noto Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
-    font-variation-settings:
-        "wdth" 100;
-}
-
-.antique-parchment-text {
-    color: var(--antique-parchment);
-}
-
-.antique-parchment-text-dark {
-    color: var(--antique-parchment-dark);
-}
-
-.tektur {
-    font-family: 'Tektur', sans-serif;
 }
 
 /* Nav icon buttons */

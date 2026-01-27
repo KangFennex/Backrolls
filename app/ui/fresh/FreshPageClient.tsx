@@ -5,6 +5,7 @@ import { useNavigationContext } from '../../context/NavigationContext';
 import { useFreshQuotes } from '../../lib/hooks';
 import PageComponentContainer from '../pageComponentContainer';
 import type { Quote } from '../../lib/definitions';
+import { IndexWrapper } from '../shared/IndexWrapper';
 
 export default function FreshPageClient() {
     const { navigateToBackroll } = useNavigationContext();
@@ -12,15 +13,6 @@ export default function FreshPageClient() {
 
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
-    }
-
-    const IndexWrapper = ({ children, index }: { children: React.ReactNode, index: number }) => {
-        return (
-            <div className="flex items-center gap-2">
-                <h4 className="antique-parchment-text-dark rotate-270 text-[30px] p-2.5">{index + 1}</h4>
-                {children}
-            </div>
-        );
     }
 
     return (

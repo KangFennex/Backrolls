@@ -61,6 +61,7 @@ export const postRouter = router({
                     community_id: communityId,
                     community_slug: community.slug,
                     user_id: userId,
+                    username: ctx.session.user.username,
                     title,
                     body,
                     post_type: postType,

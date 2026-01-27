@@ -36,8 +36,8 @@ export function BackrollCardSlim({
     };
 
     return (
-        <div className="mini-quote-card" onClick={onClick}>
-            <Box className="mini-quote-card--content" sx={{ boxShadow: 'none' }}>
+        <div className="bcs" onClick={onClick}>
+            <Box className="bcs--wrapper" sx={{ boxShadow: 'none' }}>
                 <Card
                     className="bcs-card"
                     sx={{
@@ -47,7 +47,7 @@ export function BackrollCardSlim({
                     }}
                 >
                     {/* Quote Content */}
-                    <CardContent sx={{ padding: '0', backgroundColor: 'transparent', boxShadow: 'none' }} className="bcs-content">
+                    <CardContent sx={{ padding: '0', backgroundColor: 'transparent', boxShadow: 'none' }} className="bcs--content">
                         <div className={`bcs-quote-wrapper flex flex-col ${quoteLength > 80 ? 'bcs-quote-wrapper--long' : ''}`}>
                             <p
                                 className="backrollCard-font bcs-quote"

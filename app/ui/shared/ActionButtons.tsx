@@ -161,7 +161,7 @@ export function VoteButtons({
                 />
             </button>
 
-            <span className="vote-count text-sm select-none">{displayVoteCount}</span>
+            <span className="vote-count text-sm select-none text-[var(--cool-ghost-white)]">{displayVoteCount}</span>
 
             <button
                 onClick={(e) => {
@@ -222,8 +222,8 @@ export function CommentButton({
             onClick={onClick}
         >
             <div className="flex rounded-full py-1 px-3 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300">
-                <FaRegComment size={18} className="group-hover:text-pink-500 group-hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
-                <span className="text-md h-5 w-5 flex items-center justify-center font-medium group-hover:text-pink-500 transition-colors duration-300">
+                <FaRegComment size={18} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
+                <span className="text-md text-[var(--cool-ghost-white)] h-5 w-5 flex items-center justify-center font-medium">
                     {commentCount > 99 ? '99+' : commentCount}
                 </span>
             </div>
