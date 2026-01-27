@@ -4,7 +4,7 @@ import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
 import { trpc } from '../../../lib/trpc';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
 import '@/app/scss/pages/WorkroomHorizontalSection.scss';
 import { MdChevronRight, MdChevronLeft, MdClose } from 'react-icons/md';
@@ -101,20 +101,20 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
         document.body.style.overflow = 'auto';
     };
 
-    const handleNextCard = () => {
+    const handleNextCard = useCallback(() => {
         if (currentCardIndex < allQuotes.length - 1) {
             setCurrentCardIndex(prev => prev + 1);
         } else if (hasNextPage && !isFetchingNextPage) {
             fetchNextPage();
             setCurrentCardIndex(prev => prev + 1);
         }
-    };
+    }, [currentCardIndex, allQuotes.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-    const handlePrevCard = () => {
+    const handlePrevCard = useCallback(() => {
         if (currentCardIndex > 0) {
             setCurrentCardIndex(prev => prev - 1);
         }
-    };
+    }, [currentCardIndex]);
 
     // Keyboard navigation in fullscreen
     useEffect(() => {
@@ -132,7 +132,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isFullscreen, currentCardIndex, allQuotes.length, hasNextPage, isFetchingNextPage]);
+    }, [isFullscreen, handleNextCard, handlePrevCard]);
 
     const SectionTitle = ({ title }: { title: string }) => {
         return (

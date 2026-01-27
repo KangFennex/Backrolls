@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { db } from "../../db";
-import { posts, postVotes, communityMembers, communities } from "../../db/schema";
+import { posts, communityMembers, communities } from "../../db/schema";
 import { desc, lt, eq, and } from "drizzle-orm";
 
 export const postRouter = router({

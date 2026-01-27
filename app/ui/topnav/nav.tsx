@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Search from '../search/Search';
-import { useAuth } from "../../lib/hooks";
 import { NavLogo } from '../shared/NavLogo';
 import { useFiltersContext } from '../../context/FiltersModalContext';
 import { useRainbowColors } from '../../lib/hooks/useRainbowColors';
@@ -16,7 +15,6 @@ import { IoFilterSharp } from "react-icons/io5";
 import { BsCupHotFill } from "react-icons/bs";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { FaFire } from "react-icons/fa6";
-import { FaRegClock } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
 import { PiGameControllerBold } from "react-icons/pi";
 import { FaRegQuestionCircle } from "react-icons/fa";
@@ -38,13 +36,11 @@ const navItems: NavItem[] = [
 
 interface NavProps {
     toggleDropdownMenu?: () => void;
-    isMenuOpen?: boolean;
 }
 
-function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
-    const { isAuthenticated } = useAuth();
+function Nav({ toggleDropdownMenu }: NavProps) {
     const arrowButtonRef = useRef<HTMLButtonElement>(null);
-    const { isFiltersModalVisible, toggleFilters } = useFiltersContext();
+    const { toggleFilters } = useFiltersContext();
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const { getColorForIcon } = useRainbowColors();
     const [hoveredIconIndex, setHoveredIconIndex] = useState<number | null>(null);
@@ -76,7 +72,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
         <div className="flex flex-col w-full pt-2">
 
             {/* Top nav container */}
-            <nav className="flex items-center relative w-full min-h-[55px] px-2 sm:px-3 border-b border-[var(--light-border)]">
+            <nav className="flex items-center relative w-full min-h-[55px] pb-1 px-2 sm:px-3 border-b border-[var(--light-border)]">
 
                 {/* Logo - hidden when mobile search is open */}
                 {!isMobileSearchOpen && (
@@ -106,7 +102,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                             // Close button when mobile search is open
                             <button
                                 onClick={() => setIsMobileSearchOpen(false)}
-                                className="nav-icon-btn ml-2 mr-2 md:hidden"
+                                className="nav-icon-btn ml-2 mr-2 md:hidden rounded-md"
                                 aria-label="Close search"
                             >
                                 <RiCloseLargeFill
@@ -119,7 +115,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                 {/* Mobile search icon - only show on mobile when search is closed */}
                                 <button
                                     onClick={() => setIsMobileSearchOpen(true)}
-                                    className="nav-icon-btn md:hidden"
+                                    className="nav-icon-btn md:hidden rounded-md"
                                     aria-label="Search"
                                 >
                                     <FaSearch
@@ -130,7 +126,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                 {/* Filter Button */}
                                 <button
                                     aria-label="Filter Backrolls"
-                                    className="nav-icon-btn"
+                                    className="nav-icon-btn rounded-md"
                                     onClick={() => toggleFilters()}
                                 >
                                     <IoFilterSharp
@@ -144,7 +140,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
                                     onClick={() => {
                                         toggleDropdownMenu?.();
                                     }}
-                                    className="nav-icon-btn flex-shrink-0"
+                                    className="nav-icon-btn flex-shrink-0 rounded-md"
                                     aria-label="Open menu"
                                 >
                                     <LuPanelLeft
@@ -160,7 +156,7 @@ function Nav({ toggleDropdownMenu, isMenuOpen }: NavProps) {
 
             {/* Bottom Nav Component */}
             <nav className="w-full">
-                <div className="w-full max-w-[800px] mx-auto lg:border-x lg:border-[var(--light-border)] flex justify-around pt-2 md:justify-center gap-1 md:gap-2">
+                <div className="w-full max-w-[800px] mx-auto lg:border-x lg:border-[var(--light-border)] flex justify-around py-2 md:justify-center gap-1 md:gap-2">
                     {navItems.map((item, index) => (
                         <Link
                             key={index}

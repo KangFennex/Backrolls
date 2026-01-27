@@ -26,11 +26,6 @@ export const FilterSelectorsContent = () => {
         router.push(`/random?limit=1`);
     }
 
-    const pushHotBackroll = async () => {
-        // Navigate to hot page
-        router.push(`/hot`);
-    }
-
 
     return (
         <>

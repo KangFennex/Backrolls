@@ -13,7 +13,7 @@ interface PostDetailClientProps {
 }
 
 export function PostDetailClient({ postId }: PostDetailClientProps) {
-    const { user, isLoading: authLoading, isAuthenticated } = useAuth();
+    const { user } = useAuth();
     const { data: post, isLoading, error } = trpc.post.getPost.useQuery({ postId });
 
     const formatDate = (date: string | Date) => {

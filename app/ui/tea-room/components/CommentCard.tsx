@@ -16,6 +16,7 @@ interface Comment {
     id: string;
     comment_text: string;
     user_id: string | null;
+    username: string | null;
     created_at: string;
     updated_at: string;
     vote_count: number;
@@ -111,7 +112,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
 
     const handleVote = (voteType: 'up' | 'down') => {
         const currentVote = userVote?.vote_type;
-        
+
         // Optimistic UI update
         if (currentVote === voteType) {
             // Remove vote
@@ -123,7 +124,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
             // Switch vote
             setVoteCount(prev => prev + (voteType === 'up' ? 2 : -2));
         }
-        
+
         voteComment.mutate({ commentId: comment.id, voteType });
     };
 
@@ -159,7 +160,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
         if (e) {
             e.stopPropagation();
         }
-        
+
         if (!confirm('Are you sure you want to delete this comment? This action cannot be undone.')) {
             return;
         }

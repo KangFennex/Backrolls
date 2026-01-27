@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import '@/app/scss/layout/Footer.scss';
-import { FaTwitter, FaGithub, FaTelegram, FaTiktok, FaDiscord } from 'react-icons/fa';
+import { FaTwitter, FaGithub, FaTiktok, FaDiscord } from 'react-icons/fa';
 import { BackrollsLogo } from '../shared/BackrollsLogo';
 
 export default function Footer() {

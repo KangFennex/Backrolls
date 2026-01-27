@@ -91,7 +91,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
             <header className="header">
                 <Nav
                     toggleDropdownMenu={toggleMenu}
-                    isMenuOpen={isMenuOpen}
                 />
             </header>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { Quote } from '../../../lib/definitions';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getSpeakerImageWithFallback } from '../../../lib/utils';
 import '@/app/scss/pages/WorkroomIconicSection.scss';
 

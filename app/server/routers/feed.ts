@@ -76,30 +76,7 @@ export const feedRouter = router({
             timeframe: z.enum(['hour', 'day', 'week', 'month', 'year', 'all']).optional().default('day'),
         }))
         .query(async ({ input }) => {
-            const { sortBy, limit, offset, timeframe } = input;
-
-            // Calculate time threshold for filtering
-            let timeThreshold: Date | null = null;
-            if (sortBy === 'top' && timeframe !== 'all') {
-                const now = new Date();
-                switch (timeframe) {
-                    case 'hour':
-                        timeThreshold = new Date(now.getTime() - 60 * 60 * 1000);
-                        break;
-                    case 'day':
-                        timeThreshold = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-                        break;
-                    case 'week':
-                        timeThreshold = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                        break;
-                    case 'month':
-                        timeThreshold = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                        break;
-                    case 'year':
-                        timeThreshold = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
-                        break;
-                }
-            }
+            const { sortBy, limit, offset } = input;
 
             // Get public communities
             const publicCommunities = await db

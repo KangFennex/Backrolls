@@ -7,7 +7,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -15,15 +14,15 @@ import { useAuth } from '../../lib/hooks';
 
 // Menu Icons
 import { RiCloseLargeFill } from "react-icons/ri";
-import { BsCupHot, BsCupHotFill } from "react-icons/bs";
-import { RiSofaLine, RiSofaFill } from "react-icons/ri";
+import { BsCupHot } from "react-icons/bs";
+import { RiSofaLine } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
 import { TbHomeSpark } from "react-icons/tb";
 import { FaFire } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa";
-import { FaRegCommentDots } from "react-icons/fa";
 import { FiLogIn, FiLogOut } from "react-icons/fi";
 import { FaRegQuestionCircle } from "react-icons/fa";
+import { PiGameControllerBold } from "react-icons/pi";
 
 interface SidePanelProps {
     open: boolean;
@@ -36,7 +35,7 @@ const panelLinks = [
     { label: 'Hot Backrolls', href: '/hot', icon: <FaFire /> },
     { label: 'Fresh Backrolls', href: '/fresh', icon: <FaRegClock /> },
     { label: 'Guess', href: '/guess', icon: <FaRegQuestionCircle /> },
-    { label: 'Have a kiki', href: '/kiki', icon: <FaRegCommentDots /> },
+    { label: 'Quiz', href: '/quiz', icon: <PiGameControllerBold /> },
     { label: 'Tea Room', href: '/tea-room', icon: <BsCupHot /> },
     { label: 'Lounge', href: '/lounge', icon: <RiSofaLine /> },
     { label: 'Submit Backroll', href: '/submit', icon: <FaPlus /> },

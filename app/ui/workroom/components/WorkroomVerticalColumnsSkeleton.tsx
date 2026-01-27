@@ -1,7 +1,7 @@
 import '@/app/scss/components/Skeleton.scss';
 import BackrollCardSlimSkeleton from '../../backrollCards/BackrollCardSlimSkeleton';
 
-function ColumnSkeleton({ title }: { title: string }) {
+function ColumnSkeleton() {
   return (
     <div className="vertical-column">
       <h3 className="vertical-column-title">
@@ -20,9 +20,9 @@ export default function WorkroomVerticalColumnsSkeleton() {
   return (
     <section className="workroom-vertical-columns">
       <div className="vertical-columns-container">
-        <ColumnSkeleton title="Fresh Backrolls" />
-        <ColumnSkeleton title="Talk of the Town" />
-        <ColumnSkeleton title="Hot Backrolls" />
+        <ColumnSkeleton />
+        <ColumnSkeleton />
+        <ColumnSkeleton />
       </div>
     </section>
   );

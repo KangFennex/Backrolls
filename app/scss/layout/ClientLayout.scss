@@ -60,6 +60,7 @@
     
     .main-content {
         width: 100%;
+        min-height: 100vh;
         max-width: 800px;
         border-left: 1px solid var(--light-border);
         border-right: 1px solid var(--light-border);

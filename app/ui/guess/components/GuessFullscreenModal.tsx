@@ -1,7 +1,7 @@
 'use client'
 
 import { Quote } from '@/app/lib/definitions';
-import { BackrollCardPicture2 } from '../../backrollCards/BackrollCardPicture';
+import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
 import { MdChevronLeft, MdChevronRight, MdClose } from 'react-icons/md';
 import '@/app/scss/pages/WorkroomHorizontalSection.scss';
 
@@ -40,7 +40,7 @@ export default function GuessFullscreenModal({
                 <div className="whs-fullscreen-card-container">
                     {allQuotes[currentCardIndex] && (
                         <div className="whs-fullscreen-card">
-                            <BackrollCardPicture2
+                            <BackrollCardPicture
                                 key={allQuotes[currentCardIndex].id}
                                 quote={allQuotes[currentCardIndex]}
                                 onClick={() => onQuoteClick(allQuotes[currentCardIndex])}
