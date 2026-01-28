@@ -14,7 +14,7 @@ export default function FilterChip({ label, onDelete }: FilterChipProps) {
             onDelete={onDelete}
             sx={{
                 backgroundColor: 'rgba(238, 91, 172, 0.15)',
-                color: '#EE5BAC',
+                color: 'var(--cool-ghost-white)',
                 border: '1px solid rgba(238, 91, 172, 0.3)',
                 '& .MuiChip-deleteIcon': {
                     color: '#EE5BAC',

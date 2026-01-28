@@ -31,27 +31,30 @@ export default function RegionFilter({ value, onChange }: RegionFilterProps) {
                     label="Region"
                     sx={{
                         '& .MuiInputLabel-root': {
-                            color: 'rgba(255, 255, 240, 0.7)',
-                            '&.Mui-focused': { color: 'var(--dark-pink)' }
+                            color: '#EE5BAC',
+                            '&.Mui-focused': { color: '#EE5BAC' }
                         },
                         '& .MuiOutlinedInput-root': {
-                            color: '#FFFFF0',
-                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                            '& fieldset': { borderColor: 'rgba(255, 255, 240, 0.2)' },
-                            '&:hover fieldset': { borderColor: 'rgba(255, 255, 240, 0.4)' },
-                            '&.Mui-focused fieldset': { borderColor: 'var(--dark-pink)' }
+                            color: 'var(--cool-ghost-white)',
+                            backgroundColor: 'rgba(238, 91, 172, 0.15)',
+                            borderRadius: '12px',
+                            '& fieldset': { borderColor: 'rgba(238, 91, 172, 0.3)' },
+                            '&:hover fieldset': { borderColor: 'rgba(238, 91, 172, 0.5)' },
+                            '&.Mui-focused fieldset': { borderColor: 'rgba(238, 91, 172, 0.5)' }
                         }
                     }}
                 />
             )}
             PaperComponent={(props) => (
                 <Paper {...props} sx={{
-                    backgroundColor: 'var(--rich-charcoal)',
-                    border: '1px solid rgba(255, 255, 240, 0.1)',
+                    backgroundColor: 'rgba(30, 30, 40, 0.95)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(238, 91, 172, 0.3)',
+                    borderRadius: '12px',
                     '& .MuiAutocomplete-option': {
-                        color: '#FFFFF0',
-                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
-                        '&.Mui-focused': { backgroundColor: 'rgba(255, 255, 255, 0.12)' }
+                        color: 'var(--cool-ghost-white)',
+                        '&:hover': { backgroundColor: 'rgba(238, 91, 172, 0.15)' },
+                        '&.Mui-focused': { backgroundColor: 'rgba(238, 91, 172, 0.2)' }
                     }
                 }} />
             )}

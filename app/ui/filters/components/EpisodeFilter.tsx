@@ -31,19 +31,22 @@ export default function EpisodeFilter({ seriesCode, season, value, onChange, dis
                     placeholder={season ? "Select episode..." : "Select season first"}
                     sx={{
                         '& .MuiInputLabel-root': {
-                            color: 'rgba(255, 255, 240, 0.7)',
-                            '&.Mui-focused': { color: 'var(--dark-pink)' },
-                            '&.Mui-disabled': { color: 'rgba(255, 255, 240, 0.3)' }
+                            color: '#EE5BAC',
+                            '&.Mui-focused': { color: '#EE5BAC' },
+                            '&.Mui-disabled': { color: 'rgba(238, 91, 172, 0.4)' }
                         },
                         '& .MuiOutlinedInput-root': {
-                            color: '#FFFFF0',
-                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                            '& fieldset': { borderColor: 'rgba(255, 255, 240, 0.2)' },
-                            '&:hover fieldset': { borderColor: 'rgba(255, 255, 240, 0.4)' },
-                            '&.Mui-focused fieldset': { borderColor: 'var(--dark-pink)' },
+                            color: 'var(--cool-ghost-white)',
+                            backgroundColor: 'rgba(238, 91, 172, 0.15)',
+                            borderRadius: '12px',
+                            '& fieldset': { borderColor: 'rgba(238, 91, 172, 0.3)' },
+                            '&:hover fieldset': { borderColor: 'rgba(238, 91, 172, 0.5)' },
+                            '&.Mui-focused fieldset': { borderColor: 'rgba(238, 91, 172, 0.5)' },
+                            '& input': { color: 'var(--cool-ghost-white)' },
                             '&.Mui-disabled': {
-                                backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                                color: 'rgba(255, 255, 240, 0.3)'
+                                backgroundColor: 'rgba(238, 91, 172, 0.08)',
+                                color: 'rgba(238, 91, 172, 0.4)',
+                                '& input': { color: 'rgba(238, 91, 172, 0.4)' }
                             }
                         }
                     }}
@@ -51,12 +54,14 @@ export default function EpisodeFilter({ seriesCode, season, value, onChange, dis
             )}
             PaperComponent={(props) => (
                 <Paper {...props} sx={{
-                    backgroundColor: 'var(--rich-charcoal)',
-                    border: '1px solid rgba(255, 255, 240, 0.1)',
+                    backgroundColor: 'rgba(30, 30, 40, 0.95)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(238, 91, 172, 0.3)',
+                    borderRadius: '12px',
                     '& .MuiAutocomplete-option': {
-                        color: '#FFFFF0',
-                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
-                        '&.Mui-focused': { backgroundColor: 'rgba(255, 255, 255, 0.12)' }
+                        color: 'var(--cool-ghost-white)',
+                        '&:hover': { backgroundColor: 'rgba(238, 91, 172, 0.15)' },
+                        '&.Mui-focused': { backgroundColor: 'rgba(238, 91, 172, 0.2)' }
                     }
                 }} />
             )}
