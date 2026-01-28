@@ -15,14 +15,18 @@ export default function FiltersModal() {
                 onClose={toggleFilters}
                 fullWidth
                 maxWidth="sm"
-                sx={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                    '& .MuiPaper-root': {
-                        backgroundColor: 'var(--rich-charcoal)',
-                        opacity: 0.99,
-                        borderRadius: 2,
-                        padding: 1,
-                    },
+                BackdropProps={{
+                    sx: { backgroundColor: 'rgba(0, 0, 0, 0.35)' }
+                }}
+                PaperProps={{
+                    sx: {
+                        background: 'rgba(30, 30, 40, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '12px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05)',
+                        padding: 0,
+                    }
                 }}
             >
                 <FiltersModalContent />

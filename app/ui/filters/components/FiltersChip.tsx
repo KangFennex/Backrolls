@@ -13,11 +13,15 @@ export default function FilterChip({ label, onDelete }: FilterChipProps) {
             label={label}
             onDelete={onDelete}
             sx={{
-                backgroundColor: 'var(--dark-pink)',
-                color: '#FFFFF0',
+                backgroundColor: 'rgba(238, 91, 172, 0.15)',
+                color: '#EE5BAC',
+                border: '1px solid rgba(238, 91, 172, 0.3)',
                 '& .MuiChip-deleteIcon': {
-                    color: 'rgba(255, 255, 240, 0.7)',
-                    '&:hover': { color: '#FFFFF0' }
+                    color: '#EE5BAC',
+                    '&:hover': {
+                        color: '#EE5BAC',
+                        opacity: 0.8
+                    }
                 }
             }}
         />

@@ -8,28 +8,26 @@ import { BackrollsLogo } from '../../shared/BackrollsLogo';
 export default function FiltersHeader({ onClose }: FiltersHeaderProps) {
     const handleClose = () => onClose();
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                p: 0,
-                width: '100%',
-                position: 'relative',
-            }}
-        >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+        <Box sx={{ 
+            display: 'flex',
+            alignItems: 'center',
+            position: 'relative',
+            width: '100%',
+            p: 0
+        }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                 <BackrollsLogo />
-            </div>
+            </Box>
             <IconButton
                 onClick={handleClose}
                 sx={{
-                    color: 'var(--dark-pink)',
                     position: 'absolute',
                     right: 0,
-                    marginLeft: 'auto',
+                    color: 'var(--dark-pink)',
+                    transition: 'all 0.3s ease',
                     '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                        scale: 1.1,
-                        transition: 'scale 0.3s',
+                        backgroundColor: 'rgba(238, 91, 172, 0.1)',
+                        transform: 'scale(1.1)',
                     }
                 }}
             >

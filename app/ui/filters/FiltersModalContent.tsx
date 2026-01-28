@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import {
-    Button,
-    DialogActions,
     DialogContent,
     DialogTitle,
     Stack,
 } from '@mui/material';
 import { FilterHeader, ActiveFiltersChips } from './components';
+import FilterActions from './components/FilterActions';
 import RegionFilter from './components/RegionFilter';
 import SeriesFilter from './components/SeriesFilter';
 import SeasonFilter from './components/SeasonFilter';
@@ -155,10 +154,33 @@ export default function FiltersModalContent() {
 
     return (
         <>
-            <DialogTitle sx={{ pb: 1, px: { xs: 0, sm: 3 } }}>
+            <DialogTitle sx={{ 
+                p: '1rem 1.5rem',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+            }}>
                 <FilterHeader onClose={toggleFilters} />
             </DialogTitle>
-            <DialogContent sx={{ backgroundColor: 'var(--rich-charcoal)', minHeight: '400px', px: { xs: 1, sm: 3 } }}>
+            <DialogContent sx={{ 
+                p: { xs: '1rem 0.5rem', sm: '1.5rem' },
+                minHeight: '400px',
+                maxHeight: '60vh',
+                overflowY: 'auto',
+                '&::-webkit-scrollbar': {
+                    width: '8px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: 'var(--dark-pink)',
+                    borderRadius: '4px',
+                    '&:hover': {
+                        opacity: 0.9,
+                    }
+                },
+                '&::-webkit-scrollbar-track': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                    borderRadius: '4px',
+                }
+            }}>
                 {/* Active Filters Chips */}
                 <ActiveFiltersChips
                     selectedRegion={localRegion}
@@ -196,35 +218,7 @@ export default function FiltersModalContent() {
                 </Stack>
             </DialogContent>
 
-            <DialogActions sx={{ px: 3, pb: 2, backgroundColor: 'var(--rich-charcoal)' }}>
-                <Button
-                    onClick={handleReset}
-                    variant="outlined"
-                    sx={{
-                        borderColor: 'rgba(255, 255, 240, 0.3)',
-                        color: 'rgba(255, 255, 240, 0.7)',
-                        '&:hover': {
-                            borderColor: 'rgba(255, 255, 240, 0.5)',
-                            backgroundColor: 'rgba(255, 255, 255, 0.05)'
-                        }
-                    }}
-                >
-                    Reset
-                </Button>
-                <Button
-                    onClick={handleApply}
-                    variant="contained"
-                    sx={{
-                        backgroundColor: 'var(--dark-pink)',
-                        color: '#FFFFF0',
-                        '&:hover': {
-                            backgroundColor: 'hsl(327, 81%, 50%)'
-                        }
-                    }}
-                >
-                    Apply
-                </Button>
-            </DialogActions>
+            <FilterActions onReset={handleReset} onApply={handleApply} />
         </>
     );
 }

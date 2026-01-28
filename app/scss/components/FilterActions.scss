@@ -1,0 +1,56 @@
+.filter-actions {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    &__btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        &--reset {
+            background-color: rgba(238, 91, 172, 0.15);
+            color: #EE5BAC;
+            border: 1px solid rgba(238, 91, 172, 0.3);
+
+            &:hover {
+                background-color: rgba(238, 91, 172, 0.25);
+                border-color: rgba(238, 91, 172, 0.5);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(238, 91, 172, 0.2);
+            }
+        }
+
+        &--apply {
+            background-color: rgba(238, 91, 172, 0.15);
+            color: #EE5BAC;
+            border: 1px solid rgba(238, 91, 172, 0.3);
+
+            &:hover {
+                background-color: rgba(238, 91, 172, 0.25);
+                border-color: rgba(238, 91, 172, 0.5);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(238, 91, 172, 0.2);
+            }
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+}
