@@ -3,11 +3,6 @@
 	max-width: 500px;
 	z-index: 9999 !important;
 	margin: 0 auto;
-
-	@media (max-width: 768px) {
-		max-width: 95%;
-		margin: auto;
-	}
 }
 
 .search {
