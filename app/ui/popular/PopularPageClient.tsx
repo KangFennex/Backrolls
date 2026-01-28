@@ -8,14 +8,14 @@ import type { Quote } from '../../lib/definitions';
 import { IndexWrapper } from '../shared/IndexWrapper';
 
 export default function PopularPageClient() {
-    const { navigateToBackroll } = useNavigationContext();
     const { data: popularData } = useQuotesByCommentCount(20);
+    const { navigateToBackroll } = useNavigationContext();
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
     }
 
     return (
-        <PageComponentContainer title="Popular Backrolls" subtitle="Talk of the Town!">
+        <PageComponentContainer title="Popular Backrolls">
             {popularData?.quotes && popularData.quotes.map((quote: Quote, index: number) => (
                 <div key={quote.id}>
                     <IndexWrapper index={index}>

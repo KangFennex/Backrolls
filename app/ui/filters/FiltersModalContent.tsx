@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import {
+    Button,
+    DialogActions,
     DialogContent,
     DialogTitle,
     Stack,
 } from '@mui/material';
 import { FilterHeader, ActiveFiltersChips } from './components';
-import FilterActions from './components/FilterActions';
 import RegionFilter from './components/RegionFilter';
 import SeriesFilter from './components/SeriesFilter';
 import SeasonFilter from './components/SeasonFilter';
@@ -154,13 +155,13 @@ export default function FiltersModalContent() {
 
     return (
         <>
-            <DialogTitle sx={{ 
+            <DialogTitle sx={{
                 p: '1rem 1.5rem',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
                 <FilterHeader onClose={toggleFilters} />
             </DialogTitle>
-            <DialogContent sx={{ 
+            <DialogContent sx={{
                 p: { xs: '1rem 0.5rem', sm: '1.5rem' },
                 minHeight: '400px',
                 maxHeight: '60vh',
@@ -218,7 +219,61 @@ export default function FiltersModalContent() {
                 </Stack>
             </DialogContent>
 
-            <FilterActions onReset={handleReset} onApply={handleApply} />
+            <DialogActions sx={{
+                p: '1rem 1.5rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                gap: '0.75rem'
+            }}>
+                <Button
+                    onClick={handleReset}
+                    sx={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        color: 'rgba(255, 255, 240, 0.8)',
+                        border: '1px solid rgba(255, 255, 240, 0.3)',
+                        borderRadius: '10px',
+                        padding: '0.75rem 1.5rem',
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            borderColor: 'rgba(255, 255, 240, 0.5)',
+                            transform: 'translateY(-1px)'
+                        },
+                        '&:active': {
+                            transform: 'scale(0.98)'
+                        }
+                    }}
+                >
+                    Reset
+                </Button>
+                <Button
+                    onClick={handleApply}
+                    sx={{
+                        background: 'linear-gradient(135deg, rgba(238, 91, 172, 0.9) 0%, rgba(233, 144, 193, 0.9) 100%)',
+                        color: '#FFFFF0',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius: '10px',
+                        padding: '0.75rem 1.5rem',
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        boxShadow: '0 4px 12px rgba(238, 91, 172, 0.3)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                            background: 'linear-gradient(135deg, rgba(238, 91, 172, 1) 0%, rgba(233, 144, 193, 1) 100%)',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 6px 16px rgba(238, 91, 172, 0.4)'
+                        },
+                        '&:active': {
+                            transform: 'scale(0.98)'
+                        }
+                    }}
+                >
+                    Apply
+                </Button>
+            </DialogActions>
         </>
     );
 }

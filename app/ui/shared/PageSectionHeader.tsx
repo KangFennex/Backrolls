@@ -1,8 +1,5 @@
 import '@/app/scss/components/PageSectionHeader.scss';
-// import { useRainbowColors } from '../lib/hooks/useRainbowColors';
 
-
-// Reusable page header
 export interface PageSectionHeaderProps {
     title: string;
     subtitle?: string;

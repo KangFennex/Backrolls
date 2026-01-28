@@ -16,7 +16,7 @@ export default function HotPageClient() {
     }
 
     return (
-        <PageComponentContainer title="Hot Backrolls" subtitle="Those backrolls are backrolling!">
+        <PageComponentContainer title="Hot Backrolls">
             {hotData?.quotes && hotData.quotes.map((quote: Quote, index: number) => (
                 <div key={quote.id}>
                     <IndexWrapper index={index}>
