@@ -26,7 +26,7 @@ export default function ActiveFiltersChips({
             <Typography variant="caption" sx={{ color: 'rgba(255, 255, 240, 0.7)', mb: 1, display: 'block' }}>
                 Active Filters:
             </Typography>
-            <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
+            <Stack direction="row" flexWrap="wrap" gap={1}>
                 {selectedRegion && (
                     <FilterChip
                         label={`${selectedRegion.charAt(0).toUpperCase() + selectedRegion.slice(1)}`}

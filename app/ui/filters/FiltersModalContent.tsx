@@ -123,7 +123,7 @@ export default function FiltersModalContent() {
             season: localSeason,
             episode: localEpisode,
         });
-        
+
         // Update store first
         setFilters({
             selectedRegion: localRegion,
@@ -131,23 +131,23 @@ export default function FiltersModalContent() {
             selectedSeason: localSeason,
             selectedEpisode: localEpisode,
         });
-        
+
         // Build URL with query params directly from local state
         const params = new URLSearchParams();
         params.set('region', localRegion);
-        
+
         if (localSeries) {
             params.set('series', localSeries);
         }
-        
+
         if (localSeason !== null) {
             params.set('season', localSeason.toString());
         }
-        
+
         if (localEpisode !== null) {
             params.set('episode', localEpisode.toString());
         }
-        
+
         // Navigate to series page with filters
         router.push(`/series?${params.toString()}`);
         toggleFilters();
@@ -155,10 +155,10 @@ export default function FiltersModalContent() {
 
     return (
         <>
-            <DialogTitle sx={{ pb: 1 }}>
+            <DialogTitle sx={{ pb: 1, px: { xs: 0, sm: 3 } }}>
                 <FilterHeader onClose={toggleFilters} />
             </DialogTitle>
-            <DialogContent sx={{ backgroundColor: 'var(--rich-charcoal)', minHeight: '400px' }}>
+            <DialogContent sx={{ backgroundColor: 'var(--rich-charcoal)', minHeight: '400px', px: { xs: 1, sm: 3 } }}>
                 {/* Active Filters Chips */}
                 <ActiveFiltersChips
                     selectedRegion={localRegion}
