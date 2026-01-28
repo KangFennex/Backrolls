@@ -224,7 +224,7 @@
         display: flex;
         gap: 0.5rem;
         overflow-x: auto;
-        padding: 0.5rem;
+        padding: 0.5rem 0;
         scroll-behavior: smooth;
         
         /* Custom scrollbar styling */
@@ -250,6 +250,11 @@
     .horizontal-quote-item {
         flex: 0 0 350px;
         min-width: 350px;
+        border-radius: 12px;
+
+        &:hover {
+            border-color: rgba(236, 72, 153, 0.7);
+        }
     }
 
     .no-quotes-message {

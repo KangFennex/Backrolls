@@ -14,8 +14,8 @@
     background: rgba(255, 255, 255, 0.05);
     border: none;
     border-radius: 20px;
-    color: rgba(#FFFFF0, 0.6);
-    font-family: 'Tektur', monospace;
+    color: rgba(var(--text-primary-rgb), 0.6);
+    font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
@@ -26,7 +26,7 @@
         background: rgba(255, 255, 255, 0.1);
 
         .action-btn__icon {
-            color: #EE5BAC;
+            color: var(--primary-pink);
         }
     }
 
@@ -44,7 +44,7 @@
     background: rgba(255, 255, 255, 0.05);
     border: none;
     border-radius: 20px;
-    color: rgba(#FFFFF0, 0.6);
+    color: rgba(var(--text-primary-rgb), 0.6);
     font-family: 'Tektur', monospace;
     font-size: 0.85rem;
     font-weight: 600;
@@ -54,10 +54,10 @@
 
     &:hover:not(:disabled) {
         background-color: rgba(255, 255, 255, 0.1);
-        color: #EE5BAC;
+        color: var(--primary-pink);
 
         svg {
-            color: #EE5BAC;
+            color: var(--primary-pink);
         }
     }
 
@@ -81,13 +81,13 @@
     border: none;
     padding: 0;
     cursor: pointer;
-    color: rgba(#FFFFF0, 0.6);
+    color: rgba(var(--text-primary-rgb), 0.6);
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
 
     &:hover:not(:disabled) {
-        color: #EE5BAC;
+        color: var(--primary-pink);
         transform: scale(1.1);
     }
 
@@ -97,7 +97,7 @@
     }
 
     svg.active {
-        color: #EE5BAC;
+        color: var(--primary-pink);
     }
 }
 
@@ -105,15 +105,41 @@
     min-width: 20px;
     text-align: center;
     font-size: 0.85rem;
-    color: rgba(#FFFFF0, 0.6);
+    color: rgba(var(--text-primary-rgb), 0.6);
     user-select: none;
 }
 
+.action-btn__icon-only {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+        .action-btn__icon {
+            color: var(--primary-pink);
+            transform: scale(1.1);
+        }
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+
 .action-btn__icon {
-    color: rgba(#FFFFF0, 0.6);
+    color: rgba(var(--text-primary-rgb), 0.6);
     display: flex;
     align-items: center;
     transition: color 0.3s ease;
+
+    &.active {
+        color: var(--primary-pink);
+    }
 }
 
 .action-btn__text {
@@ -123,5 +149,5 @@
 
 .action-btn__count {
     font-size: 0.85rem;
-    color: rgba(#FFFFF0, 0.6);
+    color: rgba(var(--text-primary-rgb), 0.6);
 }

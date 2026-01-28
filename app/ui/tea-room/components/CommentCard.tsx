@@ -1,16 +1,18 @@
 'use client';
 
+import '@/app/scss/components/DropdownMenu.scss';
 import { useState, useRef, useEffect } from 'react';
 import { trpc } from '@/app/lib/trpc';
 import { CommentForm } from './CommentForm';
 import { formatDate } from '@/app/lib/utils';
 import { createPortal } from 'react-dom';
-import { CommentVoteButtons, ReplyButton, ShareButton, ActionsContainer } from './ActionButtons';
+import { CommentVoteButtons, ReplyButton, ActionsContainer } from './ActionButtons';
 import { BsThreeDots } from "react-icons/bs";
 import { MdDataSaverOn } from "react-icons/md";
 import { BiHide } from "react-icons/bi";
 import { MdReportGmailerrorred } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
 interface Comment {
     id: string;
@@ -44,7 +46,7 @@ interface CommentCardProps {
 
 export function CommentCard({ comment, postId, depth = 0, currentUserId }: CommentCardProps) {
     const [showReplyForm, setShowReplyForm] = useState(false);
-    const [showReplies, setShowReplies] = useState(false);
+    const [showReplies, setShowReplies] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [editBody, setEditBody] = useState(comment.comment_text || '');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -209,15 +211,29 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                     </button>
                 </span>
                 {isAuthor && (
-                    <span className="post-card__dropdown-item post-card__dropdown-item--danger">
-                        <MdDelete size={18} />
-                        <button
-                            onClick={handleDelete}
-                            disabled={deleteComment.isPending}
-                        >
-                            {deleteComment.isPending ? 'Deleting...' : 'Delete'}
-                        </button>
-                    </span>
+                    <>
+                        <span className="post-card__dropdown-item">
+                            <MdEdit size={18} />
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setIsEditing(true);
+                                    setIsMenuOpen(false);
+                                }}
+                            >
+                                Edit
+                            </button>
+                        </span>
+                        <span className="post-card__dropdown-item post-card__dropdown-item--danger">
+                            <MdDelete size={18} />
+                            <button
+                                onClick={handleDelete}
+                                disabled={deleteComment.isPending}
+                            >
+                                {deleteComment.isPending ? 'Deleting...' : 'Delete'}
+                            </button>
+                        </span>
+                    </>
                 )}
             </div>,
             document.body
@@ -225,23 +241,23 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
     };
 
     return (
-        <div className={`comment-card comment-card--depth-${Math.min(depth, 5)}`}>
+        <div className={`comment-item comment-item--depth-${Math.min(depth, 5)}`}>
 
-            <div className="comment-card__content">
-                <div className="comment-card__meta">
+            <div className="comment-item__content">
+                <div className="comment-item__meta">
                     <div>
-                        <span className="comment-card__author">
+                        <span className="comment-item__username">
                             {comment.username ? comment.username : 'Deleted User'}
                         </span>
-                        <span className="comment-card__date">{formatDate(comment.created_at)}</span>
+                        <span className="comment-item__date">{formatDate(comment.created_at)}</span>
                         {comment.is_edited && (
-                            <span className="comment-card__edited">(edited)</span>
+                            <span className="comment-item__edited">(edited)</span>
                         )}
                     </div>
-                    <div className="comment-card__menu-container">
+                    <div className="comment-item__menu-container">
                         <div
                             ref={menuButtonRef}
-                            className="comment-card__menu"
+                            className="comment-item__menu"
                             onClick={handleMenuToggle}
                         >
                             <BsThreeDots size={18} />
@@ -251,11 +267,11 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                 </div>
 
                 {comment.status === 'deleted' ? (
-                    <div className="comment-card__body comment-card__body--deleted">
+                    <div className="comment-item__body comment-item__body--deleted">
                         [This comment has been deleted]
                     </div>
                 ) : isEditing ? (
-                    <div className="comment-card__edit">
+                    <div className="comment-item__edit">
                         <textarea
                             value={editBody}
                             onChange={(e) => setEditBody(e.target.value)}
@@ -282,7 +298,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                         </div>
                     </div>
                 ) : (
-                    <div className="comment-card__body">{comment.comment_text}</div>
+                    <div className="comment-item__body">{comment.comment_text}</div>
                 )}
 
                 {comment.status !== 'deleted' && (
@@ -296,21 +312,22 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                         {canReply && (
                             <ReplyButton onClick={() => setShowReplyForm(!showReplyForm)} />
                         )}
-                        <ShareButton />
                     </ActionsContainer>
                 )}
 
                 {comment.reply_count > 0 && (
                     <button
-                        className="comment-card__show-replies"
+                        className="comment-item__show-replies"
                         onClick={() => setShowReplies(!showReplies)}
+                        title={showReplies ? 'Hide replies' : 'Show replies'}
                     >
-                        {showReplies ? 'Hide' : 'Show'} {comment.reply_count} {comment.reply_count === 1 ? 'reply' : 'replies'}
+                        {showReplies ? <IoChevronUp size={16} /> : <IoChevronDown size={16} />}
+                        <span>{comment.reply_count} {comment.reply_count === 1 ? 'reply' : 'replies'}</span>
                     </button>
                 )}
 
                 {showReplyForm && currentUserId && (
-                    <div className="comment-card__reply-form">
+                    <div className="comment-item__reply-form">
                         <CommentForm
                             postId={postId}
                             parentCommentId={comment.id}
@@ -322,7 +339,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                 )}
 
                 {showReplies && comment.reply_count > 0 && (
-                    <div className="comment-card__replies">
+                    <div className="comment-item__replies">
                         {repliesLoading ? (
                             <div className="loading-spinner">Loading replies...</div>
                         ) : (

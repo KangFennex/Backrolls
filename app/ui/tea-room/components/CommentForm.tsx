@@ -1,5 +1,6 @@
 'use client';
 
+import '@/app/scss/components/CommentForm.scss';
 import { useState } from 'react';
 import { trpc } from '@/app/lib/trpc';
 

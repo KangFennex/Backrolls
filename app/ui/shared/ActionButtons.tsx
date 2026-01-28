@@ -1,5 +1,6 @@
 'use client';
 
+import '@/app/scss/components/ActionButtons.scss';
 import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
@@ -59,14 +60,14 @@ export function FavoriteButton({
     return (
         <button
             onClick={handleClick}
-            className="favorite-btn"
+            className="action-btn__icon-only"
             aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
             disabled={toggleFavoriteMutation.isPending}
         >
             {isFavorited ? (
-                <FaHeart size={18} className="favorite-icon filled text-pink-500 hover:scale-110 transition-all duration-300" />
+                <FaHeart size={18} className="action-btn__icon active" />
             ) : (
-                <FaRegHeart size={18} className="favorite-icon text-[#8a8a8a] hover:text-pink-500 hover:scale-110 transition-all duration-300" />
+                <FaRegHeart size={18} className="action-btn__icon" />
             )}
         </button>
     );
@@ -144,9 +145,7 @@ export function VoteButtons({
     };
 
     return (
-        <div className="flex rounded-full py-1 px-3 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300"
-            aria-label="Vote buttons"
-        >
+        <div className="buttons-group" style={{ gap: '0.5rem' }}>
             <button
                 onClick={(e) => {
                     e.stopPropagation();
@@ -154,14 +153,15 @@ export function VoteButtons({
                 }}
                 disabled={toggleVoteMutation.isPending}
                 aria-label="Upvote"
+                className="action-btn__vote-button"
             >
                 <AiOutlineLike
                     size={18}
-                    className={`upvote-icon hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 ${userHasUpvoted ? 'text-pink-500' : 'text-[#8a8a8a]'}`}
+                    className={userHasUpvoted ? 'active' : ''}
                 />
             </button>
 
-            <span className="vote-count text-sm select-none text-[var(--cool-ghost-white)]">{displayVoteCount}</span>
+            <span className="action-btn__vote-count">{displayVoteCount}</span>
 
             <button
                 onClick={(e) => {
@@ -170,20 +170,32 @@ export function VoteButtons({
                 }}
                 disabled={toggleVoteMutation.isPending}
                 aria-label="Downvote"
+                className="action-btn__vote-button"
             >
                 <AiOutlineDislike
                     size={18}
-                    className={`downvote-icon hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 ${userHasDownvoted ? 'text-pink-500' : 'text-[#8a8a8a]'}`}
+                    className={userHasDownvoted ? 'active' : ''}
                 />
             </button>
         </div>
     );
 }
 
+// Icon-only share button for BackrollCards
+export function ShareButtonIcon() {
+    return (
+        <button className="action-btn__icon-only" aria-label="Share quote">
+            <IoShareSocialSharp size={18} className="action-btn__icon" />
+        </button>
+    );
+}
+
+// Share button with text for Post Cards
 export function ShareButton() {
     return (
-        <button className="share-btn" aria-label="Share quote">
-            <IoShareSocialSharp size={18} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
+        <button className="buttons-group" aria-label="Share quote">
+            <IoShareSocialSharp size={18} className="action-btn__icon" />
+            <span className="action-btn__text">Share</span>
         </button>
     );
 }
@@ -200,8 +212,8 @@ export function CopyButton({ textToCopy }: { textToCopy: string }) {
     };
 
     return (
-        <button className="copy-btn pb-1" aria-label="Copy quote to clipboard" onClick={handleCopy}>
-            <FaRegCopy size={16} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
+        <button className="action-btn__icon-only" aria-label="Copy quote to clipboard" onClick={handleCopy}>
+            <FaRegCopy size={16} className="action-btn__icon" />
         </button>
     );
 }
@@ -217,16 +229,14 @@ export function CommentButton({
 
     return (
         <button
-            className="comment-btn relative flex items-center justify-center transition-all duration-300 group"
+            className="buttons-group"
             aria-label={`${commentCount} comments - Click to view and comment`}
             onClick={onClick}
         >
-            <div className="flex rounded-full py-1 px-3 items-center justify-center gap-1 group-hover:bg-opacity-20 transition-all duration-300">
-                <FaRegComment size={18} className="hover:text-pink-500 hover:scale-[1.1] transition-all duration-300 text-[#8a8a8a]" />
-                <span className="text-md text-[var(--cool-ghost-white)] h-5 w-5 flex items-center justify-center font-medium">
-                    {commentCount > 99 ? '99+' : commentCount}
-                </span>
-            </div>
+            <FaRegComment size={18} className="action-btn__icon" />
+            <span className="action-btn__count">
+                {commentCount > 99 ? '99+' : commentCount}
+            </span>
         </button>
     );
 }
@@ -242,8 +252,8 @@ export function ShareCopyFavoriteActions({
     onRemoveFavorite?: (quote_id: string) => void;
 }) {
     return (
-        <div className="flex items-center justify-between gap-2 py-1 px-3">
-            <ShareButton />
+        <div className="buttons-group">
+            <ShareButtonIcon />
             <CopyButton textToCopy={quoteText} />
             <FavoriteButton
                 quoteId={quoteId}
@@ -268,20 +278,14 @@ export function QuoteActionButtons({
     onRemoveFavorite?: (quote_id: string) => void;
 }) {
     return (
-        <div className="flex items-center justify-start w-full gap-2">
-            <div className="py-[0.1rem] px-[0.2rem] bg-[hsl(0,0%,15%,0.6)] rounded-[15px]">
-                <VoteButtons quoteId={quoteId} initialVoteCount={initialVoteCount} />
-            </div>
-            <div className="py-[0.1rem] px-[0.2rem] bg-[hsl(0,0%,15%,0.6)] rounded-[15px]">
-                <CommentButton onClick={onCommentClick} quoteId={quoteId} />
-            </div>
-            <div className="py-[0.1rem] px-[0.2rem] bg-[hsl(0,0%,15%,0.6)] rounded-[15px]">
-                <ShareCopyFavoriteActions
-                    quoteId={quoteId}
-                    quoteText={quoteText}
-                    onRemoveFavorite={onRemoveFavorite}
-                />
-            </div>
+        <div className="actions-container">
+            <VoteButtons quoteId={quoteId} initialVoteCount={initialVoteCount} />
+            <CommentButton onClick={onCommentClick} quoteId={quoteId} />
+            <ShareCopyFavoriteActions
+                quoteId={quoteId}
+                quoteText={quoteText}
+                onRemoveFavorite={onRemoveFavorite}
+            />
         </div>
     );
 }

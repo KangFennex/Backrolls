@@ -4,6 +4,7 @@ import { trpc } from '@/app/lib/trpc';
 import { CommentCard } from './CommentCard';
 import { CommentForm } from './CommentForm';
 import '@/app/scss/pages/tea-room/CommentSection.scss';
+import '@/app/scss/components/CommentItem.scss';
 
 interface CommentSectionProps {
     postId: string;

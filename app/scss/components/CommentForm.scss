@@ -1,0 +1,167 @@
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+
+    textarea {
+        width: 100%;
+        border: 1px solid var(--pink-border);
+        color: var(--text-primary);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        resize: vertical;
+        min-height: 80px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            border-color: var(--pink-border-hover);
+        }
+
+        &:focus {
+            outline: none;
+            background: rgba(var(--primary-pink-rgb), 0.08);
+        }
+
+        &::placeholder {
+            color: rgba(var(--text-primary-rgb), 0.4);
+            transition: color 0.2s ease;
+        }
+
+        &:focus::placeholder {
+            color: rgba(var(--text-primary-rgb), 0.3);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
+
+    .form-error {
+        color: #ff6b6b;
+        font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 0.875rem;
+        padding: 0.5rem;
+        background: rgba(255, 107, 107, 0.1);
+        border: 1px solid rgba(255, 107, 107, 0.3);
+        border-radius: 6px;
+    }
+}
+
+.comment-form__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+
+    .char-count {
+        color: rgba(var(--text-primary-rgb), 0.5);
+        font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 0.875rem;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    }
+}
+
+// Button styles for comment forms
+.btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    &:disabled {
+        opacity: 0.5;
+    }
+
+    &--primary {
+        background: rgba(var(--primary-pink-rgb), 0.08);
+        color: var(--text-primary);
+        border: 1px solid var(--primary-pink);
+
+        &:hover:not(:disabled) {
+            background: rgba(var(--primary-pink-rgb), 0.12);
+        }
+
+        &:active:not(:disabled) {
+            background: rgba(var(--primary-pink-rgb), 0.15);
+        }
+    }
+
+    &--secondary {
+        background: transparent;
+        color: rgba(var(--text-primary-rgb), 0.7);
+        border: 1px solid rgba(var(--text-primary-rgb), 0.2);
+
+        &:hover:not(:disabled) {
+            color: var(--text-primary);
+            border-color: rgba(var(--text-primary-rgb), 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+    }
+
+    &--sm {
+        padding: 0.4rem 1.25rem;
+        font-size: 0.875rem;
+    }
+}
+
+// Login prompt styling
+.comment-login-prompt {
+    padding: 2rem 1rem;
+    border-radius: 8px;
+    background: rgba(var(--primary-pink-rgb), 0.05);
+    border: 1px solid rgba(var(--primary-pink-rgb), 0.15);
+    text-align: center;
+
+    p {
+        color: rgba(var(--text-primary-rgb), 0.7);
+        font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 1rem;
+        margin: 0;
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .comment-form {
+        textarea {
+            font-size: 0.9rem;
+            padding: 0.65rem 0.85rem;
+        }
+    }
+
+    .comment-form__actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        .button-group {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+
+    .btn {
+        width: 100%;
+
+        &--sm {
+            padding: 0.5rem 1rem;
+        }
+    }
+}

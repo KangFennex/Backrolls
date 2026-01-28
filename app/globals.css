@@ -55,6 +55,16 @@
     /* #FFFFF0 */
     --whitesmoke: hsl(0, 0%, 96%);
     /* #F5F5F5 */
+    
+    /* Primary Colors - Frequently Used */
+    --primary-pink: #EE5BAC;
+    --primary-pink-rgb: 238, 91, 172;
+    --text-primary: #FFFFF0;
+    --text-primary-rgb: 255, 255, 240;
+    --pink-border: rgba(236, 72, 153, 0.5);
+    --pink-border-hover: rgba(236, 72, 153, 0.7);
+    --pink-border-subtle: rgba(236, 72, 153, 0.3);
+    --pink-rgb: 236, 72, 153;
     --aliceBlue: hsl(208, 100%, 97%);
     /* #F0F8FF */
     --social-media: hsl(220, 14%, 95%);
