@@ -1,38 +1,17 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 import Search from '../search/Search';
 import { NavLogo } from '../shared/NavLogo';
 import { useFiltersContext } from '../../context/FiltersModalContext';
 import { useRainbowColors } from '../../lib/hooks/useRainbowColors';
+import { NavLinks } from './components/NavLinks';
 
 // Nav Icons
 import { FaSearch } from 'react-icons/fa';
 import { RiCloseLargeFill } from "react-icons/ri";
 import { LuPanelLeft } from "react-icons/lu";
 import { IoFilterSharp } from "react-icons/io5";
-import { BsCupHotFill } from "react-icons/bs";
-import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
-import { FaFire } from "react-icons/fa6";
-import { FaRegCommentDots } from "react-icons/fa";
-import { PiGameControllerBold } from "react-icons/pi";
-import { FaRegQuestionCircle } from "react-icons/fa";
-
-type NavItem = {
-    title: string;
-    href: string;
-    icon: React.ReactNode;
-};
-
-const navItems: NavItem[] = [
-    { title: 'Hot Backrolls', href: '/hot', icon: <FaFire /> },
-    { title: 'Popular Backrolls', href: '/popular', icon: <FaRegCommentDots /> },
-    { title: 'Random Backrolls', href: '/random', icon: <GiPerspectiveDiceSixFacesRandom /> },
-    { title: 'Guess', href: '/guess', icon: <FaRegQuestionCircle /> },
-    { title: 'Quiz', href: '/quiz', icon: <PiGameControllerBold /> },
-    { title: 'Tea Room', href: '/tea-room', icon: <BsCupHotFill /> },
-];
 
 interface NavProps {
     toggleDropdownMenu?: () => void;
@@ -83,7 +62,7 @@ function Nav({ toggleDropdownMenu }: NavProps) {
 
                 {/* Mobile Search - Full width when open */}
                 {isMobileSearchOpen && (
-                    <div className="flex-1 md:hidden">
+                    <div className="w-full max-w-[calc(100%-60px)] md:hidden">
                         <Search />
                     </div>
                 )}
@@ -157,27 +136,12 @@ function Nav({ toggleDropdownMenu }: NavProps) {
             {/* Bottom Nav Component */}
             <nav className="w-full">
                 <div className="w-full max-w-[800px] mx-auto lg:border-x lg:border-[var(--light-border)] flex justify-around py-2 md:justify-center gap-1 md:gap-2">
-                    {navItems.map((item, index) => (
-                        <Link
-                            key={index}
-                            href={item.href}
-                            onMouseEnter={() => handleIconMouseEnter(index)}
-                            onMouseLeave={() => handleIconMouseLeave()}
-                        >
-                            <div
-                                className="low-nav-icon-btn group relative flex flex-col items-center justify-center rounded-md p-3 md:p-4 transition-all duration-300">
-                                <span
-                                    className="text-2xl"
-                                    style={{ color: hoveredIconIndex === index ? getColorForIcon(index) : '#8a8a8a' }}
-                                >
-                                    {item.icon}
-                                </span>
-                                <span className="absolute bottom-[-45px] mb-2 text-sm font-medium bg-black/60 text-[var(--antique-parchment)] opacity-0 p-1 rounded-md group-hover:opacity-100 transition-opacity whitespace-nowrap delay-500 duration-300">
-                                    {item.title}
-                                </span>
-                            </div>
-                        </Link>
-                    ))}
+                    <NavLinks
+                        hoveredIconIndex={hoveredIconIndex}
+                        onIconMouseEnter={handleIconMouseEnter}
+                        onIconMouseLeave={handleIconMouseLeave}
+                        getColorForIcon={getColorForIcon}
+                    />
                 </div>
             </nav>
         </div>
