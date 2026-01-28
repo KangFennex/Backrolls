@@ -38,7 +38,7 @@ export default function QuizClient() {
 
     if (isLoading) {
         return (
-            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
+            <PageComponentContainer title="Backroll Quiz">
                 <QuizLoading />
             </PageComponentContainer>
         );
@@ -46,7 +46,7 @@ export default function QuizClient() {
 
     if (error) {
         return (
-            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
+            <PageComponentContainer title="Backroll Quiz">
                 <QuizError message={error.message} onRetry={() => refetch()} />
             </PageComponentContainer>
         );
@@ -54,7 +54,7 @@ export default function QuizClient() {
 
     if (!questions || questions.length === 0) {
         return (
-            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
+            <PageComponentContainer title="Backroll Quiz">
                 <QuizEmpty onRetry={() => refetch()} />
             </PageComponentContainer>
         );
@@ -124,7 +124,7 @@ export default function QuizClient() {
 
     if (displayLead) {
         return (
-            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
+            <PageComponentContainer title="Backroll Quiz">
                 <QuizLead onStartQuiz={handleLeadToggle} />
             </PageComponentContainer>
         );
@@ -132,7 +132,7 @@ export default function QuizClient() {
 
     if (showResult) {
         return (
-            <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
+            <PageComponentContainer title="Backroll Quiz">
                 <QuizResults
                     score={score}
                     totalQuestions={questions.length}
@@ -144,7 +144,7 @@ export default function QuizClient() {
     }
 
     return (
-        <PageComponentContainer title="Backroll Quiz" subtitle="Check yourself!">
+        <PageComponentContainer title="Backroll Quiz">
             <Container
                 maxWidth="md"
                 className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
