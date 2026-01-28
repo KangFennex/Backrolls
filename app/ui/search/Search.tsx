@@ -8,6 +8,7 @@ import { useSearchContext } from "../../context/SearchContext";
 import SearchModal from "./SearchModal";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { createPortal } from 'react-dom';
+import { useEffect, useState } from 'react';
 
 export default function Search() {
   const {
@@ -18,33 +19,40 @@ export default function Search() {
     handleSearchSubmit,
   } = useSearchContext();
   const placeholder = usePlaceholderLogic();
-  const { resetTranscript, listening } = useSpeechRecognition();
+  const { transcript, resetTranscript, listening, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  const [micPermissionDenied, setMicPermissionDenied] = useState(false);
 
-  const toggleListening = () => {
+  // Update search input when transcript changes
+  useEffect(() => {
+    if (transcript) {
+      handleInputChange(transcript);
+    }
+  }, [transcript, handleInputChange]);
+
+  const toggleListening = async () => {
+    if (!browserSupportsSpeechRecognition) {
+      console.warn("Browser doesn't support speech recognition");
+      setMicPermissionDenied(true);
+      setTimeout(() => setMicPermissionDenied(false), 500);
+      return;
+    }
+
     if (listening) {
       SpeechRecognition.stopListening();
     } else {
-      resetTranscript();
-      SpeechRecognition.startListening({
-        continuous: true,
-        language: 'en-US'
-      });
+      try {
+        resetTranscript();
+        await SpeechRecognition.startListening({
+          continuous: false,
+          language: 'en-US'
+        });
+      } catch (error) {
+        console.error('Error accessing microphone:', error);
+        setMicPermissionDenied(true);
+        setTimeout(() => setMicPermissionDenied(false), 500);
+      }
     }
   };
-
-
-  /*   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-      console.log("Browser doesn't support speech recognition");
-    }
-  
-      useEffect(() => {
-      // Update transcript to input when listening stops
-      if (!listening && isListening) {
-        handleInputChange(transcript);
-        setIsListening(false);
-      }
-    }, [listening, transcript, isListening, handleInputChange]);
-  */
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -80,7 +88,7 @@ export default function Search() {
             <div className="search__border flex justify-center"></div>
             <button
               aria-label="Voice search"
-              className={`search__micButton ${listening ? 'listening' : ''}`}
+              className={`search__micButton ${listening ? 'listening' : ''} ${micPermissionDenied ? 'shake' : ''}`}
               onClick={toggleListening}
             >
               <FaMicrophone

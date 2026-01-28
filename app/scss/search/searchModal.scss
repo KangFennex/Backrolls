@@ -7,12 +7,11 @@
         max-width: 600px;
         height: auto;
         max-height: 500px;
-        background-color: var(--dark-foreground);
-        border: 1px solid #e5e7eb;
+        background: rgba(30, 30, 40, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 12px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
-                    0 10px 10px -5px rgba(0, 0, 0, 0.04),
-                    0 0 0 1px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
         padding: 1rem;
         margin-top: 0.5rem;
         animation: dropdownFadeIn 0.15s ease-out;
@@ -21,22 +20,22 @@
 	&::-webkit-scrollbar {
 		width: 8px;
 		height: 8px;
-		background-color: hsl(196, 79%, 65%);
+		background-color: rgba(255, 255, 255, 0.05);
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background-color: hsl(196, 79%, 65%);
+		background-color: var(--dark-pink);
 		border-radius: 4px;
-		opacity: 0.5;
+		opacity: 0.6;
 		transition: opacity 0.2s;
 
 		&:hover {
-			opacity: 0.8;
+			opacity: 0.9;
 		}
 	}
 
 	&::-webkit-scrollbar-track {
-		background-color: hsl(196, 94%, 47%);
+		background-color: rgba(255, 255, 255, 0.03);
 		border-radius: 4px;
 	}
 
@@ -46,6 +45,18 @@
         @media (min-width: 768px) {
             height: auto;
         }
+    }
+}
+
+// Search result items styling
+.search-result-item {
+    &:hover {
+        background: rgba(238, 91, 172, 0.1);
+    }
+
+    &:active {
+        background: rgba(238, 91, 172, 0.15);
+        transform: scale(0.99);
     }
 }
 

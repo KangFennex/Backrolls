@@ -22,7 +22,7 @@ export default function SearchResults({
     return (
         <div className="search-results overflow-hidden">
             <div className="mb-4 px-2">
-                <p className="text-sm text-gray-600 font-medium">
+                <p className="text-sm font-medium" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
                     {searchResults.length} quote{searchResults.length !== 1 ? 's' : ''} found
                 </p>
             </div>
@@ -48,17 +48,19 @@ function SearchResult({
     onClick: () => void;
 }) {
 
-    const truncatedQuote = quote.length > 45
-        ? quote.substring(0, 45).trim() + "..."
+    const truncatedQuote = quote.length > 80
+        ? quote.substring(0, 80).trim() + "..."
         : quote;
 
     return (
         <div
             onClick={onClick}
-            className="search-result-item cursor-pointer
-           transition-all duration-150 ease-out"
+            className="search-result-item cursor-pointer transition-all duration-150 ease-out rounded-lg"
         >
-            <p className="text-[var(--cool-ghost-white)] hover:bg-blue-400/20 font-medium leading-relaxed transition-colors duration-150 p-2 pl-5">
+            <p className="text-[var(--cool-ghost-white)] font-medium leading-relaxed transition-colors duration-150 p-3"
+                style={{
+                    fontFamily: "'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                }}>
                 {truncatedQuote}
             </p>
         </div >
