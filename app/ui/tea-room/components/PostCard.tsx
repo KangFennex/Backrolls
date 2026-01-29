@@ -3,7 +3,7 @@
 import '@/app/scss/pages/tea-room/PostCard.scss';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-import { PostVoteButtons, CommentButton, ShareButton, ActionsContainer } from './ActionButtons';
+import { PostVoteButtons, PostCommentButton, PostShareButton, ActionsContainer } from '../../shared/ActionButtons';
 import { createPortal } from 'react-dom';
 import { formatDate } from '@/app/lib/utils';
 import { useAuth } from '../../../lib/hooks/useAuth';
@@ -251,8 +251,8 @@ export function PostCard({ post }: PostCardProps) {
                 {/* Actions with vote buttons */}
                 <ActionsContainer>
                     <PostVoteButtons post_id={post.id} initialVoteCount={post.vote_count} />
-                    <CommentButton count={post.comment_count} postId={post.id} />
-                    <ShareButton />
+                    <PostCommentButton postId={post.id} />
+                    <PostShareButton />
                 </ActionsContainer>
             </div>
         </div>

@@ -5,12 +5,12 @@ import { useState } from 'react';
 import { useCreateComment } from '../../../lib/hooks/useCreateComment';
 import { useUpdateComment } from '../../../lib/hooks/useUpdateComment';
 import { useSession } from 'next-auth/react';
+import type { Session } from 'next-auth';
 
 interface CommentFormProps {
     commentId?: string;
     quoteId: string;
     parentCommentId?: string | null;
-    parentListId?: string | null;
     onSuccess?: () => void;
     onCancel?: () => void;
     initialValue?: string;
@@ -29,15 +29,16 @@ export default function CommentForm({
 
     const [commentText, setCommentText] = useState(initialValue);
     const { data: session } = useSession();
+    const userId = (session as Session | null)?.user?.id;
+    const username = (session as Session | null)?.user?.username ?? session?.user?.name ?? 'You';
 
     const createComment = useCreateComment({
         quoteId,
         parentCommentId,
-        parentListId,
-        currentUser: session?.user
+        currentUser: userId
             ? {
-                id: session.user.id,
-                username: session.user.username ?? session.user.name ?? 'You',
+                id: userId,
+                username,
             }
             : null,
         onSuccess: () => {
@@ -49,7 +50,6 @@ export default function CommentForm({
     const updateComment = useUpdateComment({
         quoteId,
         parentCommentId,
-        parentListId,
         onSuccess: () => {
             onSuccess?.();
         },

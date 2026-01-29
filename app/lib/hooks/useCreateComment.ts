@@ -64,8 +64,11 @@ export function useCreateComment({
                     quote_id: variables.quoteId,
                     parent_comment_id: variables.parentCommentId || null,
                     created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
                     is_edited: false,
+                    is_flagged: false,
                     vote_count: 0,
+                    status: 'active' as const,
                 },
                 user: currentUser
                     ? { id: currentUser.id, username: currentUser.username || 'You' }

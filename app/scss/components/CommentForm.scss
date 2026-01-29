@@ -16,6 +16,7 @@
         resize: vertical;
         min-height: 80px;
         transition: all 0.3s ease;
+        background: transparent;
 
         &:hover {
             border-color: var(--pink-border-hover);

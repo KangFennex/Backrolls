@@ -26,7 +26,7 @@ export default function BackrollCommentsContainer({
     );
 
     // Fetch total comments count for this quote
-    const { data: commentCount = 0 } = useCommentButton(quoteId);
+    const { data: commentCount = 0 } = useCommentButton(quoteId || '');
 
     if (!quoteId) {
         return (

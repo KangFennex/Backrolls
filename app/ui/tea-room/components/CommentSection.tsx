@@ -3,6 +3,7 @@
 import { trpc } from '@/app/lib/trpc';
 import { CommentCard } from './CommentCard';
 import { CommentForm } from './CommentForm';
+import { usePostCommentButton } from '@/app/lib/hooks';
 import '@/app/scss/pages/tea-room/CommentSection.scss';
 import '@/app/scss/components/CommentItem.scss';
 
@@ -13,6 +14,7 @@ interface CommentSectionProps {
 
 export function CommentSection({ postId, currentUserId }: CommentSectionProps) {
     const { data: comments, isLoading, error } = trpc.postComment.getPostComments.useQuery({ postId });
+    const { data: commentCount } = usePostCommentButton(postId);
 
     if (isLoading) {
         return (
@@ -33,7 +35,7 @@ export function CommentSection({ postId, currentUserId }: CommentSectionProps) {
     return (
         <div className="comment-section">
             <h3 className="comment-section__title">
-                Comments ({comments?.length || 0})
+                Comments ({commentCount})
             </h3>
 
             {currentUserId ? (
@@ -48,14 +50,17 @@ export function CommentSection({ postId, currentUserId }: CommentSectionProps) {
 
             <div className="comment-section__list">
                 {comments && comments.length > 0 ? (
-                    comments.map((comment) => (
-                        <CommentCard
-                            key={comment.id}
-                            comment={comment}
-                            postId={postId}
-                            currentUserId={currentUserId}
-                        />
-                    ))
+                    <div className="comment-list">
+                        {comments.map((comment) => (
+                            <div key={comment.id} className="comment-list__item">
+                                <CommentCard
+                                    comment={comment}
+                                    postId={postId}
+                                    currentUserId={currentUserId}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <div className="comment-section__empty">
                         No comments yet. Be the first to comment!

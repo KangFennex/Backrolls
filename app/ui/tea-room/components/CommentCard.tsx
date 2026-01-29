@@ -1,18 +1,19 @@
 'use client';
 
-import '@/app/scss/components/DropdownMenu.scss';
+import '@/app/scss/components/CommentItem.scss';
+import '@/app/scss/components/ActionButtons.scss';
 import { useState, useRef, useEffect } from 'react';
-import { trpc } from '@/app/lib/trpc';
 import { CommentForm } from './CommentForm';
-import { formatDate } from '@/app/lib/utils';
-import { createPortal } from 'react-dom';
-import { CommentVoteButtons, ReplyButton, ActionsContainer } from './ActionButtons';
+import { formatDate } from '../../../lib/utils';
+import { useDeletePostComment } from '../../../lib/hooks';
+import CommentItemMenu from './CommentItemMenu';
+import { PostCommentVoteButtons, ReplyButton, ActionsContainer } from '../../shared/ActionButtons';
+import CommentList from './CommentList';
+
+// Icons
 import { BsThreeDots } from "react-icons/bs";
-import { MdDataSaverOn } from "react-icons/md";
-import { BiHide } from "react-icons/bi";
-import { MdReportGmailerrorred } from "react-icons/md";
-import { MdDelete, MdEdit } from "react-icons/md";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
+
 
 interface Comment {
     id: string;
@@ -48,31 +49,14 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
     const [showReplyForm, setShowReplyForm] = useState(false);
     const [showReplies, setShowReplies] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
-    const [editBody, setEditBody] = useState(comment.comment_text || '');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
     const menuButtonRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
-    const [voteCount, setVoteCount] = useState(comment.vote_count);
 
-    const utils = trpc.useUtils();
-
-    const { data: userVote } = trpc.postComment.getUserCommentVote.useQuery(
-        { commentId: comment.id },
-        { enabled: !!currentUserId }
-    );
-
-    const { data: replies, isLoading: repliesLoading } = trpc.postComment.getCommentReplies.useQuery(
-        { commentId: comment.id },
-        { enabled: showReplies && comment.reply_count > 0 }
-    );
-
-    const voteComment = trpc.postComment.voteComment.useMutation({
-        onSuccess: () => {
-            utils.postComment.getPostComments.invalidate();
-            utils.postComment.getCommentReplies.invalidate();
-            utils.postComment.getUserCommentVote.invalidate({ commentId: comment.id });
-        }
+    const deleteComment = useDeletePostComment({
+        postId,
+        parentCommentId: comment.parent_comment_id,
     });
 
     // Close menu when clicking outside
@@ -97,39 +81,6 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
         };
     }, [isMenuOpen]);
 
-    const updateComment = trpc.postComment.updateComment.useMutation({
-        onSuccess: () => {
-            utils.postComment.getPostComments.invalidate();
-            utils.postComment.getCommentReplies.invalidate();
-            setIsEditing(false);
-        }
-    });
-
-    const deleteComment = trpc.postComment.deleteComment.useMutation({
-        onSuccess: () => {
-            utils.postComment.getPostComments.invalidate();
-            utils.postComment.getCommentReplies.invalidate();
-        }
-    });
-
-    const handleVote = (voteType: 'up' | 'down') => {
-        const currentVote = userVote?.vote_type;
-
-        // Optimistic UI update
-        if (currentVote === voteType) {
-            // Remove vote
-            setVoteCount(prev => prev + (voteType === 'up' ? -1 : 1));
-        } else if (currentVote === null || currentVote === undefined) {
-            // Add vote
-            setVoteCount(prev => prev + (voteType === 'up' ? 1 : -1));
-        } else {
-            // Switch vote
-            setVoteCount(prev => prev + (voteType === 'up' ? 2 : -2));
-        }
-
-        voteComment.mutate({ commentId: comment.id, voteType });
-    };
-
     const handleMenuToggle = (e: React.MouseEvent) => {
         e.stopPropagation();
 
@@ -148,14 +99,6 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
         e.stopPropagation();
         console.log(`${action} comment:`, comment.id);
         setIsMenuOpen(false);
-    };
-
-    const handleUpdate = () => {
-        if (!editBody.trim()) return;
-        updateComment.mutate({
-            commentId: comment.id,
-            commentText: editBody.trim(),
-        });
     };
 
     const handleDelete = async (e?: React.MouseEvent) => {
@@ -179,183 +122,135 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
     const isAuthor = currentUserId === comment.user_id;
     const canReply = depth < 10;
 
-    const Menu = () => {
-        if (typeof window === 'undefined') return null;
-
-        return createPortal(
-            <div
-                ref={menuRef}
-                className="post-card__dropdown"
-                style={{
-                    position: 'fixed',
-                    top: `${menuPosition.top}px`,
-                    left: `${menuPosition.left}px`,
-                }}
-            >
-                <span className="post-card__dropdown-item">
-                    <MdDataSaverOn size={18} />
-                    <button onClick={(e) => handleMenuAction('Save', e)}>
-                        Save
-                    </button>
-                </span>
-                <span className="post-card__dropdown-item">
-                    <BiHide size={18} />
-                    <button onClick={(e) => handleMenuAction('Hide', e)}>
-                        Hide
-                    </button>
-                </span>
-                <span className="post-card__dropdown-item">
-                    <MdReportGmailerrorred size={18} />
-                    <button onClick={(e) => handleMenuAction('Report', e)}>
-                        Report
-                    </button>
-                </span>
-                {isAuthor && (
-                    <>
-                        <span className="post-card__dropdown-item">
-                            <MdEdit size={18} />
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setIsEditing(true);
-                                    setIsMenuOpen(false);
-                                }}
-                            >
-                                Edit
-                            </button>
-                        </span>
-                        <span className="post-card__dropdown-item post-card__dropdown-item--danger">
-                            <MdDelete size={18} />
-                            <button
-                                onClick={handleDelete}
-                                disabled={deleteComment.isPending}
-                            >
-                                {deleteComment.isPending ? 'Deleting...' : 'Delete'}
-                            </button>
-                        </span>
-                    </>
-                )}
-            </div>,
-            document.body
-        );
+    const handleEdit = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsEditing(true);
+        setIsMenuOpen(false);
     };
 
     return (
         <div className={`comment-item comment-item--depth-${Math.min(depth, 5)}`}>
-
-            <div className="comment-item__content">
-                <div className="comment-item__meta">
-                    <div>
-                        <span className="comment-item__username">
-                            {comment.username ? comment.username : 'Deleted User'}
-                        </span>
-                        <span className="comment-item__date">{formatDate(comment.created_at)}</span>
-                        {comment.is_edited && (
-                            <span className="comment-item__edited">(edited)</span>
-                        )}
+            {/* Comment Header */}
+            <div className="comment-item__header">
+                <div className="comment-item__user-info">
+                    {/* User Avatar */}
+                    <div className="comment-item__avatar">
+                        {comment.username?.[0]?.toUpperCase() || 'U'}
                     </div>
-                    <div className="comment-item__menu-container">
-                        <div
-                            ref={menuButtonRef}
-                            className="comment-item__menu"
-                            onClick={handleMenuToggle}
-                        >
-                            <BsThreeDots size={18} />
+                    <div className="comment-item__user-details">
+                        <span className="comment-item__username">
+                            {comment.username || 'Deleted User'}
+                        </span>
+                        <div className="comment-item__meta">
+                            <span>
+                                {formatDate(comment.created_at)}
+                            </span>
+                            {comment.is_edited && (
+                                <span className="comment-item__edited">· edited</span>
+                            )}
                         </div>
-                        {isMenuOpen && <Menu />}
                     </div>
                 </div>
 
-                {comment.status === 'deleted' ? (
-                    <div className="comment-item__body comment-item__body--deleted">
-                        [This comment has been deleted]
+                {/* Three-dot Menu */}
+                <div className="comment-item__menu-container">
+                    <div
+                        ref={menuButtonRef}
+                        className="comment-item__menu"
+                        onClick={handleMenuToggle}
+                    >
+                        <BsThreeDots size={18} />
                     </div>
-                ) : isEditing ? (
-                    <div className="comment-item__edit">
-                        <textarea
-                            value={editBody}
-                            onChange={(e) => setEditBody(e.target.value)}
-                            rows={3}
-                            maxLength={10000}
+                    {isMenuOpen && (
+                        <CommentItemMenu
+                            menuRef={menuRef}
+                            menuPosition={menuPosition}
+                            isOwner={isAuthor}
+                            isDeleting={deleteComment.isPending}
+                            onSave={(e) => handleMenuAction('Save', e)}
+                            onHide={(e) => handleMenuAction('Hide', e)}
+                            onReport={(e) => handleMenuAction('Report', e)}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
                         />
-                        <div className="button-group">
-                            <button
-                                className="btn btn--secondary btn--sm"
-                                onClick={() => {
-                                    setIsEditing(false);
-                                    setEditBody(comment.comment_text || '');
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="btn btn--primary btn--sm"
-                                onClick={handleUpdate}
-                                disabled={updateComment.isPending || !editBody.trim()}
-                            >
-                                {updateComment.isPending ? 'Saving...' : 'Save'}
-                            </button>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="comment-item__body">{comment.comment_text}</div>
-                )}
+                    )}
+                </div>
+            </div>
 
+            {/* Comment Content */}
+            {comment.status === 'deleted' ? (
+                <div className="comment-item__body comment-item__body--deleted">
+                    [This comment has been deleted]
+                </div>
+            ) : isEditing ? (
+                <CommentForm
+                    commentId={comment.id}
+                    postId={postId}
+                    parentCommentId={comment.parent_comment_id || undefined}
+                    initialValue={comment.comment_text || ''}
+                    onSuccess={() => setIsEditing(false)}
+                    isEditing={true}
+                    onCancel={() => setIsEditing(false)}
+                />
+            ) : (
+                <div className="comment-item__content">
+                    <p>{comment.comment_text}</p>
+                </div>
+            )}
+
+            {/* Comment Footer */}
+            <div className="comment-item__footer">
                 {comment.status !== 'deleted' && (
-                    <ActionsContainer>
-                        <CommentVoteButtons
-                            commentId={comment.id}
-                            initialVoteCount={voteCount}
-                            currentUserId={currentUserId}
-                            onVote={handleVote}
-                        />
-                        {canReply && (
-                            <ReplyButton onClick={() => setShowReplyForm(!showReplyForm)} />
-                        )}
-                    </ActionsContainer>
+                    <div className="comment-item__footer-actions">
+                        <ActionsContainer>
+                            <PostCommentVoteButtons
+                                commentId={comment.id}
+                                initialVoteCount={comment.vote_count}
+                            />
+                            {canReply && (
+                                <ReplyButton onClick={() => setShowReplyForm(!showReplyForm)} />
+                            )}
+                        </ActionsContainer>
+                    </div>
                 )}
 
+                {/* Show Replies Toggle */}
                 {comment.reply_count > 0 && (
                     <button
-                        className="comment-item__show-replies"
                         onClick={() => setShowReplies(!showReplies)}
+                        className="comment-item__show-replies"
                         title={showReplies ? 'Hide replies' : 'Show replies'}
                     >
                         {showReplies ? <IoChevronUp size={16} /> : <IoChevronDown size={16} />}
                         <span>{comment.reply_count} {comment.reply_count === 1 ? 'reply' : 'replies'}</span>
                     </button>
                 )}
-
-                {showReplyForm && currentUserId && (
-                    <div className="comment-item__reply-form">
-                        <CommentForm
-                            postId={postId}
-                            parentCommentId={comment.id}
-                            onSuccess={() => setShowReplyForm(false)}
-                            onCancel={() => setShowReplyForm(false)}
-                            placeholder="Write a reply..."
-                        />
-                    </div>
-                )}
-
-                {showReplies && comment.reply_count > 0 && (
-                    <div className="comment-item__replies">
-                        {repliesLoading ? (
-                            <div className="loading-spinner">Loading replies...</div>
-                        ) : (
-                            replies?.map((reply) => (
-                                <CommentCard
-                                    key={reply.id}
-                                    comment={reply}
-                                    postId={postId}
-                                    depth={depth + 1}
-                                    currentUserId={currentUserId}
-                                />
-                            ))
-                        )}
-                    </div>
-                )}
             </div>
+
+            {/* Reply Form */}
+            {showReplyForm && currentUserId && (
+                <div className="comment-item__reply-form">
+                    <CommentForm
+                        postId={postId}
+                        parentCommentId={comment.id}
+                        onSuccess={() => setShowReplyForm(false)}
+                        onCancel={() => setShowReplyForm(false)}
+                        placeholder="Write a reply..."
+                    />
+                </div>
+            )}
+
+            {/* Nested Replies */}
+            {showReplies && comment.reply_count > 0 && (
+                <div className="comment-item__replies">
+                    <CommentList
+                        postId={postId}
+                        parentCommentId={comment.id}
+                        depth={depth + 1}
+                        currentUserId={currentUserId}
+                    />
+                </div>
+            )}
         </div>
     );
 }

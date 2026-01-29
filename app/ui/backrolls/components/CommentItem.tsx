@@ -3,14 +3,14 @@
 import '@/app/scss/components/CommentItem.scss';
 import '@/app/scss/components/ActionButtons.scss';
 import { useState, useRef, useEffect } from 'react';
-import { trpc } from '../../../lib/trpc';
 import { useSession } from 'next-auth/react';
-import { ReplyButton, ActionsContainer } from '../../tea-room/components/ActionButtons';
+import { ReplyButton, ActionsContainer } from '../../shared/ActionButtons';
 import { CommentVoteButtons } from '../../shared/ActionButtons';
+import { useDeleteComment } from '../../../lib/hooks';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import CommentItemMenu from './CommentItemMenu';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDate } from '../../../lib/utils';
 import { BsThreeDots } from "react-icons/bs";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
@@ -46,11 +46,15 @@ export default function CommentItem({
     const menuButtonRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
     const { data: session } = useSession();
-    const utils = trpc.useContext();
 
     const userId = (session as { user?: { id?: string } } | null | undefined)?.user?.id;
     const isOwner = userId === comment.user_id;
-    const maxVisualDepth = 2; // Stop visual nesting after this depth
+    const maxVisualDepth = 2;
+
+    const deleteComment = useDeleteComment({
+        quoteId: comment.quote_id,
+        parentCommentId: comment.parent_comment_id,
+    });
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -73,18 +77,6 @@ export default function CommentItem({
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isMenuOpen]);
-
-    const deleteComment = trpc.comments.delete.useMutation({
-        onSuccess: () => {
-            utils.comments.getCommentsByQuoteId.invalidate({ id: comment.quote_id });
-            utils.comments.getCommentCount.invalidate({ quoteId: comment.quote_id });
-
-            // Also invalidate the parent comment's replies
-            if (comment.parent_comment_id) {
-                utils.comments.getCommentReplies.invalidate({ parentCommentId: comment.parent_comment_id });
-            }
-        },
-    });
 
     const handleReply = () => {
         setShowReplyForm(true);
@@ -150,7 +142,7 @@ export default function CommentItem({
                         <span className="comment-item__username">{user?.username || 'Unknown User'}</span>
                         <div className="comment-item__meta">
                             <span>
-                                {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+                                {formatDate(comment.created_at)}
                             </span>
                             {comment.is_edited && <span className="comment-item__edited">· edited</span>}
                         </div>

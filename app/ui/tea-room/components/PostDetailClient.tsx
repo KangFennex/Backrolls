@@ -3,7 +3,7 @@
 import { trpc } from '@/app/lib/trpc';
 import { useAuth } from '../../../lib/hooks';
 import { CommentSection } from '@/app/ui/tea-room/components/CommentSection';
-import { PostVoteButtons, CommentButton, ShareButton, ActionsContainer } from './ActionButtons';
+import { PostVoteButtons, PostCommentButton, PostShareButton, ActionsContainer } from '../../shared/ActionButtons';
 import Link from 'next/link';
 import '@/app/scss/pages/tea-room/PostDetailPage.scss';
 import PageComponentContainer from '../../pageComponentContainer';
@@ -104,13 +104,13 @@ export function PostDetailClient({ postId }: PostDetailClientProps) {
 
                         <ActionsContainer>
                             <PostVoteButtons post_id={post.id} initialVoteCount={post.vote_count} />
-                            <CommentButton count={post.comment_count} asLink={false} />
-                            <ShareButton />
+                            <PostCommentButton postId={post.id} />
+                            <PostShareButton />
                         </ActionsContainer>
                     </div>
                 </div>
 
-                <CommentSection postId={postId} currentUserId={user?.id} />
+                <CommentSection postId={post.id} currentUserId={user?.id} />
             </div>
         </PageComponentContainer>
     );

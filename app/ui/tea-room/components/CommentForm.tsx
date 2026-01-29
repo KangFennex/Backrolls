@@ -3,18 +3,33 @@
 import '@/app/scss/components/CommentForm.scss';
 import { useState } from 'react';
 import { trpc } from '@/app/lib/trpc';
+import { useUpdatePostComment } from '@/app/lib/hooks/useUpdatePostComment';
+import { useSession } from 'next-auth/react';
 
 interface CommentFormProps {
+    commentId?: string;
     postId: string;
     parentCommentId?: string;
     onSuccess?: () => void;
     onCancel?: () => void;
     placeholder?: string;
+    initialValue?: string;
+    isEditing?: boolean;
 }
 
-export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, placeholder }: CommentFormProps) {
-    const [body, setBody] = useState('');
+export function CommentForm({ 
+    commentId,
+    postId, 
+    parentCommentId, 
+    onSuccess, 
+    onCancel, 
+    placeholder,
+    initialValue = '',
+    isEditing = false,
+}: CommentFormProps) {
+    const [body, setBody] = useState(initialValue);
     const [error, setError] = useState('');
+    const { data: session } = useSession();
 
     const utils = trpc.useUtils();
     const createComment = trpc.postComment.createComment.useMutation({
@@ -33,6 +48,14 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
         }
     });
 
+    const updateComment = useUpdatePostComment({
+        postId,
+        parentCommentId,
+        onSuccess: () => {
+            onSuccess?.();
+        },
+    });
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -47,12 +70,21 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
             return;
         }
 
-        createComment.mutate({
-            postId,
-            commentText: body.trim(),
-            parentCommentId,
-        });
+        if (isEditing && commentId) {
+            updateComment.mutate({
+                commentId,
+                commentText: body.trim(),
+            });
+        } else {
+            createComment.mutate({
+                postId,
+                commentText: body.trim(),
+                parentCommentId,
+            });
+        }
     };
+
+    const isPending = isEditing ? updateComment.isPending : createComment.isPending;
 
     return (
         <form onSubmit={handleSubmit} className="comment-form">
@@ -64,7 +96,7 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
                 placeholder={placeholder || 'What are your thoughts?'}
                 rows={3}
                 maxLength={10000}
-                disabled={createComment.isPending}
+                disabled={isPending}
             />
 
             <div className="comment-form__actions">
@@ -75,7 +107,7 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
                             type="button"
                             className="btn btn--secondary btn--sm"
                             onClick={onCancel}
-                            disabled={createComment.isPending}
+                            disabled={isPending}
                         >
                             Cancel
                         </button>
@@ -83,9 +115,9 @@ export function CommentForm({ postId, parentCommentId, onSuccess, onCancel, plac
                     <button
                         type="submit"
                         className="btn btn--primary btn--sm"
-                        disabled={createComment.isPending || !body.trim()}
+                        disabled={isPending || !body.trim()}
                     >
-                        {createComment.isPending ? 'Posting...' : 'Comment'}
+                        {isPending ? (isEditing ? 'Saving...' : 'Posting...') : (isEditing ? 'Save' : 'Comment')}
                     </button>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { db } from "../../db";
 import { postComments, postCommentVotes, communityMembers, posts } from "../../db/schema";
-import { desc, eq, and, isNull } from "drizzle-orm";
+import { desc, eq, and, isNull, sql } from "drizzle-orm";
 
 export const postCommentRouter = router({
     // Create a comment on a post
@@ -222,6 +222,16 @@ export const postCommentRouter = router({
                     updated_at: new Date().toISOString(),
                 })
                 .where(eq(postComments.id, commentId));
+
+            // Manually decrement comment_count since soft delete doesn't trigger the DB trigger
+            if (comment[0].status === 'active') {
+                await db
+                    .update(posts)
+                    .set({
+                        comment_count: sql`${posts.comment_count} - 1`
+                    })
+                    .where(eq(posts.id, comment[0].post_id));
+            }
 
             return { success: true };
         }),
