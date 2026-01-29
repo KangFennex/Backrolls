@@ -2,19 +2,16 @@
 
 import '@/app/scss/components/CommentItem.scss';
 import '@/app/scss/components/ActionButtons.scss';
-import '@/app/scss/components/DropdownMenu.scss';
 import { useState, useRef, useEffect } from 'react';
 import { trpc } from '../../../lib/trpc';
 import { useSession } from 'next-auth/react';
-import { CommentVoteButtons, ReplyButton, ActionsContainer } from '../../tea-room/components/ActionButtons';
+import { ReplyButton, ActionsContainer } from '../../tea-room/components/ActionButtons';
+import { CommentVoteButtons } from '../../shared/ActionButtons';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
+import CommentItemMenu from './CommentItemMenu';
 import { formatDistanceToNow } from 'date-fns';
-import { createPortal } from 'react-dom';
 import { BsThreeDots } from "react-icons/bs";
-import { MdDataSaverOn, MdEdit, MdDelete } from "react-icons/md";
-import { BiHide } from "react-icons/bi";
-import { MdReportGmailerrorred } from "react-icons/md";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
 interface CommentItemProps {
@@ -50,11 +47,10 @@ export default function CommentItem({
     const menuRef = useRef<HTMLDivElement>(null);
     const { data: session } = useSession();
     const utils = trpc.useContext();
-    const [voteCount, setVoteCount] = useState(comment.vote_count);
 
     const userId = (session as { user?: { id?: string } } | null | undefined)?.user?.id;
     const isOwner = userId === comment.user_id;
-    const maxDepth = 4; // Prevent infinite nesting
+    const maxVisualDepth = 2; // Stop visual nesting after this depth
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -91,10 +87,6 @@ export default function CommentItem({
     });
 
     const handleReply = () => {
-        if (depth >= maxDepth) {
-            // Optionally show a message about max depth
-            return;
-        }
         setShowReplyForm(true);
         onReply(comment.id);
     };
@@ -137,75 +129,16 @@ export default function CommentItem({
         setIsMenuOpen(false);
     };
 
-    const handleVote = (voteType: 'up' | 'down') => {
-        // This is a simplified vote handler for the backrolls comments
-        // Optimistic UI update
-        console.log('Vote:', voteType);
+    const handleEdit = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsEditing(true);
+        setIsMenuOpen(false);
     };
 
-    const Menu = () => {
-        if (typeof window === 'undefined') return null;
-
-        return createPortal(
-            <div
-                ref={menuRef}
-                className="post-card__dropdown"
-                style={{
-                    position: 'fixed',
-                    top: `${menuPosition.top}px`,
-                    left: `${menuPosition.left}px`,
-                }}
-            >
-                <span className="post-card__dropdown-item">
-                    <MdDataSaverOn size={18} />
-                    <button onClick={(e) => handleMenuAction('Save', e)}>
-                        Save
-                    </button>
-                </span>
-                <span className="post-card__dropdown-item">
-                    <BiHide size={18} />
-                    <button onClick={(e) => handleMenuAction('Hide', e)}>
-                        Hide
-                    </button>
-                </span>
-                <span className="post-card__dropdown-item">
-                    <MdReportGmailerrorred size={18} />
-                    <button onClick={(e) => handleMenuAction('Report', e)}>
-                        Report
-                    </button>
-                </span>
-                {isOwner && (
-                    <>
-                        <span className="post-card__dropdown-item">
-                            <MdEdit size={18} />
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setIsEditing(true);
-                                    setIsMenuOpen(false);
-                                }}
-                            >
-                                Edit
-                            </button>
-                        </span>
-                        <span className="post-card__dropdown-item post-card__dropdown-item--danger">
-                            <MdDelete size={18} />
-                            <button
-                                onClick={handleDelete}
-                                disabled={deleteComment.isPending}
-                            >
-                                {deleteComment.isPending ? 'Deleting...' : 'Delete'}
-                            </button>
-                        </span>
-                    </>
-                )}
-            </div>,
-            document.body
-        );
-    };
+    const visualDepth = Math.min(depth, maxVisualDepth);
 
     return (
-        <div className={`comment-item comment-item--depth-${Math.min(depth, 4)}`}>
+        <div className={`comment-item comment-item--depth-${visualDepth}`}>
             {/* Comment Header */}
             <div className="comment-item__header">
                 <div className="comment-item__user-info">
@@ -233,17 +166,31 @@ export default function CommentItem({
                     >
                         <BsThreeDots size={18} />
                     </div>
-                    {isMenuOpen && <Menu />}
+                    {isMenuOpen && (
+                        <CommentItemMenu
+                            menuRef={menuRef}
+                            menuPosition={menuPosition}
+                            isOwner={isOwner}
+                            isDeleting={deleteComment.isPending}
+                            onSave={(e) => handleMenuAction('Save', e)}
+                            onHide={(e) => handleMenuAction('Hide', e)}
+                            onReport={(e) => handleMenuAction('Report', e)}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
+                    )}
                 </div>
             </div>
 
             {/* Comment Content */}
             {isEditing ? (
                 <CommentForm
+                    commentId={comment.id}
                     quoteId={comment.quote_id}
                     parentCommentId={comment.parent_comment_id}
                     initialValue={comment.comment_text}
                     onSuccess={() => setIsEditing(false)}
+                    isEditing={true}
                     onCancel={() => setIsEditing(false)}
                 />
             ) : (
@@ -260,9 +207,7 @@ export default function CommentItem({
                     <ActionsContainer>
                         <CommentVoteButtons
                             commentId={comment.id}
-                            initialVoteCount={voteCount}
-                            currentUserId={userId}
-                            onVote={handleVote}
+                            initialVoteCount={comment.vote_count}
                         />
 
                         <ReplyButton onClick={handleReply} />
@@ -295,13 +240,13 @@ export default function CommentItem({
             )}
 
             {/* Nested Replies */}
-            {showReplies && replyCount > 0 && depth < maxDepth && (
+            {showReplies && replyCount > 0 && (
                 <div className="comment-item__replies">
                     <CommentList
                         comments={[]} // Will be fetched by the CommentList component
                         onReply={onReply}
                         parentCommentId={comment.id}
-                        depth={depth + 1}
+                        depth={Math.min(depth + 1, maxVisualDepth)}
                     />
                 </div>
             )}

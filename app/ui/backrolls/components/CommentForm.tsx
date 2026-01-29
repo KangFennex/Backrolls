@@ -2,35 +2,55 @@
 
 import '@/app/scss/components/CommentForm.scss';
 import { useState } from 'react';
-import { trpc } from '../../../lib/trpc';
+import { useCreateComment } from '../../../lib/hooks/useCreateComment';
+import { useUpdateComment } from '../../../lib/hooks/useUpdateComment';
 import { useSession } from 'next-auth/react';
 
 interface CommentFormProps {
+    commentId?: string;
     quoteId: string;
     parentCommentId?: string | null;
+    parentListId?: string | null;
     onSuccess?: () => void;
     onCancel?: () => void;
     initialValue?: string;
+    isEditing?: boolean;
 }
 
 export default function CommentForm({
+    commentId,
     quoteId,
     parentCommentId = null,
     onSuccess,
     onCancel,
-    initialValue = ''
+    initialValue = '',
+    isEditing = false,
 }: CommentFormProps) {
 
     const [commentText, setCommentText] = useState(initialValue);
     const { data: session } = useSession();
-    const utils = trpc.useContext();
 
-    const createComment = trpc.comments.create.useMutation({
+    const createComment = useCreateComment({
+        quoteId,
+        parentCommentId,
+        parentListId,
+        currentUser: session?.user
+            ? {
+                id: session.user.id,
+                username: session.user.username ?? session.user.name ?? 'You',
+            }
+            : null,
         onSuccess: () => {
             setCommentText('');
-            utils.comments.getCommentsByQuoteId.invalidate({ id: quoteId });
-            utils.comments.getCommentCount.invalidate({ quoteId });
+            onSuccess?.();
+        },
+    });
 
+    const updateComment = useUpdateComment({
+        quoteId,
+        parentCommentId,
+        parentListId,
+        onSuccess: () => {
             onSuccess?.();
         },
     });
@@ -39,11 +59,18 @@ export default function CommentForm({
         e.preventDefault();
         if (!commentText.trim() || !session) return;
 
-        createComment.mutate({
-            quoteId,
-            parentCommentId,
-            commentText: commentText.trim(),
-        });
+        if (isEditing && commentId) {
+            updateComment.mutate({
+                commentId,
+                commentText: commentText.trim(),
+            });
+        } else {
+            createComment.mutate({
+                quoteId,
+                parentCommentId,
+                commentText: commentText.trim(),
+            });
+        }
     };
 
     if (!session) {
@@ -56,38 +83,40 @@ export default function CommentForm({
         );
     }
 
+    const isPending = isEditing ? updateComment.isPending : createComment.isPending;
+
     return (
         <form onSubmit={handleSubmit} className="comment-form">
             <textarea
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                placeholder={parentCommentId ? "Write your reply..." : "What are your thoughts about this backroll?"}
-                rows={parentCommentId ? 3 : 4}
+                placeholder={isEditing ? "Edit your comment..." : (parentCommentId ? "Write your reply..." : "What are your thoughts about this backroll?")}
+                rows={isEditing || parentCommentId ? 3 : 4}
                 maxLength={1000}
-                disabled={createComment.isPending}
+                disabled={isPending}
             />
-            
+
             <div className="comment-form__actions">
                 <span className="char-count">
                     {commentText.length}/1,000
                 </span>
                 <div className="button-group">
-                    {parentCommentId && (
+                    {(parentCommentId || isEditing) && (
                         <button
                             type="button"
                             onClick={onCancel}
                             className="btn btn--secondary btn--sm"
-                            disabled={createComment.isPending}
+                            disabled={isPending}
                         >
                             Cancel
                         </button>
                     )}
                     <button
                         type="submit"
-                        disabled={!commentText.trim() || createComment.isPending}
+                        disabled={!commentText.trim() || isPending}
                         className="btn btn--primary btn--sm"
                     >
-                        {createComment.isPending ? 'Posting...' : (parentCommentId ? 'Reply' : 'Comment')}
+                        {isPending ? (isEditing ? 'Saving...' : 'Posting...') : (isEditing ? 'Save' : (parentCommentId ? 'Reply' : 'Comment'))}
                     </button>
                 </div>
             </div>

@@ -8,9 +8,10 @@ import BackrollCommentsContainer from './components/BackrollCommentsContainer';
 import Breadcrumb from '../breadcrumbs';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { BackrollCardMinimal } from '../backrollCards/BackrollCardMinimal';
-import { FaEye } from "react-icons/fa";
 import '@/app/scss/backrolls/BackrollDetailClient.scss';
 import { QuoteActionButtons } from '../shared/ActionButtons';
+import { FaEye } from "react-icons/fa";
+import { BackrollStats } from './components/BackrollStats';
 
 interface BackrollDetailClientProps {
     backrollId: string;
@@ -88,48 +89,16 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                             quoteText={quote.quote_text}
                             initialVoteCount={quote.vote_count}
                         />
+                        {/*                         
                         <div className="stat-item">
                             <FaEye className="stat-icon" />
                             <span>313K</span>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Middle Content - Stats */}
-                    <div className="backroll-detail-content">
-                        {/* Details */}
-                        <div className="backroll-detail-info">
-                            <div className="info-row">
-                                <span className="info-label">Series:</span>
-                                <span className="info-value">{quote.series}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Season:</span>
-                                <span className="info-value">{quote.season}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Episode:</span>
-                                <span className="info-value">{quote.episode}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Episode Title:</span>
-                                <span className="info-value">{quote.episode_title || `S${quote.season}E${quote.episode}`}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Timestamp:</span>
-                                <span className="info-value">{quote.timestamp}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="info-label">Air Date:</span>
-                                <span className="info-value">{quote.air_date}</span>
-                            </div>
-                            {quote.original_language !== 'english' && quote.original_language_text && (
-                                <div className="info-row">
-                                    <span className="info-label">Original:</span>
-                                    <span className="info-value">{quote.original_language_text}</span>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <BackrollStats quote={quote} />
+
                 </div>
 
                 {/* Horizontal Scrollable Section - Similar Quotes */}

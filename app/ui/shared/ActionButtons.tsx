@@ -2,13 +2,14 @@
 
 import '@/app/scss/components/ActionButtons.scss';
 import { useState } from "react";
+import { useSession } from 'next-auth/react';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import { FaRegCopy } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa6";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { useAuth } from '../../lib/hooks';
-import { useFavorites, useToggleFavorite, useVotes, useToggleVote, useCommentButton } from '../../lib/hooks';
+import { useFavorites, useToggleFavorite, useVotes, useToggleVote, useCommentButton, useCommentVote } from '../../lib/hooks';
 
 export function FavoriteButton({
     quoteId,
@@ -73,6 +74,8 @@ export function FavoriteButton({
     );
 }
 
+
+// Backroll Card vote buttons
 export function VoteButtons({
     quoteId,
     initialVoteCount = 0,
@@ -175,6 +178,59 @@ export function VoteButtons({
                 <AiOutlineDislike
                     size={18}
                     className={userHasDownvoted ? 'active' : ''}
+                />
+            </button>
+        </div>
+    );
+}
+
+// Comment vote buttons
+export function CommentVoteButtons({
+    commentId,
+    initialVoteCount = 0,
+}: {
+    commentId: string;
+    initialVoteCount?: number;
+}) {
+    const { data: session } = useSession();
+    const { displayVoteCount, userVote, handleVote, isLoading } = useCommentVote({
+        commentId,
+        initialVoteCount,
+    });
+
+    const isAuthenticated = !!session;
+
+    return (
+        <div className="buttons-group">
+            <button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    handleVote('up');
+                }}
+                disabled={!isAuthenticated || isLoading}
+                aria-label="Upvote"
+                className="action-btn__vote-button"
+            >
+                <AiOutlineLike
+                    size={18}
+                    className={userVote === 'up' ? 'active' : ''}
+                />
+            </button>
+
+            <span className="action-btn__vote-count">{displayVoteCount}</span>
+
+            <button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    handleVote('down');
+                }}
+                disabled={!isAuthenticated || isLoading}
+                aria-label="Downvote"
+                className="action-btn__vote-button"
+            >
+                <AiOutlineDislike
+                    size={18}
+                    className={userVote === 'down' ? 'active' : ''}
                 />
             </button>
         </div>

@@ -1,7 +1,6 @@
-// components/backrolls/components/CommentList.tsx
 'use client';
 
-import { trpc } from '../../../lib/trpc';
+import { useCommentReplies } from '../../../lib/hooks/useCommentReplies';
 import CommentItem from './CommentItem';
 
 interface CommentListProps {
@@ -31,27 +30,26 @@ export default function CommentList({
     depth = 0
 }: CommentListProps) {
 
-    // For nested comments, fetch replies using the new procedure
-    const { data: replies } = trpc.comments.getCommentReplies.useQuery(
-        {
-            parentCommentId: parentCommentId!
-        },
-        { enabled: depth > 0 && !!parentCommentId }
+    // For nested comments, fetch replies using the new hook
+    const { data: replies } = useCommentReplies(
+        parentCommentId,
+        30
     );
 
     const displayComments = depth === 0 ? comments : (replies || []);
 
     return (
-        <div className={`comment-list ${depth > 0 ? 'ml-8 border-l-2 border-gray-700 pl-4' : ''}`}>
+        <div className={`comment-list ${depth > 0 ? 'comment-list--nested' : ''}`}>
             {displayComments.map((commentData) => (
-                <CommentItem
-                    key={commentData.comment.id}
-                    comment={commentData.comment}
-                    user={commentData.user}
-                    replyCount={commentData.replyCount}
-                    onReply={onReply}
-                    depth={depth}
-                />
+                <div key={commentData.comment.id} className="comment-list__item">
+                    <CommentItem
+                        comment={commentData.comment}
+                        user={commentData.user}
+                        replyCount={commentData.replyCount}
+                        onReply={onReply}
+                        depth={depth}
+                    />
+                </div>
             ))}
         </div>
     );

@@ -1,11 +1,12 @@
 // components/backrolls/components/BackrollCommentsContainer.tsx
 'use client';
 
+import '@/app/scss/components/Skeleton.scss';
 import { useState } from 'react';
 import { trpc } from '../../../lib/trpc';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
-import '@/app/scss/components/Skeleton.scss';
+import { useCommentButton } from '../../../lib/hooks/useCommentButton';
 
 interface BackrollCommentsContainerProps {
     children?: React.ReactNode;
@@ -24,6 +25,9 @@ export default function BackrollCommentsContainer({
         { enabled: !!quoteId }
     );
 
+    // Fetch total comments count for this quote
+    const { data: commentCount = 0 } = useCommentButton(quoteId);
+
     if (!quoteId) {
         return (
             <div className="comments-container">
@@ -39,7 +43,7 @@ export default function BackrollCommentsContainer({
             {/* Header */}
             <div className="comments-header mb-6">
                 <h2 className="text-xl font-bold text-white">
-                    Comments {comments && `(${comments.length})`}
+                    Comments {commentCount && `(${commentCount})`}
                 </h2>
             </div>
 
