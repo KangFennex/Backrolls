@@ -159,19 +159,19 @@ export const quotesRouter = router({
             // For cursor-based pagination, we need to track which IDs we've already seen
             const excludeIds = cursor ? cursor.split(',').filter(Boolean) : [];
 
-            const baseQuery = db
+            // Build the where clause conditionally
+            let whereClause = sql`${quotes.speaker} != 'RuPaul'`;
+
+            if (excludeIds.length > 0) {
+                whereClause = sql`${whereClause} AND ${quotes.id} NOT IN (${sql.join(excludeIds.map(id => sql`${id}`), sql`, `)})`;
+            }
+
+            const results = await db
                 .select()
                 .from(quotes)
-                .where(sql`${quotes.speaker} != 'RuPaul'`); // Exclude RuPaul quotes
-
-            const results = excludeIds.length > 0
-                ? await baseQuery
-                    .where(sql`${quotes.id} NOT IN (${sql.join(excludeIds.map(id => sql`${id}`), sql`, `)})`)
-                    .orderBy(sql`RANDOM()`)
-                    .limit(limit)
-                : await baseQuery
-                    .orderBy(sql`RANDOM()`)
-                    .limit(limit);
+                .where(whereClause)
+                .orderBy(sql`RANDOM()`)
+                .limit(limit);
 
             // Create cursor from current IDs
             const allSeenIds = [...excludeIds, ...results.map(q => q.id)];
