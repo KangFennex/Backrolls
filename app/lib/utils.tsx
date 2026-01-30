@@ -72,6 +72,19 @@ export const contestantImages: Record<string, string> = {
     'Shannel': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shannel-rpdr-S1.jpg',
     'Tammie Brown': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/TammieBrown-rpdr-S1.jpg',
     'Porkchop Parker': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/VictoriaParker-rpdr-S1.jpg',
+    // rpdr - S02
+    'Tyra Sanchez': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/TyraSanchez-rpdr-S2.jpg',
+    'Raven': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Raven-rpdr-S2.jpg',
+    'Jujubee': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Jujubee-rpdr-S2.jpg',
+    'Tatianna': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Tatianna-rpdr-S2.jpg',
+    'Pandora Boxx': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/PandoraBoxx-rpdr-S2.jpg',
+    'Jessica Wild': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/JessicaWild-rpdr-S2.jpg',
+    'Sahara Davenport': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/SaharaDavenport-rpdr-S2.jpg',
+    'Sonique': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Sonique-rpdr-S2.jpg',
+    'Morgan McMichaels': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MorganMcMichaels-rpdr-S2.jpg',
+    'Mystique Summers': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MystiqueSummers-rpdr-S2.jpg',
+    'Nicole Page Brooks': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/NicolePaigeBrooks-rpdr-S2.jpg',
+    'Shangela': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shangela-rpdr-S2.jpg',
 };
 
 /**
