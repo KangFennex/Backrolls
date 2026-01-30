@@ -2,7 +2,7 @@
 
 import { Quote } from '../../../lib/definitions';
 import { useNavigationContext } from '../../../context/NavigationContext';
-import { trpc } from '../../../lib/trpc';
+import { useRandomQuotes } from '../../../lib/hooks/useRandomQuotes';
 import Link from 'next/link';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { BackrollCardPicture } from '../../backrollCards/BackrollCardPicture';
@@ -22,33 +22,15 @@ interface WorkroomHorizontalSectionProps {
 
 export default function WorkroomHorizontalSection({ initialData }: WorkroomHorizontalSectionProps) {
     const { navigateToBackroll } = useNavigationContext();
-    const [allQuotes, setAllQuotes] = useState<Quote[]>(initialData.quotes);
-    const [seed] = useState(initialData.seed);
     const observerTarget = useRef<HTMLDivElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = trpc.quotes.getRandom.useInfiniteQuery(
-        { limit: 15, seed },
-        {
-            initialData: {
-                pages: [initialData],
-                pageParams: [undefined],
-            },
-            getNextPageParam: (lastPage) => lastPage.nextCursor,
-            refetchOnWindowFocus: false,
-            staleTime: 1000 * 60 * 5, // 5 minutes
-        }
-    );
-
-    // Update quotes when new pages are fetched
-    useEffect(() => {
-        if (data) {
-            const quotes = data.pages.flatMap(page => page.quotes);
-            setAllQuotes(quotes);
-        }
-    }, [data]);
+    const { allQuotes, fetchNextPage, hasNextPage, isFetchingNextPage } = useRandomQuotes({
+        initialData,
+        limit: 15,
+    });
 
     // Intersection Observer for horizontal infinite scroll
     useEffect(() => {

@@ -161,7 +161,8 @@ export const quotesRouter = router({
 
             const baseQuery = db
                 .select()
-                .from(quotes);
+                .from(quotes)
+                .where(sql`${quotes.speaker} != 'RuPaul'`); // Exclude RuPaul quotes
 
             const results = excludeIds.length > 0
                 ? await baseQuery

@@ -5,7 +5,26 @@ import type { Quote } from '../../lib/definitions';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import '@/app/scss/backrolls/BackrollCardPicture.scss';
 import { FiExternalLink } from "react-icons/fi";
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+
+// Generate a random color class based on quote ID for the blur effect
+const getColorClass = (quoteId: string | number | undefined): string => {
+    if (!quoteId) return 'color-1';
+    const colorClasses = ['color-1', 'color-2', 'color-3', 'color-4', 'color-5'];
+
+    if (typeof quoteId === 'string') {
+        // Take just 4 characters from the UUID (positions 0, 8, 16, 24)
+        const char1 = quoteId.charCodeAt(0) || 0;
+        const char2 = quoteId.charCodeAt(8) || 0;  // After first dash
+        const char3 = quoteId.charCodeAt(16) || 0; // After second dash
+        const char4 = quoteId.charCodeAt(24) || 0; // After third dash
+
+        const numericValue = char1 + char2 + char3 + char4;
+        return colorClasses[numericValue % colorClasses.length];
+    }
+
+    return colorClasses[quoteId % colorClasses.length];
+};
 
 type BackrollCardPicture2Props = {
     quote: Quote;
@@ -31,6 +50,13 @@ export function BackrollCardPicture({
 
     const [isCardRevealed, setIsCardRevealed] = useState(false);
 
+    // Generate consistent random color class for this quote
+    const colorClass = useMemo(() => {
+        const className = getColorClass(quote.id);
+        console.log('Quote ID:', quote.id, 'Color Class:', className);
+        return className;
+    }, [quote.id]);
+
     const handleToggleCard = () => {
         setIsCardRevealed(!isCardRevealed);
     };
@@ -46,7 +72,9 @@ export function BackrollCardPicture({
                 <Card className="backroll-picture-card__root" sx={{ backgroundColor: 'transparent' }} onClick={handleToggleCard}>
 
                     {/* Quote Content */}
-                    <CardContent className={`backroll-picture-card__overlay${isCardRevealed ? ' revealed' : ''}`}>
+                    <CardContent
+                        className={`backroll-picture-card__overlay ${colorClass} ${isCardRevealed ? ' revealed' : ''}`}
+                    >
                         <p className="backrollCard-font backroll-picture-card__quote">
                             {isQuoteLong ? handleQuoteLong(quote) : quote.quote_text}
                         </p>
@@ -63,7 +91,12 @@ export function BackrollCardPicture({
                     </CardContent>
 
                     {/* Contestant Image */}
-                    <Box className={`backroll-picture-card__image${isCardRevealed ? ' revealed' : ''}`} sx={{ backgroundImage: `url(${speakerImage})` }} />
+                    <Box
+                        className={`backroll-picture-card__image ${colorClass}${isCardRevealed ? ' revealed' : ''}`}
+                        style={{
+                            backgroundImage: `url(${speakerImage})`,
+                        }}
+                    />
                 </Card>
             </Box>
         </div>
