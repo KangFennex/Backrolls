@@ -85,6 +85,20 @@ export const contestantImages: Record<string, string> = {
     'Mystique Summers': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MystiqueSummers-rpdr-S2.jpg',
     'Nicole Page Brooks': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/NicolePaigeBrooks-rpdr-S2.jpg',
     'Shangela': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shangela-rpdr-S2.jpg',
+    // rpdr - S03
+    'Raja': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Raja-rpdr-S3.jpg',
+    'Manila Luzon': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/ManilaLuzon-rpdr-S3.jpg',
+    'Delta Work': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/DeltaWork-rpdr-S3.jpg',
+    'Carmen Carrera': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/CarmenCarrera-rpdr-S3.jpg',
+    'Stacy Layne Matthews': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/StacyLayneMatthews-rpdr-S3.jpg',
+    'Alexis Mateo': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/AlexisMateo-rpdr-S3.jpg',
+    'Yara Sofia': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/YaraSofia-rpdr-S3.jpg',
+    'India Ferrah': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/IndiaFerrah-rpdr-S3.jpg',
+    'Mimi Imfurst': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MimiImfurst-rpdr-S3.jpg',
+    'Phoenix': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Phoenix-rpdr-S3.jpg',
+    'Venus D-Lite': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/VenusDLite-rpdr-S3.jpg',
+    'Mariah': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Mariah-rpdr-S3.jpg',
+    //'Shangela': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shangela-rpdr-S3.jpg',
 };
 
 /**

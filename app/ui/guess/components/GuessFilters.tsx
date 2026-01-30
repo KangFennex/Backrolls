@@ -120,8 +120,6 @@ export default function GuessFilters({
                 className="px-3 md:px-4 py-2 text-sm md:text-base bg-gray-800 text-white border border-gray-700 rounded-lg hover:bg-gray-750 hover:border-pink-500 transition-all duration-200 flex items-center gap-1 md:gap-2"
             >
                 <FaExpandAlt size={14} className="md:w-4 md:h-4" />
-                <span className="hidden sm:inline">Fullscreen</span>
-                <span className="sm:hidden">Full</span>
             </button>
         </div>
     );
