@@ -53,7 +53,6 @@ export function BackrollCardPicture({
     // Generate consistent random color class for this quote
     const colorClass = useMemo(() => {
         const className = getColorClass(quote.id);
-        console.log('Quote ID:', quote.id, 'Color Class:', className);
         return className;
     }, [quote.id]);
 

@@ -3,7 +3,7 @@ interface DragRaceSeries {
     name: string;
     type: "main-series" | "spin-off" | "international" | "all-stars";
     region?: "americas" | "asia" | "europe" | "oceania" | "africa" | "global";
-    original_language: string; // Added this field
+    original_language: string;
 }
 
 interface SeriesSeasons {

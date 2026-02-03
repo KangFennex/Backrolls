@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { db } from '../../db';
 import { quotes, quoteContexts } from '../../db/schema';
-import { eq, and, or, ilike, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
+import { eq, lt, and, or, ilike, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
 
 export const quotesRouter = router({
 
@@ -66,17 +66,43 @@ export const quotesRouter = router({
     getRecent: publicProcedure
         .input(z.object({
             limit: z.number().optional().default(10),
+            cursor: z.string().nullish(),
         }))
         .query(async ({ input }) => {
-            const results = await db
+            const { limit, cursor } = input;
+            const take = limit + 1;
+
+            console.log('getRecent called with:', { limit, cursor, take });
+
+            let query = db
                 .select()
                 .from(quotes)
                 .orderBy(desc(quotes.created_at))
-                .limit(input.limit);
+                .limit(take);
+
+            if (cursor) {
+                try {
+                    query = query.where(lt(quotes.created_at, cursor));
+                } catch (error) {
+                    console.error('Error using cursor:', error);
+                }
+            }
+
+            const results = await query;
+
+            let nextCursor: string | undefined = undefined;
+            if (results.length > limit) {
+                const nextItem = results[results.length - 1];
+                nextCursor = nextItem.created_at;
+                results.pop();
+            } else {
+                console.log('No next cursor - end of data');
+            }
 
             return {
                 quotes: results,
                 count: results.length,
+                nextCursor,
             };
         }),
 
@@ -84,21 +110,77 @@ export const quotesRouter = router({
     getTopRated: publicProcedure
         .input(z.object({
             limit: z.number().optional().default(10),
+            cursor: z.string().nullish(),
         }))
         .query(async ({ input }) => {
-            const results = await db
+            const { limit, cursor } = input;
+            const take = limit + 1;
+
+            console.log('getTopRated called with:', { limit, cursor, take });
+
+            // Parse cursor if it exists (format: "vote_count:last_id")
+            let lastVoteCount: number | undefined;
+            let lastId: string | undefined;
+
+            if (cursor) {
+                try {
+                    const parts = cursor.split(':');
+                    if (parts.length === 2) {
+                        lastVoteCount = parseInt(parts[0], 10);
+                        lastId = parts[1];
+                    } else {
+                        lastVoteCount = parseInt(cursor, 10);
+                    }
+                } catch (error) {
+                    console.error('Error parsing cursor:', error);
+                }
+            }
+
+            let query = db
                 .select()
                 .from(quotes)
                 .where(sql`${quotes.vote_count} > 0`)
-                .orderBy(desc(quotes.vote_count))
-                .limit(input.limit);
+                .orderBy(desc(quotes.vote_count), desc(quotes.id)) // Order by vote_count AND id
+                .limit(take);
+
+            if (lastVoteCount !== undefined) {
+                if (lastId) {
+                    // If we have both vote_count and id, use compound comparison
+                    query = query.where(
+                        or(
+                            lt(quotes.vote_count, lastVoteCount),
+                            and(
+                                eq(quotes.vote_count, lastVoteCount),
+                                lt(quotes.id, lastId)
+                            )
+                        )
+                    );
+                } else {
+                    // Simple comparison for backward compatibility
+                    query = query.where(lte(quotes.vote_count, lastVoteCount));
+                }
+            }
+
+            const results = await query;
+            console.log(`Found ${results.length} results for top rated`);
+
+            let nextCursor: string | undefined = undefined;
+            if (results.length > limit) {
+                const nextItem = results[results.length - 1];
+                // Create compound cursor: "vote_count:id"
+                nextCursor = `${nextItem.vote_count}:${nextItem.id}`;
+                results.pop();
+                console.log('Next cursor for top rated:', nextCursor);
+            } else {
+                console.log('No next cursor - end of data for top rated');
+            }
 
             return {
                 quotes: results,
                 count: results.length,
+                nextCursor,
             };
         }),
-
     // Get filtered quotes (series page)
     getFiltered: publicProcedure
         .input(z.object({
@@ -340,17 +422,64 @@ export const quotesRouter = router({
     getByCommentCount: publicProcedure
         .input(z.object({
             limit: z.number().optional().default(10),
+            cursor: z.string().nullish(),
         }))
         .query(async ({ input }) => {
-            const results = await db
+            const { limit, cursor } = input;
+            const take = limit + 1;
+
+            console.log('getByCommentCount called with:', { limit, cursor, take });
+
+            // Parse cursor if it exists (format: "comment_count:last_id")
+            let lastCommentCount: number | undefined;
+            let lastId: string | undefined;
+
+            if (cursor) {
+                try {
+                    const [countStr, id] = cursor.split(':');
+                    lastCommentCount = parseInt(countStr, 10);
+                    lastId = id;
+                    console.log('Parsed cursor:', { lastCommentCount, lastId });
+                } catch (error) {
+                    console.error('Failed to parse cursor:', error);
+                }
+            }
+
+            let query = db
                 .select()
                 .from(quotes)
-                .orderBy(desc(quotes.comment_count))
-                .limit(input.limit);
+                .orderBy(desc(quotes.comment_count), desc(quotes.id))
+                .limit(take);
+
+            if (lastCommentCount !== undefined && lastId) {
+                query = query.where(
+                    or(
+                        sql`${quotes.comment_count} < ${lastCommentCount}`,
+                        and(
+                            sql`${quotes.comment_count} = ${lastCommentCount}`,
+                            sql`${quotes.id} < ${lastId}`
+                        )
+                    )
+                );
+            }
+
+            const results = await query;
+            console.log(`Found ${results.length} results for comment count`);
+
+            let nextCursor: string | undefined = undefined;
+            if (results.length > limit) {
+                const nextItem = results[limit - 1];
+                nextCursor = `${nextItem.comment_count}:${nextItem.id}`;
+                results.pop(); // Remove the extra item
+                console.log('Setting nextCursor:', nextCursor);
+            } else {
+                console.log('No more pages');
+            }
 
             return {
                 quotes: results,
                 count: results.length,
+                nextCursor,
             };
         }),
 

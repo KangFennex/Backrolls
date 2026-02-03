@@ -1,15 +1,23 @@
-'use client';
-
 import { trpc } from '../trpc';
 
-export function useHotQuotes(limit: number = 10) {
-    const { data, isLoading, error, ...query } = trpc.quotes.getTopRated.useQuery(
+interface UseHotQuotesProps {
+    limit?: number;
+}
+
+export function useHotQuotes({ limit = 20 }: UseHotQuotesProps) {
+    const result = trpc.quotes.getTopRated.useInfiniteQuery(
         { limit },
         {
-            staleTime: 1000 * 60 * 2,
-            refetchOnWindowFocus: true,
+            getNextPageParam: (lastPage) => lastPage.nextCursor,
+            refetchOnWindowFocus: false,
+            staleTime: 1000 * 60 * 5,
         }
     );
 
-    return { data, isLoading, error, ...query };
+    const allQuotes = result.data?.pages.flatMap(page => page.quotes) ?? [];
+
+    return {
+        ...result,
+        allQuotes,
+    };
 }
