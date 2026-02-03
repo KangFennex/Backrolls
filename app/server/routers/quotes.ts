@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { db } from '../../db';
 import { quotes, quoteContexts } from '../../db/schema';
-import { eq, lt, and, or, ilike, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
+import { eq, lt, lte, and, or, ilike, desc, sql, asc, SQL, inArray } from 'drizzle-orm';
 
 export const quotesRouter = router({
 
@@ -74,21 +74,18 @@ export const quotesRouter = router({
 
             console.log('getRecent called with:', { limit, cursor, take });
 
-            let query = db
+            const baseQuery = db
                 .select()
-                .from(quotes)
-                .orderBy(desc(quotes.created_at))
-                .limit(take);
+                .from(quotes);
 
-            if (cursor) {
-                try {
-                    query = query.where(lt(quotes.created_at, cursor));
-                } catch (error) {
-                    console.error('Error using cursor:', error);
-                }
-            }
-
-            const results = await query;
+            const results = cursor
+                ? await baseQuery
+                    .where(lt(quotes.created_at, cursor))
+                    .orderBy(desc(quotes.created_at))
+                    .limit(take)
+                : await baseQuery
+                    .orderBy(desc(quotes.created_at))
+                    .limit(take);
 
             let nextCursor: string | undefined = undefined;
             if (results.length > limit) {
@@ -136,32 +133,47 @@ export const quotesRouter = router({
                 }
             }
 
-            let query = db
+            const baseQuery = db
                 .select()
-                .from(quotes)
-                .where(sql`${quotes.vote_count} > 0`)
-                .orderBy(desc(quotes.vote_count), desc(quotes.id)) // Order by vote_count AND id
-                .limit(take);
+                .from(quotes);
 
+            let results;
             if (lastVoteCount !== undefined) {
                 if (lastId) {
                     // If we have both vote_count and id, use compound comparison
-                    query = query.where(
-                        or(
-                            lt(quotes.vote_count, lastVoteCount),
+                    results = await baseQuery
+                        .where(
                             and(
-                                eq(quotes.vote_count, lastVoteCount),
-                                lt(quotes.id, lastId)
+                                sql`${quotes.vote_count} > 0`,
+                                or(
+                                    lt(quotes.vote_count, lastVoteCount),
+                                    and(
+                                        eq(quotes.vote_count, lastVoteCount),
+                                        lt(quotes.id, lastId)
+                                    )
+                                )
                             )
                         )
-                    );
+                        .orderBy(desc(quotes.vote_count), desc(quotes.id))
+                        .limit(take);
                 } else {
                     // Simple comparison for backward compatibility
-                    query = query.where(lte(quotes.vote_count, lastVoteCount));
+                    results = await baseQuery
+                        .where(
+                            and(
+                                sql`${quotes.vote_count} > 0`,
+                                lte(quotes.vote_count, lastVoteCount)
+                            )
+                        )
+                        .orderBy(desc(quotes.vote_count), desc(quotes.id))
+                        .limit(take);
                 }
+            } else {
+                results = await baseQuery
+                    .where(sql`${quotes.vote_count} > 0`)
+                    .orderBy(desc(quotes.vote_count), desc(quotes.id))
+                    .limit(take);
             }
-
-            const results = await query;
             console.log(`Found ${results.length} results for top rated`);
 
             let nextCursor: string | undefined = undefined;
@@ -445,25 +457,26 @@ export const quotesRouter = router({
                 }
             }
 
-            let query = db
+            const baseQuery = db
                 .select()
-                .from(quotes)
-                .orderBy(desc(quotes.comment_count), desc(quotes.id))
-                .limit(take);
+                .from(quotes);
 
-            if (lastCommentCount !== undefined && lastId) {
-                query = query.where(
-                    or(
-                        sql`${quotes.comment_count} < ${lastCommentCount}`,
-                        and(
-                            sql`${quotes.comment_count} = ${lastCommentCount}`,
-                            sql`${quotes.id} < ${lastId}`
+            const results = lastCommentCount !== undefined && lastId
+                ? await baseQuery
+                    .where(
+                        or(
+                            sql`${quotes.comment_count} < ${lastCommentCount}`,
+                            and(
+                                sql`${quotes.comment_count} = ${lastCommentCount}`,
+                                sql`${quotes.id} < ${lastId}`
+                            )
                         )
                     )
-                );
-            }
-
-            const results = await query;
+                    .orderBy(desc(quotes.comment_count), desc(quotes.id))
+                    .limit(take)
+                : await baseQuery
+                    .orderBy(desc(quotes.comment_count), desc(quotes.id))
+                    .limit(take);
             console.log(`Found ${results.length} results for comment count`);
 
             let nextCursor: string | undefined = undefined;
