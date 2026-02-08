@@ -35,7 +35,7 @@ export function CommentSection({ postId, currentUserId }: CommentSectionProps) {
     return (
         <div className="comment-section">
             <h3 className="comment-section__title">
-                Comments ({commentCount})
+                <span className="tektur">Comments</span> · {commentCount}
             </h3>
 
             {currentUserId ? (

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { trpc } from '@/app/lib/trpc';
+import '@/app/scss/pages/lounge/Lounge.scss';
 
 interface ProfileSectionProps {
     user: { username: string; email: string; id: string };
@@ -52,9 +53,9 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
         }
 
         try {
-            await updatePasswordMutation.mutateAsync({ 
-                currentPassword, 
-                newPassword 
+            await updatePasswordMutation.mutateAsync({
+                currentPassword,
+                newPassword
             });
             setSuccess('Password updated successfully!');
             setCurrentPassword('');
@@ -67,53 +68,37 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Settings</h2>
-            
+        <div className="profile-section">
+            <h2 className="profile-section__title">Profile Settings</h2>
+
             {/* Success/Error Messages */}
             {success && (
-                <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
+                <div className="profile-section__message profile-section__message--success">
                     {success}
                 </div>
             )}
             {error && (
-                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+                <div className="profile-section__message profile-section__message--error">
                     {error}
                 </div>
             )}
 
-            {/* Email (Read-only) */}
-            <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-600 mb-2">
-                    Email
-                </label>
-                <div className="flex items-center gap-2">
-                    <input
-                        type="email"
-                        value={user.email}
-                        disabled
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
-                    />
-                    <span className="text-xs text-gray-500">Cannot be changed</span>
-                </div>
-            </div>
-
             {/* Username */}
-            <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-600 mb-2">
+            <div className="profile-section__field">
+                <label className="profile-section__label">
                     Username
                 </label>
                 {!isEditingUsername ? (
-                    <div className="flex items-center gap-2">
+                    <div className="profile-section__input-wrapper">
                         <input
                             type="text"
                             value={user.username}
                             disabled
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                            className="profile-section__input"
                         />
                         <button
                             onClick={() => setIsEditingUsername(true)}
-                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-semibold"
+                            className="profile-section__button profile-section__button--edit"
                         >
                             Edit
                         </button>
@@ -124,15 +109,15 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                            className="profile-section__input"
                             minLength={3}
                             maxLength={100}
                         />
-                        <div className="flex gap-2">
+                        <div className="profile-section__form-actions">
                             <button
                                 type="submit"
                                 disabled={updateUsernameMutation.isPending}
-                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold disabled:opacity-50"
+                                className="profile-section__button profile-section__button--success"
                             >
                                 {updateUsernameMutation.isPending ? 'Saving...' : 'Save'}
                             </button>
@@ -142,7 +127,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                                     setIsEditingUsername(false);
                                     setUsername(user.username);
                                 }}
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-semibold"
+                                className="profile-section__button profile-section__button--secondary"
                             >
                                 Cancel
                             </button>
@@ -151,24 +136,37 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                 )}
             </div>
 
+            {/* Email (Read-only, display only) */}
+            <div className="profile-section__field">
+                <label className="profile-section__label">
+                    Email
+                </label>
+                <input
+                    type="email"
+                    value={user.email}
+                    disabled
+                    className="profile-section__input"
+                />
+            </div>
+
             {/* Password */}
-            <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-600 mb-2">
+            <div className="profile-section__field">
+                <label className="profile-section__label">
                     Password
                 </label>
                 {!isEditingPassword ? (
-                    <div className="flex items-center gap-2">
+                    <div className="profile-section__input-wrapper">
                         <input
                             type="password"
                             value="••••••••"
                             disabled
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                            className="profile-section__input"
                         />
                         <button
                             onClick={() => setIsEditingPassword(true)}
-                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-semibold"
+                            className="profile-section__button profile-section__button--edit"
                         >
-                            Change
+                            Edit
                         </button>
                     </div>
                 ) : (
@@ -178,7 +176,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                             placeholder="Current password"
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                            className="profile-section__input"
                             required
                         />
                         <input
@@ -186,7 +184,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                             placeholder="New password (min 8 characters)"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                            className="profile-section__input"
                             minLength={8}
                             required
                         />
@@ -195,15 +193,15 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                             placeholder="Confirm new password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                            className="profile-section__input"
                             minLength={8}
                             required
                         />
-                        <div className="flex gap-2">
+                        <div className="profile-section__form-actions">
                             <button
                                 type="submit"
                                 disabled={updatePasswordMutation.isPending}
-                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-semibold disabled:opacity-50"
+                                className="profile-section__button profile-section__button--success"
                             >
                                 {updatePasswordMutation.isPending ? 'Updating...' : 'Update Password'}
                             </button>
@@ -215,7 +213,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                                     setNewPassword('');
                                     setConfirmPassword('');
                                 }}
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-semibold"
+                                className="profile-section__button profile-section__button--secondary"
                             >
                                 Cancel
                             </button>

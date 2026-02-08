@@ -4,18 +4,14 @@ import '@/app/scss/pages/tea-room/PostCard.scss';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { PostVoteButtons, PostCommentButton, PostShareButton, ActionsContainer } from '../../shared/ActionButtons';
-import { createPortal } from 'react-dom';
 import { formatDate } from '@/app/lib/utils';
 import { useAuth } from '../../../lib/hooks/useAuth';
 import { trpc } from '@/app/lib/trpc';
 import { useRouter } from 'next/navigation';
+import PostDropdownMenu from './PostDropdownMenu';
 
 // Action icons
 import { BsThreeDots } from "react-icons/bs";
-import { MdDataSaverOn } from "react-icons/md";
-import { BiHide } from "react-icons/bi";
-import { MdReportGmailerrorred } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
 
 
 interface PostCardProps {
@@ -82,6 +78,23 @@ export function PostCard({ post }: PostCardProps) {
         };
     }, [isMenuOpen]);
 
+    // Close menu when scrolling
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isMenuOpen) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            window.addEventListener('scroll', handleScroll, true);
+        }
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll, true);
+        };
+    }, [isMenuOpen]);
+
     const handleMenuToggle = (e: React.MouseEvent) => {
         e.stopPropagation();
 
@@ -89,8 +102,8 @@ export function PostCard({ post }: PostCardProps) {
             const rect = menuButtonRef.current.getBoundingClientRect();
 
             setMenuPosition({
-                top: rect.bottom + 4,
-                left: rect.right - 140, // 140px is the min-width of dropdown
+                top: window.scrollY + rect.bottom + 4,
+                left: window.scrollX + rect.right - 140,
             });
         }
 
@@ -119,60 +132,12 @@ export function PostCard({ post }: PostCardProps) {
         setIsMenuOpen(false);
     };
 
-    const Menu = () => {
-        if (typeof window === 'undefined') return null;
-
-        return createPortal(
-            <div
-                ref={menuRef}
-                className="post-card__dropdown"
-                style={{
-                    position: 'fixed',
-                    top: `${menuPosition.top}px`,
-                    left: `${menuPosition.left}px`,
-                }}
-            >
-                <span className="post-card__dropdown-item">
-                    <MdDataSaverOn size={18} />
-                    <button
-                        onClick={(e) => handleMenuAction('Save', e)}
-                    >
-                        Save
-                    </button>
-                </span>
-                <span className="post-card__dropdown-item">
-                    <BiHide size={18} />
-                    <button
-                        onClick={(e) => handleMenuAction('Hide', e)}
-                    >
-                        Hide
-                    </button>
-                </span>
-                <span className="post-card__dropdown-item">
-                    <MdReportGmailerrorred size={18} />
-                    <button
-                        onClick={(e) => handleMenuAction('Report', e)}
-                    >
-                        Report
-                    </button>
-                </span>
-                {isOwner && (
-                    <span className="post-card__dropdown-item post-card__dropdown-item--danger">
-                        <MdDelete size={18} />
-                        <button
-                            onClick={handleDelete}
-                            disabled={deletePostMutation.isPending}
-                        >
-                            {deletePostMutation.isPending ? 'Deleting...' : 'Delete'}
-                        </button>
-                    </span>
-                )}
-            </div>,
-            document.body
-        );
+    const handleEdit = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        console.log('Edit post:', post.id);
+        setIsMenuOpen(false);
+        // Add edit logic here if needed
     };
-
-
 
     const handleExternalLinkClick = (e: React.MouseEvent, url: string) => {
         e.preventDefault();
@@ -207,7 +172,19 @@ export function PostCard({ post }: PostCardProps) {
                         >
                             <BsThreeDots size={18} />
                         </div>
-                        {isMenuOpen && <Menu />}
+                        {isMenuOpen && (
+                            <PostDropdownMenu
+                                menuRef={menuRef}
+                                menuPosition={menuPosition}
+                                isOwner={isOwner}
+                                isDeleting={deletePostMutation.isPending}
+                                onSave={(e) => handleMenuAction('Save', e)}
+                                onHide={(e) => handleMenuAction('Hide', e)}
+                                onReport={(e) => handleMenuAction('Report', e)}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
+                        )}
                     </div>
 
                 </div>

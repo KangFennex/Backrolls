@@ -41,41 +41,32 @@ export default function CommentItemMenu({
                 left: `${menuPosition.left}px`,
             }}
         >
-            <span className="post-card__dropdown-item">
+            <button className="post-card__dropdown-item" onClick={onSave}>
                 <MdDataSaverOn size={18} />
-                <button onClick={onSave}>
-                    Save
-                </button>
-            </span>
-            <span className="post-card__dropdown-item">
+                Save
+            </button>
+            <button className="post-card__dropdown-item" onClick={onHide}>
                 <BiHide size={18} />
-                <button onClick={onHide}>
-                    Hide
-                </button>
-            </span>
-            <span className="post-card__dropdown-item">
+                Hide
+            </button>
+            <button className="post-card__dropdown-item" onClick={onReport}>
                 <MdReportGmailerrorred size={18} />
-                <button onClick={onReport}>
-                    Report
-                </button>
-            </span>
+                Report
+            </button>
             {isOwner && (
                 <>
-                    <span className="post-card__dropdown-item">
+                    <button className="post-card__dropdown-item" onClick={onEdit}>
                         <MdEdit size={18} />
-                        <button onClick={onEdit}>
-                            Edit
-                        </button>
-                    </span>
-                    <span className="post-card__dropdown-item post-card__dropdown-item--danger">
+                        Edit
+                    </button>
+                    <button
+                        className="post-card__dropdown-item post-card__dropdown-item--danger"
+                        onClick={onDelete}
+                        disabled={isDeleting}
+                    >
                         <MdDelete size={18} />
-                        <button
-                            onClick={onDelete}
-                            disabled={isDeleting}
-                        >
-                            {isDeleting ? 'Deleting...' : 'Delete'}
-                        </button>
-                    </span>
+                        {isDeleting ? 'Deleting...' : 'Delete'}
+                    </button>
                 </>
             )}
         </div>,

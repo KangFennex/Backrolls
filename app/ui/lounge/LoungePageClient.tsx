@@ -13,6 +13,7 @@ import MetricsSection from './components/MetricsSection';
 import { useFavorites, useSubmittedQuotes, useCommentedQuotes } from '../../lib/hooks';
 import LoungeHeader from './components/LoungeHeader';
 import '@/app/scss/components/Skeleton.scss';
+import '@/app/scss/pages/lounge/Lounge.scss';
 
 type TabType = 'profile' | 'favorites' | 'submitted' | 'commented';
 
@@ -71,7 +72,7 @@ export default function LoungePageClient() {
 
     return (
         <PageComponentContainer>
-            <div className="w-full max-w-6xl mx-auto px-4 py-8">
+            <div className="lounge-container">
                 {/* Header */}
                 <LoungeHeader
                     user={user}

@@ -3,6 +3,8 @@
 import { useQuotesByIds } from "../../../lib/hooks";
 import '@/app/scss/components/Skeleton.scss';
 import BackrollCardSlimSkeleton from '../../backrollCards/BackrollCardSlimSkeleton';
+import LoungeQuoteCard from './LoungeQuoteCard';
+import '@/app/scss/pages/lounge/LoungeQuoteCard.scss';
 
 
 interface Comment {
@@ -37,25 +39,24 @@ export default function CommentedTab({ data, isLoading }: { data: Comment[]; isL
         );
     }
     if (!data || data.length === 0) {
-        return <div>No commented quotes found.</div>;
+        return <div className="text-center py-12 rounded-lg" style={{ color: 'rgba(255, 255, 240, 0.5)' }}>No commented quotes found.</div>;
     }
 
     return (
-        <div>
-            <h2 className="text-2xl font-bold mb-6 text-purple-600">Comments</h2>
-            <ul className="grid gap-4">
+        <div className="w-full">
+            <ul className="grid gap-2">
                 {data.map((comment: Comment) => {
                     const quote = comment.quote_id ? quotesMap.get(comment.quote_id) : null;
 
+                    if (!quote) return null;
+
                     return (
-                        <li key={comment.id} className="p-5 bg-white border-2 border-purple-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-start mb-2">
-                                <p className="text-lg italic text-gray-800 flex-1">
-                                    &ldquo;{quote ? quote.quote_text : 'Quote not available'}&rdquo;
-                                </p>
-                            </div>
-                            <span className="text-sm text-gray-600">— {quote ? quote.speaker : 'Unknown speaker'}</span>
-                            <p className="text-lg italic">{comment.comment_text}</p>
+                        <li key={comment.id}>
+                            <LoungeQuoteCard
+                                quote={quote}
+                                variant="commented"
+                                commentText={comment.comment_text}
+                            />
                         </li>
                     );
                 })}

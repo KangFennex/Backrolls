@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 import { CommentForm } from './CommentForm';
 import { formatDate } from '../../../lib/utils';
 import { useDeletePostComment } from '../../../lib/hooks';
-import CommentItemMenu from './CommentItemMenu';
+import PostDropdownMenu from './PostDropdownMenu';
 import { PostCommentVoteButtons, ReplyButton, ActionsContainer } from '../../shared/ActionButtons';
 import CommentList from './CommentList';
 
@@ -81,14 +81,31 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
         };
     }, [isMenuOpen]);
 
+    // Close menu when scrolling
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isMenuOpen) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            window.addEventListener('scroll', handleScroll, true);
+        }
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll, true);
+        };
+    }, [isMenuOpen]);
+
     const handleMenuToggle = (e: React.MouseEvent) => {
         e.stopPropagation();
 
         if (!isMenuOpen && menuButtonRef.current) {
             const rect = menuButtonRef.current.getBoundingClientRect();
             setMenuPosition({
-                top: rect.bottom + 4,
-                left: rect.right - 140,
+                top: window.scrollY + rect.bottom + 4,
+                left: window.scrollX + rect.right - 140,
             });
         }
 
@@ -162,7 +179,7 @@ export function CommentCard({ comment, postId, depth = 0, currentUserId }: Comme
                         <BsThreeDots size={18} />
                     </div>
                     {isMenuOpen && (
-                        <CommentItemMenu
+                        <PostDropdownMenu
                             menuRef={menuRef}
                             menuPosition={menuPosition}
                             isOwner={isAuthor}

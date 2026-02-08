@@ -60,6 +60,7 @@
 .post-detail__meta {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
     flex-wrap: wrap;
     font-family: 'Tektur', monospace;
@@ -80,7 +81,15 @@
 
     .separator {
         color: rgba(#FFFFF0, 0.4);
+        margin: 0 0.25rem;
     }
+}
+
+.post-detail__meta-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
 }
 
 .post-detail__title {
@@ -107,8 +116,7 @@
 }
 
 .post-body {
-    color: #FFFFF0;
-    font-family: 'Tektur', monospace;
+    color: rgba(248, 248, 255, 0.6);
     font-size: 1rem;
     line-height: 1.7;
     white-space: pre-wrap;
@@ -122,11 +130,17 @@
         gap: 1rem;
     }
 
+    position: relative;
+    width: 100%;
+    max-height: 600px;
+    min-height: 300px;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(#000, 0.2);
+
     img {
-        max-width: 100%;
-        height: auto;
         border-radius: 8px;
-        border: 1px solid rgba(#EE5BAC, 0.2);
     }
 }
 

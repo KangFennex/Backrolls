@@ -6,6 +6,7 @@ import { CommunityFeed } from './components/CommunityFeed';
 import { CommunitySidebar } from './components/CommunitySidebar';
 import { CreatePostModal } from './components/CreatePostModal';
 import '@/app/scss/pages/tea-room/TeaRoomPageClient.scss';
+import { MdAdd } from "react-icons/md";
 
 export default function TeaRoomPageClient() {
     const [selectedCommunity, setSelectedCommunity] = useState<string | null>(null);
@@ -75,9 +76,7 @@ export default function TeaRoomPageClient() {
                                 className="tea-room__create-btn"
                                 onClick={() => setShowCreatePost(true)}
                             >
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                    <path d="M8 2a.5.5 0 01.5.5v5h5a.5.5 0 010 1h-5v5a.5.5 0 01-1 0v-5h-5a.5.5 0 010-1h5v-5A.5.5 0 018 2z" />
-                                </svg>
+                                <MdAdd size={20} className="tea-room__create-icon" />
                             </button>
                         </div>
                     </div>
