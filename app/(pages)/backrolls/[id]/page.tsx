@@ -1,4 +1,4 @@
-import PageContainer from "../../../ui/pageContainer";
+import PageContainer from "../../../ui/shared/pageContainer";
 import BackrollDetailClient from "../../../ui/backrolls/BackrollDetailClient";
 import { Suspense } from 'react';
 

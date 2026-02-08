@@ -7,8 +7,8 @@ import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useSeriesQuotes } from '../../lib/hooks';
-import PageComponentContainer from '../pageComponentContainer';
-import { SectionSkeleton } from '../skeletons';
+import PageComponentContainer from '../shared/pageComponentContainer';
+import { SectionSkeleton } from '../shared/skeletons';
 
 export default function SeriesPageClient(): React.ReactElement {
     // Use selector to ensure component re-renders when filters change

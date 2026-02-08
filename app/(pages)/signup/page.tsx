@@ -1,4 +1,4 @@
-import PageContainer from "../../ui/pageContainer";
+import PageContainer from "../../ui/shared/pageContainer";
 import SignUpForm from "../../ui/signup/signUpForm";
 
 export default function SignUp() {

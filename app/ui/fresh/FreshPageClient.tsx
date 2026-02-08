@@ -5,7 +5,7 @@ import { useFreshQuotes } from '../../lib/hooks';
 import { BackrollCardSlim } from '..//backrollCards/BackrollCardSlim';
 import BackrollCardSlimSkeleton from '../backrollCards/BackrollCardSlimSkeleton';
 import { useNavigationContext } from '../../context/NavigationContext';
-import PageComponentContainer from '../pageComponentContainer';
+import PageComponentContainer from '../shared/pageComponentContainer';
 import type { Quote } from '../../lib/definitions';
 import { IndexWrapper } from '../shared/IndexWrapper';
 

@@ -1,5 +1,5 @@
 import WorkroomPageClient from './ui/workroom/WorkroomPageClient';
-import PageContainer from './ui/pageContainer';
+import PageContainer from './ui/shared/pageContainer';
 import { appRouter } from './server';
 import { createContext } from './server/context';
 

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useSearchContext } from "../../context/SearchContext";
 import { NavLogo } from '../shared/NavLogo';
 import { useFiltersContext } from '../../context/FiltersModalContext';
-import { useRainbowColors } from '../../lib/hooks/useRainbowColors';
 import { NavLinks } from './components/NavLinks';
 import { SearchSection } from './components/SearchSection';
 import { NavActions } from './components/NavActions';
@@ -17,7 +16,6 @@ function Nav({ toggleDropdownMenu }: NavProps) {
     const { toggleFilters } = useFiltersContext();
     const { handleInputChange } = useSearchContext();
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-    const { getColorForIcon } = useRainbowColors();
     const [hoveredIconIndex, setHoveredIconIndex] = useState<number | null>(null);
     const [screenSize, setScreenSize] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
@@ -79,7 +77,6 @@ function Nav({ toggleDropdownMenu }: NavProps) {
                         hoveredIconIndex={hoveredIconIndex}
                         onIconMouseEnter={handleIconMouseEnter}
                         onIconMouseLeave={handleIconMouseLeave}
-                        getColorForIcon={getColorForIcon}
                     />
                 </div>
             </nav>

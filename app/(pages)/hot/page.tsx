@@ -1,4 +1,4 @@
-import PageContainer from '../../ui/pageContainer';
+import PageContainer from '../../ui/shared/pageContainer';
 import HotPageClient from '../../ui/hot/HotPageClient';
 
 export default function HotPage() {

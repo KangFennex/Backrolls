@@ -2,10 +2,10 @@
 'use client'
 
 import { useNavigationContext } from '../../context/NavigationContext';
-import PageComponentContainer from '../pageComponentContainer';
+import PageComponentContainer from '../shared/pageComponentContainer';
 import { useQuoteById, useQuotesBySpeaker } from '../../lib/hooks';
 import BackrollCommentsContainer from './components/BackrollCommentsContainer';
-import Breadcrumb from '../breadcrumbs';
+import Breadcrumb from '../shared/breadcrumbs';
 import { getSpeakerImageWithFallback } from '../../lib/utils';
 import { BackrollCardMinimal } from '../backrollCards/BackrollCardMinimal';
 import '@/app/scss/backrolls/BackrollDetailClient.scss';

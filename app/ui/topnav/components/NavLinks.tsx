@@ -7,6 +7,7 @@ import { FaFire } from "react-icons/fa6";
 import { FaRegCommentDots } from "react-icons/fa";
 import { PiGameControllerBold } from "react-icons/pi";
 import { FaRegQuestionCircle } from "react-icons/fa";
+import { useRainbowColors } from '../../../lib/hooks/useRainbowColors';
 
 export type NavItem = {
     title: string;
@@ -30,12 +31,12 @@ interface NavLinksProps {
     getColorForIcon: (index: number) => string;
 }
 
-export function NavLinks({ 
-    hoveredIconIndex, 
-    onIconMouseEnter, 
-    onIconMouseLeave, 
-    getColorForIcon 
+export function NavLinks({
+    hoveredIconIndex,
+    onIconMouseEnter,
+    onIconMouseLeave,
 }: NavLinksProps) {
+    const { getColorForIcon } = useRainbowColors();
     return (
         <>
             {navItems.map((item, index) => (

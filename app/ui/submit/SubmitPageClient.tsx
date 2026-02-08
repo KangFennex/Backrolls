@@ -1,6 +1,6 @@
 'use client'
 
-import PageComponentContainer from '../pageComponentContainer';
+import PageComponentContainer from '../shared/pageComponentContainer';
 import { SubmitForm } from './SubmitForm';
 
 export default function SubmitPageClient() {

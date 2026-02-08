@@ -1,4 +1,4 @@
-import PageContainer from '../../ui/pageContainer';
+import PageContainer from '../../ui/shared/pageContainer';
 import RandomPageServer from '../../ui/random/RandomPageServer';
 import { RandomPageProps } from '../../lib/definitions';
 

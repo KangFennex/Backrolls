@@ -6,7 +6,7 @@ import { CommentSection } from '@/app/ui/tea-room/components/CommentSection';
 import { PostVoteButtons, PostCommentButton, PostShareButton, ActionsContainer } from '../../shared/ActionButtons';
 import Link from 'next/link';
 import '@/app/scss/pages/tea-room/PostDetailPage.scss';
-import PageComponentContainer from '../../pageComponentContainer';
+import PageComponentContainer from '../../shared/pageComponentContainer';
 
 interface PostDetailClientProps {
     postId: string;

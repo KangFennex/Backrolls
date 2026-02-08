@@ -1,6 +1,6 @@
 'use client'
 
-import PageContainer from '../../ui/pageContainer';
+import PageContainer from '../../ui/shared/pageContainer';
 import QuizClient from '../../ui/quiz/QuizClient';
 
 export default function QuizPage() {

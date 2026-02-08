@@ -1,4 +1,4 @@
-import PageContainer from '../../ui/pageContainer';
+import PageContainer from '../../ui/shared/pageContainer';
 import GuessPageClient from '../../ui/guess/GuessPageClient';
 import { appRouter } from '../../server';
 import { createContext } from '../../server/context';

@@ -11,6 +11,7 @@ import { MdChevronRight, MdChevronLeft, MdClose } from 'react-icons/md';
 import { FaExpandAlt } from "react-icons/fa";
 import BackrollCardVerticalSkeleton from '../../backrollCards/BackrollCardVerticalSkeleton';
 import { BackrollsLogoSmall } from '../../shared/BackrollsLogo';
+import { useRainbowColors } from '../../../lib/hooks/useRainbowColors';
 
 interface WorkroomHorizontalSectionProps {
     initialData: {
@@ -26,7 +27,7 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
-
+    const rainbowColors = useRainbowColors();
     const { allQuotes, fetchNextPage, hasNextPage, isFetchingNextPage } = useRandomQuotes({
         initialData,
         limit: 15,
@@ -125,8 +126,9 @@ export default function WorkroomHorizontalSection({ initialData }: WorkroomHoriz
                 </Link>
                 <FaExpandAlt
                     size={20}
-                    className="text-[#8a8a8a] cursor-pointer transition-transform duration-300 hover:scale-[1.1] hover:text-pink-400"
+                    className="cursor-pointer transition-transform duration-300 hover:scale-[1.1]"
                     onClick={handleExpandClick}
+                    style={{ color: rainbowColors.getColorForIcon(2) }}
                 />
             </div>
         )

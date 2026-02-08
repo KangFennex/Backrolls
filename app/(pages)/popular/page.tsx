@@ -1,4 +1,4 @@
-import PageContainer from '../../ui/pageContainer';
+import PageContainer from '../../ui/shared/pageContainer';
 import PopularPageClient from '../../ui/popular/PopularPageClient';
 
 export default function PopularPage() {

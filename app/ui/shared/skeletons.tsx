@@ -1,5 +1,5 @@
 import '@/app/scss/components/Skeleton.scss';
-import BackrollCardSlimSkeleton from './backrollCards/BackrollCardSlimSkeleton';
+import BackrollCardSlimSkeleton from '../backrollCards/BackrollCardSlimSkeleton';
 
 export function SearchCardsSkeleton() {
     return (

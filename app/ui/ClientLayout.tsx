@@ -10,8 +10,8 @@ import { MenuProvider, useMenu } from '../context/MenuContext';
 import Nav from "./topnav/nav";
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { MainPageSkeleton } from './skeletons';
-import SuspenseWrapper from './SuspenseWrapper';
+import { MainPageSkeleton } from './shared/skeletons';
+import SuspenseWrapper from './shared/SuspenseWrapper';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import FiltersModal from './filters/FiltersModal';
 import { trpc, getBaseUrl } from '../lib/trpc';

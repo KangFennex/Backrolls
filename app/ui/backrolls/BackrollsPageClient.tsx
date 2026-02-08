@@ -3,8 +3,8 @@
 import { useSearchParams } from 'next/navigation';
 import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { useNavigationContext } from '../../context/NavigationContext';
-import PageComponentContainer from '../pageComponentContainer';
-import { SectionSkeleton } from '../skeletons';
+import PageComponentContainer from '../shared/pageComponentContainer';
+import { SectionSkeleton } from '../shared/skeletons';
 import { Quote } from '../../lib/definitions';
 import { trpc } from '../../lib/trpc';
 

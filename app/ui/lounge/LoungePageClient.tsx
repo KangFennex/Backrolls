@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../lib/hooks';
 import { useRouter } from 'next/navigation';
-import PageComponentContainer from '../pageComponentContainer';
+import PageComponentContainer from '../shared/pageComponentContainer';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import FavoritesTab from './components/FavoritesTab';
 import SubmittedTab from './components/SubmittedTab';

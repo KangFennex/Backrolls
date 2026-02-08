@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Container } from '@mui/material';
 import { useQuizQuotes } from '../../lib/hooks/useQuizQuotes';
-import PageComponentContainer from '../pageComponentContainer';
+import PageComponentContainer from '../shared/pageComponentContainer';
 import {
     QuizHeader,
     QuizQuestion,

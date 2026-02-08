@@ -1,4 +1,4 @@
-import PageContainer from '../../ui/pageContainer';
+import PageContainer from '../../ui/shared/pageContainer';
 import AboutPageClient from '../../ui/about/AboutPageClient';
 
 export default function AboutPage() {

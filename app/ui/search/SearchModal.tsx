@@ -2,7 +2,7 @@
 
 import "@/app/scss/search/searchModal.scss";
 import SearchResults from "./searchCards";
-import { SearchCardsSkeleton } from "../skeletons";
+import { SearchCardsSkeleton } from "../shared/skeletons";
 import { useSearchContext } from "../../context/SearchContext";
 
 export default function SearchModal() {

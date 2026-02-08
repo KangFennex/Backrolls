@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { BackrollsLogo } from '../shared/BackrollsLogo';
-import ForgotPassword from "../forgotPassword";
+import ForgotPassword from "./forgotPassword";
 import { useRouter } from "next/navigation";
 import { LoginFormSkeleton, LoginSuccessMessage } from './LoginSkeleton';
 import Alert from '@mui/material/Alert'; // Add this import

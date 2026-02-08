@@ -5,7 +5,7 @@ import BackrollCardSlimSkeleton from '../backrollCards/BackrollCardSlimSkeleton'
 import { useEffect, useRef } from 'react';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useQuotesByCommentCount } from '../../lib/hooks';
-import PageComponentContainer from '../pageComponentContainer';
+import PageComponentContainer from '../shared/pageComponentContainer';
 import type { Quote } from '../../lib/definitions';
 import { IndexWrapper } from '../shared/IndexWrapper';
 
@@ -46,14 +46,12 @@ export default function PopularPageClient() {
     return (
         <PageComponentContainer title="Popular Backrolls">
             {popularData.map((quote: Quote, index: number) => (
-                <div key={quote.id}>
-                    <IndexWrapper index={index}>
-                        <BackrollCardSlim
-                            quote={quote}
-                            onClick={() => handleClick(quote)}
-                        />
-                    </IndexWrapper>
-                </div>
+                <IndexWrapper index={index} key={quote.id}>
+                    <BackrollCardSlim
+                        quote={quote}
+                        onClick={() => handleClick(quote)}
+                    />
+                </IndexWrapper>
             ))}
             <div ref={observerTarget} style={{ marginTop: '20px' }}>
                 {isFetchingNextPage && (

@@ -1,4 +1,4 @@
-import PageContainer from "../../ui/pageContainer";
+import PageContainer from "../../ui/shared/pageContainer";
 import BackrollsPageClient from "../../ui/backrolls/BackrollsPageClient";
 
 export default function BackrollsPage() {

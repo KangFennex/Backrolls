@@ -5,7 +5,7 @@ import BackrollCardSlimSkeleton from '../backrollCards/BackrollCardSlimSkeleton'
 import { useEffect, useRef } from 'react';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useHotQuotes } from '../../lib/hooks';
-import PageComponentContainer from '../pageComponentContainer';
+import PageComponentContainer from '../shared/pageComponentContainer';
 import type { Quote } from '../../lib/definitions';
 import { IndexWrapper } from '../shared/IndexWrapper';
 
