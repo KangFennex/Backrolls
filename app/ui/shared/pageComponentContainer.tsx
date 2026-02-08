@@ -1,4 +1,4 @@
-import { PageComponentContainerProps } from '../lib/definitions';
+import { PageComponentContainerProps } from '../../lib/definitions';
 import { PageSectionHeader } from './PageSectionHeader';
 
 export default function PageComponentContainer({ children, title, subtitle }: PageComponentContainerProps) {

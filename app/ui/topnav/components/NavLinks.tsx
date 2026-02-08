@@ -28,7 +28,6 @@ interface NavLinksProps {
     hoveredIconIndex: number | null;
     onIconMouseEnter: (index: number) => void;
     onIconMouseLeave: () => void;
-    getColorForIcon: (index: number) => string;
 }
 
 export function NavLinks({

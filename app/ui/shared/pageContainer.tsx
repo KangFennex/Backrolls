@@ -1,4 +1,4 @@
-import { PageContainerProps } from '../lib/definitions';
+import { PageContainerProps } from '../../lib/definitions';
 
 export default function PageContainer({ children }: PageContainerProps) {
     return (
