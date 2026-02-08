@@ -5,7 +5,7 @@ import WorkroomHorizontalSection from './components/WorkroomHorizontalSection';
 import WorkroomVerticalColumns from './components/WorkroomVerticalColumns';
 import WorkroomIconicSection from './components/WorkroomIconicSection';
 import Image from 'next/image';
-import bannerImg from '../../../public/media/banner/newBanner.gif';
+import bannerImg from '../../../public/media/banner/banner.gif';
 
 interface WorkroomPageClientProps {
     initialData: {
