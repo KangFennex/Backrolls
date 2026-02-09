@@ -2,6 +2,7 @@
 
 import '@/app/scss/pages/tea-room/PostCard.scss';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { PostVoteButtons, PostCommentButton, PostShareButton, ActionsContainer } from '../../shared/ActionButtons';
 import { formatDate } from '@/app/lib/utils';
@@ -220,7 +221,14 @@ export function PostCard({ post }: PostCardProps) {
                     {/* Thumbnail for image/video posts */}
                     {(post.post_type === 'image' || post.post_type === 'video') && post.thumbnail_url && (
                         <div className={`post-card__thumbnail ${post.is_nsfw ? 'post-card__thumbnail--nsfw' : ''} ${post.is_spoiler ? 'post-card__thumbnail--spoiler' : ''}`}>
-                            <img src={post.thumbnail_url} alt="" />
+                            <Image
+                                src={post.thumbnail_url}
+                                alt=""
+                                width={800}
+                                height={400}
+                                style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover' }}
+                                unoptimized
+                            />
                         </div>
                     )}
                 </Link>

@@ -64,9 +64,7 @@ export function useToggleVote() {
         },
 
         onSettled: () => {
-            // Sync with server
             utils.votes.getUserVotes.invalidate();
-            utils.quotes.getRecent.invalidate();
         },
     });
 }

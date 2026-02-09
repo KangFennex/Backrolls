@@ -75,7 +75,6 @@ export default function LoungePageClient() {
             <div className="lounge-container">
                 {/* Header */}
                 <LoungeHeader
-                    user={user}
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
                 />

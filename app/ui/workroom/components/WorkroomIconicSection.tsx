@@ -2,6 +2,7 @@
 
 import { Quote } from '../../../lib/definitions';
 import { useState } from 'react';
+import Image from 'next/image';
 import { getSpeakerImageWithFallback } from '../../../lib/utils';
 import '@/app/scss/pages/WorkroomIconicSection.scss';
 
@@ -87,10 +88,13 @@ export default function WorkroomIconicSection({ initialData }: WorkroomIconicSec
                                     pointerEvents: removingCardIndex !== null ? 'none' : 'auto'
                                 }}
                             >
-                                <img
+                                <Image
                                     src={speakerImage}
                                     alt={quote.speaker}
                                     className="card-image"
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    unoptimized
                                 />
                                 <div className="card-number">{cardNumber}</div>
                             </div>

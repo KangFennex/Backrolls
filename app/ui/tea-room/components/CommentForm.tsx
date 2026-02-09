@@ -4,7 +4,6 @@ import '@/app/scss/components/CommentForm.scss';
 import { useState } from 'react';
 import { trpc } from '@/app/lib/trpc';
 import { useUpdatePostComment } from '@/app/lib/hooks/useUpdatePostComment';
-import { useSession } from 'next-auth/react';
 
 interface CommentFormProps {
     commentId?: string;
@@ -29,7 +28,6 @@ export function CommentForm({
 }: CommentFormProps) {
     const [body, setBody] = useState(initialValue);
     const [error, setError] = useState('');
-    const { data: session } = useSession();
 
     const utils = trpc.useUtils();
     const createComment = trpc.postComment.createComment.useMutation({

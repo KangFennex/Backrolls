@@ -78,6 +78,23 @@ export default function CommentItem({
         };
     }, [isMenuOpen]);
 
+    // Close menu when scrolling
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isMenuOpen) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            window.addEventListener('scroll', handleScroll, true);
+        }
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll, true);
+        };
+    }, [isMenuOpen]);
+
     const handleReply = () => {
         setShowReplyForm(true);
         onReply(comment.id);
@@ -107,8 +124,8 @@ export default function CommentItem({
         if (!isMenuOpen && menuButtonRef.current) {
             const rect = menuButtonRef.current.getBoundingClientRect();
             setMenuPosition({
-                top: rect.bottom + 4,
-                left: rect.right - 140,
+                top: window.scrollY + rect.bottom + 4,
+                left: window.scrollX + rect.right - 140,
             });
         }
 

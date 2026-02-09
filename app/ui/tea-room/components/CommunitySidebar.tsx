@@ -2,6 +2,7 @@
 
 import { trpc } from '@/app/lib/trpc';
 import { useState } from 'react';
+import Image from 'next/image';
 import '@/app/scss/pages/tea-room/CommunitySidebar.scss';
 
 interface CommunitySidebarProps {
@@ -51,10 +52,13 @@ export function CommunitySidebar({ onSelectCommunity, selectedCommunity }: Commu
                             onClick={() => onSelectCommunity(community.id)}
                         >
                             {community.icon_url ? (
-                                <img
+                                <Image
                                     src={community.icon_url}
                                     alt={community.name}
                                     className="community-sidebar__icon"
+                                    width={36}
+                                    height={36}
+                                    unoptimized
                                 />
                             ) : (
                                 <div className="community-sidebar__icon community-sidebar__icon--placeholder">
@@ -83,10 +87,13 @@ export function CommunitySidebar({ onSelectCommunity, selectedCommunity }: Commu
                             onClick={() => onSelectCommunity(community.id)}
                         >
                             {community.icon_url ? (
-                                <img
+                                <Image
                                     src={community.icon_url}
                                     alt={community.name}
                                     className="community-sidebar__icon"
+                                    width={36}
+                                    height={36}
+                                    unoptimized
                                 />
                             ) : (
                                 <div className="community-sidebar__icon community-sidebar__icon--placeholder">

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { TbHomeSpark } from "react-icons/tb";
-import { FaFire, FaRegClock, FaRegQuestionCircle, FaPlus } from "react-icons/fa";
+import { FaRegClock, FaRegQuestionCircle, FaPlus } from "react-icons/fa";
 import { FaFire as FaFire6 } from "react-icons/fa6";
 import { PiGameControllerBold } from "react-icons/pi";
 import { BsCupHot } from "react-icons/bs";

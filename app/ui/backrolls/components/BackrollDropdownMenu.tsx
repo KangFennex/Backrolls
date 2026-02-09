@@ -1,11 +1,12 @@
 'use client';
 
 import { createPortal } from 'react-dom';
+import { useEffect, useState } from 'react';
 import { MdDataSaverOn, MdEdit, MdDelete } from "react-icons/md";
 import { BiHide } from "react-icons/bi";
 import { MdReportGmailerrorred } from "react-icons/md";
 
-interface CommentItemMenuProps {
+interface BackrollDropdownMenuProps {
     menuRef: React.RefObject<HTMLDivElement | null>;
     menuPosition: { top: number; left: number };
     isOwner: boolean;
@@ -17,7 +18,7 @@ interface CommentItemMenuProps {
     onDelete: (e: React.MouseEvent) => void;
 }
 
-export default function CommentItemMenu({
+export default function BackrollDropdownMenu({
     menuRef,
     menuPosition,
     isOwner,
@@ -27,7 +28,22 @@ export default function CommentItemMenu({
     onReport,
     onEdit,
     onDelete,
-}: CommentItemMenuProps) {
+}: BackrollDropdownMenuProps) {
+    const [position, setPosition] = useState(menuPosition);
+
+    useEffect(() => {
+        setPosition(menuPosition);
+    }, [menuPosition]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Close menu on scroll to prevent positioning issues
+        };
+
+        window.addEventListener('scroll', handleScroll, true);
+        return () => window.removeEventListener('scroll', handleScroll, true);
+    }, []);
+
     if (typeof window === 'undefined') return null;
 
     return createPortal(
@@ -36,27 +52,27 @@ export default function CommentItemMenu({
             className="flex flex-col bg-[rgba(30,30,40,0.95)] border border-white/15 rounded-lg overflow-hidden min-w-fit shadow-lg backdrop-blur-md"
             style={{
                 position: 'absolute',
-                top: `${menuPosition.top}px`,
-                left: `${menuPosition.left}px`,
+                top: `${position.top}px`,
+                left: `${position.left}px`,
                 zIndex: 9999,
             }}
         >
-            <button 
-                className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20" 
+            <button
+                className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20"
                 onClick={onSave}
             >
                 <MdDataSaverOn size={18} className="flex-shrink-0" />
                 Save
             </button>
-            <button 
-                className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20" 
+            <button
+                className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20"
                 onClick={onHide}
             >
                 <BiHide size={18} className="flex-shrink-0" />
                 Hide
             </button>
-            <button 
-                className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20" 
+            <button
+                className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20"
                 onClick={onReport}
             >
                 <MdReportGmailerrorred size={18} className="flex-shrink-0" />
@@ -64,8 +80,8 @@ export default function CommentItemMenu({
             </button>
             {isOwner && (
                 <>
-                    <button 
-                        className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20" 
+                    <button
+                        className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20"
                         onClick={onEdit}
                     >
                         <MdEdit size={18} className="flex-shrink-0" />

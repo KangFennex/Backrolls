@@ -5,12 +5,11 @@ import '@/app/scss/pages/lounge/Lounge.scss';
 type TabType = 'profile' | 'favorites' | 'submitted' | 'commented';
 
 interface LoungeHeaderProps {
-    user: { username?: string | null } | null | undefined;
     activeTab: TabType;
     onTabChange: (tab: TabType) => void;
 }
 
-export default function LoungeHeader({ user, activeTab, onTabChange }: LoungeHeaderProps) {
+export default function LoungeHeader({ activeTab, onTabChange }: LoungeHeaderProps) {
     return (
         <div className="lounge-header">
             <div className="lounge-header__tabs">

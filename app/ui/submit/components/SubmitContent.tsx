@@ -2,16 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-    CardContent,
     TextField,
-    Button,
     FormControl,
     InputLabel,
     Select,
     MenuItem,
-    Box,
-    Alert,
-    CircularProgress
 } from '@mui/material';
 import { useSeriesFiltering } from '../../../lib/hooks';
 import { useSession } from 'next-auth/react';
@@ -249,60 +244,44 @@ export default function SubmitContent() {
     const isLoading = submitQuoteMutation.isPending;
 
     return (
-        <CardContent sx={{
-            backgroundColor: 'transparent',
-            maxWidth: 800,
-            margin: '0 auto'
-        }}>
+        <div className="submit-content submit-mui-override">
             {!isAuthenticated && (
-                <Alert severity="warning" sx={{ mb: 3 }}>
+                <div className="submit-content__alert submit-content__alert--warning">
                     You must be logged in to submit a quote.
-                </Alert>
+                </div>
             )}
 
             {validationErrors.length > 0 && (
-                <Alert severity="error" sx={{ mb: 3 }}>
+                <div className="submit-content__alert submit-content__alert--error">
                     {validationErrors.map((error, index) => (
                         <div key={index}>• {error}</div>
                     ))}
-                </Alert>
+                </div>
             )}
 
             {submitQuoteMutation.isError && (
-                <Alert severity="error" sx={{ mb: 3 }}>
+                <div className="submit-content__alert submit-content__alert--error">
                     {submitQuoteMutation.error?.message || 'Failed to submit quote. Please try again.'}
-                </Alert>
+                </div>
             )}
 
             {submitQuoteMutation.isSuccess && (
-                <Alert severity="success" sx={{ mb: 3 }}>
+                <div className="submit-content__alert submit-content__alert--success">
                     Quote submitted successfully! It will be reviewed before appearing on the site.
-                </Alert>
+                </div>
             )}
 
-            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                    {/* First Line: Region and Series */}
-                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+            <form onSubmit={handleSubmit} className="submit-content__form">
+                <div className="submit-content__row">
+                    {/* Region */}
+                    <div className="submit-content__field submit-content__field--half">
                         <FormControl fullWidth variant="outlined">
-                            <InputLabel sx={{ color: 'white' }}>Region</InputLabel>
+                            <InputLabel>Region</InputLabel>
                             <Select
                                 key={formData.region}
                                 value={formData.region}
                                 onChange={handleRegionChange}
                                 label="Region"
-                                sx={{
-                                    color: 'white',
-                                    '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'rgba(255, 255, 255, 0.3)',
-                                    },
-                                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'rgba(255, 255, 255, 0.5)',
-                                    },
-                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'white',
-                                    },
-                                }}
                             >
                                 <MenuItem value="americas">Americas</MenuItem>
                                 <MenuItem value="europe">Europe</MenuItem>
@@ -311,22 +290,17 @@ export default function SubmitContent() {
                                 <MenuItem value="global">Global</MenuItem>
                             </Select>
                         </FormControl>
-                    </Box>
+                    </div>
 
-                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+                    {/* Series */}
+                    <div className="submit-content__field submit-content__field--half">
                         <FormControl fullWidth variant="outlined">
-                            <InputLabel sx={{ color: 'white' }}>Series</InputLabel>
+                            <InputLabel>Series</InputLabel>
                             <Select
                                 key={formData.series}
                                 value={formData.series}
                                 onChange={handleSeriesChange}
                                 label="Series"
-                                sx={{
-                                    color: 'white',
-                                    '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'rgba(255, 255, 255, 0.3)',
-                                    },
-                                }}
                             >
                                 {availableSeries.map((series) => (
                                     <MenuItem key={series.code} value={series.name}>
@@ -335,23 +309,19 @@ export default function SubmitContent() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Box>
+                    </div>
+                </div>
 
-                    {/* Second Line: Season, Episode, and Speaker */}
-                    <Box sx={{ flex: '1 1 30%', minWidth: '200px' }}>
+                <div className="submit-content__row">
+                    {/* Season */}
+                    <div className="submit-content__field submit-content__field--third">
                         <FormControl fullWidth variant="outlined">
-                            <InputLabel sx={{ color: 'white' }}>Season</InputLabel>
+                            <InputLabel>Season</InputLabel>
                             <Select
                                 value={formData.season}
                                 onChange={handleSeasonChange}
                                 label="Season"
                                 disabled={!formData.series_code}
-                                sx={{
-                                    color: 'white',
-                                    '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'rgba(255, 255, 255, 0.3)',
-                                    },
-                                }}
                             >
                                 {availableSeasons.map((season) => (
                                     <MenuItem key={season.value} value={season.value}>
@@ -360,22 +330,17 @@ export default function SubmitContent() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Box>
+                    </div>
 
-                    <Box sx={{ flex: '1 1 30%', minWidth: '200px' }}>
+                    {/* Episode */}
+                    <div className="submit-content__field submit-content__field--third">
                         <FormControl fullWidth variant="outlined">
-                            <InputLabel sx={{ color: 'white' }}>Episode</InputLabel>
+                            <InputLabel>Episode</InputLabel>
                             <Select
                                 value={formData.episode}
                                 onChange={handleEpisodeChange}
                                 label="Episode"
                                 disabled={!formData.season}
-                                sx={{
-                                    color: 'white',
-                                    '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'rgba(255, 255, 255, 0.3)',
-                                    },
-                                }}
                             >
                                 {availableEpisodes.map((episode) => (
                                     <MenuItem key={episode.value} value={episode.value}>
@@ -384,9 +349,10 @@ export default function SubmitContent() {
                                 ))}
                             </Select>
                         </FormControl>
-                    </Box>
+                    </div>
 
-                    <Box sx={{ flex: '1 1 30%', minWidth: '200px' }}>
+                    {/* Speaker */}
+                    <div className="submit-content__field submit-content__field--third">
                         <TextField
                             fullWidth
                             label="Speaker *"
@@ -394,43 +360,27 @@ export default function SubmitContent() {
                             onChange={handleInputChange('speaker')}
                             required
                             error={validationErrors.some(err => err.includes('Speaker'))}
-                            sx={{
-                                '& .MuiInputLabel-root': { color: 'white' },
-                                '& .MuiOutlinedInput-root': {
-                                    color: 'white',
-                                    '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
-                                    '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.5)' },
-                                    '&.Mui-focused fieldset': { borderColor: 'white' },
-                                },
-                            }}
                         />
-                    </Box>
+                    </div>
+                </div>
 
-                    {/* Third Line: Quote (full width) */}
-                    <Box sx={{ flex: '1 1 100%' }}>
-                        <TextField
-                            fullWidth
-                            label="Quote *"
-                            value={formData.quote_text}
-                            onChange={handleInputChange('quote_text')}
-                            multiline
-                            rows={3}
-                            required
-                            error={validationErrors.some(err => err.includes('Quote text'))}
-                            sx={{
-                                '& .MuiInputLabel-root': { color: 'white' },
-                                '& .MuiOutlinedInput-root': {
-                                    color: 'white',
-                                    '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
-                                    '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.5)' },
-                                    '&.Mui-focused fieldset': { borderColor: 'white' },
-                                },
-                            }}
-                        />
-                    </Box>
+                {/* Quote */}
+                <div className="submit-content__field submit-content__field--full">
+                    <TextField
+                        fullWidth
+                        label="Quote *"
+                        value={formData.quote_text}
+                        onChange={handleInputChange('quote_text')}
+                        multiline
+                        rows={3}
+                        required
+                        error={validationErrors.some(err => err.includes('Quote text'))}
+                    />
+                </div>
 
-                    {/* Fourth Line: Timestamp and Context */}
-                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+                <div className="submit-content__row">
+                    {/* Timestamp */}
+                    <div className="submit-content__field submit-content__field--half">
                         <TextField
                             fullWidth
                             label="Timestamp *"
@@ -439,19 +389,11 @@ export default function SubmitContent() {
                             placeholder="e.g., 01:23:45 or 15m30s"
                             required
                             error={validationErrors.some(err => err.includes('Timestamp'))}
-                            sx={{
-                                '& .MuiInputLabel-root': { color: 'white' },
-                                '& .MuiOutlinedInput-root': {
-                                    color: 'white',
-                                    '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
-                                    '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.5)' },
-                                    '&.Mui-focused fieldset': { borderColor: 'white' },
-                                },
-                            }}
                         />
-                    </Box>
+                    </div>
 
-                    <Box sx={{ flex: '1 1 45%', minWidth: '250px' }}>
+                    {/* Context */}
+                    <div className="submit-content__field submit-content__field--half">
                         <TextField
                             fullWidth
                             label="Context (Optional)"
@@ -459,85 +401,48 @@ export default function SubmitContent() {
                             onChange={handleInputChange('context')}
                             multiline
                             rows={2}
-                            sx={{
-                                '& .MuiInputLabel-root': { color: 'white' },
-                                '& .MuiOutlinedInput-root': {
-                                    color: 'white',
-                                    '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
-                                    '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.5)' },
-                                    '&.Mui-focused fieldset': { borderColor: 'white' },
-                                },
-                            }}
                         />
-                    </Box>
+                    </div>
+                </div>
 
-                    {/* Conditional Original Language Text */}
-                    {showOriginalLanguageText && (
-                        <Box sx={{ flex: '1 1 100%' }}>
-                            <TextField
-                                fullWidth
-                                label="Original Language Text (Optional)"
-                                value={formData.original_language_text}
-                                onChange={handleInputChange('original_language_text')}
-                                multiline
-                                rows={2}
-                                placeholder={`Enter the original text in ${formData.original_language}`}
-                                sx={{
-                                    '& .MuiInputLabel-root': { color: 'white' },
-                                    '& .MuiOutlinedInput-root': {
-                                        color: 'white',
-                                        '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
-                                        '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.5)' },
-                                        '&.Mui-focused fieldset': { borderColor: 'white' },
-                                    },
-                                }}
-                            />
-                        </Box>
-                    )}
+                {/* Conditional Original Language Text */}
+                {showOriginalLanguageText && (
+                    <div className="submit-content__field submit-content__field--full">
+                        <TextField
+                            fullWidth
+                            label="Original Language Text (Optional)"
+                            value={formData.original_language_text}
+                            onChange={handleInputChange('original_language_text')}
+                            multiline
+                            rows={2}
+                            placeholder={`Enter the original text in ${formData.original_language}`}
+                        />
+                    </div>
+                )}
 
-                    {/* Buttons */}
-                    <Box sx={{ flex: '1 1 100%' }}>
-                        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                size="large"
-                                disabled={!isAuthenticated || isLoading}
-                                sx={{
-                                    backgroundColor: '#ff4081',
-                                    '&:hover': {
-                                        backgroundColor: '#f50057',
-                                    },
-                                    '&:disabled': {
-                                        backgroundColor: 'rgba(255, 255, 255, 0.12)',
-                                    },
-                                    minWidth: 120,
-                                }}
-                            >
-                                {isLoading ? <CircularProgress size={24} /> : 'Submit Quote'}
-                            </Button>
+                {/* Buttons */}
+                <div className="submit-content__buttons">
+                    <button
+                        type="submit"
+                        className="submit-content__button submit-content__button--submit"
+                        disabled={!isAuthenticated || isLoading}
+                    >
+                        {isLoading ? (
+                            <span className="submit-content__loading"></span>
+                        ) : (
+                            'Submit Quote'
+                        )}
+                    </button>
 
-                            <Button
-                                type="button"
-                                variant="outlined"
-                                size="large"
-                                onClick={handleClearFilters}
-                                sx={{
-                                    color: 'white',
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                    '&:hover': {
-                                        borderColor: 'white',
-                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                    },
-                                    minWidth: 120,
-                                }}
-                            >
-                                Clear Fields
-                            </Button>
-                        </Box>
-                    </Box>
-                </Box>
-            </Box>
-        </CardContent >
+                    <button
+                        type="button"
+                        className="submit-content__button submit-content__button--clear"
+                        onClick={handleClearFilters}
+                    >
+                        Clear Fields
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
