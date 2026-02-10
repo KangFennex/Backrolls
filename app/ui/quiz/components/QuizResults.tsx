@@ -1,5 +1,3 @@
-import { Card, Typography, Button, Container, Box, Divider } from '@mui/material';
-
 interface UserAnswer {
     questionIndex: number;
     selectedAnswer: string;
@@ -26,110 +24,103 @@ export default function QuizResults({
     const isGood = percentage >= 70;
     const isSafe = percentage >= 40 && percentage < 70;
 
-    return (
-        <Container maxWidth="md" className="text-center">
-            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-500/20 mb-6" sx={{ backgroundColor: 'transparent' }}>
-                <div className="mb-6">
-                    {isPerfect ? (
-                        <Typography variant="h3" className="text-yellow-400 mb-2">
-                            💅 You&apos;re a Winner Baby!
-                        </Typography>
-                    ) : isGood ? (
-                        <Typography variant="h4" className="text-green-400 mb-2">
-                            👑 Yes Mama!
-                        </Typography>
-                    ) : isSafe ? (
-                        <Typography variant="h4" className="text-pink-400 mb-2">
-                            ❤️ You are safe! But girl, in this economy...
-                        </Typography>
-                    ) : (
-                        <Typography variant="h4" className="text-red-400 mb-2">
-                            💔 I&apos;m sorry my dear, but you are up for elimination!
-                        </Typography>
-                    )
+    const getResultClass = () => {
+        if (isPerfect) return 'perfect';
+        if (isGood) return 'good';
+        if (isSafe) return 'safe';
+        return 'eliminated';
+    };
 
-                    }
+    const resultClass = getResultClass();
+
+    return (
+        <div className="quiz-results">
+            <div className="quiz-results__summary">
+                <div>
+                    {isPerfect ? (
+                        <h2 className={`quiz-results__title quiz-results__title--${resultClass}`}>
+                            💅 You&apos;re a Winner Baby!
+                        </h2>
+                    ) : isGood ? (
+                        <h2 className={`quiz-results__title quiz-results__title--${resultClass}`}>
+                            👑 Yes Mama!
+                        </h2>
+                    ) : isSafe ? (
+                        <h2 className={`quiz-results__title quiz-results__title--${resultClass}`}>
+                            ❤️ You are safe! But girl, in this economy...
+                        </h2>
+                    ) : (
+                        <h2 className={`quiz-results__title quiz-results__title--${resultClass}`}>
+                            💔 I&apos;m sorry my dear, but you are up for elimination!
+                        </h2>
+                    )}
                 </div>
 
-                <Typography
-                    variant="h2"
-                    className={`font-bold mb-2 ${isPerfect
-                        ? 'text-yellow-400'
-                        : isGood
-                            ? 'text-green-400'
-                            : 'text-pink-400'
-                        }`}
-                >
+                <div className={`quiz-results__score quiz-results__score--${resultClass}`}>
                     {score} / {totalQuestions}
-                </Typography>
+                </div>
 
-                <Typography variant="h6" className="text-gray-400 mb-6">
+                <p className="quiz-results__percentage">
                     {percentage.toFixed(0)}% Correct
-                </Typography>
+                </p>
 
-                <Button
-                    variant="contained"
+                <button
                     onClick={onRestart}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full font-bold text-lg"
-                    size="large"
+                    className="quiz-results__restart-button"
                 >
                     Shantay, You Stay! (Play Again)
-                </Button>
-            </Card>
+                </button>
+            </div>
 
             {/* Answer Review Section */}
-            <Box className="space-y-4">
-                <Typography variant="h5" className="text-gray-200 mb-4 text-left">
+            <div className="quiz-results__review">
+                <h3 className="quiz-results__review-title">
                     Review Your Answers
-                </Typography>
+                </h3>
 
                 {userAnswers.map((answer, index) => (
-                    <Card
+                    <div
                         key={index}
-                        className={`p-4 text-left border-2 ${answer.isCorrect
-                            ? 'border-green-500 bg-green-900/10'
-                            : 'border-red-500 bg-red-900/10'
+                        className={`quiz-results__answer ${answer.isCorrect
+                                ? 'quiz-results__answer--correct'
+                                : 'quiz-results__answer--incorrect'
                             }`}
-                        sx={{ backgroundColor: 'transparent' }}
                     >
-                        <Box className="flex items-start gap-3">
-                            <Typography
-                                variant="h6"
-                                className={`font-bold ${answer.isCorrect ? 'text-green-400' : 'text-red-400'
-                                    }`}
-                            >
-                                {answer.isCorrect ? '✓' : '✗'}
-                            </Typography>
+                        <div className="quiz-results__answer-header">
+                            <span className="quiz-results__answer-icon">
+                                {answer.isCorrect ? '✅' : '❌'}
+                            </span>
+                            <span className={`quiz-results__answer-number ${answer.isCorrect
+                                    ? 'quiz-results__answer-number--correct'
+                                    : 'quiz-results__answer-number--incorrect'
+                                }`}>
+                                Question {index + 1}
+                            </span>
+                        </div>
 
-                            <Box className="flex-1">
-                                <Typography variant="body1" className="text-gray-300 italic mb-2">
-                                    &ldquo;{answer.quote}&rdquo;
-                                </Typography>
+                        <p className="quiz-results__answer-quote">
+                            &ldquo;{answer.quote}&rdquo;
+                        </p>
 
-                                <Divider className="my-2 bg-gray-700" />
+                        <div className="quiz-results__answer-details">
+                            <span className="quiz-results__answer-label">Your answer:</span>
+                            <span className={`quiz-results__answer-value ${answer.isCorrect ? '' : 'quiz-results__answer-value--your'
+                                }`}>
+                                {answer.selectedAnswer}
+                            </span>
+                        </div>
 
-                                <Box className="space-y-1">
-                                    <Typography variant="body2" className="text-gray-400">
-                                        <span className="font-semibold">Your answer:</span>{' '}
-                                        <span className={answer.isCorrect ? 'text-green-400' : 'text-red-400'}>
-                                            {answer.selectedAnswer}
-                                        </span>
-                                    </Typography>
-
-                                    {!answer.isCorrect && (
-                                        <Typography variant="body2" className="text-gray-400">
-                                            <span className="font-semibold">Correct answer:</span>{' '}
-                                            <span className="text-green-400">
-                                                {answer.correctAnswer}
-                                            </span>
-                                        </Typography>
-                                    )}
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Card>
+                        {!answer.isCorrect && (
+                            <div className="quiz-results__answer-details">
+                                <span className="quiz-results__answer-label">Correct answer:</span>
+                                <span className="quiz-results__answer-value quiz-results__answer-value--correct">
+                                    {answer.correctAnswer}
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 ))}
-            </Box>
-        </Container>
+            </div>
+        </div>
     );
 }

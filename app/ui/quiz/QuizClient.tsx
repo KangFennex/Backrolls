@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Container } from '@mui/material';
 import { useQuizQuotes } from '../../lib/hooks/useQuizQuotes';
 import PageComponentContainer from '../shared/pageComponentContainer';
+import '@/app/scss/pages/Quiz.scss';
 import {
     QuizHeader,
     QuizQuestion,
@@ -145,10 +145,7 @@ export default function QuizClient() {
 
     return (
         <PageComponentContainer title="Backroll Quiz">
-            <Container
-                maxWidth="md"
-                className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
-            >
+            <div className={`quiz-container ${isTransitioning ? 'quiz-container--transitioning' : ''}`}>
                 <QuizHeader
                     currentQuestion={currentQuestionIndex + 1}
                     totalQuestions={questions.length}
@@ -177,7 +174,7 @@ export default function QuizClient() {
                         onNext={handleNext}
                     />
                 )}
-            </Container>
+            </div>
         </PageComponentContainer>
     );
 }

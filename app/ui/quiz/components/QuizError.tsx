@@ -1,5 +1,3 @@
-import { Container, Alert, Button, Typography } from '@mui/material';
-
 interface QuizErrorProps {
     message: string;
     onRetry: () => void;
@@ -7,40 +5,34 @@ interface QuizErrorProps {
 
 export default function QuizError({ message, onRetry }: QuizErrorProps) {
     return (
-        <Container maxWidth="md">
-            <Alert
-                severity="error"
-                className="mb-4 bg-red-900/20 border border-red-800"
-                action={
-                    <Button
-                        color="inherit"
-                        size="small"
-                        onClick={onRetry}
-                        className="text-red-300"
-                    >
-                        TRY AGAIN
-                    </Button>
-                }
-            >
-                Error loading quiz: {message}
-            </Alert>
-        </Container>
+        <div className="quiz-error">
+            <div className="quiz-error__alert">
+                <p className="quiz-error__message">
+                    Error loading quiz: {message}
+                </p>
+                <button
+                    onClick={onRetry}
+                    className="quiz-error__button"
+                >
+                    TRY AGAIN
+                </button>
+            </div>
+        </div>
     );
 }
 
 export function QuizEmpty({ onRetry }: { onRetry: () => void }) {
     return (
-        <Container maxWidth="md" className="text-center">
-            <Typography variant="h6" className="text-gray-400 mb-4">
+        <div className="quiz-empty">
+            <h2 className="quiz-empty__title">
                 No quiz questions available
-            </Typography>
-            <Button
-                variant="outlined"
+            </h2>
+            <button
                 onClick={onRetry}
-                className="border-purple-500 text-purple-400 hover:bg-purple-900/20"
+                className="quiz-empty__button"
             >
                 Retry
-            </Button>
-        </Container>
+            </button>
+        </div>
     );
 }
