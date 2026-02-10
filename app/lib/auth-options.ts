@@ -36,6 +36,17 @@ interface AuthOptions {
         strategy?: "jwt" | "database";
         maxAge?: number;
     };
+    cookies?: {
+        sessionToken?: {
+            name?: string;
+            options?: {
+                httpOnly?: boolean;
+                sameSite?: 'lax' | 'strict' | 'none';
+                path?: string;
+                secure?: boolean;
+            };
+        };
+    };
     callbacks?: {
         signIn?: (params: { user: User; account: Account | null; profile?: Profile }) => Promise<boolean> | boolean;
         jwt?: (params: { token: JWT; user?: User; account?: Account | null }) => Promise<JWT> | JWT;
@@ -119,7 +130,20 @@ export const authOptions: AuthOptions = {
     ],
     session: {
         strategy: "jwt" as const,
-        maxAge: 24 * 60 * 60,
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
+    cookies: {
+        sessionToken: {
+            name: process.env.NODE_ENV === 'production' 
+                ? '__Secure-next-auth.session-token'
+                : 'next-auth.session-token',
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production',
+            },
+        },
     },
     callbacks: {
         async signIn({ user, account }) {
