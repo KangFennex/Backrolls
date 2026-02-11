@@ -44,7 +44,7 @@
     }
 
     &__text {
-        font-family: 'CairoPlay.ttf', sans-serif;
+        font-family: 'CairoPlay', sans-serif;
         color: var(--text-primary);
     }
 
@@ -202,7 +202,7 @@
 
     .MuiOutlinedInput-root {
         color: var(--text-primary);
-        font-family: 'CairoPlay.ttf', sans-serif;
+        font-family: 'CairoPlay', sans-serif;
 
         fieldset {
             border-color: rgba(255, 255, 255, 0.2);

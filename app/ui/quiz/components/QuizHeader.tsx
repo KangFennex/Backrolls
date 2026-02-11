@@ -14,8 +14,7 @@ export default function QuizHeader({
     return (
         <div className="quiz-header">
             <div className="quiz-header__stats">
-                <span className="quiz-header__chip">
-                    Question {currentQuestion} of {totalQuestions}
+                <span className="quiz-header__chip">{currentQuestion} of {totalQuestions}
                 </span>
                 <span className="quiz-header__chip">
                     Score: {score}

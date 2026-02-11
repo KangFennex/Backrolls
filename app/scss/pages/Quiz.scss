@@ -36,11 +36,6 @@
     margin-bottom: 1rem;
     gap: 1rem;
     flex-wrap: wrap;
-
-    @media (max-width: 480px) {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
 }
 
 .quiz-header__chip {
@@ -99,7 +94,7 @@
 }
 
 .quiz-question__text {
-    font-family: 'Atma-Regular', sans-serif;
+    font-family: 'CairoPlay', sans-serif;
     font-size: 1.5rem;
     line-height: 1.6;
     color: #FFFFF0;

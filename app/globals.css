@@ -20,7 +20,7 @@
 }
 
 @font-face {
-    font-family: 'CairoPlay.ttf';
+    font-family: 'CairoPlay';
     src: url('/fonts/CairoPlay.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
@@ -154,7 +154,7 @@ body {
 /* Fonts Styling */
 
 .backrollCard-font {
-    font-family: 'CairoPlay.ttf', sans-serif;
+    font-family: 'CairoPlay', sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
