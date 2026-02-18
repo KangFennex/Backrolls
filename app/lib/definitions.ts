@@ -86,6 +86,7 @@ export type Quote = {
     vote_count: number;
     comment_count: number;
     share_count: number;
+    view_count: number;
     // Optional relationship to contexts
     contexts?: QuoteContext[];
 };

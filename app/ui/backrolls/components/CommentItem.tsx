@@ -181,7 +181,6 @@ export default function CommentItem({
                             menuPosition={menuPosition}
                             isOwner={isOwner}
                             isDeleting={deleteComment.isPending}
-                            onSave={(e) => handleMenuAction('Save', e)}
                             onHide={(e) => handleMenuAction('Hide', e)}
                             onReport={(e) => handleMenuAction('Report', e)}
                             onEdit={handleEdit}
