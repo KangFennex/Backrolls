@@ -95,6 +95,19 @@
     }
 }
 
+@keyframes whs-expand-rotate {
+    0%, 85% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.whs-expand-icon {
+    animation: whs-expand-rotate 5s linear infinite;
+}
+
 .whs-scroll-arrow {
     position: absolute;
     right: 0.75rem;

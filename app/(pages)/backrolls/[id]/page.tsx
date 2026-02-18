@@ -1,5 +1,6 @@
 import PageContainer from "../../../ui/shared/pageContainer";
 import BackrollDetailClient from "../../../ui/backrolls/BackrollDetailClient";
+import { BackrollDetailSkeleton } from "../../../ui/shared/skeletons";
 import { Suspense } from 'react';
 
 interface BackrollDetailPageProps {
@@ -10,7 +11,7 @@ export default async function BackrollDetailPage({ params }: BackrollDetailPageP
     const { id } = await params;
     return (
         <PageContainer>
-            <Suspense fallback={<div>Loading backroll...</div>}>
+            <Suspense fallback={<BackrollDetailSkeleton />}>
                 <BackrollDetailClient backrollId={id} />
             </Suspense>
         </PageContainer>

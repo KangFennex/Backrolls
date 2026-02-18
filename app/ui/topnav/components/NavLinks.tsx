@@ -46,14 +46,14 @@ export function NavLinks({
                     onMouseLeave={() => onIconMouseLeave()}
                 >
                     <div
-                        className="low-nav-icon-btn group relative flex flex-col items-center justify-center rounded-md p-3 md:p-4 transition-all duration-300">
+                        className="low-nav-icon-btn group relative flex flex-col items-center justify-center rounded-md p-2 md:p-3 transition-all duration-300">
                         <span
                             className="text-2xl"
                             style={{ color: hoveredIconIndex === index ? getColorForIcon(index) : '#8a8a8a' }}
                         >
                             {item.icon}
                         </span>
-                        <span className="absolute bottom-[-45px] mb-2 text-sm font-medium bg-black/60 text-[var(--antique-parchment)] opacity-0 p-1 rounded-md group-hover:opacity-100 transition-opacity whitespace-nowrap delay-500 duration-300">
+                        <span className="absolute bottom-[-45px] mb-2 text-sm font-medium bg-black text-[var(--antique-parchment)] opacity-0 p-1 rounded-md group-hover:opacity-100 transition-opacity whitespace-nowrap delay-500 duration-300 pointer-events-none">
                             {item.title}
                         </span>
                     </div>

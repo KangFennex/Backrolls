@@ -3,7 +3,7 @@
 
 import { useNavigationContext } from '../../context/NavigationContext';
 import PageComponentContainer from '../shared/pageComponentContainer';
-import { useQuoteById, useQuotesBySpeaker } from '../../lib/hooks';
+import { useQuoteById, useQuotesBySpeaker, useIncrementViews } from '../../lib/hooks';
 import { useAuth } from '../../lib/hooks';
 import BackrollCommentsContainer from './components/BackrollCommentsContainer';
 import Breadcrumb from '../shared/breadcrumbs';
@@ -12,9 +12,11 @@ import { BackrollCardMinimal } from '../backrollCards/BackrollCardMinimal';
 import '@/app/scss/backrolls/BackrollDetailClient.scss';
 import { QuoteActionButtons } from '../shared/ActionButtons';
 import { FaEye } from "react-icons/fa";
+import { BackrollDetailSkeleton } from '../shared/skeletons';
 import { BackrollStats } from './components/BackrollStats';
 import { useState, useRef, useEffect } from 'react';
 import BackrollDropdownMenu from './components/BackrollDropdownMenu';
+import ReportModal from './components/ReportModal';
 import { BsThreeDots } from 'react-icons/bs';
 
 interface BackrollDetailClientProps {
@@ -30,14 +32,34 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
         backrollId,
         8
     );
+    const incrementViewsMutation = useIncrementViews();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
     const menuButtonRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
     const isOwner = user?.id === quote?.user_id;
+
+    // Session-based view tracking
+    useEffect(() => {
+        if (!backrollId) return;
+
+        const viewedKey = `viewed_${backrollId}`;
+        const hasViewed = sessionStorage.getItem(viewedKey);
+
+        if (!hasViewed) {
+            // Wait 3 seconds before counting view
+            const timer = setTimeout(() => {
+                incrementViewsMutation.mutate({ quoteId: backrollId });
+                sessionStorage.setItem(viewedKey, 'true');
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [backrollId, incrementViewsMutation]);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -113,10 +135,13 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
         }
     };
 
-    const handleMenuAction = (action: string, e: React.MouseEvent) => {
+    const handleReport = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log(`${action} quote:`, backrollId);
         setIsMenuOpen(false);
+        // Small delay to allow dropdown to close smoothly before opening modal
+        setTimeout(() => {
+            setIsReportModalOpen(true);
+        }, 100);
     };
 
     const handleEdit = (e: React.MouseEvent) => {
@@ -127,16 +152,7 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
     };
 
     if (isLoading) {
-        return (
-            <PageComponentContainer>
-                <div className="w-full flex flex-col gap-4">
-                    <div className="sk sk--image" style={{ width: '100%', borderRadius: 12 }} />
-                    <div className="sk sk--text-lg" style={{ width: '70%' }} />
-                    <div className="sk sk--text-lg" style={{ width: '55%' }} />
-                    <div className="sk sk--text" style={{ width: 100 }} />
-                </div>
-            </PageComponentContainer>
-        );
+        return <BackrollDetailSkeleton />;
     }
 
     if (error || !quote) {
@@ -197,9 +213,8 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                                 menuPosition={menuPosition}
                                 isOwner={isOwner}
                                 isDeleting={isDeleting}
-                                onSave={(e) => handleMenuAction('Save', e)}
-                                onHide={(e) => handleMenuAction('Hide', e)}
-                                onReport={(e) => handleMenuAction('Report', e)}
+                                quoteId={backrollId}
+                                onReport={handleReport}
                                 onEdit={handleEdit}
                                 onDelete={handleDelete}
                             />
@@ -226,11 +241,10 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                             quoteText={quote.quote_text}
                             initialVoteCount={quote.vote_count}
                         />
-                        {/*                         
-                        <div className="stat-item">
+                        <div className="stat-item ml-auto pr-1">
                             <FaEye className="stat-icon" />
-                            <span>313K</span>
-                        </div> */}
+                            <span>{quote.view_count?.toLocaleString() || 0}</span>
+                        </div>
                     </div>
 
                     {/* Middle Content - Stats */}
@@ -260,6 +274,14 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                 {/* Comments Section */}
                 <BackrollCommentsContainer quoteId={backrollId} />
             </div>
+
+            {/* Report Modal */}
+            <ReportModal
+                isOpen={isReportModalOpen}
+                onClose={() => setIsReportModalOpen(false)}
+                quoteId={backrollId}
+                quoteText={quote.quote_text}
+            />
         </>
     );
 }

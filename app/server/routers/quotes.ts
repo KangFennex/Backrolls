@@ -520,5 +520,19 @@ export const quotesRouter = router({
                 .limit(input.limit);
 
             return results;
+        }),
+
+    // Increment view count
+    incrementViews: publicProcedure
+        .input(z.object({
+            quoteId: z.string(),
+        }))
+        .mutation(async ({ input }) => {
+            await db
+                .update(quotes)
+                .set({ view_count: sql`${quotes.view_count} + 1` })
+                .where(eq(quotes.id, input.quoteId));
+
+            return { success: true };
         })
 });

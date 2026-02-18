@@ -21,6 +21,7 @@ export const quotes = pgTable('quotes', {
     vote_count: bigint('vote_count', { mode: 'number' }).default(0).notNull(),
     comment_count: bigint('comment_count', { mode: 'number' }).default(0).notNull(),
     share_count: bigint('share_count', { mode: 'number' }).default(0).notNull(),
+    view_count: bigint('view_count', { mode: 'number' }).default(0).notNull(),
 });
 
 export const users = pgTable('profiles', {

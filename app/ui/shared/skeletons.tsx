@@ -57,3 +57,51 @@ export function SectionSkeleton() {
         </section>
     );
 }
+
+export function BackrollDetailSkeleton() {
+    return (
+        <div className="backroll-detail-layout">
+            <div className="backroll-detail-main">
+                {/* Breadcrumb */}
+                <div className="backroll-detail-breadcrumb">
+                    <div className="sk sk--text" style={{ width: 250, height: 20 }} />
+                </div>
+
+                {/* Quote Text */}
+                <div className="backroll-detail-quote" style={{ gap: '1rem' }}>
+                    <div className="sk sk--text-lg" style={{ width: '90%', height: 24 }} />
+                    <div className="sk sk--text-lg" style={{ width: '75%', height: 24 }} />
+                    <div className="sk sk--text" style={{ width: 150, height: 20, marginTop: '0.5rem' }} />
+                </div>
+
+                {/* Image */}
+                <div className="sk sk--image" style={{ width: '100%', height: 400, borderRadius: 12 }} />
+
+                {/* Action Buttons */}
+                <div className="backroll-detail-stats" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <div className="sk sk--circle" style={{ width: 40, height: 40 }} />
+                    <div className="sk sk--circle" style={{ width: 40, height: 40 }} />
+                    <div className="sk sk--circle" style={{ width: 40, height: 40 }} />
+                    <div className="sk sk--text" style={{ width: 60, height: 24, marginLeft: 'auto' }} />
+                </div>
+
+                {/* Stats Section */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+                    <div className="sk sk--text" style={{ width: 200, height: 20 }} />
+                    <div className="sk sk--text" style={{ width: 180, height: 20 }} />
+                    <div className="sk sk--text" style={{ width: 220, height: 20 }} />
+                </div>
+            </div>
+
+            {/* Horizontal Section */}
+            <div className="backroll-detail-horizontal-section">
+                <div className="sk sk--text-lg" style={{ width: 200, height: 24, marginBottom: '1rem' }} />
+                <div className="horizontal-quotes-container">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <div key={i} className="sk sk--image" style={{ minWidth: 300, height: 150, borderRadius: 8 }} />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}

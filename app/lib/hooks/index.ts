@@ -32,3 +32,4 @@ export { useQuotesByCommentCountLimited } from './useQuotesByCommentCountLimited
 export { useQuotesBySpeaker } from './useQuotesBySpeaker';
 export { useCommentReplies } from './useCommentReplies';
 export { usePostCommentButton } from './usePostCommentButton';
+export { useIncrementViews } from './useIncrementViews';
