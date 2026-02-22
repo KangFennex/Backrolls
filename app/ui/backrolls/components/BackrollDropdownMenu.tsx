@@ -96,7 +96,7 @@ export default function BackrollDropdownMenu({
                 ) : (
                     <FaRegHeart size={18} className="flex-shrink-0" />
                 )}
-                {isFavorited ? 'Unfav' : 'Fav'}
+                {isFavorited ? 'Unfavourite' : 'Favourite'}
             </button>
             <button
                 className="flex items-center gap-2 w-full min-w-[120px] px-4 py-3 bg-transparent border-none text-white/80 font-['Google_Sans',sans-serif] text-sm text-left cursor-pointer transition-all duration-200 border-b border-white/5 hover:bg-pink-500/10 hover:text-pink-500 active:bg-pink-500/20"

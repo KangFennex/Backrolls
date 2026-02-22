@@ -62,6 +62,8 @@ export const formatDate = (dateString: string) => {
 export const contestantImages: Record<string, string> = {
     // RuPaul
     'RuPaul': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/RuPaul.jpg',
+    //Michelle Visage
+    'Michelle Visage': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MichelleVisage-rpdr-S3.jpg',
     // rpdr - S01
     'Akashia': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Akashia-rpdr-S1.jpg',
     'BeBe Zahara Benet': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/BeBeZaharaBenet-rpdr-S1.jpg',

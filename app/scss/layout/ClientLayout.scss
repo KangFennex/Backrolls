@@ -41,6 +41,7 @@
     max-width: 100%;
     overflow: visible;
     margin: 0 auto;
+    scrollbar-gutter: stable;
 }
 
 /* Tablets and up: centered content with max-width */
@@ -65,6 +66,7 @@
         border-left: 1px solid var(--light-border);
         border-right: 1px solid var(--light-border);
         padding-bottom: 5rem;
+        scrollbar-gutter: stable;
     }
 }
 

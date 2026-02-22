@@ -3,10 +3,10 @@ import BackrollCardSlimSkeleton from '../backrollCards/BackrollCardSlimSkeleton'
 
 export function SearchCardsSkeleton() {
     return (
-        <div className="flex flex-col gap-4 w-full px-4 py-8">
-            {Array.from({ length: 3 }).map((_, i) => (
-                <BackrollCardSlimSkeleton key={i} />
-            ))}
+        <div className="flex flex-col gap-3 w-full px-4 py-8">
+            <div className="sk sk--text animate-pulse" style={{ width: '58%', height: 14, borderRadius: 8 }} />
+            <div className="sk sk--text animate-pulse" style={{ width: '76%', height: 14, borderRadius: 8 }} />
+            <div className="sk sk--text animate-pulse" style={{ width: '92%', height: 14, borderRadius: 8 }} />
         </div>
     );
 }
