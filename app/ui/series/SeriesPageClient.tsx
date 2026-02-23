@@ -7,8 +7,10 @@ import { BackrollCardSlim } from '../backrollCards/BackrollCardSlim';
 import { useBackrollsStore } from '../../store/backrollsStore';
 import { useNavigationContext } from '../../context/NavigationContext';
 import { useSeriesQuotes } from '../../lib/hooks';
+import { adjustedRegion } from '../../lib/utils';
 import PageComponentContainer from '../shared/pageComponentContainer';
 import { SectionSkeleton } from '../shared/skeletons';
+import { codeEquivalence } from '../../lib/newRepertoire';
 
 export default function SeriesPageClient(): React.ReactElement {
     // Use selector to ensure component re-renders when filters change
@@ -16,8 +18,8 @@ export default function SeriesPageClient(): React.ReactElement {
     const setFilters = useBackrollsStore((state) => state.setFilters);
     const { navigateToBackroll } = useNavigationContext();
     const searchParams = useSearchParams();
-
-    console.log('🔄 SeriesPageClient render, filters:', filters);
+    const { selectedRegion, selectedSeries, selectedSeason, selectedEpisode } = filters;
+    const seriesName = selectedSeries ? codeEquivalence[selectedSeries] ?? selectedSeries : '';
 
     // Sync filters from URL params on mount and when URL actually changes
     useEffect(() => {
@@ -25,8 +27,6 @@ export default function SeriesPageClient(): React.ReactElement {
         const series = searchParams.get('series');
         const season = searchParams.get('season');
         const episode = searchParams.get('episode');
-
-        console.log('📍 URL params changed:', { region, series, season, episode });
 
         setFilters({
             selectedRegion: region,
@@ -54,25 +54,12 @@ export default function SeriesPageClient(): React.ReactElement {
         navigateToBackroll(quote);
     };
 
-    // Helper function to format region display
-    const adjustedRegion = (region: string | null) => {
-        if (region === 'americas') return "Americas";
-        if (region === 'asia') return "Asia";
-        if (region === 'europe') return "Europe";
-        if (region === 'oceania') return "Oceania";
-        if (region === 'africa') return "Africa";
-        if (region === 'global') return "Global";
-        return region;
-    };
-
-    const { selectedRegion, selectedSeries, selectedSeason, selectedEpisode } = filters;
-
     const breadCrumbs = () => {
         return (
             selectedRegion || selectedSeries || selectedSeason || selectedEpisode) && (
                 <div className="w-full text-[#FFFFF0] text-left text-sm mb-2 mt-2">
                     {selectedRegion && <span>{adjustedRegion(selectedRegion)} <span> • </span></span>}
-                    {selectedSeries && <span>{selectedSeries} <span> • </span></span>}
+                    {selectedSeries && <span>{seriesName} <span> • </span></span>}
                     {selectedSeason && <span>S{selectedSeason > 9 ? selectedSeason : `0${selectedSeason}`}</span>}
                     {selectedEpisode && <span>E{selectedEpisode > 9 ? selectedEpisode : `0${selectedEpisode}`}</span>}
                 </div>
@@ -83,7 +70,7 @@ export default function SeriesPageClient(): React.ReactElement {
         const resultsLength = quotes.length;
         return (
             <div>
-                <h2 className="text-xl font-semibold mb-4 text-[#FFFFF0]">
+                <h2 className="text-xl font-semibold mb-4 ghost-white">
                     Found {resultsLength} backrolls
                 </h2>
             </div>
@@ -134,8 +121,10 @@ export default function SeriesPageClient(): React.ReactElement {
     // Success state with quotes
     return (
         <div className="w-full">
-            {breadCrumbs()}
-            {displayResultLength()}
+            <div className="ml-4">
+                {breadCrumbs()}
+                {displayResultLength()}
+            </div>
             <PageComponentContainer>
                 {quotes.map((quote) => (
                     <div key={quote.id}>

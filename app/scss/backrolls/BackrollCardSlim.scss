@@ -45,6 +45,8 @@
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     margin: auto;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
 
     @media (min-width: 768px) {
         width: 130px;

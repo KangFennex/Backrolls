@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 export default function usePlaceholderLogic() {
     const placeholders = [
         "It's getting gaggy",
-        "And I hoop",
         "Party",
-        "Let's get sickening"
+        "Let's get sickening",
+        "Bam!",
     ];
 
     const [index, setIndex] = useState(0);
@@ -57,6 +57,17 @@ export const formatDate = (dateString: string) => {
     if (days < 30) return `${days}d ago`;
     const months = Math.floor(days / 30);
     return `${months}mo ago`;
+};
+
+// Helper function to format region display
+export const adjustedRegion = (region: string | null) => {
+    if (region === 'americas') return "Americas";
+    if (region === 'asia') return "Asia";
+    if (region === 'europe') return "Europe";
+    if (region === 'oceania') return "Oceania";
+    if (region === 'africa') return "Africa";
+    if (region === 'global') return "Global";
+    return region;
 };
 
 export const contestantImages: Record<string, string> = {

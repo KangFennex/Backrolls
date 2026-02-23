@@ -168,6 +168,10 @@ body {
     font-style: normal;
 }
 
+.ghost-white {
+    color: var(--cool-ghost-white);
+}
+
 .antique-parchment-text {
     color: var(--antique-parchment);
 }

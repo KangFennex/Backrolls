@@ -19,9 +19,11 @@ export default function BackrollsPageClient() {
         { enabled: !!searchQuery }
     );
 
+    const quotes = searchResults || [];
+
     const handleClick = (quote: Quote) => {
         navigateToBackroll(quote);
-    }
+    };
 
     if (!searchQuery) {
         return (
@@ -41,12 +43,21 @@ export default function BackrollsPageClient() {
         );
     }
 
-    const quotes = searchResults || [];
+    const displayResultLength = () => {
+        const resultsLength = quotes.length;
+        return (
+            <div>
+                <h2 className="text-xl font-semibold mb-4 ml-4 ghost-white">
+                    Found {resultsLength} backrolls
+                </h2>
+            </div>
+        );
+    }
 
     if (quotes.length === 0) {
         return (
             <PageComponentContainer>
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 ghost-white">
                     No results found for &quot;{searchQuery}&quot;
                 </div>
             </PageComponentContainer>
@@ -54,15 +65,18 @@ export default function BackrollsPageClient() {
     }
 
     return (
-        <PageComponentContainer>
-            {quotes.map((quote) => (
-                <div key={quote.id}>
-                    <BackrollCardSlim
-                        quote={quote}
-                        onClick={() => handleClick(quote)}
-                    />
-                </div>
-            ))}
-        </PageComponentContainer>
+        <>
+            {displayResultLength()}
+            <PageComponentContainer>
+                {quotes.map((quote) => (
+                    <div key={quote.id}>
+                        <BackrollCardSlim
+                            quote={quote}
+                            onClick={() => handleClick(quote)}
+                        />
+                    </div>
+                ))}
+            </PageComponentContainer>
+        </>
     );
 }
