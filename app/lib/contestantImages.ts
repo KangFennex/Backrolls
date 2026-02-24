@@ -1,0 +1,83 @@
+export const DEFAULT_CONTESTANT_FALLBACK_IMAGE = '/RuPaul-Chaka.jpg';
+
+export const contestantImages: Record<string, string> = {
+    // RuPaul
+    'RuPaul': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/RuPaul.jpg',
+    //Michelle Visage
+    'Michelle Visage': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MichelleVisage-rpdr-S3.jpg',
+    // rpdr - S01
+    'Akashia': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Akashia-rpdr-S1.jpg',
+    'BeBe Zahara Benet': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/BeBeZaharaBenet-rpdr-S1.jpg',
+    'Nina Flowers': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/NinaFlowers-rpdr-S1.jpg',
+    'Jade Sotomayor': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/JadeSotomayor-rpdr-S1.jpg',
+    'Ongina': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Ongina-rpdr-S1.jpg',
+    'Rebecca Glasscock': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/RebeccaGlasscock-rpdr-S1.jpg',
+    'Shannel': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shannel-rpdr-S1.jpg',
+    'Tammie Brown': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/TammieBrown-rpdr-S1.jpg',
+    'Porkchop Parker': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/VictoriaParker-rpdr-S1.jpg',
+    // rpdr - S02
+    'Tyra Sanchez': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/TyraSanchez-rpdr-S2.jpg',
+    'Raven': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Raven-rpdr-S2.jpg',
+    'Jujubee': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Jujubee-rpdr-S2.jpg',
+    'Tatianna': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Tatianna-rpdr-S2.jpg',
+    'Pandora Boxx': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/PandoraBoxx-rpdr-S2.jpg',
+    'Jessica Wild': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/JessicaWild-rpdr-S2.jpg',
+    'Sahara Davenport': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/SaharaDavenport-rpdr-S2.jpg',
+    'Sonique': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Sonique-rpdr-S2.jpg',
+    'Morgan McMichaels': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MorganMcMichaels-rpdr-S2.jpg',
+    'Mystique Summers': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MystiqueSummers-rpdr-S2.jpg',
+    'Nicole Page Brooks': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/NicolePaigeBrooks-rpdr-S2.jpg',
+    'Shangela': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shangela-rpdr-S2.jpg',
+    // rpdr - S03
+    'Raja': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Raja-rpdr-S3.jpg',
+    'Manila Luzon': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/ManilaLuzon-rpdr-S3.jpg',
+    'Delta Work': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/DeltaWork-rpdr-S3.jpg',
+    'Carmen Carrera': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/CarmenCarrera-rpdr-S3.jpg',
+    'Stacy Layne Matthews': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/StacyLayneMatthews-rpdr-S3.jpg',
+    'Alexis Mateo': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/AlexisMateo-rpdr-S3.jpg',
+    'Yara Sofia': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/YaraSofia-rpdr-S3.jpg',
+    'India Ferrah': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/IndiaFerrah-rpdr-S3.jpg',
+    'Mimi Imfurst': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/MimiImfurst-rpdr-S3.jpg',
+    'Phoenix': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Phoenix-rpdr-S3.jpg',
+    'Venus D-Lite': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/VenusDLite-rpdr-S3.jpg',
+    'Mariah': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Mariah-rpdr-S3.jpg',
+    //'Shangela': 'https://htsnvmrjwfbpjoqicyrk.supabase.co/storage/v1/object/public/contestant-avatar/Shangela-rpdr-S3.jpg',
+};
+
+const normalizeSpeakerName = (speakerName: string): string => {
+    return speakerName.trim().replace(/\s+/g, ' ').toLowerCase();
+};
+
+const normalizedContestantImages = Object.entries(contestantImages).reduce<Record<string, string>>((acc, [name, imageUrl]) => {
+    acc[normalizeSpeakerName(name)] = imageUrl;
+    return acc;
+}, {});
+
+export const getSpeakerImage = (speakerName: string): string | undefined => {
+    if (!speakerName) return undefined;
+
+    const exactMatch = contestantImages[speakerName];
+    if (exactMatch) return exactMatch;
+
+    return normalizedContestantImages[normalizeSpeakerName(speakerName)];
+};
+
+export const getSpeakerImageWithFallback = (
+    speakerName: string,
+    fallbackUrl: string = DEFAULT_CONTESTANT_FALLBACK_IMAGE
+): string => {
+    return getSpeakerImage(speakerName) || fallbackUrl;
+};
+
+export const getSpeakerBackgroundImageValue = (
+    speakerName: string,
+    fallbackUrl: string = DEFAULT_CONTESTANT_FALLBACK_IMAGE
+): string => {
+    const speakerImage = getSpeakerImage(speakerName);
+
+    if (!speakerImage) {
+        return `url(${fallbackUrl})`;
+    }
+
+    return `url(${speakerImage}), url(${fallbackUrl})`;
+};

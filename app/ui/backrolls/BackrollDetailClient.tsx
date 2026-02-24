@@ -7,7 +7,7 @@ import { useQuoteById, useQuotesBySpeaker, useIncrementViews } from '../../lib/h
 import { useAuth } from '../../lib/hooks';
 import BackrollCommentsContainer from './components/BackrollCommentsContainer';
 import Breadcrumb from '../shared/breadcrumbs';
-import { getSpeakerImageWithFallback } from '../../lib/utils';
+import { getSpeakerBackgroundImageValue } from '../../lib/contestantImages';
 import { BackrollCardMinimal } from '../backrollCards/BackrollCardMinimal';
 import '@/app/scss/backrolls/BackrollDetailClient.scss';
 import { QuoteActionButtons } from '../shared/ActionButtons';
@@ -165,7 +165,7 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
         );
     }
 
-    const speakerImage = getSpeakerImageWithFallback(quote.speaker);
+    const speakerImageBackground = getSpeakerBackgroundImageValue(quote.speaker);
 
     return (
         <>
@@ -231,7 +231,7 @@ export default function BackrollDetailClient({ backrollId }: BackrollDetailClien
                     {/* Contestant Image */}
                     <div
                         className="backroll-detail-image"
-                        style={{ backgroundImage: `url(${speakerImage})` }}
+                        style={{ backgroundImage: speakerImageBackground }}
                     />
 
                     {/* Action Buttons */}

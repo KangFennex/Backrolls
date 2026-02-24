@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import type { Quote } from '../../lib/definitions';
-import { getSpeakerImageWithFallback } from '../../lib/utils';
+import { getSpeakerBackgroundImageValue } from '../../lib/contestantImages';
 import '@/app/scss/backrolls/BackrollCardPicture.scss';
 import { FiExternalLink } from "react-icons/fi";
 import { useState, useMemo } from 'react';
@@ -37,7 +37,7 @@ export function BackrollCardPicture({
     onClick,
     isFullScreen,
 }: BackrollCardPicture2Props) {
-    const speakerImage = getSpeakerImageWithFallback(quote.speaker);
+    const speakerImageBackground = getSpeakerBackgroundImageValue(quote.speaker);
     const quoteLength = quote.quote_text.trim().length;
     const quoteMaxLength = 100;
     const isQuoteLong = quoteLength > quoteMaxLength;
@@ -93,7 +93,7 @@ export function BackrollCardPicture({
                     <Box
                         className={`backroll-picture-card__image ${colorClass}${isCardRevealed ? ' revealed' : ''}`}
                         style={{
-                            backgroundImage: `url(${speakerImage})`,
+                            backgroundImage: speakerImageBackground,
                         }}
                     />
                 </Card>

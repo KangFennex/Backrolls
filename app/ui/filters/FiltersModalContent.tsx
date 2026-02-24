@@ -156,7 +156,7 @@ export default function FiltersModalContent() {
     return (
         <>
             <DialogTitle sx={{
-                p: '1rem 1.5rem',
+                p: { xs: '1rem 0.2rem', sm: '1rem 1.5rem' },
                 borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
                 <FilterHeader onClose={toggleFilters} />

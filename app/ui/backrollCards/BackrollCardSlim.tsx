@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import type { Quote } from '../../lib/definitions';
-import { getSpeakerImageWithFallback } from '../../lib/utils';
+import { getSpeakerBackgroundImageValue } from '../../lib/contestantImages';
 import { CardActions } from '@mui/material';
 import { QuoteActionButtons } from '../shared/ActionButtons';
 import '@/app/scss/backrolls/BackrollCardSlim.scss';
@@ -14,7 +14,7 @@ export function BackrollCardSlim({
     quote: Quote;
     onClick: () => void;
 }) {
-    const speakerImage = getSpeakerImageWithFallback(quote.speaker);
+    const speakerImageBackground = getSpeakerBackgroundImageValue(quote.speaker);
     const quoteLength = quote.quote_text.trim().length;
     const quoteMaxLength = 120;
     const isQuoteLong = quoteLength > quoteMaxLength;
@@ -64,7 +64,7 @@ export function BackrollCardSlim({
                     {/* Contestant Image */}
                     <Box
                         className="bcs-image"
-                        sx={{ backgroundImage: `url(${speakerImage})`, boxShadow: 'none' }}
+                        sx={{ backgroundImage: speakerImageBackground, boxShadow: 'none' }}
                     />
 
                     {/* Actions */}

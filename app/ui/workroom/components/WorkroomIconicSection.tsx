@@ -3,7 +3,10 @@
 import { Quote } from '../../../lib/definitions';
 import { useState } from 'react';
 import Image from 'next/image';
-import { getSpeakerImageWithFallback } from '../../../lib/utils';
+import {
+    DEFAULT_CONTESTANT_FALLBACK_IMAGE,
+    getSpeakerImageWithFallback,
+} from '../../../lib/contestantImages';
 import '@/app/scss/pages/WorkroomIconicSection.scss';
 
 interface WorkroomIconicSectionProps {
@@ -22,6 +25,7 @@ export default function WorkroomIconicSection({ initialData }: WorkroomIconicSec
     const [deckQuotes, setDeckQuotes] = useState<Quote[]>(allQuotes.slice(1, 5)); // Cards 2-5 (4 cards)
     const [nextQuoteIndex, setNextQuoteIndex] = useState(5); // Next quote to add to deck
     const [removingCardIndex, setRemovingCardIndex] = useState<number | null>(null);
+    const [failedImageUrls, setFailedImageUrls] = useState<Record<string, boolean>>({});
 
     const handleCardClick = (clickedIndex: number) => {
         if (removingCardIndex !== null) return;
@@ -77,6 +81,9 @@ export default function WorkroomIconicSection({ initialData }: WorkroomIconicSec
                 <div className="card-deck">
                     {deckQuotes.map((quote, index) => {
                         const speakerImage = getSpeakerImageWithFallback(quote.speaker);
+                        const imageSrc = failedImageUrls[speakerImage]
+                            ? DEFAULT_CONTESTANT_FALLBACK_IMAGE
+                            : speakerImage;
                         const cardNumber = index + 2; // Start numbering from 2
 
                         return (
@@ -89,12 +96,24 @@ export default function WorkroomIconicSection({ initialData }: WorkroomIconicSec
                                 }}
                             >
                                 <Image
-                                    src={speakerImage}
+                                    src={imageSrc}
                                     alt={quote.speaker}
                                     className="card-image"
                                     fill
                                     style={{ objectFit: 'cover' }}
                                     unoptimized
+                                    onError={() => {
+                                        setFailedImageUrls((prev) => {
+                                            if (prev[speakerImage]) {
+                                                return prev;
+                                            }
+
+                                            return {
+                                                ...prev,
+                                                [speakerImage]: true,
+                                            };
+                                        });
+                                    }}
                                 />
                                 <div className="card-number">{cardNumber}</div>
                             </div>
