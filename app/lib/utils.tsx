@@ -131,7 +131,7 @@ export const getSpeakerImage = (speakerName: string): string | undefined => {
  */
 export const getSpeakerImageWithFallback = (
     speakerName: string,
-    fallbackUrl: string = '/media/rupaul.jpg'
+    fallbackUrl: string = '/media/RuPaul-Chaka.jpg'
 ): string => {
     return contestantImages[speakerName] || fallbackUrl;
 };
